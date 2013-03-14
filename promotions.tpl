@@ -16,7 +16,7 @@ Description: Promotions Page
 
 	<div class="row products">
 
-		{% for product in products('on_sale') %} 
+		{% for product in products('on_sale limit:9') %} 
 
 			<div class="span3 product">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
@@ -41,6 +41,14 @@ Description: Promotions Page
 			</div>
 
 		{% endfor %}
+
+		<div class="span9 product">
+				
+			<hr>
+				
+			{{ pagination('on_sale limit:9') }}
+				
+		</div>
 
 	</div>
 
