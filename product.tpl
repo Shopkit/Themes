@@ -132,7 +132,7 @@ Description: Product Page
 			<hr>
 			<h6>Comentários</h6>
 			<br>
-			<div class="fb-comments" data-href="{{ product.url }}" data-num-posts="5"></div>
+			<div class="fb-comments" data-href="{{ current_url() }}" data-num-posts="5"></div>
 		</div>
 
 	{% endif %}
