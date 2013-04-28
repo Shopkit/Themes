@@ -97,10 +97,13 @@ Description: Confirm order page
 					<strong>Morada</strong><br>{{ user.address }}<br><br>
 					<strong>Código Postal</strong><br>{{ user.zip_code }}<br><br>
 					<strong>Localidade</strong><br>{{ user.city }}<br><br>
-					<strong>Observações</strong><br>{{ user.notes }}
+					<strong>País</strong><br>{{ user.country }}
 				</div>
 				
 			</div>
+
+			<br>
+			<strong>Observações</strong><br>{{ user.notes }}
 			
 			<hr>
 			

@@ -37,31 +37,28 @@ Description: Order data form page
 		<label for="morada">Morada <small class="muted">(*)</small></label>
 		<textarea cols="80" rows="4" class="span9" id="morada" name="morada" placeholder="Introduza a morada onde quer receber a encomenda" required>{{ user.address }}</textarea>
 		<br><br>
-				
+
 		<div class="row">
-			
-			<div class="span4">
-				
+
+			<div class="span2">
 				<label for="cp">Código Postal <small class="muted">(*)</small></label>
-				<input type="text" name="cp" id="cp" class="span4" value="{{ user.zip_code }}" required>
-				<br><br>
-				
-				<label for="contribuinte">Nr. Contribuinte</label>
-				<input type="text" name="contribuinte" id="contribuinte" class="span4" value="{{ user.tax_id }}">
-				
+				<input type="text" name="cp" id="cp" class="input-block-level" value="{{ user.zip_code }}" required>
 			</div>
-			
-			<div class="span4 offset1">
-				
+
+			<div class="span4">
 				<label for="localidade">Localidade <small class="muted">(*)</small></label>
-				<input type="text" name="localidade" id="localidade" class="span4" value="{{ user.city }}" required>
-				<br><br>
-				
-				<label for="telefone">Telefone</label>
-				<input type="text" name="telefone" id="telefone" class="span4" value="{{ user.phone }}">
-				
+				<input type="text" name="localidade" id="localidade" class="input-block-level" value="{{ user.city }}" required>
 			</div>
-			
+
+			<div class="span3">
+				<label for="pais">País <small class="muted">(*)</small></label>
+				<select name="pais" id="pais" class="input-block-level" required>
+					{% for country in countries %} 
+						<option value="{{ country }}" {% if user.country == country %} selected {% endif %}>{{ country }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
 		</div>
 		
 		<br>

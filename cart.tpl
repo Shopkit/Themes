@@ -34,7 +34,7 @@ Description: Shopping cart page
 							
 				{% for item in cart.items %} 
 					<tr>
-						<td><img src="{{ item.image }}" width="22" height="22" class="hidden-phone"> {{ item.title }}</td>
+						<td>{% if item.image %}<img src="{{ item.image }}" width="22" height="22" class="hidden-phone"> {% endif %}{{ item.title }}</td>
 						<td><div class="form-inline"><input class="input-micro" type="text" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]"> <button type="submit" class="btn btn-small">Alterar</button></div></td>
 						<td class="price text-right">&euro; {{ item.price }}</td>
 						<td class="price text-right">&euro; {{ item.subtotal }}</td>
