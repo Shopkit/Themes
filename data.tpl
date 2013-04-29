@@ -25,13 +25,31 @@ Description: Order data form page
 	{% endif %}
 	
 	{{ form_open('cart/confirm', {'class': 'form'}) }}
-	
-		<label for="nome">Nome <small class="muted">(*)</small></label>
-		<input type="text" name="nome" id="nome" class="span9" value="{{ user.name }}" required>
-		<br><br>
 		
-		<label for="email">E-mail <small class="muted">(*)</small></label>
-		<input type="email" name="email" id="email" class="span9" value="{{ user.email }}" required>
+		<div class="row">
+			<div class="span6">
+				<label for="nome">Nome <small class="muted">(*)</small></label>
+				<input type="text" name="nome" id="nome" class="input-block-level" value="{{ user.name }}" required>
+			</div>
+
+			<div class="span3">
+				<label for="contribuinte">Nr. Contribuinte</label>
+				<input type="text" name="contribuinte" id="contribuinte" class="input-block-level" value="{{ user.tax_id }}">
+			</div>
+		</div>
+		<br><br>
+
+		<div class="row">
+			<div class="span6">
+				<label for="email">E-mail <small class="muted">(*)</small></label>
+				<input type="email" name="email" id="email" class="input-block-level" value="{{ user.email }}" required>
+			</div>
+
+			<div class="span3">
+				<label for="telefone">Telefone</label>
+				<input type="text" name="telefone" id="telefone" class="input-block-level" value="{{ user.phone }}">
+			</div>
+		</div>
 		<br><br>
 		
 		<label for="morada">Morada <small class="muted">(*)</small></label>
@@ -60,8 +78,8 @@ Description: Order data form page
 			</div>
 
 		</div>
-		
 		<br>
+
 		<label for="observacoes">Observações</label>
 		<textarea cols="80" rows="4" class="span9" id="observacoes" name="observacoes" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.notes }}</textarea>
 
