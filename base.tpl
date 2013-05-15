@@ -61,6 +61,10 @@ Description: This is the base layout. It's included in every page with this code
 	<div class="container">
 	
 		<header>
+
+			{% if store.notice %}
+				<div class="store-notice">{{ store.notice }}</div>
+			{% endif %}
 			
 			<div class="clearfix">
 				{% if store.logo %}
