@@ -46,8 +46,8 @@ Description: Confirm order page
 						<tr>
 							<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
 							<td class="text-right">{{ item.qty }}</td>
-							<td class="price text-right">&euro; {{ item.price }}</td>
-							<td class="price text-right">&euro; {{ item.total }}</td>
+							<td class="price text-right">{{ item.price | money_with_sign }}</td>
+							<td class="price text-right">{{ item.total | money_with_sign }}</td>
 						</tr>
 					{% endfor %}
 					
@@ -58,18 +58,18 @@ Description: Confirm order page
 					{% if cart.discount %}
 						<tr>
 							<td class="discount">Desconto</td>
-							<td align="right" class="discount price text-right" colspan="4">- &euro; {{ cart.discount }}</td>
+							<td align="right" class="discount price text-right" colspan="4">- {{ cart.discount | money_with_sign }}</td>
 						</tr>
 					{% endif %}
 					
 					<tr>
 						<td class="discount">Portes de Envio</td>
-						<td align="right" class="discount price text-right" colspan="4">&euro; {{ cart.total_shipping }}</td>
+						<td align="right" class="discount price text-right" colspan="4">{{ cart.total_shipping | money_with_sign }}</td>
 					</tr>
 					
 					<tr>
 						<td class="subtotal">Total Encomenda</td>
-						<td colspan="4" class="subtotal price text-right">&euro; {{ cart.total }}</td>
+						<td colspan="4" class="subtotal price text-right">{{ cart.total | money_with_sign }}</td>
 					</tr>
 				</tfoot>
 			</table>

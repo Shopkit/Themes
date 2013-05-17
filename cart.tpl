@@ -36,8 +36,8 @@ Description: Shopping cart page
 					<tr>
 						<td>{% if item.image %}<img src="{{ item.image }}" width="22" height="22" class="hidden-phone"> {% endif %}{{ item.title }}</td>
 						<td><div class="form-inline"><input class="input-micro" type="text" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]"> <button type="submit" class="btn btn-small">Alterar</button></div></td>
-						<td class="price text-right">&euro; {{ item.price }}</td>
-						<td class="price text-right">&euro; {{ item.subtotal }}</td>
+						<td class="price text-right">{{ item.price | money_with_sign }}</td>
+						<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
 						<td><a href="{{ item.remove_link }}" class="btn btn-small"><i class="icon-trash"></i>&nbsp;<span class="hidden-phone">Remover</span></a></td>
 					</tr>
 				{% endfor %}
@@ -49,14 +49,14 @@ Description: Shopping cart page
 					{% if cart.discount %}
 						<tr>
 							<td class="discount">Desconto</td>
-							<td align="right" class="discount price text-right" colspan="3">- € {{ cart.discount }}</td>
+							<td align="right" class="discount price text-right" colspan="3">- {{ cart.discount | money_with_sign }}</td>
 							<td class="discount">&nbsp;</td>
 						</tr>
 					{% endif %}
 					
 					<tr>
 						<td class="subtotal">Subtotal Encomenda</td>
-						<td colspan="3" class="subtotal price text-right">&euro; {{ cart.subtotal }}</td>
+						<td colspan="3" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
 						<td class="subtotal">&nbsp;</td>
 					</tr>
 				</tfoot>

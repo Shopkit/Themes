@@ -29,7 +29,7 @@ Description: Complete order page
 				<br>
 				<p><strong>Entidade:</strong> <span class="muted">{{ order.multibanco.entity }}</span></p>
 				<p><strong>Referência:</strong> <span class="muted">{{ order.multibanco.reference }}</span></p>
-				<p><strong>Montante:</strong> <span class="muted">&euro; {{ order.multibanco.value }}</span></p>
+				<p><strong>Montante:</strong> <span class="muted">{{ order.multibanco.value | money_with_sign }}</span></p>
 				<hr>
 				<p><small>As referências multibanco são geradas pela <a target="_blank" href="http://www.easypay.pt">Easypay</a>.</small></p>
 			</div>
@@ -52,7 +52,7 @@ Description: Complete order page
 		
 			<input type="hidden" name="cmd" value="_cart">
 			<input type="hidden" name="business" value="{{ store.paypal_email }}">
-			<input type="hidden" name="currency_code" value="EUR">
+			<input type="hidden" name="currency_code" value="{{ store.currency }}">
 			<input type="hidden" name="return" value="{{ site_url('loja/pagamentos/paypal_sucesso') }}">
 			<input type="hidden" name="notify_url" value="{{ site_url('loja/pagamentos/ipn/' ~ order.hash) }}">
 			<input type="hidden" name="upload" value="1">

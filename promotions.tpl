@@ -26,9 +26,9 @@ Description: Promotions Page
 					
 					<span class="price">
 						{% if product.promo == true %}
-							<del>&euro; {{ product.price }}</del> &nbsp; &euro;  {{ product.price_promo }}
+							<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
 						{% else %}
-							&euro;  {{ product.price }}
+							{{ product.price | money_with_sign }}
 						{% endif %}
 					</span>
 				</div>

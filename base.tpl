@@ -83,7 +83,7 @@ Description: This is the base layout. It's included in every page with this code
 		          			{% if cart.items %}
 		          			
 			          			{% for item in cart.items %} 
-			            			<li><a href="{{ item.product_url }}"><strong>{{ item.qty }}x</strong> {{ item.title }} &ndash; <strong class="price">&euro; {{ item.price }}</strong></a></li>
+			            			<li><a href="{{ item.product_url }}"><strong>{{ item.qty }}x</strong> {{ item.title }} &ndash; <strong class="price">{{ item.price | money_with_sign }}</strong></a></li>
 			            		{% endfor %}
 		            		
 				            {% else %}
@@ -95,7 +95,7 @@ Description: This is the base layout. It's included in every page with this code
 		          		</ul>
 		        	</div>
 		        	
-		        	<p class="cart-header-totals"><span class="pull-left">Total: <strong class="price">&euro; {{ cart.subtotal }}</strong></span> <span class="pull-right"><a href="{{ site_url('cart') }}">Ver Carrinho ›</a></span></p>
+		        	<p class="cart-header-totals"><span class="pull-left">Total: <strong class="price">{{ cart.subtotal | money_with_sign }}</strong></span> <span class="pull-right"><a href="{{ site_url('cart') }}">Ver Carrinho ›</a></span></p>
 				</aside>
 	        	<!-- END CART -->
         	</div>
@@ -225,7 +225,7 @@ Description: This is the base layout. It's included in every page with this code
       				
       				{% if store.facebook_likebox %}
 	      				<hr>
-				      	<div class="fb-like-box hidden-phone" data-href="{{ store.facebook }}"  data-show-faces="true" data-border-color="#ffffff" data-stream="false" data-header="false"></div>
+				      	<div class="fb-like-box hidden-phone" data-href="{{ store.facebook }}"  data-show-faces="true" data-show-border="false" data-stream="false" data-header="false"></div>
 			      	{% endif %}		
       				
 			    </aside>
