@@ -171,6 +171,7 @@ header {
 	color:#333;
 	background: url(https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/templates/assets/shopkit/default/img/arrow-bottom-025.png) no-repeat 0px 4px;
 	padding: 0 0 10px 20px;
+	margin-top: 0;
 }
 
 .col-left nav ul li a {
@@ -181,11 +182,19 @@ header {
 	padding-bottom: 10px;
 }
 
+.col-left nav ul li h4 a {
+	border-bottom: 0;
+	color: #333;
+	padding-bottom: 0;
+	font-size: 13px;
+	font-weight: normal;
+}
+
 .col-left nav ul li ul li:last-child {
 	margin-bottom: 20px;
 }
 
-.col-left nav ul li ul li.active a {
+.col-left nav ul li ul li.active a, .col-left nav ul li.active h4 a {
 	font-weight: bold;
 	color:#000;
 }

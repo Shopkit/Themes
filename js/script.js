@@ -30,6 +30,10 @@ $(document).ready(function() {
 	    	$(this).replaceWith('<iframe  src="' + src + '" frameborder="0" allowfullscreen></iframe>');
 		});
 	}
+
+	$('.col-left nav ul li h4 a[href="#"]').click(function(e) {
+		e.preventDefault();
+	});
 		
 });
 
