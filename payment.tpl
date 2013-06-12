@@ -58,9 +58,15 @@ Description: Payment Page
 					</tr>
 				{% endif %}
 				<tr>
+					<td class="discount">Taxa (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
+					<td align="right" class="discount price text-right" colspan="4">{{ cart.taxes | money_with_sign }}</td>
+				</tr>
+
+				<tr>
 					<td class="discount">Portes de Envio</td>
 					<td align="right" class="discount price text-right" colspan="4">{{ cart.total_shipping | money_with_sign }}</td>
 				</tr>
+				
 				<tr>
 					<td class="subtotal">Subtotal Encomenda</td>
 					<td colspan="4" class="subtotal price text-right">{{ cart.total | money_with_sign }}</td>

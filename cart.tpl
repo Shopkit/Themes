@@ -46,14 +46,6 @@ Description: Shopping cart page
 						
 				<tfoot>
 					
-					{% if cart.discount %}
-						<tr>
-							<td class="discount">Desconto</td>
-							<td align="right" class="discount price text-right" colspan="3">- {{ cart.discount | money_with_sign }}</td>
-							<td class="discount">&nbsp;</td>
-						</tr>
-					{% endif %}
-					
 					<tr>
 						<td class="subtotal">Subtotal Encomenda</td>
 						<td colspan="3" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>

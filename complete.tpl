@@ -58,18 +58,19 @@ Description: Complete order page
 			<input type="hidden" name="upload" value="1">
 			<input type="hidden" name="invoice" value="{{ order.id }}">
 			<input type="hidden" name="shipping_1" value="{{ order.total_shipping }}">
-			
-			{% if store.logo %}
-				<input type="hidden" name="image_url" value="{{ store.logo }}">
-			{% endif %}
+			<input type="hidden" name="tax_cart" value="{{ order.taxes }}">
 			
 			{% if order.discount %}
 				<input type="hidden" name="discount_amount_cart" value="{{ order.discount }}">
 			{% endif %}
 			
+			{% if store.logo %}
+				<input type="hidden" name="image_url" value="{{ store.logo }}">
+			{% endif %}
+			
 			{% for item in order.products %}
 		        <input type="hidden" name="item_name_{{ loop.index }}" value="{{ item.title }}">
-		        <input type="hidden" name="item_number_{{ loop.index }}" value="{{ item.product_id }}">
+		        <input type="hidden" name="item_number_{{ loop.index }}" value="{{ item.reference }}">
 				<input type="hidden" name="amount_{{ loop.index }}" value="{{ item.price }}">
 				<input type="hidden" name="quantity_{{ loop.index }}" value="{{ item.qty }}">
 		    {% endfor %}
