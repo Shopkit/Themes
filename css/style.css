@@ -32,6 +32,10 @@ h1.logo a {
 	color:#333;
 }
 
+.logo img {
+	max-height: 70px;
+}
+
 h3 a {
 	color:#333;
 }

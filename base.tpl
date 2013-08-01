@@ -52,6 +52,10 @@ Description: This is the base layout. It's included in every page with this code
 		.col-left h3 { background-color:{{ store.basecolor }};background-image:-moz-linear-gradient(top,{{ store.basecolor }},{{ darkencolor }});background-image:-webkit-gradient(linear,0 0,0 100%,from({{ store.basecolor }}),to({{ darkencolor }}));background-image:-webkit-linear-gradient(top,{{ store.basecolor }},{{ darkencolor }});background-image:-o-linear-gradient(top,{{ store.basecolor }},{{ darkencolor }});background-image:linear-gradient(to bottom,{{ store.basecolor }},{{ darkencolor }});background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='{{ store.basecolor }}',endColorstr='{{ darkencolor }}',GradientType=0); }
 		.table-cart th:first-child { border-left: 1px solid {{ store.basecolor }}; }
 		.col-left h3:before { border-top: 7px solid {{ darkencolor }}; }
+
+		{% if store.custom_css %}
+			{{ remove_line_breaks(store.custom_css) }}
+		{% endif %}
 	</style>
 	
 	<script src="https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/js/common/modernizr-2.5.3.min.js"></script>
@@ -245,16 +249,20 @@ Description: This is the base layout. It's included in every page with this code
 		<footer class="clearfix">
 			
 			<div class="pull-left">
-    			<p>&copy; <strong>{{ store.name }}</strong> {{ sdate('%Y') }}. Todos os direitos reservados.</p>
-				<p><a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contatos</a></p>
+    			&copy; <strong>{{ store.name }}</strong> {{ sdate('%Y') }}. Todos os direitos reservados.<br><br>
+				<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contatos</a>
     		</div>
     		
-    		{% if free %}
-	    		<div class="pull-right">
-	    			<p><small>Powered by</small><br><a href="http://www.shopk.it" target="_blank"><img src="https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/gfx/loja/body/aminhaloja-footer.png" alt="Shopkit"></a></p>
-	    		</div>
-			{% endif %}
-			
+    		<div class="pull-right">
+
+    			{% if free %}
+    				<p><small>Powered by</small><br><a href="http://www.shopk.it" target="_blank"><img src="https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/gfx/loja/body/aminhaloja-footer.png" alt="Shopkit"></a></p>
+    			{% elseif store.footer_info %}
+    				<p>{{ line_break(store.footer_info) }}</p>
+    			{% endif %}
+
+    		</div>
+
 		</footer>
 		
 	</div>
