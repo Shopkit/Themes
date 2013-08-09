@@ -1,8 +1,9 @@
 {# 
 Template Name: Shopkit Default Template
 Author: Shopkit
-Version: 2.0
+Version: 2.2
 Description: This is the base layout. It's included in every page with this code {% extends 'base.tpl' %}
+Github: https://github.com/Shopkit/Default
 #}
 
 <!DOCTYPE html>
