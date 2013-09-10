@@ -239,11 +239,11 @@ header {
 }
 
 #fb-root {
-  display: none;
+	display: none;
 }
 
-.fb_iframe_widget, .fb_iframe_widget span, .fb_iframe_widget span iframe[style] {
-  width: 100% !important;
+.fb-like-box.fb_iframe_widget,.fb-like-box.fb_iframe_widget span,.fb-like-box.fb_iframe_widget span iframe[style],.fb-comments.fb_iframe_widget,.fb-comments.fb_iframe_widget span,.fb-comments.fb_iframe_widget span iframe[style]{
+	width:100% !important;
 }
 
 footer {
