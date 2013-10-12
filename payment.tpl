@@ -9,11 +9,21 @@ Description: Payment Page
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a><span class="divider">›</span></li>
-		<li class="active">Pagamento</li>
+		<li><a href="{{ site_url('cart/data') }}">Dados de Envio</a><span class="divider">›</span></li>
+		<li class="active">Pagamento e Transporte</li>
 	</ul>
 	
-	<h1>Pagamento</h1>		
+	<h1>Pagamento e Transporte</h1>		
 	<br>
+
+	{% if cart.free_shipping == true %}
+		<div class="alert alert-info">
+			<h5>Informação</h5>
+			<p>Os portes de envio para esta encomenda são grátis.</p>
+		</div>
+	{% endif %}
+
+	
 	
 	{% if errors.form %}
 		<div class="alert alert-error">
@@ -25,92 +35,106 @@ Description: Payment Page
 	
 	{% if cart.items %}
 
-	{{ form_open('cart/data', { 'class' : 'form' }) }}
+		{{ form_open('cart/post/confirm', { 'class' : 'form' }) }}
 
-		<table class="table table-bordered table-cart">
-			<thead>
-				<tr>
-					<th>Título</th>
-					<th>Quantidade</th>
-					<th>Preço Uni.</th>
-					<th>SubTotal</th>
-				</tr>
-			</thead>
-
-			<tbody>
-
-				{% for item in cart.items %} 
+			 <table class="table table-bordered table-cart">
+				<thead>
 					<tr>
-						<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
-						<td class="text-right">{{ item.qty }}</td>
-						<td class="price text-right">{{ item.price | money_with_sign }}</td>
-						<td class="price text-right">{{ item.total | money_with_sign }}</td>
+						<th>Título</th>
+						<th>Quantidade</th>
+						<th>Preço Uni.</th>
+						<th>SubTotal</th>
 					</tr>
-				{% endfor %}
+				</thead>
 
-			</tbody>
+				<tbody>
 
-			<tfoot>
-				{% if cart.discount %}
+					{% for item in cart.items %} 
+						<tr>
+							<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
+							<td class="text-right">{{ item.qty }}</td>
+							<td class="price text-right">{{ item.price | money_with_sign }}</td>
+							<td class="price text-right">{{ item.total | money_with_sign }}</td>
+						</tr>
+					{% endfor %}
+
+				</tbody>
+
+				<tfoot>			
 					<tr>
-						<td class="discount">Desconto</td>
-						<td align="right" class="discount price text-right" colspan="4">- {{ cart.discount | money_with_sign }}</td>
+						<td class="subtotal">Subtotal Encomenda</td>
+						<td colspan="4" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
 					</tr>
-				{% endif %}
-				<tr>
-					<td class="discount">Taxa (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
-					<td align="right" class="discount price text-right" colspan="4">{{ cart.taxes | money_with_sign }}</td>
-				</tr>
+				</tfoot>
+			</table> 
 
-				<tr>
-					<td class="discount">Portes de Envio</td>
-					<td align="right" class="discount price text-right" colspan="4">{{ cart.total_shipping | money_with_sign }}</td>
-				</tr>
+			<br>
+
+			{% if cart.shipping_methods %}
 				
-				<tr>
-					<td class="subtotal">Subtotal Encomenda</td>
-					<td colspan="4" class="subtotal price text-right">{{ cart.total | money_with_sign }}</td>
-				</tr>
-			</tfoot>
-		</table>
+				<div class="shipping-methods">
+					<h4>Transporte <small>({{ user.country }})</small></h4>
+					<br>
+					
+					{% for method in cart.shipping_methods %} 
+						<label class="radio clearfix" style="margin-bottom:10px;">
+							<div class="pull-left">
+								<input type="radio" name="envio" id="envio_{{ method.id }}" value="{{ method.id }}" {% if loop.index == 1 or user.shipping_method.id == method.id %}checked{% endif %}> 
+							</div>
+							<div class="pull-left">
+								{{ method.title }} &ndash; 
+								
+								{% if cart.free_shipping == true %}
+									<strong class="price"><del>{{ method.price | money_with_sign }}</del></strong> &nbsp; <strong class="price">{{ 0 | money_with_sign }}</strong>
+								{% else %}
+									<strong class="price">{{ method.price | money_with_sign }}</strong>
+								{% endif %}
 
-		<hr>
+								<br><small class="muted"><em>{{ method.description }}</em></small>
+							</div>
+						</label>
+					{% endfor %}
+					
+					<hr>
+				</div>
 
-		<h4>Método de Pagamento</h4>
-		<br>
+			{% endif %}
 
-		{% if payment.bank_transfer %}
-			<label class="radio"><input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if user.payment == 'Transferência Bancária' or user.payment == '' %}checked{% endif %}> Transferência Bancária</label>
-		{% endif %}
+			<h4>Pagamento</h4>
+			<br>
 
-		{% if payment.multibanco %}
-			<label class="radio"><input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if user.payment == 'Multibanco' or user.payment == '' %}checked{% endif %}> Multibanco</label>
-		{% endif %}
+			{% if payment.paypal %}
+				<label class="radio"><input type="radio" name="pagamento" id="paypal" value="Paypal" {% if (user.payment == 'Paypal' or user.payment == '') %}checked{% endif %}> Paypal</label>
+			{% endif %}
 
-		{% if payment.on_delivery %}
-			<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' or user.payment == '' %}checked{% endif %}> À Cobrança <small class="muted">(Acresce {{ payment.on_delivery_value | money_with_sign }} aos portes de envio)</small></label>
-		{% endif %}
+			{% if payment.pick_up %}
+				<label class="radio"><input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if (user.payment == 'Levantamento nas instalações' or user.payment == '') %}checked{% endif %}> Levantamento nas instalações <small class="muted">(Os portes de envio são <strong>grátis</strong>)</small></label>
+			{% endif %}
 
-		{% if payment.pick_up %}
-			<label class="radio"><input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if (user.payment == 'Levantamento nas instalações' or user.payment == '') %}checked{% endif %}> Levantamento nas instalações <small class="muted">(Os portes de envio são grátis)</small></label>
-		{% endif %}
+			{% if payment.on_delivery %}
+				<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' or user.payment == '' %}checked{% endif %}> À Cobrança <small class="muted">(Acresce <strong>{{ payment.on_delivery_value | money_with_sign }}</strong> aos portes de envio)</small></label>
+			{% endif %}
 
-		{% if payment.paypal %}
-			<label class="radio"><input type="radio" name="pagamento" id="paypal" value="Paypal" {% if (user.payment == 'Paypal' or user.payment == '') %}checked{% endif %}> Paypal</label>
-		{% endif %}
+			{% if payment.bank_transfer %}
+				<label class="radio"><input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if user.payment == 'Transferência Bancária' or user.payment == '' %}checked{% endif %}> Transferência Bancária</label>
+			{% endif %}
 
-		<hr>
+			{% if payment.multibanco %}
+				<label class="radio"><input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if user.payment == 'Multibanco' or user.payment == '' %}checked{% endif %}> Multibanco</label>
+			{% endif %}
 
-		<h4>Cupão de desconto</h4>
-		<br>
+			<hr>
 
-		<input type="text" value="{{ user.coupon }}"  class="input-xlarge" id="cupao" name="cupao" placeholder="Se tiver um cupão de desconto, coloque-o aqui">
+			<h4>Cupão de desconto</h4>
+			<br>
 
-		<hr>
+			<input type="text" value="{{ user.coupon }}"  class="input-xlarge" id="cupao" name="cupao" placeholder="Se tiver um cupão de desconto, coloque-o aqui">
 
-		<button type="submit" class="btn btn-large">Prosseguir ›</button>
+			<hr>
 
-	{{ form_close() }}
+			<button type="submit" class="btn btn-large">Rever Encomenda ›</button>
+
+		{{ form_close() }}
 
 	{% else %}
 

@@ -9,7 +9,6 @@ Description: Order data form page
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a><span class="divider">›</span></li>
-		<li><a href="{{ site_url('cart/payment') }}">Pagamento</a><span class="divider">›</span></li>
 		<li class="active">Dados de Envio</li>
 	</ul>
 	
@@ -24,7 +23,7 @@ Description: Order data form page
 		</div>
 	{% endif %}
 	
-	{{ form_open('cart/confirm', {'class': 'form'}) }}
+	{{ form_open('cart/post/payment', {'class': 'form'}) }}
 		
 		<div class="row">
 			<div class="span6">
@@ -89,7 +88,7 @@ Description: Order data form page
 		
 		<hr>
 		
-		<button type="submit" class="btn btn-large">Rever Encomenda ›</button>
+		<button type="submit" class="btn btn-large">Prosseguir ›</button>
 	
 	{{ form_close() }}
 		

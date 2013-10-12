@@ -34,6 +34,12 @@ $(document).ready(function() {
 	$('.col-left nav ul li h4 a[href="#"]').click(function(e) {
 		e.preventDefault();
 	});
+
+	check_shipping($('input[name="pagamento"]:checked'));
+
+	$('input[name="pagamento"]').change(function(){
+		check_shipping($(this));
+	});
 		
 });
 
@@ -50,3 +56,25 @@ function masonry()
 	}
 }
 
+function enable_shipping()
+{
+	$('.shipping-methods').fadeTo('fast', 1).find('input').prop('disabled', false);
+}
+
+function disable_shipping()
+{
+	$('.shipping-methods').fadeTo('fast', 0.25).find('input').prop('disabled', 'disabled');
+}
+
+function check_shipping(el)
+{
+	if (el.prop('value') == 'Levantamento nas instalações')
+	{
+		disable_shipping();
+	}
+
+	else
+	{
+		enable_shipping();
+	}
+}

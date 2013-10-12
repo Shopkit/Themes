@@ -9,8 +9,8 @@ Description: Confirm order page
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a><span class="divider">›</span></li>
-		<li><a href="{{ site_url('cart/payment') }}">Pagamento</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart/data') }}">Dados de Envio</a><span class="divider">›</span></li>
+		<li><a href="{{ site_url('cart/payment') }}">Pagamento e Transporte</a><span class="divider">›</span></li>
 		<li class="active">Confirmação</li>
 	</ul>
 	
@@ -54,13 +54,6 @@ Description: Confirm order page
 				</tbody>
 				
 				<tfoot>
-					
-					{% if cart.discount %}
-						<tr>
-							<td class="discount">Desconto</td>
-							<td align="right" class="discount price text-right" colspan="4">- {{ cart.discount | money_with_sign }}</td>
-						</tr>
-					{% endif %}
 
 					<tr>
 						<td class="discount">Taxa (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
@@ -71,6 +64,13 @@ Description: Confirm order page
 						<td class="discount">Portes de Envio</td>
 						<td align="right" class="discount price text-right" colspan="4">{{ cart.total_shipping | money_with_sign }}</td>
 					</tr>
+
+					{% if cart.discount %}
+						<tr>
+							<td class="discount">Desconto</td>
+							<td align="right" class="discount price text-right" colspan="4">- {{ cart.discount | money_with_sign }}</td>
+						</tr>
+					{% endif %}
 					
 					<tr>
 						<td class="subtotal">Total Encomenda</td>
@@ -80,10 +80,25 @@ Description: Confirm order page
 			</table>
 			
 			<hr>
+
+			<div class="row">
+
+				<div class="span4">
+					<h4>Pagamento</h4>
+					<br>
+					<p>{{ user.payment }}</p>
+				</div>
+				
+				{% if user.shipping_method %}
+					<div class="span4 offset1">
+						<h4>Transporte</h4>
+						<br>
+						<p>{{ user.shipping_method.title }}</p>
+					</div>
+				{% endif %}
+				
+			</div>
 			
-			<h4>Método de Pagamento</h4>
-			<br>
-			<p>{{ user.payment }}</p>
 			<hr>
 			
 			<h4>Dados de Envio</h4>
@@ -112,7 +127,7 @@ Description: Confirm order page
 			
 			<hr>
 			
-			<button type="submit" class="btn btn-large">Confirmar Encomenda ›</button>
+			<button type="submit" class="btn btn-large">Confirmar Encomenda ›</button> &nbsp; &bull; &nbsp; <a href="{{ site_url('cart') }}">Editar Carrinho</a>
 			
 		{{ form_close() }}
 			

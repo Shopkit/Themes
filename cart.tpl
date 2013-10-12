@@ -45,7 +45,6 @@ Description: Shopping cart page
 				</tbody>
 						
 				<tfoot>
-					
 					<tr>
 						<td class="subtotal">Subtotal Encomenda</td>
 						<td colspan="3" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
@@ -55,7 +54,7 @@ Description: Shopping cart page
 			</table>
 			
 			
-			<p><a class="btn btn-large" href="{{ site_url('cart/payment') }}">Prosseguir ›</a></p>
+			<p><a class="btn btn-large" href="{{ site_url('cart/data') }}">Prosseguir ›</a></p>
 				
 		{{ form_close() }}
 				

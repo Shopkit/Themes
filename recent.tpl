@@ -16,7 +16,7 @@ Description: Last products page
 
 	<div class="row products">
 
-		{% for product in products('order:newest') %} 
+		{% for product in products('new') %} 
 
 			<div class="span3 product">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
