@@ -112,7 +112,11 @@ Description: Payment Page
 			{% endif %}
 
 			{% if payment.on_delivery %}
-				<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' or user.payment == '' %}checked{% endif %}> À Cobrança <small class="muted">(Acresce <strong>{{ payment.on_delivery_value | money_with_sign }}</strong> aos portes de envio)</small></label>
+				<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' or user.payment == '' %}checked{% endif %}> À Cobrança 
+					{% if payment.on_delivery_value > 0 %}
+						<small class="muted">(Acresce <strong>{{ payment.on_delivery_value | money_with_sign }}</strong> aos portes de envio)</small>
+					{% endif %}
+				</label>
 			{% endif %}
 
 			{% if payment.bank_transfer %}
