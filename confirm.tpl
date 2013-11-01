@@ -54,11 +54,13 @@ Description: Confirm order page
 				</tbody>
 				
 				<tfoot>
-
+					
+					{% if cart.taxes > 0 %}
 					<tr>
 						<td class="discount">Taxa (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
 						<td align="right" class="discount price text-right" colspan="4">{{ cart.taxes | money_with_sign }}</td>
 					</tr>
+					{% endif %}
 					
 					<tr>
 						<td class="discount">Portes de Envio</td>
