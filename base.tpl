@@ -59,7 +59,7 @@ Github: https://github.com/Shopkit/Default
 		{% endif %}
 	</style>
 	
-	<script src="{{ assets_url('js/common/modernizr-2.6.3.min.js')}}"></script>
+	<script src="{{ assets_url('js/common/modernizr-2.5.3.min.js')}}"></script>
 </head>
 <body>
 	
