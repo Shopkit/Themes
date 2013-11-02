@@ -8,10 +8,10 @@ Description: Contact Page
 
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
-		<li class="active">Contatos</li>
+		<li class="active">Contactos</li>
 	</ul>
 			
-	<h1>Contatos</h1>
+	<h1>Contactos</h1>
 	<br>		
 
 	<h4>{{ store.name }}</h4>
@@ -46,7 +46,7 @@ Description: Contact Page
 		
 		<div class="span5">
 			
-			<h5>Formulario de Contacto</h5>
+			<h5>Formulário de Contacto</h5>
 			<br>
 			
 			{{ form_open('contact_form') }}

@@ -126,7 +126,7 @@ Github: https://github.com/Shopkit/Default
 					            <li class="divider-vertical"></li>
 					            <li><a href="{{ site_url('novidades') }}">Novidades</a></li>
 					            <li class="divider-vertical"></li>
-					            <li><a href="{{ site_url('contatos') }}">Contatos</a></li>
+					            <li><a href="{{ site_url('contatos') }}">Contactos</a></li>
 					            <li class="divider-vertical"></li>
 					  		</ul>
 					  		<form action="{{ site_url('pesquisa') }}" class="navbar-search pull-right">
@@ -251,7 +251,7 @@ Github: https://github.com/Shopkit/Default
 			
 			<div class="pull-left">
     			&copy; <strong>{{ store.name }}</strong> {{ sdate('%Y') }}. Todos os direitos reservados.<br><br>
-				<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contatos</a>
+				<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contactos</a>
     		</div>
     		
     		<div class="pull-right">
