@@ -59,7 +59,7 @@ Github: https://github.com/Shopkit/Default
 		{% endif %}
 	</style>
 	
-	<script src="https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/js/common/modernizr-2.5.3.min.js"></script>
+	<script src="{{ assets_url('js/common/modernizr-2.6.3.min.js')}}"></script>
 </head>
 <body>
 	
