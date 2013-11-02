@@ -325,9 +325,12 @@ Github: https://github.com/Shopkit/Default
 	    		<h3>Carrinho de Compras</h3>
 	  		</div>
 	  		<div class="modal-body">
+
+	  			{% set button_label = 'Fechar' %}
 	  			
 	  			{% if notices.cart_added %}
 	    			<p>O produto <strong>{{ notices.cart_added }}</strong> foi adicionado ao carrinho.</p>
+	    			{% set button_label = 'Continuar a comprar' %}
 	    		{% endif %}
 	    		
 	    		{% if notices.cart_updated %}
@@ -340,7 +343,7 @@ Github: https://github.com/Shopkit/Default
 	    		
 	  		</div>
 	  		<div class="modal-footer">
-	    		<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+	    		<a href="#" class="btn" data-dismiss="modal">{{ button_label }}</a>
 	    		{% if notices.cart_added %}
 	    			<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="icon-shopping-cart icon-white"></i> Ver Carrinho</a>
 	    		{% endif %}
