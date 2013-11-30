@@ -1,7 +1,7 @@
 {# 
 Template Name: Shopkit Default Template
 Author: Shopkit
-Version: 2.2
+Version: 2.2.1
 Description: This is the base layout. It's included in every page with this code {% extends 'base.tpl' %}
 Github: https://github.com/Shopkit/Default
 #}
@@ -318,7 +318,7 @@ Github: https://github.com/Shopkit/Default
 		</div>
 	{% endif %}
 	
-	{% if notices.cart_added or notices.cart_updated or notices.cart_deleted %}
+	{% if notices.cart %}
 		<div class="modal hide fade modal-alert">
 	  		<div class="modal-header">
 	    		<button type="button" class="close" data-dismiss="modal">×</button>
@@ -328,23 +328,31 @@ Github: https://github.com/Shopkit/Default
 
 	  			{% set button_label = 'Fechar' %}
 	  			
-	  			{% if notices.cart_added %}
-	    			<p>O produto <strong>{{ notices.cart_added }}</strong> foi adicionado ao carrinho.</p>
+	  			{% if notices.cart.added %}
+	    			<p>O produto <strong>{{ notices.cart.added }}</strong> foi adicionado ao carrinho.</p>
 	    			{% set button_label = 'Continuar a comprar' %}
 	    		{% endif %}
 	    		
-	    		{% if notices.cart_updated %}
+	    		{% if notices.cart.updated %}
 	    			<p>O carrinho de compras foi actualizado</p>
 	    		{% endif %}
 	    		
-	    		{% if notices.cart_deleted %}
+	    		{% if notices.cart.deleted %}
 	    			<p>O produto foi removido do carrinho.</p>
+	    		{% endif %}
+
+	    		{% if notices.cart.stock_qty %}
+	    			<p>Não existe stock suficiente do produto</p>
+	    		{% endif %}
+
+	    		{% if notices.cart.stock_sold_single %}
+	    			<p>Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ notices.cart.stock_sold_single }}</strong></p>
 	    		{% endif %}
 	    		
 	  		</div>
 	  		<div class="modal-footer">
 	    		<a href="#" class="btn" data-dismiss="modal">{{ button_label }}</a>
-	    		{% if notices.cart_added %}
+	    		{% if notices.cart.added %}
 	    			<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="icon-shopping-cart icon-white"></i> Ver Carrinho</a>
 	    		{% endif %}
 	  		</div>

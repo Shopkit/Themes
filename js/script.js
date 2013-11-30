@@ -40,6 +40,8 @@ $(document).ready(function() {
 	$('input[name="pagamento"]').change(function(){
 		check_shipping($(this));
 	});
+
+	$('[data-toggle=tooltip]').tooltip();
 		
 });
 

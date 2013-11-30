@@ -16,6 +16,18 @@ Description: Shopping cart page
 	<br>
 
 	{% if cart.items %}
+
+		{% if notices.cart.no_stock %}
+			<div class="alert">
+				<h5>Aviso</h5>
+				<p>Os seguintes produtos não foram atualizados por falta de stock:</p>
+				<ul>
+					{% for key in notices.cart.no_stock %}
+						<li>{{ cart.items[key].title }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
 				
 		{{ form_open('cart/update') }}
 				
@@ -35,7 +47,7 @@ Description: Shopping cart page
 				{% for item in cart.items %} 
 					<tr>
 						<td>{% if item.image %}<img src="{{ item.image }}" width="22" height="22" class="hidden-phone"> {% endif %}{{ item.title }}</td>
-						<td><div class="form-inline"><input class="input-micro" type="text" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]"> <button type="submit" class="btn btn-small">Alterar</button></div></td>
+						<td><div class="form-inline"><input class="input-micro" type="text" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" class="btn btn-small">Alterar</button></div></td>
 						<td class="price text-right">{{ item.price | money_with_sign }}</td>
 						<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
 						<td><a href="{{ item.remove_link }}" class="btn btn-small"><i class="icon-trash"></i>&nbsp;<span class="hidden-phone">Remover</span></a></td>

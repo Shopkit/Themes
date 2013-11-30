@@ -70,7 +70,7 @@ Description: Product Page
 					
 					<br>
 					
-					{% if product.status == 1 %}
+					{% if product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
 						
 						{% if product.options %}
 							Opções &nbsp;
@@ -84,10 +84,16 @@ Description: Product Page
 						{% endif %}
 
 						Quantidade &nbsp;
-						<input type="text" class="span1" name="qtd" value="1">
+						<input type="text" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 						<button class="btn btn-inverse" type="submit">
 							<i class="icon-shopping-cart icon-white"></i> Comprar
 						</button>
+
+						{% if product.stock.stock_show %}
+							<hr>
+							<h6>Stock</h6>
+							<em class="muted">{{ product.stock.stock_qty }} unidades em stock</em>
+						{% endif %}
 					
 					{% elseif product.status == 3 %}
 						<div class="alert alert-info">O produto encontra-se sem stock.</div>
