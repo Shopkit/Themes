@@ -61,7 +61,7 @@ Github: https://github.com/Shopkit/Default
 	
 	<script src="{{ assets_url('js/common/modernizr-2.5.3.min.js')}}"></script>
 </head>
-<body>
+<body class="{{ css_class }}">
 	
 	<div class="container">
 	
