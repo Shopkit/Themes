@@ -206,7 +206,7 @@ Github: https://github.com/Shopkit/Default
 	      				<nav class="normal social">
 					    	<ul>
 				      			{% if store.facebook %}<li class="facebook"><a target="_blank" href="{{ store.facebook }}">Facebook</a></li>{% endif %}	
-				      			{% if store.twitter %}<li class="twitter"><a href="{{ store.twitter }}">Twitter</a></li>{% endif %}	
+				      			{% if store.twitter %}<li class="twitter"><a target="_blank" href="{{ store.twitter }}">Twitter</a></li>{% endif %}	
 				      			<li class="rss"><a href="{{ site_url('rss') }}">RSS</a></li>
 				      		</ul>
 				      	</nav>
