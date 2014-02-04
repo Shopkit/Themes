@@ -34,9 +34,7 @@ Description: Confirm order page
 					<tr>
 						<th>Título</th>
 						<th>Quantidade</th>
-						<th>Preço Uni.</th>
 						<th>SubTotal</th>
-						
 					</tr>
 				</thead>
 				
@@ -46,8 +44,7 @@ Description: Confirm order page
 						<tr>
 							<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
 							<td class="text-right">{{ item.qty }}</td>
-							<td class="price text-right">{{ item.price | money_with_sign }}</td>
-							<td class="price text-right">{{ item.total | money_with_sign }}</td>
+							<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
 						</tr>
 					{% endfor %}
 					
@@ -55,28 +52,28 @@ Description: Confirm order page
 				
 				<tfoot>
 					
-					{% if cart.taxes > 0 %}
+					{% if store.taxes_included == false and cart.taxes > 0 %}
 					<tr>
-						<td class="discount">Taxa (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
-						<td align="right" class="discount price text-right" colspan="4">{{ cart.taxes | money_with_sign }}</td>
+						<td class="discount">Taxa / Imposto (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
+						<td align="right" class="discount price text-right" colspan="2">{{ cart.taxes | money_with_sign }}</td>
 					</tr>
 					{% endif %}
 					
 					<tr>
 						<td class="discount">Portes de Envio</td>
-						<td align="right" class="discount price text-right" colspan="4">{{ cart.total_shipping | money_with_sign }}</td>
+						<td align="right" class="discount price text-right" colspan="2">{{ cart.total_shipping | money_with_sign }}</td>
 					</tr>
 
 					{% if cart.discount %}
 						<tr>
 							<td class="discount">Desconto</td>
-							<td align="right" class="discount price text-right" colspan="4">- {{ cart.discount | money_with_sign }}</td>
+							<td align="right" class="discount price text-right" colspan="2">- {{ cart.discount | money_with_sign }}</td>
 						</tr>
 					{% endif %}
 					
 					<tr>
 						<td class="subtotal">Total Encomenda</td>
-						<td colspan="4" class="subtotal price text-right">{{ cart.total | money_with_sign }}</td>
+						<td colspan="2" class="subtotal price text-right">{{ cart.total | money_with_sign }}</td>
 					</tr>
 				</tfoot>
 			</table>

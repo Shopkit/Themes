@@ -37,39 +37,6 @@ Description: Payment Page
 
 		{{ form_open('cart/post/confirm', { 'class' : 'form' }) }}
 
-			 <table class="table table-bordered table-cart">
-				<thead>
-					<tr>
-						<th>Título</th>
-						<th>Quantidade</th>
-						<th>Preço Uni.</th>
-						<th>SubTotal</th>
-					</tr>
-				</thead>
-
-				<tbody>
-
-					{% for item in cart.items %} 
-						<tr>
-							<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
-							<td class="text-right">{{ item.qty }}</td>
-							<td class="price text-right">{{ item.price | money_with_sign }}</td>
-							<td class="price text-right">{{ item.total | money_with_sign }}</td>
-						</tr>
-					{% endfor %}
-
-				</tbody>
-
-				<tfoot>			
-					<tr>
-						<td class="subtotal">Subtotal Encomenda</td>
-						<td colspan="4" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
-					</tr>
-				</tfoot>
-			</table> 
-
-			<br>
-
 			{% if cart.shipping_methods %}
 				
 				<div class="shipping-methods">

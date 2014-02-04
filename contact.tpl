@@ -76,16 +76,20 @@ Description: Contact Page
 		
 	</div>
 
+	<hr>
+
+	{{ store.page.contact.content }}
+
 	{% if store.latitude and store.longitude %}
 
-	<hr>
-	<br>
-	<div class="row">
-		<div class="span9">
-			<h4>Mapa de Localização</h4><br>
-			<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
+		<hr>
+		<br>
+		<div class="row">
+			<div class="span9">
+				<h4>Mapa de Localização</h4><br>
+				<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
+			</div>
 		</div>
-	</div>
 	
 	{% endif %}
 

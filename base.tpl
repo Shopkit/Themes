@@ -457,6 +457,10 @@ Github: https://github.com/Shopkit/Default
 				new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ store.translate_languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
 			}
 		{% endif %}
+
+		{% if store.custom_js %}
+			{{ remove_line_breaks(store.custom_js) }}
+		{% endif %}
 	
 	</script>
 

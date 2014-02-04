@@ -56,6 +56,7 @@ Description: Product Page
 							<span itemprop="price">{{ product.price | money_with_sign }}</span>
 						{% endif %}
 					</h4>
+
 				</div>
 
 				<br>
@@ -88,6 +89,11 @@ Description: Product Page
 						<button class="btn btn-inverse" type="submit">
 							<i class="icon-shopping-cart icon-white"></i> Comprar
 						</button>
+
+						{% if store.taxes_included == false and product.tax > 0 %}
+							<hr>
+							<span class="muted">Ao preço do produto acresce IVA de {{ product.tax }}%</span>
+						{% endif %}
 
 						{% if product.stock.stock_show %}
 							<hr>
