@@ -1,3 +1,3 @@
-This is the default's Shopkit template
+This is the default Shopkit template
 
 www.shopk.it
