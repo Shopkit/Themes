@@ -42,6 +42,11 @@ $(document).ready(function() {
 	});
 
 	$('[data-toggle=tooltip]').tooltip();
+
+	$('form').submit(function() {
+		$('body').css({'cursor':'wait'});
+		$(this).find('input[type=submit], button[type=submit]').attr('disabled', 'true').fadeTo('fast', 0.25);
+	});
 		
 });
 
