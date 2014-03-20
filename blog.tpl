@@ -13,8 +13,8 @@ Description: Blog page
 
 	<h1>Blog</h1>
 	<br>
-		
-	{% for post in blog_posts() %} 
+
+	{% for post in blog_posts("limit:9") %} 
 			
 		<h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
 		<p><small class="muted"><em>Escrito em <strong>{{ sdate("%d de %M. de %Y", post.date) }}</strong></em></small></p>
@@ -39,5 +39,7 @@ Description: Blog page
 		
 	{% endfor %}
 
-
+	
+	{{ pagination("limit:9") }}	
+	
 {% endblock %}
