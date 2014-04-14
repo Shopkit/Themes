@@ -2,7 +2,7 @@
 Template Name: Shopkit Default Template
 Author: Shopkit
 Version: 2.3
-Description: This is the base layout. It's included in every page with this code {% extends 'base.tpl' %}
+Description: This is the base layout. It is included in every page with this code {% extends 'base.tpl' %}
 Github: https://github.com/Shopkit/Default
 #}
 
