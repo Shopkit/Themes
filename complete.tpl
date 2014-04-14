@@ -31,7 +31,7 @@ Description: Complete order page
 				<p><strong>Referência:</strong> <span class="muted">{{ order.multibanco.reference }}</span></p>
 				<p><strong>Montante:</strong> <span class="muted">{{ order.multibanco.value | money_with_sign }}</span></p>
 				<hr>
-				<p><small>As referências multibanco são geradas pela <a target="_blank" href="http://www.easypay.pt">Easypay</a>.</small></p>
+				<p><small>As referências multibanco são geradas pela <a target="_blank" href="https://www.easypay.pt/pt/aderir/shopkit">Easypay</a>.</small></p>
 			</div>
 		
 		{% else %}
