@@ -1,7 +1,7 @@
 {# 
 Template Name: Shopkit Default Template
 Author: Shopkit
-Version: 2.3
+Version: 2.3.2
 Description: This is the base layout. It is included in every page with this code {% extends 'base.tpl' %}
 Github: https://github.com/Shopkit/Default
 #}
@@ -117,18 +117,18 @@ Github: https://github.com/Shopkit/Default
         				</a>
 	    				<div class="nav-collapse">
           					<ul class="nav">
-					            <li><a href="/">Home</a></li>
-					            <li class="divider-vertical"></li>
-					            <li><a href="{{ site_url('sobre-nos') }}">Sobre nós</a></li>
-					            <li class="divider-vertical"></li>
-					            <li><a href="{{ site_url('blog') }}">Blog</a></li>
-					            <li class="divider-vertical"></li>
-					            <li><a href="{{ site_url('promocoes') }}">Promoções</a></li>
-					            <li class="divider-vertical"></li>
-					            <li><a href="{{ site_url('novidades') }}">Novidades</a></li>
-					            <li class="divider-vertical"></li>
-					            <li><a href="{{ site_url('contatos') }}">Contactos</a></li>
-					            <li class="divider-vertical"></li>
+					            <li class="nav-home"><a href="/">Home</a></li>
+					            <li class="divider-vertical divider-home"></li>
+					            <li class="nav-about"><a href="{{ site_url('sobre-nos') }}">Sobre nós</a></li>
+					            <li class="divider-vertical divider-about"></li>
+					            <li class="nav-blog"><a href="{{ site_url('blog') }}">Blog</a></li>
+					            <li class="divider-vertical divider-blog"></li>
+					            <li class="nav-promotions"><a href="{{ site_url('promocoes') }}">Promoções</a></li>
+					            <li class="divider-vertical divider-promotions"></li>
+					            <li class="nav-recent"><a href="{{ site_url('novidades') }}">Novidades</a></li>
+					            <li class="divider-vertical divider-recent"></li>
+					            <li class="nav-contact"><a href="{{ site_url('contatos') }}">Contactos</a></li>
+					            <li class="divider-vertical divider-contact"></li>
 					  		</ul>
 					  		<form action="{{ site_url('pesquisa') }}" class="navbar-search pull-right">
             					<input type="text" name="q" placeholder="Pesquisar" class="search-query span2">
