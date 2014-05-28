@@ -47,6 +47,12 @@ $(document).ready(function() {
 		$('body').css({'cursor':'wait'});
 		$(this).find('input[type=submit], button[type=submit]').attr('disabled', 'true').fadeTo('fast', 0.25);
 	});
+
+	$(document).on('change', '.select-product-options', function() {
+  		var option = $('option:selected', this);
+  		var price = option.data('price');
+  		$('.page-product .price span').text(price);
+	});
 		
 });
 

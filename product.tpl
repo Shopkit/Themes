@@ -75,9 +75,9 @@ Description: Product Page
 						
 						{% if product.options %}
 							Opções &nbsp;
-							<select class="span3" name="option">
+							<select class="span3 select-product-options" name="option">
 								{% for option in product.options %}
-									<option value="{{ option.id }}">{{ option.title }} {% if option.default == false %} &ndash; {{ option.price | money_with_sign }} {% endif %} </option>
+									<option data-price="{{ option.price | money_with_sign }}" value="{{ option.id }}">{{ option.title }} {% if option.default == false %} &ndash; {{ option.price | money_with_sign }} {% endif %} </option>
 								{% endfor %}
 							</select>
 
