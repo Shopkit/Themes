@@ -1,7 +1,7 @@
 {# 
 Template Name: Shopkit Default Template
 Author: Shopkit
-Version: 2.3.2
+Version: 2.4.0
 Description: This is the base layout. It is included in every page with this code {% extends 'base.tpl' %}
 Github: https://github.com/Shopkit/Default
 #}
@@ -170,12 +170,12 @@ Github: https://github.com/Shopkit/Default
 				    		
 				    		{% for products_category in categories %} 
 				    		
-				      			<li {% if (category.id == products_category.id or products_category.id == product.category.id) %}class="active"{% endif %}><h4 data-toggle="collapse" data-target="#category_{{ products_category.id }}"><a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">{{ products_category.title }}</a></h4>
+				      			<li {% if (category.id == products_category.id) %}class="active"{% endif %}><h4 data-toggle="collapse" data-target="#category_{{ products_category.id }}"><a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">{{ products_category.title }}</a></h4>
 				      				
 				      				{% if products_category.children %}
-					      				<ul id="category_{{ products_category.id }}" class="collapse {% if (category.parent == products_category.id or product.category.parent == products_category.id or category.id == products_category.id or category.id == products_category.id or products_category.id == product.category.id) %}in{% endif %}">
+					      				<ul id="category_{{ products_category.id }}" class="collapse {% if (category.parent == products_category.id or category.id == products_category.id or category.id == products_category.id) %}in{% endif %}">
 					      					{% for children in products_category.children %}
-					      						<li {% if (category.id== children.id or product.category.id== children.id) %}class="active"{% endif %}><a href="{{ children.url }}">{{ children.title }}</a></li>
+					      						<li {% if (category.id== children.id) %}class="active"{% endif %}><a href="{{ children.url }}">{{ children.title }}</a></li>
 					      					{% endfor %}
 					      				</ul>
 				      				{% endif %}

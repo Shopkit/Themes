@@ -5,12 +5,16 @@ Description: Product Page
 {% extends 'base.tpl' %}
 
 {% block content %}
+
+	<script>
+		//Javascript object with product information
+		var product = {{ json_encode(product) }};
+	</script>
 	
 	<article itemscope itemtype="http://schema.org/Product">
 
 		<ul class="breadcrumb">
 			<li><a href="/">Home</a><span class="divider">›</span></li>
-			<li><a href="{{ product.category.url }}">{{ product.category.title }}</a><span class="divider">›</span></li>
 			<li class="active">{{ product.title }}</li>
 		</ul>
 
@@ -51,9 +55,9 @@ Description: Product Page
 					<meta itemprop="priceCurrency" content="{{ store.currency }}" />
 					<h4 class="price">
 						{% if product.promo == true %}
-							<del>{{ product.price | money_with_sign }}</del> &nbsp; <span itemprop="price">{{ product.price_promo | money_with_sign }}</span>
+							<del>{{ product.price | money_with_sign }}</del> &nbsp; <span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span>
 						{% else %}
-							<span itemprop="price">{{ product.price | money_with_sign }}</span>
+							<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span>
 						{% endif %}
 					</h4>
 
@@ -73,15 +77,21 @@ Description: Product Page
 					
 					{% if product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
 						
-						{% if product.options %}
-							Opções &nbsp;
-							<select class="span3 select-product-options" name="option">
-								{% for option in product.options %}
-									<option data-price="{{ option.price | money_with_sign }}" value="{{ option.id }}">{{ option.title }} {% if option.default == false %} &ndash; {{ option.price | money_with_sign }} {% endif %} </option>
-								{% endfor %}
-							</select>
+						{% if product.option_groups %}
+							{% for option_groups in product.option_groups %}
+
+								<h6>{{ option_groups.title }}</h6>
+
+								<select class="span3 select-product-options" name="option[]">
+									{% for option in option_groups.options %}
+										<option value="{{ option.id }}">{{ option.title }}</option>
+									{% endfor %}
+								</select>
+
+							{% endfor %}
 
 							<hr>
+
 						{% endif %}
 
 						Quantidade &nbsp;
@@ -98,7 +108,7 @@ Description: Product Page
 						{% if product.stock.stock_show %}
 							<hr>
 							<h6>Stock</h6>
-							<em class="muted">{{ product.stock.stock_qty }} unidades em stock</em>
+							<em class="muted"><span class="data-product-stock_qty">{{ product.stock.stock_qty }}</span> unidades em stock</em>
 						{% endif %}
 					
 					{% elseif product.status == 3 %}
