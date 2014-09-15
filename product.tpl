@@ -95,7 +95,7 @@ Description: Product Page
 						{% endif %}
 
 						Quantidade &nbsp;
-						<input type="text" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
+						<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 						<button class="btn btn-inverse" type="submit">
 							<i class="icon-shopping-cart icon-white"></i> Comprar
 						</button>
