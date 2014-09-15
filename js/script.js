@@ -49,8 +49,11 @@ $(document).ready(function() {
 	});
 
 	//Trigger first set of options
-	product_options(product);
-
+	if (typeof product.option_groups !== 'undefined' && product.option_groups.length > 0) 
+	{
+		product_options(product);
+	}
+	
 	//Event on change
 	$(document).on('change', '.select-product-options', function() {
 		product_options(product);
