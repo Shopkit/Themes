@@ -121,7 +121,16 @@ function product_options(product)
 
 			if (product_is_vendible(product, response))
 			{
-				price_txt = response.price_formatted;
+				if (response.promo === true)
+				{
+					price_txt = response.price_promo_formatted;
+				}
+
+				else
+				{
+					price_txt = response.price_formatted;
+				}
+
 				disable_form_product = false;
 			}
 
