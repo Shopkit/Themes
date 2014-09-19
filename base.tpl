@@ -167,15 +167,19 @@ Github: https://github.com/Shopkit/Default
 			    	
 			    	<nav>
 				    	<ul>
-				    		
 				    		{% for products_category in categories %} 
 				    		
-				      			<li {% if (category.id == products_category.id) %}class="active"{% endif %}><h4 data-toggle="collapse" data-target="#category_{{ products_category.id }}"><a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">{{ products_category.title }}</a></h4>
+				      			<li {% if (category.id == products_category.id) %}class="active"{% endif %}>
+				      				<h4 data-toggle="collapse" data-target="#category_{{ products_category.id }}">
+				      					<a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">{{ products_category.title }}</a>
+				      				</h4>
 				      				
 				      				{% if products_category.children %}
 					      				<ul id="category_{{ products_category.id }}" class="collapse {% if (category.parent == products_category.id or category.id == products_category.id or category.id == products_category.id) %}in{% endif %}">
 					      					{% for children in products_category.children %}
-					      						<li {% if (category.id== children.id) %}class="active"{% endif %}><a href="{{ children.url }}">{{ children.title }}</a></li>
+					      						<li {% if (category.id== children.id) %}class="active"{% endif %}>
+					      							<a href="{{ children.url }}">{{ children.title }}</a>
+					      						</li>
 					      					{% endfor %}
 					      				</ul>
 				      				{% endif %}
@@ -183,7 +187,6 @@ Github: https://github.com/Shopkit/Default
 				      			</li>
 			      			
 			      			{% endfor %}
-			      			
 		      			</ul>
       				</nav>
       				
