@@ -49,7 +49,7 @@ $(document).ready(function() {
 	});
 
 	//Trigger first set of options
-	if (typeof product.option_groups !== 'undefined' && product.option_groups.length > 0) 
+	if (typeof product !== 'undefined' && product.option_groups.length > 0) 
 	{
 		product_options(product);
 	}
