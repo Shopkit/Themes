@@ -48,7 +48,7 @@ Description: Shopping cart page
 						<td>{% if item.image %}<img src="{{ item.image }}" width="22" height="22" class="hidden-phone"> {% endif %}{{ item.title }}</td>
 						<td><div class="form-inline"><input class="input-micro" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" class="btn btn-small">Alterar</button></div></td>
 						<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
-						<td style="text-align:center;"><a href="{{ item.remove_link }}" class="btn btn-small"><i class="icon-trash"></i>&nbsp;<span class="hidden-phone">Remover</span></a></td>
+						<td style="text-align:center;"><a href="{{ item.remove_link }}" class="btn btn-small"><i class="fa fa-trash"></i>&nbsp;<span class="hidden-phone">Remover</span></a></td>
 					</tr>
 				{% endfor %}
 							

@@ -1,7 +1,7 @@
 {# 
 Template Name: Shopkit Default Template
 Author: Shopkit
-Version: 2.4.0
+Version: 2.4.1
 Description: This is the base layout. It is included in every page with this code {% extends 'base.tpl' %}
 Github: https://github.com/Shopkit/Default
 #}
@@ -44,6 +44,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 	
 	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name }}">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ store.assets.css }}">
     
 	{% set darkencolor = colour_brightness(store.basecolor, -0.90) %} 
@@ -82,7 +83,7 @@ Github: https://github.com/Shopkit/Default
 				<!-- CART -->
 				<aside class="pull-right cart-header">
 					<div class="btn-group">
-		          		<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="icon-shopping-cart icon-white"></i> Carrinho de Compras ({{ cart.item_count }})</a>
+		          		<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart fa-lg fa-fw"></i> Carrinho de Compras ({{ cart.item_count }})</a>
 		          		<button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle"><span class="caret"></span></button>
 		          		<ul class="dropdown-menu">
 		          			
@@ -111,9 +112,7 @@ Github: https://github.com/Shopkit/Default
     			<div class="navbar-inner">
 	    			<div class="container">
 	    				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          					<span class="icon-bar"></span>
-				          	<span class="icon-bar"></span>
-				          	<span class="icon-bar"></span>
+          					<i class="fa fa-bars fa-lg"></i>
         				</a>
 	    				<div class="nav-collapse">
           					<ul class="nav">
@@ -209,9 +208,19 @@ Github: https://github.com/Shopkit/Default
 	      				
 	      				<nav class="normal social">
 					    	<ul>
-				      			{% if store.facebook %}<li class="facebook"><a target="_blank" href="{{ store.facebook }}">Facebook</a></li>{% endif %}	
-				      			{% if store.twitter %}<li class="twitter"><a target="_blank" href="{{ store.twitter }}">Twitter</a></li>{% endif %}	
-				      			<li class="rss"><a href="{{ site_url('rss') }}">RSS</a></li>
+				      			{% if store.facebook %}
+				      				<li class="facebook"><a target="_blank" href="{{ store.facebook }}"><i class="fa fa-facebook fa-lg fa-fw"></i> Facebook</a></li>
+				      			{% endif %}	
+				      			{% if store.twitter %}
+				      				<li class="twitter"><a target="_blank" href="{{ store.twitter }}"><i class="fa fa-twitter fa-lg fa-fw"></i> Twitter</a></li>
+				      			{% endif %}	
+				      			{% if store.instagram %}
+				      				<li class="instagram"><a target="_blank" href="{{ store.instagram }}"><i class="fa fa-instagram fa-lg fa-fw"></i> Instagram</a></li>
+				      			{% endif %}	
+				      			{% if store.pinterest %}
+				      				<li class="pinterest"><a target="_blank" href="{{ store.pinterest }}"><i class="fa fa-pinterest fa-lg fa-fw"></i> Pinterest</a></li>
+				      			{% endif %}	
+				      			<li class="rss"><a href="{{ site_url('rss') }}"><i class="fa fa-rss fa-lg fa-fw"></i> RSS</a></li>
 				      		</ul>
 				      	</nav>
 			      	</section>
@@ -357,7 +366,7 @@ Github: https://github.com/Shopkit/Default
 	  		<div class="modal-footer">
 	    		<a href="#" class="btn" data-dismiss="modal">{{ button_label }}</a>
 	    		{% if notices.cart.added %}
-	    			<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="icon-shopping-cart icon-white"></i> Ver Carrinho</a>
+	    			<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> Ver Carrinho</a>
 	    		{% endif %}
 	  		</div>
 		</div>
@@ -450,7 +459,7 @@ Github: https://github.com/Shopkit/Default
 		Modernizr.load([
 			{load: '//platform.twitter.com/widgets.js'},
 			{load: '//apis.google.com/js/plusone.js'},
-			{load: '//connect.facebook.net/pt_PT/all.js#xfbml=1'},
+			{load: '//connect.facebook.net/pt_PT/all.js#xfbml=1&appId=267439666615965'},
 			{load: '//assets.pinterest.com/js/pinit.js'}
 			{% if store.translate_languages %} ,{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}{% endif %}
 		]);		

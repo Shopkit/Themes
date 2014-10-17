@@ -84,7 +84,7 @@ Description: Product Page
 
 								<select class="span3 select-product-options" name="option[]">
 									{% for option in option_groups.options %}
-										<option value="{{ option.id }}">{{ option.title }}</option>
+										<option value="{{ option.id }}">{{ option.title }} {% if option.price %} - {{ option.price | money_with_sign }}{% endif %}</option>
 									{% endfor %}
 								</select>
 
@@ -97,7 +97,7 @@ Description: Product Page
 						Quantidade &nbsp;
 						<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 						<button class="btn btn-inverse" type="submit">
-							<i class="icon-shopping-cart icon-white"></i> Comprar
+							<i class="fa fa-shopping-cart fa-lg fa-fw"></i> Comprar
 						</button>
 
 						{% if store.taxes_included == false and product.tax > 0 %}
@@ -126,7 +126,7 @@ Description: Product Page
 				{% if product.file %}
 					<div class="well well-small">
 						<h6 style="margin-top:0">Ficheiro Anexo</h6>
-						<a class="btn" href="{{ product.file }}" target="_blank"><i class="icon-download"></i> <strong>Download</strong> <span class="muted">({{ file_size(product.file) }})</span></a>
+						<a class="btn" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong> <span class="muted">({{ file_size(product.file) }})</span></a>
 					</div>
 				{% endif %}
 
@@ -160,9 +160,9 @@ Description: Product Page
 
 		<div class="hidden-phone">
 			<hr>
-			<h6>Comentários</h6>
+			<h6>Comentários (<fb:comments-count href="{{ product.permalink }}" class="fb-num-comments"></fb:comments-count>)</h6>
 			<br>
-			<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="5"></div>
+			<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
 		</div>
 
 	{% endif %}
