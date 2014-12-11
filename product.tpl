@@ -54,10 +54,13 @@ Description: Product Page
 				<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 					<meta itemprop="priceCurrency" content="{{ store.currency }}" />
 					<h4 class="price">
+
 						{% if product.promo == true %}
-							<del>{{ product.price | money_with_sign }}</del> &nbsp; <span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span>
+							<span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp; 
+							<del>{{ product.price | money_with_sign }}</del>
 						{% else %}
-							<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span>
+							<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp; 
+							<del></del>
 						{% endif %}
 					</h4>
 
@@ -84,7 +87,16 @@ Description: Product Page
 
 								<select class="span3 select-product-options" name="option[]">
 									{% for option in option_groups.options %}
-										<option value="{{ option.id }}">{{ option.title }} {% if option.price %} - {{ option.price | money_with_sign }}{% endif %}</option>
+
+										<option value="{{ option.id }}">
+											{{ option.title }} 
+											
+											{% if option.price %} 
+												{% set option_display_price = option.promo ? option.price_promo : option.price %}
+												- {{ option_display_price | money_with_sign }}
+											{% endif %}
+										</option>
+									
 									{% endfor %}
 								</select>
 
