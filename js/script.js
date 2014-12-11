@@ -99,60 +99,75 @@ function check_shipping(el)
 
 function product_options(product)
 {
+	if ($('.select-product-options').length)
+	{
+		$('.form-cart').fadeTo('fast', 0.25);
 
-	$('.form-cart').fadeTo('fast', 0.25);
+		$('.select-product-options').each(function(i) {
+			var option = $('option:selected', this);
+			window['id_variant_' + (i+1)] = option.attr('value');
+		});
 
-	$('.select-product-options').each(function(i) {
-		var option = $('option:selected', this);
-		window['id_variant_' + (i+1)] = option.attr('value');
-	});
+		var data_product_options = { id_variant_1 : window.id_variant_1, id_variant_2 : window.id_variant_2, id_variant_3 : window.id_variant_3 }
+		var product_handle = product.handle;
+		var disable_form_product;
 
-	var data_product_options = { id_variant_1 : window.id_variant_1, id_variant_2 : window.id_variant_2, id_variant_3 : window.id_variant_3 }
-	var product_handle = product.handle;
-	var disable_form_product;
+		$.post( '/product-options/' + product_handle, data_product_options, function( response ) {
 
-	$.post( '/product-options/' + product_handle, data_product_options, function( response ) {
-
-		$('.form-cart').fadeTo('fast', 1);
-
-		if (response)
-		{
 			var price_txt;
+			var stock_qty;
 
-			if (product_is_vendible(product, response))
+			$('.form-cart').fadeTo('fast', 1);
+
+			if (response)
 			{
-				if (response.promo === true)
+
+				if (product_is_vendible(product, response))
 				{
-					price_txt = response.price_promo_formatted;
+					if (response.promo === true)
+					{
+						$('.price del').text(response.price_formatted);
+						price_txt = response.price_promo_formatted;
+					}
+
+					else
+					{
+						$('.price del').text('');
+						price_txt = response.price_formatted;
+					}
+
+					disable_form_product = false;
 				}
 
 				else
 				{
-					price_txt = response.price_formatted;
+					price_txt = 'Não disponível';
+					disable_form_product = true;
 				}
 
-				disable_form_product = false;
+				stock_qty = response.stock_qty;
 			}
 
 			else
 			{
 				price_txt = 'Não disponível';
+				stock_qty = 0;
 				disable_form_product = true;
 			}
 
+			if (disable_form_product === true)
+			{
+				$('.price del').text('');
+			}
+
 			$('.data-product-price').text(price_txt);
-			$('.data-product-stock_qty').text(response.stock_qty);
-		}
+			$('.data-product-stock_qty').text(stock_qty);
 
-		else
-		{
-			disable_form_product = true;
-		}
-
-		$('.form-cart input[name="qtd"], .form-cart button[type="submit"]').prop('disabled', disable_form_product);
+			$('.form-cart input[name="qtd"], .form-cart button[type="submit"]').prop('disabled', disable_form_product);
 
 
-	}, 'json');
+		}, 'json');
+	}
 }
 
 function product_is_vendible(product, response)
