@@ -8,7 +8,7 @@ Description: Product Page
 
 	<script>
 		//Javascript object with product information
-		var product = {{ json_encode(product) }};
+		var product = {{ product|json_encode }};
 	</script>
 	
 	<article itemscope itemtype="http://schema.org/Product">

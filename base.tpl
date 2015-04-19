@@ -57,11 +57,14 @@ Github: https://github.com/Shopkit/Default
 		.col-left h3:before { border-top: 7px solid {{ darkencolor }}; }
 
 		{% if store.custom_css %}
-			{{ remove_line_breaks(store.custom_css) }}
+			{{ store.custom_css }}
 		{% endif %}
 	</style>
 	
 	<script src="{{ assets_url('js/common/modernizr-2.5.3.min.js')}}"></script>
+
+	{{ store.custom_html }}
+	
 </head>
 <body class="{{ css_class }}">
 	
@@ -263,7 +266,7 @@ Github: https://github.com/Shopkit/Default
 		<footer class="clearfix">
 			
 			<div class="pull-left">
-    			&copy; <strong>{{ store.name }}</strong> {{ sdate('%Y') }}. Todos os direitos reservados.<br><br>
+    			&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. Todos os direitos reservados.<br><br>
 				<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contactos</a>
     		</div>
     		
@@ -272,7 +275,7 @@ Github: https://github.com/Shopkit/Default
     			{% if free %}
     				<p><small>Powered by</small><br><a href="http://www.shopk.it" target="_blank"><img src="https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/gfx/loja/body/aminhaloja-footer.png" alt="Shopkit"></a></p>
     			{% elseif store.footer_info %}
-    				<p>{{ line_break(store.footer_info) }}</p>
+    				<p>{{ store.footer_info|nl2br }}</p>
     			{% endif %}
 
     		</div>
@@ -472,7 +475,7 @@ Github: https://github.com/Shopkit/Default
 		{% endif %}
 
 		{% if store.custom_js %}
-			{{ remove_line_breaks(store.custom_js) }}
+			{{ store.custom_js }}
 		{% endif %}
 	
 	</script>

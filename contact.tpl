@@ -39,7 +39,7 @@ Description: Contact Page
 			
 			{% if store.address %}
 				<h5>Morada</h5>
-				<p>{{ line_break(store.address) }}</p>
+				<p>{{ store.address|nl2br }}</p>
 			{% endif %}
 					
 		</div>

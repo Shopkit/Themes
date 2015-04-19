@@ -14,7 +14,7 @@ Description: Blog post Page
 
 	<h1>{{ blog_post.title }}</h1>
 		
-	<p><small class="muted"><em>Escrito em <strong>{{ sdate("%d de %M. de %Y", blog_post.date) }}</strong></em></small></p>
+	<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e M. \\d\\e Y") }}</strong></em></small></p>
 		
 	<div class="row">
 			
@@ -43,7 +43,7 @@ Description: Blog post Page
 		</div>
 
 		<div class="span1">
-			<a href="http://pinterest.com/pin/create/button/?url={{ blog_post.url }}&media={{ blog_post.image }}&description={{ clean(word_limiter(post.text, 100)) }}" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+			<a href="http://pinterest.com/pin/create/button/?url={{ blog_post.url }}&media={{ blog_post.image }}&description={{ description }}" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
 		</div>
 	</div>
 

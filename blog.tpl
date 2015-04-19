@@ -17,7 +17,7 @@ Description: Blog page
 	{% for post in blog_posts("limit:9") %} 
 			
 		<h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-		<p><small class="muted"><em>Escrito em <strong>{{ sdate("%d de %M. de %Y", post.date) }}</strong></em></small></p>
+		<p><small class="muted"><em>Escrito em <strong>{{ post.date|date("d \\d\\e M. \\d\\e Y") }}</strong></em></small></p>
 		
 		<div class="row">
 			
