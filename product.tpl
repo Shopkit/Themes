@@ -144,22 +144,25 @@ Description: Product Page
 
 				<hr>
 
-				<div class="row visible-desktop">
+				<div class="row">
 					<div class="span2">
 						<div class="fb-like" data-send="true" data-width="" data-show-faces="false" data-font="tahoma" data-layout="button_count" data-action="like"></div>
 					</div>
 
-					<div class="span1">
-						<g:plusone size="medium"></g:plusone>
+					<div class="visible-desktop">
+						<div class="span1">
+							<g:plusone size="medium"></g:plusone>
+						</div>
+
+						<div class="span1">
+							<a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-lang="pt">Tweet</a>
+						</div>
+
+						<div class="span1">
+							<a href="http://pinterest.com/pin/create/button/?url={{ product.url }}&media={{ product.image.full }}&description={{ description }}" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+						</div>
 					</div>
 
-					<div class="span1">
-						<a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-lang="pt">Tweet</a>
-					</div>
-
-					<div class="span1">
-						<a href="http://pinterest.com/pin/create/button/?url={{ product.url }}&media={{ product.image.full }}&description={{ clean(product.description) }}" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
-					</div>
 				</div>
 
 			</div>
