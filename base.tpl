@@ -263,22 +263,22 @@ Github: https://github.com/Shopkit/Default
 			
 		</div>
 	
-		<footer class="clearfix">
-			
-			<div class="pull-left">
-    			&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. Todos os direitos reservados.<br><br>
-				<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contactos</a>
-    		</div>
-    		
-    		<div class="pull-right">
+		<footer>
 
-    			{% if free %}
-    				<p><small>Powered by</small><br><a href="http://www.shopk.it" target="_blank"><img src="https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/gfx/loja/body/aminhaloja-footer.png" alt="Shopkit"></a></p>
-    			{% elseif store.footer_info %}
-    				<p>{{ store.footer_info|nl2br }}</p>
-    			{% endif %}
+			<div class="clearfix">
+				<div class="pull-left">
+	    			&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. Todos os direitos reservados.<br><br>
+					<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contactos</a>
+	    		</div>
+	    		
+	    		<div class="pull-right">
+	    			<p>{{ store.footer_info|nl2br }}</p>
+	    		</div>
+	    	</div>
 
-    		</div>
+	    	{% if store.show_branding %}
+	    		<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000"><small>Powered by</small><br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black.png" alt="Shopkit" title="Powered by Shopkit" style="height:30px;"></a></p>
+	    	{% endif %}
 
 		</footer>
 		
