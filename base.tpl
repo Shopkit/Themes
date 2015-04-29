@@ -277,7 +277,7 @@ Github: https://github.com/Shopkit/Default
 	    	</div>
 
 	    	{% if store.show_branding %}
-	    		<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000"><small>Powered by</small><br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black.png" alt="Shopkit" title="Powered by Shopkit" style="height:30px;"></a></p>
+	    		<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000; font-size: 9px">Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black.png" alt="Shopkit" title="Powered by Shopkit" style="height:25px;"></a></p>
 	    	{% endif %}
 
 		</footer>
