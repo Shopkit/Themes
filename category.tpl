@@ -17,7 +17,7 @@ Description: Product category page
 
 	<div class="row products">
 		
-		{% for product in products("order:title category:#{category.id} limit:9") %} 
+		{% for product in products("order:position category:#{category.id} limit:9") %} 
 			  		
 			<div class="span3 product">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
