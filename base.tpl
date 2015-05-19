@@ -252,7 +252,33 @@ Github: https://github.com/Shopkit/Default
 	      				<hr>
 				      	<div class="fb-like-box hidden-phone" data-href="{{ store.facebook }}"  data-show-faces="true" data-show-border="false" data-stream="false" data-header="false"></div>
 			      	{% endif %}		
-      				
+
+					<hr>
+
+					<div class="payment-logos" style="text-align:center">
+						{% spaceless %}
+							{% if payment.paypal %}
+								<img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
+							{% endif %}
+
+							{% if payment.multibanco %}
+								<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
+							{% endif %}
+
+							{% if payment.on_delivery %}
+								<img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
+							{% endif %}
+
+							{% if payment.bank_transfer %}
+								<img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
+							{% endif %}
+
+							{% if payment.pick_up %}
+								<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
+							{% endif %}
+						{% endspaceless %}
+					</div>
+
 			    </aside>
 			    	
 			    <aside class="span9  col-right">
