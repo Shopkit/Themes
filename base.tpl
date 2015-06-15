@@ -56,6 +56,10 @@ Github: https://github.com/Shopkit/Default
 		.table-cart th:first-child { border-left: 1px solid {{ store.basecolor }}; }
 		.col-left h3:before { border-top: 7px solid {{ darkencolor }}; }
 
+		.data-product-on-request { display: none; }
+		.price-on-request .data-product-on-request { display: block; }
+		.price-on-request .data-product-info { display: none; }
+
 		{% if store.custom_css %}
 			{{ store.custom_css }}
 		{% endif %}
@@ -68,7 +72,7 @@ Github: https://github.com/Shopkit/Default
 	{{ head_content }}
 	
 </head>
-<body class="{{ css_class }}">
+<body class="{{ css_class }} {{ product.price_on_request ? 'price-on-request' }}">
 	
 	<div class="container">
 	
@@ -461,7 +465,7 @@ Github: https://github.com/Shopkit/Default
 	<div id="fb-root"></div>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	
+
 	<script src="{{ store.assets.plugins }}"></script>
 	<script src="{{ store.assets.scripts }}"></script>
 

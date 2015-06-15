@@ -49,7 +49,7 @@ Description: Contact Page
 			<h5>Formulário de Contacto</h5>
 			<br>
 			
-			{{ form_open('contact_form') }}
+			{{ form_open('contact_form', 'class="contact-form" id="contact-form"') }}
 		
 				<label for="name">Nome <small class="muted">(*)</small></label>
 				<input type="text" name="name" id="name" class="span5" required>
@@ -60,11 +60,11 @@ Description: Contact Page
 				<br><br>
 				
 				<label for="subject">Assunto <small class="muted">(*)</small></label>
-				<input type="text" name="subject" id="subject" class="span5" required>
+				<input type="text" name="subject" id="subject" class="span5" value="{% if not notices.contact_form_success %}{{ get.p }}{% endif %}" required>
 				<br><br>
 				
 				<label for="message">Mensagem <small class="muted">(*)</small></label>
-				<textarea rows="6" class="span5" id="message" name="message" required></textarea>
+				<textarea rows="6" class="span5" id="message" name="message" required>{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
 				
 				<br><br>
 				

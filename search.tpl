@@ -28,10 +28,14 @@ Description: Search Page
 					<p>{{ product.description_short }}</p>
 					
 					<span class="price">
-						{% if product.promo == true %}
-							<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
+						{% if product.price_on_request == true %}
+							Preço sob consulta
 						{% else %}
-							{{ product.price | money_with_sign }}
+							{% if product.promo == true %}
+								<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
+							{% else %}
+								{{ product.price | money_with_sign }}
+							{% endif %}
 						{% endif %}
 					</span>
 				</div>

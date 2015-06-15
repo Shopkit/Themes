@@ -55,13 +55,19 @@ Description: Product Page
 					<meta itemprop="priceCurrency" content="{{ store.currency }}" />
 					<h4 class="price">
 
-						{% if product.promo == true %}
-							<span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp; 
-							<del>{{ product.price | money_with_sign }}</del>
-						{% else %}
-							<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp; 
+						{% if product.price_on_request == true %}
+							<span itemprop="price" class="data-product-price">Preço sob consulta</span> &nbsp; 
 							<del></del>
+						{% else %}
+							{% if product.promo == true %}
+								<span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp; 
+								<del>{{ product.price | money_with_sign }}</del>
+							{% else %}
+								<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp; 
+								<del></del>
+							{% endif %}
 						{% endif %}
+
 					</h4>
 
 				</div>
@@ -88,12 +94,18 @@ Description: Product Page
 								<select class="span3 select-product-options" name="option[]">
 									{% for option in option_groups.options %}
 
-										<option value="{{ option.id }}">
+										<option value="{{ option.id }}" data-title="{{ option.title }}">
 											{{ option.title }} 
-											
-											{% if option.price %} 
-												{% set option_display_price = option.promo ? option.price_promo : option.price %}
-												- {{ option_display_price | money_with_sign }}
+
+											{% if option.price_on_request == true %}
+												- Preço sob consulta
+											{% else %}
+
+												{% if option.price %} 
+													{% set option_display_price = option.promo ? option.price_promo : option.price %}
+													- {{ option_display_price | money_with_sign }}
+												{% endif %}
+
 											{% endif %}
 										</option>
 									
@@ -106,23 +118,31 @@ Description: Product Page
 
 						{% endif %}
 
-						Quantidade &nbsp;
-						<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
-						<button class="btn btn-inverse" type="submit">
-							<i class="fa fa-shopping-cart fa-lg fa-fw"></i> Comprar
-						</button>
+						<div class="data-product-info">
+							Quantidade &nbsp;
+							<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
+							<button class="btn btn-inverse" type="submit">
+								<i class="fa fa-shopping-cart fa-lg fa-fw"></i> Comprar
+							</button>
 
-						{% if store.taxes_included == false and product.tax > 0 %}
-							<hr>
-							<span class="muted">Ao preço do produto acresce IVA de {{ product.tax }}%</span>
-						{% endif %}
+							{% if store.taxes_included == false and product.tax > 0 %}
+								<hr>
+								<span class="muted">Ao preço do produto acresce IVA de {{ product.tax }}%</span>
+							{% endif %}
 
-						{% if product.stock.stock_show %}
-							<hr>
-							<h6>Stock</h6>
-							<em class="muted"><span class="data-product-stock_qty">{{ product.stock.stock_qty }}</span> unidades em stock</em>
-						{% endif %}
-					
+							{% if product.stock.stock_show %}
+								<hr>
+								<h6>Stock</h6>
+								<em class="muted"><span class="data-product-stock_qty">{{ product.stock.stock_qty }}</span> unidades em stock</em>
+							{% endif %}
+						</div>
+
+						<div class="data-product-on-request">
+							<a class="btn btn-inverse price-on-request" href="{{ site_url('contatos') }}?p={{ product.title }}">
+								<i class="fa fa-envelope-o fa-lg fa-fw"></i> Contactar
+							</a>
+						</div>
+
 					{% elseif product.status == 3 %}
 						<div class="alert alert-info">O produto encontra-se sem stock.</div>
 					
