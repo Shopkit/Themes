@@ -1,3 +1,3 @@
-This is the default Shopkit template
+### Old default theme
 
-www.shopk.it
+#### Deprecated 
