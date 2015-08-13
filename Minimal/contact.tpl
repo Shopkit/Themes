@@ -164,6 +164,12 @@ Description: Contact Page
 							<textarea class="form-control" id="message" name="message" placeholder="" rows="10">{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
 						</div>
 
+						<div class="form-group">
+							<label for="captcha">Digite as palavras da imagem</label>
+							<p>{{ captcha.image }}</p>
+							<input type="text" class="form-control" id="captcha" name="captcha" required>
+						</div>
+
 						<button type="submit" class="btn btn-gray">Enviar Mensagem</button>
 					</div>
 
