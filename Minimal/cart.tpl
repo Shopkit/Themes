@@ -51,7 +51,7 @@ Description: Shopping cart page
 
 												<div class="form-group">
 													<label class="hidden-xs" for="qty-{{ item.item_id }}">Qtd.&nbsp;</label><input class="form-control input-sm input-qtd" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %} id="qty-{{ item.item_id }}">
-												</div>&nbsp;<button type="submit" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+												</div><span class="visible-xs-inline-block visible-sm-inline-block">&nbsp;<button type="submit" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button></span>
 											</td>
 										</tr>
 									{% endfor %}
@@ -63,7 +63,8 @@ Description: Shopping cart page
 						</div>
 
 						<footer>
-							<a class="btn btn-primary" href="{{ site_url('cart/data') }}">Comprar ›</a>
+							<button type="submit" class="btn btn-default"><i class="fa fa-fw fa-refresh"></i> Actualizar carrinho</button> &nbsp; 
+							<a class="btn btn-primary" href="{{ site_url('cart/data') }}"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</a>
 						</footer>
 
 
@@ -76,7 +77,7 @@ Description: Shopping cart page
 					<div class="well text-center">
 						<h3 class="margin-bottom-md">Subtotal</h3>
 						<p class="margin-bottom-md"><span class="h2 price bold">{{ cart.subtotal | money_with_sign }}</span></p>
-						<p><a class="btn btn-block btn-primary btn-lg" href="{{ site_url('cart/data') }}">Comprar ›</a></p>
+						<p><a class="btn btn-block btn-primary btn-lg" href="{{ site_url('cart/data') }}"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</a></p>
 					</div>
 
 					<div class="well text-center">

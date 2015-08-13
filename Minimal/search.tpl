@@ -20,7 +20,7 @@ Description: Search Page
 				<div class="products">
 
 					<div class="row">
-						{% for product in products("on_sale limit:#{products_per_page}") %} 
+						{% for product in products("search order:featured limit:60") %} 
 							<div class="col-sm-4">
 								<article class="product">
 
@@ -28,7 +28,7 @@ Description: Search Page
 										<span class="badge promo">Promoção</span>
 									{% endif %}
 
-									<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}">
+									<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400">
 
 									<div class="product-info">
 										<a class="product-details" href="{{ product.url }}">

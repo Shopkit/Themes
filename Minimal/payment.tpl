@@ -210,11 +210,11 @@ Description: Payment Page
 						</div>
 
 						<footer class="clearfix">
-							<div class="pull-left steps">
+							<div class="pull-left steps hidden-xs">
 								Passo 2 de 3
 							</div>
 							<div class="pull-right">
-								<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Rever Encomenda ›</button>
+								<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Rever Encomenda <i class="fa fa-fw fa-arrow-right"></i></button>
 							</div>
 						</footer>
 

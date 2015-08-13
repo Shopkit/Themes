@@ -38,7 +38,7 @@ Description: Confirm order page
 									<tr>
 										<th colspan="2">Produto</th>
 										<th class="text-right">Quantidade</th>
-										<th class="text-right">SubTotal</th>
+										<th class="text-right">Subtotal</th>
 									</tr>
 								</thead>
 
@@ -85,51 +85,54 @@ Description: Confirm order page
 
 							<h3 class="margin-bottom-md">Dados de Envio</h3>
 
-							<div class="row margin-bottom-sm">
-								<div class="col-sm-6">
-									<p><strong>Nome</strong><br>{{ user.name }}</p>
-								</div>
-								<div class="col-sm-6">
-									<p><strong>Morada</strong><br>{{ user.address|nl2br }}</p>
-								</div>
-							</div>
+							<div class="confirm-data">
 
-							<div class="row margin-bottom-sm">
-								<div class="col-sm-6">
-									<p><strong>E-mail</strong><br>{{ user.email }}</p>
+								<div class="row margin-bottom-sm">
+									<div class="col-sm-6">
+										<p><strong>Nome</strong><br>{{ user.name }}</p>
+									</div>
+									<div class="col-sm-6">
+										<p><strong>Morada</strong><br>{{ user.address|nl2br }}</p>
+									</div>
 								</div>
-								<div class="col-sm-6">
-									<p><strong>Código Postal</strong><br>{{ user.zip_code }}</p>
-								</div>
-							</div>
 
-							<div class="row margin-bottom-sm">
-								<div class="col-sm-6">
-									<p><strong>Nr. Contribuinte</strong><br>{{ user.tax_id ?: 'n/a' }}</p>
+								<div class="row margin-bottom-sm">
+									<div class="col-sm-6">
+										<p><strong>E-mail</strong><br>{{ user.email }}</p>
+									</div>
+									<div class="col-sm-6">
+										<p><strong>Código Postal</strong><br>{{ user.zip_code }}</p>
+									</div>
 								</div>
-								<div class="col-sm-6">
-									<p><strong>Localidade</strong><br>{{ user.city }}</p>
-								</div>
-							</div>
 
-							<div class="row margin-bottom-sm">
-								<div class="col-sm-6">
-									<p><strong>Telefone</strong><br>{{ user.phone ?: 'n/a' }}</p>
+								<div class="row margin-bottom-sm">
+									<div class="col-sm-6">
+										<p><strong>Nr. Contribuinte</strong><br>{{ user.tax_id ?: 'n/a' }}</p>
+									</div>
+									<div class="col-sm-6">
+										<p><strong>Localidade</strong><br>{{ user.city }}</p>
+									</div>
 								</div>
-								<div class="col-sm-6">
-									<p><strong>País</strong><br>{{ user.country ?: 'n/a' }}</p>
-								</div>
-							</div>
 
-							<p class="margin-bottom-0"><strong>Observações</strong><br>{{ user.notes|nl2br ?: 'n/a' }}</p>
+								<div class="row margin-bottom-sm">
+									<div class="col-sm-6">
+										<p><strong>Telefone</strong><br>{{ user.phone ?: 'n/a' }}</p>
+									</div>
+									<div class="col-sm-6">
+										<p><strong>País</strong><br>{{ user.country ?: 'n/a' }}</p>
+									</div>
+								</div>
+
+								<p class="margin-bottom-0"><strong>Observações</strong><br>{{ user.notes|nl2br ?: 'n/a' }}</p>
+							</div>
 						</div>
 
 						<footer class="clearfix hidden-xs hidden-sm">
-							<div class="pull-left steps">
+							<div class="pull-left steps hidden-xs">
 								Passo 3 de 3
 							</div>
 							<div class="pull-right">
-								<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Confirmar encomenda ›</button>
+								<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary"><i class="fa fa-fw fa-check"></i> Confirmar encomenda</button>
 							</div>
 						</footer>
 
@@ -162,7 +165,7 @@ Description: Confirm order page
 								<dd class="text-dark bold price">{{ cart.total | money_with_sign }}</dd>
 							</dl>
 
-							<p class="margin-bottom-0 text-center"><button class="btn btn-lg btn-primary btn-block">Confirmar encomenda ›</button></p>
+							<p class="margin-bottom-0 text-center"><button class="btn btn-lg btn-primary btn-block"><i class="fa fa-fw fa-check"></i> Confirmar</button></p>
 
 						</div>
 

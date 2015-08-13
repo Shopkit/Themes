@@ -11,14 +11,16 @@ Description: Blog post Page
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 
-				<h1><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
-				<a href="{{ site_url('blog') }}" class="text-muted"><i class="fa fa-long-arrow-left"></i> Blog</a>
+				<a href="{{ site_url('blog') }}" class="text-light-gray"><i class="fa fa-angle-left"></i> &nbsp; Blog</a>
+
+				<h1 class="margin-top-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
+				<p class="small">Escrito em {{ post.date|date("d \\d\\e M. \\d\\e Y") }}</p>
 
 				<article class="margin-top">
 
 					{% if blog_post.image %}
 						<div class="image-post margin-bottom">
-							<img src="{{ blog_post.image }}" alt="{{ blog_post.title }}" title="{{ blog_post.title }}" class="img-responsive">
+							<img src="{{ blog_post.image }}" alt="{{ blog_post.title }}" title="{{ blog_post.title }}" class="img-responsive border-radius">
 						</div>
 					{% endif %}
 

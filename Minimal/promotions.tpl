@@ -19,11 +19,7 @@ Description: Promotions Page
 					<div class="col-sm-4">
 						<article class="product">
 
-							{% if product.promo == true %}
-								<span class="badge promo">Promoção</span>
-							{% endif %}
-
-							<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}">
+							<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400">
 
 							<div class="product-info">
 								<a class="product-details" href="{{ product.url }}">

@@ -146,22 +146,22 @@ Description: Contact Page
 					<div>
 						<div class="form-group">
 							<label for="name">Nome</label>
-							<input type="text" class="form-control" id="name" name="name" placeholder="O seu nome">
+							<input type="text" class="form-control" id="name" name="name" placeholder="O seu nome" required>
 						</div>
 
 						<div class="form-group">
 							<label for="email">E-mail</label>
-							<input type="email" class="form-control" id="email" name="email" placeholder="Endereço de e-mail">
+							<input type="email" class="form-control" id="email" name="email" placeholder="Endereço de e-mail" required>
 						</div>
 
 						<div class="form-group">
 							<label for="subject">Assunto</label>
-							<input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto do contacto" value="{% if not notices.contact_form_success %}{{ get.p }}{% endif %}">
+							<input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto do contacto" value="{% if not notices.contact_form_success %}{{ get.p }}{% endif %}" required>
 						</div>
 
 						<div class="form-group">
 							<label for="message">Mensagem</label>
-							<textarea class="form-control" id="message" name="message" placeholder="" rows="10">{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
+							<textarea required class="form-control" id="message" name="message" placeholder="" rows="10">{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
 						</div>
 
 						<div class="form-group">

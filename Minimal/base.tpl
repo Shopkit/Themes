@@ -85,7 +85,7 @@ Version: 1.0
 
 			{# Begin logo #}
 			{% if store.logo %}
-				<a href="/" class="logo"><img src="{{ store.logo }}" alt="{{ store.name }}" title="{{ store.name }}"></a>
+				<a href="/" class="logo"><img src="{{ store.logo }}" alt="{{ store.name }}" title="{{ store.name }}" height="60"></a>
 				{% else %}
 				<h1 class="logo"><a href="/">{{ store.name }}</a></h1>
 			{% endif %}
@@ -179,29 +179,29 @@ Version: 1.0
 
 				<div class="payment-logos">
 					{% if payment.paypal %}
-						<img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal">
+						<img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" height="35" width="56">
 					{% endif %}
 
 					{% if payment.multibanco %}
-						<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco">
+						<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" height="35" width="56">
 					{% endif %}
 
 					{% if payment.on_delivery %}
-						<img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso">
+						<img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" height="35" width="56">
 					{% endif %}
 
 					{% if payment.bank_transfer %}
-						<img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária">
+						<img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" height="35" width="56">
 					{% endif %}
 
 					{% if payment.pick_up %}
-						<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações">
+						<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" height="35" width="56">
 					{% endif %}
 				</div>
 
 				{% if store.show_branding %}
 					<div class="powered-by">
-    					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black.png" alt="Shopkit" title="Powered by Shopkit" style="height:25px;"></a>
+    					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black.png" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105"></a>
     				</div>
     			{% endif %}
 

@@ -121,11 +121,11 @@ Description: Order data form page
 							</div>
 
 							<footer class="clearfix">
-								<div class="pull-left steps">
+								<div class="pull-left steps hidden-xs">
 									Passo 1 de 3
 								</div>
 								<div class="pull-right">
-									<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir ›</button>
+									<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
 								</div>
 							</footer>
 

@@ -79,13 +79,13 @@ Description: Product Page
 								<ul class="slides">
 
 									<li class="slide">
-										<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}" itemprop="image"></a>
+										<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}" itemprop="image" width="600"></a>
 									</li>
 
 									{% if product.images %}
 										{% for image in product.images %}
 											<li class="slide">
-												<a href="{{ image.full }}"><img src="{{ image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
+												<a href="{{ image.full }}"><img src="{{ image.full }}" alt="{{ product.title }}" title="{{ product.title }}" width="600"></a>
 											</li>
 										{% endfor %}
 									{% endif %}
