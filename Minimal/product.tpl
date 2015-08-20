@@ -48,7 +48,7 @@ Description: Product Page
 						{% endif %}
 					{% endfor %}
 
-					{% if min(possible_prices) != max(possible_prices) %}
+					{% if possible_prices|length and ( min(possible_prices) != max(possible_prices) ) %}
 						{% set price_offers = true %}
 						<div itemprop="offers" itemscope itemtype="http://schema.org/AggregateOffer">
 							<meta itemprop="priceCurrency" content="{{ store.currency }}" />
