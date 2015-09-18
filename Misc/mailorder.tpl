@@ -206,7 +206,7 @@
 
 																	{% elseif order.payment.type == 'bank_transfer' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/transferencia-bancaria.png' %}
-																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.bank_transfer_msg ~ '</p>' %}
+																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.on_delivery_msg ~ '</p>' %}
 																	{% endif %}
 
 																	<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
