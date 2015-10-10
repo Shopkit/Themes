@@ -1,20 +1,20 @@
-{# 
+{#
 Description: Order data form page
 #}
 
 {% extends 'base.tpl' %}
 
 {% block content %}
-	
+
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a><span class="divider">›</span></li>
 		<li class="active">Dados de Envio</li>
 	</ul>
-	
-	<h1>Dados de Envio</h1>		
+
+	<h1>Dados de Envio</h1>
 	<br>
-	
+
 	{% if errors.form %}
 		<div class="alert alert-error">
 			<button type="button" class="close" data-dismiss="alert">×</button>
@@ -22,9 +22,9 @@ Description: Order data form page
 			<p>{{ errors.form }}</p>
 		</div>
 	{% endif %}
-	
+
 	{{ form_open('cart/post/payment', {'class': 'form'}) }}
-		
+
 		<div class="row">
 			<div class="span6">
 				<label for="nome">Nome <small class="muted">(*)</small></label>
@@ -50,7 +50,7 @@ Description: Order data form page
 			</div>
 		</div>
 		<br><br>
-		
+
 		<label for="morada">Morada <small class="muted">(*)</small></label>
 		<textarea cols="80" rows="4" class="span9" id="morada" name="morada" placeholder="Introduza a morada onde quer receber a encomenda" required>{{ user.address }}</textarea>
 		<br><br>
@@ -70,8 +70,8 @@ Description: Order data form page
 			<div class="span3">
 				<label for="pais">País <small class="muted">(*)</small></label>
 				<select name="pais" id="pais" class="input-block-level" required>
-					{% for country in countries %} 
-						<option value="{{ country }}" {% if user.country == country %} selected {% endif %}>{{ country }}</option>
+					{% for key, country in countries %}
+						<option value="{{ key }}" {% if user.country_code == key %} selected {% endif %}>{{ country }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -85,11 +85,11 @@ Description: Order data form page
 		<br><br>
 
 		<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1"> Pretendo registar-me na newsletter</label>
-		
+
 		<hr>
-		
+
 		<button type="submit" class="btn btn-large">Prosseguir ›</button>
-	
+
 	{{ form_close() }}
-		
+
 {% endblock %}
