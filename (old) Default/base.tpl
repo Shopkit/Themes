@@ -512,5 +512,7 @@ Github: https://github.com/Shopkit/Default
 	
 	</script>
 
+	{{ footer_content }}
+
 </body>
 </html>

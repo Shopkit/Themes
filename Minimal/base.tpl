@@ -465,5 +465,7 @@ Version: 1.0
 		<script src="{{ store.assets.plugins }}"></script>
 		<script src="{{ store.assets.scripts }}"></script>
 
+		{{ footer_content }}
+
 	</body>
 </html>
