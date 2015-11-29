@@ -158,7 +158,7 @@ Description: Product Page
 				{% if product.file %}
 					<div class="well well-small">
 						<h6 style="margin-top:0">Ficheiro Anexo</h6>
-						<a class="btn" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong> <span class="muted">({{ file_size(product.file) }})</span></a>
+						<a class="btn" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong></a>
 					</div>
 				{% endif %}
 
