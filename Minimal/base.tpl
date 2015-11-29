@@ -261,6 +261,9 @@ Version: 1.0
 									{% if notices.cart.added %}
 										<i class="fa fa-check fa-4x text-light-gray"></i>
 										<h3 class="text-muted">O produto foi adicionado ao carrinho</h3>
+									{% elseif notices.cart.error %}
+										<i class="fa fa-times fa-4x text-light-gray"></i>
+										<h3 class="text-muted">O produto não foi adicionado ao carrinho</h3>
 									{% elseif notices.cart.updated %}
 										<i class="fa fa-refresh fa-4x text-light-gray"></i>
 										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>

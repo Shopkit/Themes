@@ -381,6 +381,11 @@ Github: https://github.com/Shopkit/Default
 	    			{% set button_label = 'Continuar a comprar' %}
 	    		{% endif %}
 	    		
+	    		{% if notices.cart.error %}
+	    			<p>O produto não foi adicionado ao carrinho.</p>
+	    			{% set button_label = 'Continuar a comprar' %}
+	    		{% endif %}
+
 	    		{% if notices.cart.updated %}
 	    			<p>O carrinho de compras foi actualizado</p>
 	    		{% endif %}
