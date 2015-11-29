@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+
 	$('.products img').imagesLoaded(function(){
 		
 		masonry();
@@ -49,8 +49,11 @@ $(document).ready(function() {
 	});
 
 	//Trigger first set of options
-	if (typeof product !== 'undefined' && product.option_groups.length > 0) 
+	if (typeof product !== 'undefined' && product.option_groups.length > 0)
 	{
+		if (product.option_groups.length > 1) {
+			$('.data-product-price, .price del').text('');
+		}
 		product_options(product);
 	}
 	
@@ -58,6 +61,18 @@ $(document).ready(function() {
 	$(document).on('change', '.select-product-options', function() {
 		product_options(product);
 	});
+
+	//price on request button
+	$('a.price-on-request').on('click', function() {
+
+		var options = " - ";
+
+		$('select.select-product-options').each(function(index, el) {
+			options = options + $(this).children('option:selected').data('title') + " / ";
+		});
+
+		$(this).prop('href', $(this).prop('href') + options.slice(0, -3) + '#contact-form');
+	})
 		
 });
 
@@ -121,31 +136,42 @@ function product_options(product)
 
 			if (response)
 			{
-
-				if (product_is_vendible(product, response))
+				if ( response.price_on_request === true )
 				{
-					if (response.promo === true)
+					$('body').addClass('price-on-request');
+
+					price_txt = 'Preço sob consulta';
+					disable_form_product= true;
+				}
+				else
+				{
+					$('body').removeClass('price-on-request');
+
+					if (product_is_vendible(product, response))
 					{
-						$('.price del').text(response.price_formatted);
-						price_txt = response.price_promo_formatted;
+						if (response.promo === true)
+						{
+							$('.price del').text(response.price_formatted);
+							price_txt = response.price_promo_formatted;
+						}
+
+						else
+						{
+							$('.price del').text('');
+							price_txt = response.price_formatted;
+						}
+
+						disable_form_product = false;
 					}
 
 					else
 					{
-						$('.price del').text('');
-						price_txt = response.price_formatted;
+						price_txt = 'Não disponível';
+						disable_form_product = true;
 					}
 
-					disable_form_product = false;
+					stock_qty = response.stock_qty;
 				}
-
-				else
-				{
-					price_txt = 'Não disponível';
-					disable_form_product = true;
-				}
-
-				stock_qty = response.stock_qty;
 			}
 
 			else
