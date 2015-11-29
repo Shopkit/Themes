@@ -60,7 +60,7 @@ Description: Contact Page
 						</div>
 
 						<div class="form-group">
-							<label for="newsletter_email">Email address</label>
+							<label for="newsletter_email">Email</label>
 							<input type="email" name="email_newsletter" class="form-control" id="newsletter_email" required>
 						</div> 
 						
