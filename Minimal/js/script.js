@@ -47,6 +47,10 @@ $(document).ready(function(){
 				{
 					return false;
 				}
+				else
+				{
+					$('.navbar-form').submit();
+				}
 			});
 		}
 
@@ -192,6 +196,8 @@ $(window).load(function() {
 		controlNav: true,
 		directionNav: true,
 		selector: ".slides > .slide",
+		prevText: "<i class='fa fa-angle-left'></i>",
+		nextText: "<i class='fa fa-angle-right'></i>",
 		smoothHeight: true,
 		start: function(){
 			$('.slideshow').addClass('loaded');
