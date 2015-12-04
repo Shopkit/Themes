@@ -8,10 +8,10 @@ Description: Contact Page
 
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
-		<li class="active">Contactos</li>
+		<li class="active">{{ store.page.contact.title }}</li>
 	</ul>
 			
-	<h1>Contactos</h1>
+	<h1>{{ store.page.contact.title }}</h1>
 	<br>		
 
 	<h4>{{ store.name }}</h4>

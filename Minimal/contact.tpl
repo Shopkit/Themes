@@ -8,7 +8,7 @@ Description: Contact Page
 
 	<div class="container">	
 
-		<h1 class="margin-top-0 margin-bottom">Contactos</h1>
+		<h1 class="margin-top-0 margin-bottom">{{ store.page.contact.title }}</h1>
 	
 		{% if store.latitude and store.longitude %}
 			<div class="margin-bottom">
