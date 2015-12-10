@@ -167,6 +167,18 @@
 														</table>
 													</div>
 
+													{% if order.client_note %}
+														<div style="background-color:#eeeeee;padding:15px 20px;">
+															<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;">
+																<tr>
+																	<td>
+																		<span style="color:#999999;font-size:14px;">{{ order.client_note }}</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													{% endif %}
+
 													<div style="background-color:#ffffff;border-bottom:1px solid #eee;">
 														<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;">
 															<tr>
@@ -206,7 +218,7 @@
 
 																	{% elseif order.payment.type == 'bank_transfer' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/transferencia-bancaria.png' %}
-																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.on_delivery_msg ~ '</p>' %}
+																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.bank_transfer_msg ~ '</p>' %}
 																	{% endif %}
 
 																	<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
