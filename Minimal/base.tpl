@@ -132,7 +132,7 @@ Version: 1.0
 							<li class="link-cart"><a href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ cart.subtotal | money_with_sign }}</a></li>
 						</ul>
 
-						{{ form_open(site_url('pesquisa'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
+						{{ form_open(site_url('search'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
 							<div class="form-group">
 								<div class="search-form hidden">
 									<input type="search" name="q" id=""search class="form-control input-sm" placeholder="Pesquisa">

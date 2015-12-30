@@ -6,6 +6,8 @@ Description: Search Page
 
 {% block content %}
 
+	{% set products_per_page = 9 %}
+
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
 		<li>Pesquisa<span class="divider">›</span></li>
@@ -18,7 +20,7 @@ Description: Search Page
 
 	<div class="row products">
 
-		{% for product in products("search order:featured limit:60") %} 
+		{% for product in products("search order:featured limit:#{products_per_page}") %}
 
 			<div class="span3 product">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
@@ -48,6 +50,14 @@ Description: Search Page
 			</div>
 
 		{% endfor %}
+
+		<div class="span9 product">
+
+			<hr>
+
+			{{ pagination("search limit:#{products_per_page}") }}
+
+		</div>
 
 	</div>
 

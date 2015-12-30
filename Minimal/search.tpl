@@ -6,6 +6,8 @@ Description: Search Page
 
 {% block content %}
 
+	{% set products_per_page = 9 %}
+
 	<div class="container">	
 
 		<div class="row">
@@ -20,7 +22,7 @@ Description: Search Page
 				<div class="products">
 
 					<div class="row">
-						{% for product in products("search order:featured limit:60") %} 
+						{% for product in products("search order:featured limit:#{products_per_page}") %}
 							<div class="col-sm-4">
 								<article class="product">
 
@@ -64,6 +66,10 @@ Description: Search Page
 			</div>
 
 		</div>
+
+		<nav class="text-center">
+			{{ pagination("search limit:#{products_per_page}") }}
+		</nav>
 
 	</div>
 

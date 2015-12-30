@@ -138,7 +138,7 @@ Github: https://github.com/Shopkit/Default
 					            <li class="nav-contact"><a href="{{ site_url('contatos') }}">Contactos</a></li>
 					            <li class="divider-vertical divider-contact"></li>
 					  		</ul>
-					  		<form action="{{ site_url('pesquisa') }}" class="navbar-search pull-right">
+					  		<form action="{{ site_url('search') }}" class="navbar-search pull-right">
             					<input type="text" name="q" placeholder="Pesquisar" class="search-query span2">
           					</form>
         				</div>
