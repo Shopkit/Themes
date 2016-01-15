@@ -125,18 +125,10 @@ Github: https://github.com/Shopkit/Default
         				</a>
 	    				<div class="nav-collapse">
           					<ul class="nav">
-					            <li class="nav-home"><a href="/">Home</a></li>
-					            <li class="divider-vertical divider-home"></li>
-					            <li class="nav-about"><a href="{{ site_url('sobre-nos') }}">Sobre nós</a></li>
-					            <li class="divider-vertical divider-about"></li>
-					            <li class="nav-blog"><a href="{{ site_url('blog') }}">Blog</a></li>
-					            <li class="divider-vertical divider-blog"></li>
-					            <li class="nav-promotions"><a href="{{ site_url('promocoes') }}">Promoções</a></li>
-					            <li class="divider-vertical divider-promotions"></li>
-					            <li class="nav-recent"><a href="{{ site_url('novidades') }}">Novidades</a></li>
-					            <li class="divider-vertical divider-recent"></li>
-					            <li class="nav-contact"><a href="{{ site_url('contatos') }}">Contactos</a></li>
-					            <li class="divider-vertical divider-contact"></li>
+          						{% for primary_navigation in store.navigation.primary %}
+					            	<li class="menu-{{ primary_navigation.menu_text|slug }}"><a href="{{ primary_navigation.menu_url }}" {{ primary_navigation.target_blank ? 'target="_blank"' }}>{{ primary_navigation.menu_text }}</a></li>
+					            	<li class="divider-vertical divider-{{ primary_navigation.menu_text|slug }}"></li>
+					            {% endfor %}
 					  		</ul>
 					  		<form action="{{ site_url('search') }}" class="navbar-search pull-right">
             					<input type="text" name="q" placeholder="Pesquisar" class="search-query span2">
@@ -198,14 +190,14 @@ Github: https://github.com/Shopkit/Default
 		      			</ul>
       				</nav>
       				
-      				{% if pages %}
+      				{% if store.navigation.secondary %}
 	      				<section class="pages">
 		      				<h3>Menu</h3>
 		      				
 		      				<nav class="normal">
 						    	<ul>
-						    		{% for page in pages %}
-					      				<li><a href="{{ page.url }}">{{ page.title }}</a></li>
+						    		{% for secondary_navigation in store.navigation.secondary %}
+					      				<li><a href="{{ secondary_navigation.menu_url }}" class="menu-{{ secondary_navigation.menu_text|slug }}" {{ secondary_navigation.target_blank ? 'target="_blank"' }}>{{ secondary_navigation.menu_text }}</a></li>
 					      			{% endfor %}
 					      		</ul>
 					      	</nav>
@@ -300,7 +292,9 @@ Github: https://github.com/Shopkit/Default
 			<div class="clearfix">
 				<div class="pull-left">
 	    			&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. Todos os direitos reservados.<br><br>
-					<a href="{{ site_url() }}">Home</a> &nbsp; | &nbsp; <a href="{{ site_url('sobre-nos') }}">Sobre Nós</a> &nbsp; | &nbsp; <a href="{{ site_url('blog') }}">Blog</a> &nbsp; | &nbsp; <a href="{{ site_url('promocoes') }}">Promoções</a> &nbsp; | &nbsp; <a href="{{ site_url('novidades') }}">Novidades</a> &nbsp; | &nbsp; <a href="{{ site_url('contatos') }}">Contactos</a>
+	    			{% for primary_navigation in store.navigation.primary %}
+						<a href="{{ primary_navigation.menu_url }}" {{ primary_navigation.target_blank ? 'target="_blank"' }}>{{ primary_navigation.menu_text }}</a>{{ not loop.last ? ' &nbsp; | &nbsp; ' }}
+					{% endfor %}
 	    		</div>
 	    		
 	    		<div class="pull-right">

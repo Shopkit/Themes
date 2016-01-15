@@ -161,14 +161,12 @@ Version: 1.0
 
 				<nav>
 					<ul>
-						<li class="menu-about"><a href="{{ site_url('sobre-nos') }}">Sobre nós</a></li>
-						<li class="menu-blog"><a href="{{ site_url('blog') }}">Blog</a></li>
-						<li class="menu-promotions"><a href="{{ site_url('promocoes') }}">Promoções</a></li>
-						<li class="menu-recent"><a href="{{ site_url('novidades') }}">Novidades</a></li>
-						<li class="menu-contact"><a href="{{ site_url('contatos') }}">Contactos</a></li>
+						{% for primary_navigation in store.navigation.primary %}
+							<li class="menu-{{ primary_navigation.menu_text|slug }}"><a href="{{ primary_navigation.menu_url }}" {{ primary_navigation.target_blank ? 'target="_blank"' }}>{{ primary_navigation.menu_text }}</a></li>
+						{% endfor %}
 
-						{% for page in pages %}
-							<li class="menu-{{ page.handle }}"><a href="{{ page.url }}">{{ page.title }}</a></li>
+						{% for secondary_navigation in store.navigation.secondary %}
+							<li class="menu-{{ secondary_navigation.menu_text|slug }}"><a href="{{ secondary_navigation.menu_url }}" {{ secondary_navigation.target_blank ? 'target="_blank"' }}>{{ secondary_navigation.menu_text }}</a></li>
 						{% endfor %}
 					</ul>
 				</nav>
