@@ -16,8 +16,10 @@ Description: Product category page
 	<hr>
 
 	<div class="row products">
+
+		{% set category_default_order = store.category_default_order|default('position') %}
 		
-		{% for product in products("order:position category:#{category.id} limit:9") %} 
+		{% for product in products("order:#{category_default_order} category:#{category.id} limit:9") %} 
 			  		
 			<div class="span3 product">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>

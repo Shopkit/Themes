@@ -48,7 +48,7 @@ Description: Product category page
 				{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros' } %}
 
 				{% if not get.order_by in order_options|keys %}
-					{% set get = {'order_by': 'position'} %}
+					{% set get = {'order_by': store.category_default_order|default('position')} %}
 				{% endif %}
 
 				{% if products %}
