@@ -395,6 +395,10 @@ Github: https://github.com/Shopkit/Default
 	    		{% if notices.cart.stock_sold_single %}
 	    			<p>Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ notices.cart.stock_sold_single }}</strong></p>
 	    		{% endif %}
+
+	    		{% if notices.cart.no_stock %}
+	    			<p>Existem produtos que não têm stock suficiente</p>
+				{% endif %}
 	    		
 	  		</div>
 	  		<div class="modal-footer">

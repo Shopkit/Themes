@@ -242,7 +242,7 @@ Version: 1.0
 
 							<div class="text-center">
 
-								{% if notices.cart.stock_qty or notices.cart.stock_sold_single %}
+								{% if notices.cart.stock_qty or notices.cart.stock_sold_single or notices.cart.no_stock %}
 
 									{% if notices.cart.stock_qty %}
 										<i class="fa fa-ban fa-4x text-light-gray"></i>
@@ -252,6 +252,11 @@ Version: 1.0
 									{% if notices.cart.stock_sold_single %}
 										<i class="fa fa-ban fa-4x text-light-gray"></i>
 										<h4 class="text-muted">Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ notices.cart.stock_sold_single }}</strong></h4>
+									{% endif %}
+
+									{% if notices.cart.no_stock %}
+										<i class="fa fa-ban fa-4x text-light-gray"></i>
+										<h3 class="text-muted">Existem produtos que não têm stock suficiente</h3>
 									{% endif %}
 
 								{% else %}
