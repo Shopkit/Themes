@@ -467,7 +467,7 @@ Github: https://github.com/Shopkit/Default
 	
 	<div id="fb-root"></div>
 	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.7.2/jquery.min.js"></script>
 
 	<script src="{{ store.assets.plugins }}"></script>
 	<script src="{{ store.assets.scripts }}"></script>
