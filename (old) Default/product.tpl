@@ -74,7 +74,7 @@ Description: Product Page
 
 				<br>
 
-				{{ form_open_cart(product.id, { 'class' : 'well form-inline form-cart' }) }}
+				{{ form_open_cart(product.id, { 'class' : 'well form-inline form-cart add-cart' }) }}
 
 					<h4>Adicionar ao carrinho</h4>
 					
