@@ -49,29 +49,31 @@ Description: Contact Page
 
 				<hr>
 
-				<div class="newsletter margin-bottom">
-					<h3 class="margin-bottom-md">Newsletter</h3>
+				{% if apps.newsletter %}
+					<div class="newsletter margin-bottom">
+						<h3 class="margin-bottom-md">Newsletter</h3>
 
-					{{ form_open('newsletter/register') }}
+						{{ form_open('newsletter/register') }}
 
-						<div class="form-group">
-							<label for="newsletter_name">O seu nome</label>
-							<input type="text" name="nome_newsletter" class="form-control" id="newsletter_name" required>
-						</div>
+							<div class="form-group">
+								<label for="newsletter_name">O seu nome</label>
+								<input type="text" name="nome_newsletter" class="form-control" id="newsletter_name" required>
+							</div>
 
-						<div class="form-group">
-							<label for="newsletter_email">Email</label>
-							<input type="email" name="email_newsletter" class="form-control" id="newsletter_email" required>
-						</div> 
-						
-						<button type="submit" class="btn btn-gray">Registar</button>
+							<div class="form-group">
+								<label for="newsletter_email">Email</label>
+								<input type="email" name="email_newsletter" class="form-control" id="newsletter_email" required>
+							</div>
 
-					{{ form_close() }}
-				</div>
-				
-				{% if store.facebook_likebox %}
+							<button type="submit" class="btn btn-gray">Registar</button>
+
+						{{ form_close() }}
+					</div>
+				{% endif %}
+
+				{% if apps.facebook_page %}
 					<div class="margin-bottom">
-						<div class="fb-page" data-href="{{ store.facebook }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="{{ store.facebook }}"><a href="{{ store.facebook }}">Facebook</a></blockquote></div></div>
+						<div class="fb-page" data-href="{{ apps.facebook_page.facebook_url }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="{{ apps.facebook_page.facebook_url }}"><a href="{{ apps.facebook_page.facebook_url }}">Facebook</a></blockquote></div></div>
 
 						<div id="fb-root"></div>
 						<script>(function(d, s, id) {
@@ -165,9 +167,13 @@ Description: Contact Page
 						</div>
 
 						<div class="form-group">
+						{% if apps.google_recaptcha %}
+							<div class="g-recaptcha" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
+						{% else %}
 							<label for="captcha">Digite as palavras da imagem</label>
 							<p>{{ captcha.image }}</p>
 							<input type="text" class="form-control" id="captcha" name="captcha" required>
+						{% endif %}
 						</div>
 
 						<button type="submit" class="btn btn-gray">Enviar Mensagem</button>

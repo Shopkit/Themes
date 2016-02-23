@@ -191,15 +191,11 @@ Description: Product Page
 
 	</article>
 
-	{% if store.facebook_comments_product %}
-
+	{% if apps.facebook_comments.comments_products %}
 		<div class="hidden-phone">
 			<hr>
-			<h6>Comentários (<fb:comments-count href="{{ product.permalink }}" class="fb-num-comments"></fb:comments-count>)</h6>
-			<br>
 			<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
 		</div>
-
 	{% endif %}
 
 {% endblock %}

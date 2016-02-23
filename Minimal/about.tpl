@@ -24,9 +24,9 @@ Description: About page
     				<p class="lead margin-bottom">{{ store.description }}</p>
     			{% endif %}
 
-				{% if store.facebook_likebox %}
+				{% if apps.facebook_page %}
 					<div class="margin-bottom">
-						<div class="fb-page" data-href="{{ store.facebook }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="{{ store.facebook }}"><a href="{{ store.facebook }}">Facebook</a></blockquote></div></div>
+						<div class="fb-page" data-href="{{ apps.facebook_page.facebook_url }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="{{ apps.facebook_page.facebook_url }}"><a href="{{ apps.facebook_page.facebook_url }}">Facebook</a></blockquote></div></div>
 
 						<div id="fb-root"></div>
 						<script>(function(d, s, id) {

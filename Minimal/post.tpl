@@ -31,14 +31,14 @@ Description: Blog post Page
 					<hr>
 
 					<div class="share">
-						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.permalink }}" class="text-muted"><i class="fa fa-facebook fa-fw fa-lg"></i></a> &nbsp; 
-						<a target="_blank" href="https://twitter.com/share?url={{ product.permalink }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw fa-lg"></i></a> &nbsp; 
-						<a target="_blank" href="https://plus.google.com/share?url={{ product.permalink }}" class="text-muted"><i class="fa fa-google-plus fa-fw fa-lg"></i></a> &nbsp; 
-						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.permalink }}&description={{ product.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw fa-lg"></i></a>
+						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-facebook fa-fw fa-lg"></i></a> &nbsp; 
+						<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw fa-lg"></i></a> &nbsp; 
+						<a target="_blank" href="https://plus.google.com/share?url={{ product.url }}" class="text-muted"><i class="fa fa-google-plus fa-fw fa-lg"></i></a> &nbsp; 
+						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw fa-lg"></i></a>
 					</div>
 				</article>
 
-				{% if store.facebook_comments_blog %}
+				{% if apps.facebook_comments.comments_blog %}
 					<div class="margin-top">
 						<div class="fb-comments" data-href="{{ blog_post.url }}" data-numposts="5" data-width="100%"></div>
 					</div>

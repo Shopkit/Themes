@@ -94,7 +94,7 @@ Description: Product Page
 							</div>
 						</div>
 
-						{% if store.facebook_comments_product %}
+						{% if apps.facebook_comments.comments_products %}
 							<div class="facebook-comments">
 								<div class="fb-comments" data-href="{{ product.permalink }}" data-numposts="5" data-width="100%"></div>
 							</div>
@@ -176,10 +176,10 @@ Description: Product Page
 							<div class="col-xs-6 col-md-5 col-lg-6">
 								<div class="text-center share pull-right">
 									<h6 class="text-muted text-uppercase">Partilhar</h6>
-									<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.permalink }}" class="text-muted"><i class="fa fa-facebook fa-fw"></i></a> &nbsp;
-									<a target="_blank" href="https://twitter.com/share?url={{ product.permalink }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw"></i></a> &nbsp;
-									<a target="_blank" href="https://plus.google.com/share?url={{ product.permalink }}" class="text-muted"><i class="fa fa-google-plus fa-fw"></i></a> &nbsp;
-									<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.permalink }}&description={{ product.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw"></i></a>
+									<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-facebook fa-fw"></i></a> &nbsp;
+									<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw"></i></a> &nbsp;
+									<a target="_blank" href="https://plus.google.com/share?url={{ product.url }}" class="text-muted"><i class="fa fa-google-plus fa-fw"></i></a> &nbsp;
+									<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw"></i></a>
 								</div>
 							</div>
 						</div>

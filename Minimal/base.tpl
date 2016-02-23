@@ -35,8 +35,8 @@ Version: 1.0
 			<meta property="og:image" content="{{ image }}">
 		{% endif %}
 
-		{% if store.facebook_username %}
-			<meta property="fb:admins" content="{{ store.facebook_username }}">
+		{% if apps.facebook_comments.username %}
+			<meta property="fb:admins" content="{{ apps.facebook_comments.username }}">
 		{% endif %}
 		<!-- End Facebook Meta -->
 
@@ -208,7 +208,7 @@ Version: 1.0
 		</footer>
 		{# End Footer #}
 
-		{% if store.translate_languages %}
+		{% if apps.google_translate %}
 			<button class="btn btn-default btn-lang" data-toggle="modal" data-target="#language-switch"><i class="fa fa-language"></i></button>
 
 			<div class="modal fade" id="language-switch" tabindex="-1" role="dialog" aria-labelledby="language-switch" aria-hidden="true">
@@ -440,8 +440,8 @@ Version: 1.0
 			_gaq.push(['_setDomainName', '{{ domain }}']);
 			_gaq.push(['_trackPageview']);
 
-			{% if store.google_analytics %}
-				_gaq.push(['b._setAccount', '{{ store.google_analytics }}']);
+			{% if apps.google_analytics %}
+				_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
 				_gaq.push(['b._trackPageview']);
 			{% endif %}
 
@@ -452,14 +452,14 @@ Version: 1.0
 			})();
 			/* End Google Analytics */
 
-			{% if store.translate_languages %}
+			{% if apps.google_translate %}
 				Modernizr.load([
 					{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}
 				]);
 
 				function googleTranslateElementInit()
 				{
-					new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ store.translate_languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
+					new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ apps.google_translate.languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
 				}
 			{% endif %}
 

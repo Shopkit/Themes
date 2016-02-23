@@ -47,19 +47,11 @@ Description: Blog post Page
 		</div>
 	</div>
 
-
-		
-	<hr>
-		
-	{% if store.facebook_comments_blog %}
-
+	{% if apps.facebook_comments.comments_blog %}
 		<div class="hidden-phone">
-			<h6>Comentários (<fb:comments-count href="{{ product.permalink }}" class="fb-num-comments"></fb:comments-count>)</h6>
-			<br>
+			<hr>
 			<div class="fb-comments" data-href="{{ current_url() }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
 		</div>
-
 	{% endif %}
-
 
 {% endblock %}

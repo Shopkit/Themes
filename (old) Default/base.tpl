@@ -34,8 +34,8 @@ Github: https://github.com/Shopkit/Default
 		<meta property="og:image" content="{{ image }}">
 	{% endif %}
 
-	{% if store.facebook_username %}
-		<meta property="fb:admins" content="{{ store.facebook_username }}">
+	{% if apps.facebook_comments.username %}
+		<meta property="fb:admins" content="{{ apps.facebook_comments.username }}">
 	{% endif %}
 	<!-- End Facebook Meta -->
 	 
@@ -225,29 +225,25 @@ Github: https://github.com/Shopkit/Default
 				      		</ul>
 				      	</nav>
 			      	</section>
-			      	
-			      	
-			      	<section class="newsletter hidden-phone">
-			      		
-				      	<h3>Newsletter</h3>
-				      	<p>Inscreva-se na nossa newsletter para receber todas as novidades no seu e-mail.</p>
-				      	
-				      	{{ form_open('newsletter/register') }}
-	        			
-		       				<input name="nome_newsletter" type="text" placeholder="Nome" class="span3" required>
-		       				
-		       				<input name="email_newsletter" type="text" placeholder="E-mail" class="span3" required>
-		       
-		        			<button class="btn btn-inverse" type="submit">Registar</button>
-		        			
-	      				{{ form_close() }}
-      				
-      				</section>
-      				
-      				{% if store.facebook_likebox %}
-	      				<hr>
-				      	<div class="fb-like-box hidden-phone" data-href="{{ store.facebook }}"  data-show-faces="true" data-show-border="false" data-stream="false" data-header="false"></div>
-			      	{% endif %}		
+
+					{% if apps.newsletter %}
+						<section class="newsletter hidden-phone">
+							<h3>Newsletter</h3>
+							<p>Inscreva-se na nossa newsletter para receber todas as novidades no seu e-mail.</p>
+
+							{{ form_open('newsletter/register') }}
+								<input name="nome_newsletter" type="text" placeholder="Nome" class="span3" required>
+								<input name="email_newsletter" type="text" placeholder="E-mail" class="span3" required>
+								<button class="btn btn-inverse" type="submit">Registar</button>
+							{{ form_close() }}
+
+						</section>
+					{% endif %}
+
+					{% if apps.facebook_page %}
+						<hr>
+						<div class="fb-like-box hidden-phone" data-href="{{ apps.facebook_page.facebook_url }}"  data-show-faces="true" data-show-border="false" data-stream="false" data-header="false"></div>
+					{% endif %}
 
 					<hr>
 
@@ -434,7 +430,7 @@ Github: https://github.com/Shopkit/Default
 		</div>
 	{% endif %}
 	
-	{% if store.translate_languages %}
+	{% if apps.google_translate %}
 		<div class="modal hide fade" id="modal-language" role="dialog" aria-labelledby="modal-languageLabel" aria-hidden="true">
 	  		<div class="modal-header">
 	    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -475,44 +471,44 @@ Github: https://github.com/Shopkit/Default
 	<script>
 
 		/* Google Analytics */
-  		var _gaq = _gaq || [];
-  		_gaq.push(['_setAccount', 'UA-28055653-2']);
-  		_gaq.push(['_setDomainName', '{{ domain }}']);
-  		_gaq.push(['_trackPageview']);
-  		
-  		{% if store.google_analytics %}
-	  		_gaq.push(['b._setAccount', '{{ store.google_analytics }}']);
-	    	_gaq.push(['b._trackPageview']);
-    	{% endif %}
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-28055653-2']);
+		_gaq.push(['_setDomainName', '{{ domain }}']);
+		_gaq.push(['_trackPageview']);
 
-  		(function() {
-    		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  		})();
-  		/* End Google Analytics */
-  		
-  		{{ cross_slide_js(store.images_header) }}
-				
+		{% if apps.google_analytics %}
+			_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
+			_gaq.push(['b._trackPageview']);
+		{% endif %}
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+		/* End Google Analytics */
+
+		{{ cross_slide_js(store.images_header) }}
+
 		Modernizr.load([
 			{load: '//platform.twitter.com/widgets.js'},
 			{load: '//apis.google.com/js/plusone.js'},
 			{load: '//connect.facebook.net/pt_PT/all.js#xfbml=1&appId=267439666615965'},
 			{load: '//assets.pinterest.com/js/pinit.js'}
-			{% if store.translate_languages %} ,{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}{% endif %}
-		]);		
-		
-		{% if store.translate_languages %}
+			{% if apps.google_translate %} ,{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}{% endif %}
+		]);
+
+		{% if apps.google_translate %}
 			function googleTranslateElementInit()
 			{
-				new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ store.translate_languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
+				new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ apps.google_translate.languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
 			}
 		{% endif %}
 
 		{% if store.custom_js %}
 			{{ store.custom_js }}
 		{% endif %}
-	
+
 	</script>
 
 	{{ footer_content }}
