@@ -434,23 +434,25 @@ Version: 1.0
 		{# //End Events #}
 
 		<script>
-			/* Google Analytics */
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-28055653-2']);
-			_gaq.push(['_setDomainName', '{{ domain }}']);
-			_gaq.push(['_trackPageview']);
+			{% if not apps.google_analytics_ec %}
+				/* Google Analytics */
+				var _gaq = _gaq || [];
+				_gaq.push(['_setAccount', 'UA-28055653-2']);
+				_gaq.push(['_setDomainName', '{{ domain }}']);
+				_gaq.push(['_trackPageview']);
 
-			{% if apps.google_analytics %}
-				_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
-				_gaq.push(['b._trackPageview']);
+				{% if apps.google_ec_analytics %}
+					_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
+					_gaq.push(['b._trackPageview']);
+				{% endif %}
+
+				(function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				})();
+				/* End Google Analytics */
 			{% endif %}
-
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-			/* End Google Analytics */
 
 			{% if apps.google_translate %}
 				Modernizr.load([
