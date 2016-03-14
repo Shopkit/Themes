@@ -476,7 +476,7 @@ Github: https://github.com/Shopkit/Default
 			_gaq.push(['_setDomainName', '{{ domain }}']);
 			_gaq.push(['_trackPageview']);
 
-			{% if apps.google_ec_analytics %}
+			{% if apps.google_analytics %}
 				_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
 				_gaq.push(['b._trackPageview']);
 			{% endif %}
