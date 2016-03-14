@@ -123,7 +123,7 @@ Description: Confirm order page
 									</div>
 								</div>
 
-								<p class="margin-bottom-0"><strong>Observações</strong><br>{{ user.notes|nl2br ?: 'n/a' }}</p>
+								<p class="margin-bottom-0"><strong>Observações</strong><br>{{ user.notes ?: 'n/a' }}</p>
 							</div>
 						</div>
 
