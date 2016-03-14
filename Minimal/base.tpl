@@ -52,6 +52,8 @@ Version: 1.0
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 		<link href="{{ store.assets.css }}" rel="stylesheet">
 
+		<style>.dropdown:hover .dropdown-menu { display: block;}</style>
+
 		{% if store.custom_css %}
 			<style>{{ store.custom_css }}</style>
 		{% endif %}
@@ -113,7 +115,7 @@ Version: 1.0
 								<li class="{% if (category.id == products_category.id) %} active {% endif %} {% if products_category.children %} dropdown {% endif %} menu-{{ products_category.handle }}">
 
 									{% if products_category.children %}
-										<a class="dropdown-toggle" data-toggle="dropdown" href="{{ products_category.url }}">
+										<a class="dropdown-toggle" href="{{ products_category.url }}">
 											{{ products_category.title }} <span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu" role="menu">
