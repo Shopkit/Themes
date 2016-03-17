@@ -269,6 +269,10 @@ Github: https://github.com/Shopkit/Default
 								<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
 							{% endif %}
 						{% endspaceless %}
+
+						{% if store.is_ssl %}
+							<div><img src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="margin-top: 15px; height: 35px;"></div>
+						{% endif %}
 					</div>
 
 			    </aside>

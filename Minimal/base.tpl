@@ -199,6 +199,10 @@ Version: 1.0
 					{% endif %}
 				</div>
 
+				{% if store.is_ssl %}
+					<div class="text-center" style="margin-top:30px;"><img src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="height: 35px;"></div>
+				{% endif %}
+
 				{% if store.show_branding %}
 					<div class="powered-by">
     					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black.png" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105"></a>
