@@ -294,7 +294,7 @@
 																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.shipping|money_with_sign(order.currency) }}</span></td>
 															</tr>
 
-															{% if store.taxes_included and order.total_tax > 0 %}
+															{% if order.total_tax > 0 %}
 																<tr>
 																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Taxa (IVA)</td>
 																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
