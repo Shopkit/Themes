@@ -167,6 +167,11 @@ Github: https://github.com/Shopkit/Default
 			    	
 			    	<nav>
 				    	<ul>
+				    		<li {% if (current_page == 'catalog') %} class="active" {% endif %}>
+				    			<h4>
+				    				<a href="{{ site_url('catalog') }}">Todos os produtos</a>
+				    			</h4>
+				    		</li>
 				    		{% for products_category in categories %} 
 				    		
 				      			<li {% if (category.id == products_category.id) %}class="active"{% endif %}>
