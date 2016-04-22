@@ -110,7 +110,9 @@ Version: 1.0
 
 					<div class="collapse navbar-collapse" id="navbar-collapse">
 						<ul class="nav navbar-nav">
-
+							<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
+								<a href="{{ site_url('catalog') }}">Todos os produtos</a>
+							</li>
 							{% for products_category in categories %}
 								<li class="{% if (category.id == products_category.id) %} active {% endif %} {% if products_category.children %} dropdown {% endif %} menu-{{ products_category.handle }}">
 
