@@ -44,7 +44,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 	
 	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name }}">
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ store.assets.css }}">
     
 	{% set darkencolor = colour_brightness(store.basecolor, -0.90) %} 
