@@ -49,7 +49,7 @@ Version: 1.0
 		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name }}">
 
 		<link href="//fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic" rel="stylesheet">
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" rel="stylesheet">
 		<link href="{{ store.assets.css }}" rel="stylesheet">
 
 		<style>.dropdown:hover .dropdown-menu { display: block;}</style>
