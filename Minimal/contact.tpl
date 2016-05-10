@@ -181,6 +181,11 @@ Description: Contact Page
 
 				{{ form_close() }}
 
+				{% if store.page.contact.content %}
+					<hr>
+					{{ store.page.contact.content }}
+				{% endif %}
+
 			</div>
 
 		</div>
