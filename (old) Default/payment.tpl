@@ -67,32 +67,34 @@ Description: Payment Page
 
 			{% endif %}
 
-			<h4>Pagamento</h4>
-			<br>
+			<div class="payment-methods">
+				<h4>Pagamento</h4>
+				<br>
 
-			{% if payment.paypal %}
-				<label class="radio"><input type="radio" name="pagamento" id="paypal" value="Paypal" {% if (user.payment == 'Paypal' or user.payment == '') %}checked{% endif %}> Paypal</label>
-			{% endif %}
+				{% if payment.paypal %}
+					<label class="radio"><input type="radio" name="pagamento" id="paypal" value="Paypal" {% if (user.payment == 'Paypal' or user.payment == '') %}checked{% endif %}> Paypal</label>
+				{% endif %}
 
-			{% if payment.pick_up %}
-				<label class="radio"><input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if (user.payment == 'Levantamento nas instalações' or user.payment == '') %}checked{% endif %}> Levantamento nas instalações <small class="muted">(Os portes de envio são <strong>grátis</strong>)</small></label>
-			{% endif %}
+				{% if payment.pick_up %}
+					<label class="radio"><input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if (user.payment == 'Levantamento nas instalações' or user.payment == '') %}checked{% endif %}> Levantamento nas instalações <small class="muted">(Os portes de envio são <strong>grátis</strong>)</small></label>
+				{% endif %}
 
-			{% if payment.on_delivery %}
-				<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' or user.payment == '' %}checked{% endif %}> À Cobrança 
-					{% if payment.on_delivery_value > 0 %}
-						<small class="muted">(Acresce <strong>{{ payment.on_delivery_value | money_with_sign }}</strong> aos portes de envio)</small>
-					{% endif %}
-				</label>
-			{% endif %}
+				{% if payment.on_delivery %}
+					<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' or user.payment == '' %}checked{% endif %}> À Cobrança 
+						{% if payment.on_delivery_value > 0 %}
+							<small class="muted">(Acresce <strong>{{ payment.on_delivery_value | money_with_sign }}</strong> aos portes de envio)</small>
+						{% endif %}
+					</label>
+				{% endif %}
 
-			{% if payment.bank_transfer %}
-				<label class="radio"><input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if user.payment == 'Transferência Bancária' or user.payment == '' %}checked{% endif %}> Transferência Bancária</label>
-			{% endif %}
+				{% if payment.bank_transfer %}
+					<label class="radio"><input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if user.payment == 'Transferência Bancária' or user.payment == '' %}checked{% endif %}> Transferência Bancária</label>
+				{% endif %}
 
-			{% if payment.multibanco %}
-				<label class="radio"><input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if user.payment == 'Multibanco' or user.payment == '' %}checked{% endif %}> Multibanco</label>
-			{% endif %}
+				{% if payment.multibanco %}
+					<label class="radio"><input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if user.payment == 'Multibanco' or user.payment == '' %}checked{% endif %}> Multibanco</label>
+				{% endif %}
+			</div>
 
 			<hr>
 

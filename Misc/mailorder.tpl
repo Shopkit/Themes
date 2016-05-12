@@ -339,11 +339,20 @@
 														</table>
 													</div>
 
+													{% if order.custom_field %}
+														<div style="padding:30px 20px;background-color:#fff;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;font-size:14px;line-height:24px;color:#999999;{% if order.observations %}border-bottom:1px solid #eee;border-bottom-left-radius: 0px;border-bottom-right-radius: 0px{% endif %}">
+															{% for custom_field in order.custom_field|json_decode %}
+																<p style="margin: 0 0 5px 0;"><strong>{{ custom_field.title }}</strong></p>
+																<p style="margin: {{ loop.last ? '0 0 0 0' : '0 0 15px 0' }};"><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+															{% endfor %}
+														</div>
+													{% endif %}
+
 													{% if order.observations %}
-													<div style="padding:30px 20px;background-color:#fff;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;font-size:14px;line-height:24px;color:#999999">
-														<p style="margin: 0 0 10px 0;"><strong>Observações:</strong></p>
-														<p style="margin: 0 0 0 0;">{{ order.observations }}</p>
-													</div>
+														<div style="padding:30px 20px;background-color:#fff;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;font-size:14px;line-height:24px;color:#999999">
+															<p style="margin: 0 0 10px 0;"><strong>Observações:</strong></p>
+															<p style="margin: 0 0 0 0;">{{ order.observations }}</p>
+														</div>
 													{% endif %}
 												</div>
 											</td>

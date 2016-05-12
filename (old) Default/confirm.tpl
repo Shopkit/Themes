@@ -125,6 +125,16 @@ Description: Confirm order page
 			<strong>Observações</strong><br>{{ user.notes }}
 			
 			<hr>
+
+			{% if user.custom_field %}
+		        {% for custom_fields in user.custom_field %}
+		            {% set custom_field = custom_fields|json_decode %}
+		            <h4>{{ custom_field.title }}</h4>
+		            <p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+		            {{ loop.last ? '' : '<hr>' }}
+		        {% endfor %}
+			    <hr>
+			{% endif %}
 			
 			<button type="submit" class="btn btn-large">Confirmar Encomenda ›</button> &nbsp; &bull; &nbsp; <a href="{{ site_url('cart') }}">Editar Carrinho</a>
 			

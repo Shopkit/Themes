@@ -127,6 +127,17 @@ Description: Confirm order page
 							</div>
 						</div>
 
+						{% if user.custom_field %}
+						    <div class="well">
+						        {% for custom_fields in user.custom_field %}
+						            {% set custom_field = custom_fields|json_decode %}
+						            <h3 class="margin-bottom-md">{{ custom_field.title }}</h3>
+						            <p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+						            {{ loop.last ? '' : '<hr>' }}
+						        {% endfor %}
+						    </div>
+						{% endif %}
+
 						<footer class="clearfix hidden-xs hidden-sm">
 							<div class="pull-left steps hidden-xs">
 								Passo 3 de 3
