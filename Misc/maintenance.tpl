@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ store.name }}</title>
+    <title>{{ store.page_title }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
     <style type="text/css">
 		.jumbotron {
 			text-align: center;
@@ -39,7 +39,7 @@
 		}
 		footer {
 			background-color: #fff;
-			padding: 60px;
+			padding: 60px 0;
 			border-top: 1px solid #eee;
 		}
 		img.logo {
