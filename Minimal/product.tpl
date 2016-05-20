@@ -127,7 +127,7 @@ Description: Product Page
 						{% endif %}
 
 						{% if product.reference %}
-							<small class="text-light-gray block">SKU: {{ product.reference }}</small>
+							<small class="text-light-gray block">SKU: <span itemprop="sku">{{ product.reference }}</span></small>
 						{% endif %}
 
 						<div class="row block-price">
