@@ -14,7 +14,7 @@ Description: Blog post Page
 				<a href="{{ site_url('blog') }}" class="text-light-gray"><i class="fa fa-angle-left"></i> &nbsp; Blog</a>
 
 				<h1 class="margin-top-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
-				<p class="small">Escrito em {{ post.date|date("d \\d\\e M. \\d\\e Y") }}</p>
+				<p class="small">Escrito em {{ blog_post.date|date("d \\d\\e M. \\d\\e Y") }}</p>
 
 				<article class="margin-top">
 
@@ -31,10 +31,10 @@ Description: Blog post Page
 					<hr>
 
 					<div class="share">
-						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-facebook fa-fw fa-lg"></i></a> &nbsp; 
-						<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw fa-lg"></i></a> &nbsp; 
-						<a target="_blank" href="https://plus.google.com/share?url={{ product.url }}" class="text-muted"><i class="fa fa-google-plus fa-fw fa-lg"></i></a> &nbsp; 
-						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw fa-lg"></i></a>
+						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ blog_post.url }}" class="text-muted"><i class="fa fa-facebook fa-fw fa-lg"></i></a> &nbsp; 
+						<a target="_blank" href="https://twitter.com/share?url={{ blog_post.url }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw fa-lg"></i></a> &nbsp; 
+						<a target="_blank" href="https://plus.google.com/share?url={{ blog_post.url }}" class="text-muted"><i class="fa fa-google-plus fa-fw fa-lg"></i></a> &nbsp; 
+						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw fa-lg"></i></a>
 					</div>
 				</article>
 
