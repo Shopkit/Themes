@@ -22,7 +22,7 @@ Description: Blog page
 		<div class="row">
 			
 			<div class="span7">
-				{{ word_limiter(post.text, 100, ' ... <a href="' ~ post.url ~ '">Ler mais</a>') }}
+				{{ word_limiter(post.excerpt, 100, ' ... <a href="' ~ post.url ~ '">Ler mais</a>') }}
 			</div>
 			
 			{% if post.image %}

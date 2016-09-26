@@ -30,7 +30,7 @@ Description: Blog page
 							<p class="small">Escrito em {{ post.date|date("d \\d\\e M. \\d\\e Y") }}</p>
 							
 							<div>
-								{{ word_limiter(post.text, 100, ' ... <a href="' ~ post.url ~ '">Ler mais</a>') }}
+								{{ word_limiter(post.excerpt, 100, ' ... <a href="' ~ post.url ~ '">Ler mais</a>') }}
 							</div>
 						</div>
 
