@@ -82,9 +82,10 @@ Description: Order data form page
 		<label for="observacoes">Observações</label>
 		<textarea cols="80" rows="4" class="span9" id="observacoes" name="observacoes" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.notes }}</textarea>
 
-		<br><br>
-
-		<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1"> Pretendo registar-me na newsletter</label>
+		{% if apps.newsletter %}
+			<br><br>
+			<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1"> Pretendo registar-me na newsletter</label>
+		{% endif %}
 
 		<hr>
 

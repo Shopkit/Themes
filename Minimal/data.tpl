@@ -113,12 +113,14 @@ Description: Order data form page
 								<textarea cols="80" rows="4" class="form-control" id="observacoes" name="observacoes" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.notes }}</textarea>
 							</div>
 
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1">
-									Pretendo registar-me na newsletter
-								</label>
-							</div>
+							{% if apps.newsletter %}
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1">
+										Pretendo registar-me na newsletter
+									</label>
+								</div>
+							{% endif %}
 
 							<footer class="clearfix">
 								<div class="pull-left steps hidden-xs">
