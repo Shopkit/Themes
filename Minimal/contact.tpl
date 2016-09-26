@@ -167,13 +167,7 @@ Description: Contact Page
 						</div>
 
 						<div class="form-group">
-						{% if apps.google_recaptcha %}
 							<div class="g-recaptcha" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
-						{% else %}
-							<label for="captcha">Digite as palavras da imagem</label>
-							<p>{{ captcha.image }}</p>
-							<input type="text" class="form-control" id="captcha" name="captcha" required>
-						{% endif %}
 						</div>
 
 						<button type="submit" class="btn btn-gray">Enviar Mensagem</button>

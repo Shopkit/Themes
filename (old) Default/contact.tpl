@@ -67,14 +67,7 @@ Description: Contact Page
 				<textarea rows="6" class="span5" id="message" name="message" required>{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
 				<br><br>
 
-				{% if apps.google_recaptcha %}
-					<div class="g-recaptcha" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
-				{% else %}
-					<label for="captcha">Digite as palavras da imagem <small class="muted">(*)</small></label>
-					<p>{{ captcha.image }}</p>
-					<input type="text" name="captcha" id="captcha" class="span5" required>
-					<br>
-				{% endif %}
+				<div class="g-recaptcha" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
 
 				<br>
 				<button type="submit" class="btn btn-large">Enviar Mensagem</button>
