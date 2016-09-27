@@ -54,7 +54,7 @@ $(document).ready(function() {
 		if (product.option_groups.length > 1) {
 			$('.data-product-price, .price del').text('');
 		}
-		product_options(product);
+		product_options(product, true);
 	}
 	
 	//Event on change
@@ -112,13 +112,20 @@ function check_shipping(el)
 	}
 }
 
-function product_options(product)
+function product_options(product, onload)
 {
+	onload = typeof onload !== 'undefined' ? onload : false;
+
 	if ($('.select-product-options').length)
 	{
 		$('.form-cart').fadeTo('fast', 0.25);
 
+		var default_option = product_default_option(product);
+
 		$('.select-product-options').each(function(i) {
+			if (onload == true) {
+				$('option[value="'+ default_option[i] +'"]', this).prop('selected', true);
+			}
 			var option = $('option:selected', this);
 			window['id_variant_' + (i+1)] = option.attr('value');
 		});
@@ -172,6 +179,13 @@ function product_options(product)
 
 					stock_qty = response.stock_qty;
 				}
+
+				if (response.image) {
+					$('img[itemprop="image"]').prop('src', response.image.full);
+					$('img[itemprop="image"]').parent('a').prop('href', response.image.full);
+				}
+
+				reference = response.reference;
 			}
 
 			else
@@ -179,6 +193,7 @@ function product_options(product)
 				price_txt = 'Não disponível';
 				stock_qty = 0;
 				disable_form_product = true;
+				reference = '';
 			}
 
 			if (disable_form_product === true)
@@ -188,9 +203,9 @@ function product_options(product)
 
 			$('.data-product-price').text(price_txt);
 			$('.data-product-stock_qty').text(stock_qty);
+			$('span[itemprop="sku"]').text(reference);
 
 			$('.form-cart input[name="qtd"], .form-cart button[type="submit"]').prop('disabled', disable_form_product);
-
 
 		}, 'json');
 	}
@@ -233,4 +248,39 @@ function product_is_vendible(product, response)
 	{
 		return false;
 	}
+}
+
+
+//check product default option
+function product_default_option(product) {
+
+	var option = 'false';
+
+	for (var i = 0; i < product.options.length; i++) {
+		if (product.options[i].price_on_request === true) {
+			option = i;
+		} else {
+			if (product.stock.stock_enabled) {
+				if (product.stock.stock_backorder || product.options[i].stock > 0) {
+					option = i;
+				}
+			} else {
+				option = i;
+			}
+		}
+
+		if ($.isNumeric(option)) {
+			i = product.options.length;
+		}
+	}
+
+	if (isNaN(option)) {
+		option =0;
+	}
+
+	return option = {
+		0: product.options[option].id_variant_1,
+		1: product.options[option].id_variant_2,
+		2: product.options[option].id_variant_3
+	};
 }

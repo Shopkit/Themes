@@ -151,12 +151,6 @@ $(document).ready(function(){
 		$(this).find('input[type=submit], button').prop('disabled', true);
 	});
 
-	//Trigger first set of options
-	if (typeof product !== 'undefined' && product.option_groups.length > 0)
-	{
-		product_options(product);
-	}
-
 	//Event on change
 	$(document).on('change', '.select-product-options', function() {
 		product_options(product);
@@ -202,6 +196,11 @@ $(window).load(function() {
 		start: function(){
 			$('.slideshow').addClass('loaded');
 			$('.slideshow .flex-direction-nav li a.flex-disabled').parent('li').addClass('disabled');
+
+        	//Force first option to be triggered
+			if (typeof product !== 'undefined' && product.option_groups.length > 0) {
+				product_options(product, true);
+			}
 		}
 	});
 
@@ -230,13 +229,20 @@ function check_shipping(el)
 	}
 }
 
-function product_options(product)
+function product_options(product, onload)
 {
+	onload = typeof onload !== 'undefined' ? onload : false;
+
 	if ($('.select-product-options').length)
 	{
 		$('.add-cart').fadeTo('fast', 0.25);
 
+		var default_option = product_default_option(product);
+
 		$('.select-product-options').each(function(i) {
+			if (onload == true) {
+				$('option[value="'+ default_option[i] +'"]', this).prop('selected', true);
+			}
 			var option = $('option:selected', this);
 			window['id_variant_' + (i+1)] = option.attr('value');
 		});
@@ -290,6 +296,13 @@ function product_options(product)
 
 					stock_qty = response.stock_qty;
 				}
+
+				if (response.image) {
+					var image_index = $('.slideshow-product .flexslider .slides li a').find('img[src="' + response.image.full + '"]').parents('li').index();
+					$('.slideshow-product').flexslider(image_index);
+				}
+
+				reference = response.reference;
 			}
 
 			else
@@ -297,6 +310,7 @@ function product_options(product)
 				price_txt = 'Não disponível';
 				stock_qty = 0;
 				disable_form_product = true;
+				reference = '';
 			}
 
 			if (disable_form_product === true)
@@ -305,10 +319,10 @@ function product_options(product)
 			}
 
 			animate_updated_value('.data-product-price', price_txt, 'flash');
-	    	animate_updated_value('.data-product-stock_qty', stock_qty, 'flash');
+			animate_updated_value('.data-product-stock_qty', stock_qty, 'flash');
+			animate_updated_value('span[itemprop="sku"]', reference, 'flash');
 
 			$('.add-cart input[name="qtd"], .add-cart button[type="submit"]').prop('disabled', disable_form_product);
-
 
 		}, 'json');
 	}
@@ -351,6 +365,40 @@ function product_is_vendible(product, response)
 	{
 		return false;
 	}
+}
+
+//check product default option
+function product_default_option(product) {
+
+	var option = 'false';
+
+	for (var i = 0; i < product.options.length; i++) {
+		if (product.options[i].price_on_request === true) {
+			option = i;
+		} else {
+			if (product.stock.stock_enabled) {
+				if (product.stock.stock_backorder || product.options[i].stock > 0) {
+					option = i;
+				}
+			} else {
+				option = i;
+			}
+		}
+
+		if ($.isNumeric(option)) {
+			i = product.options.length;
+		}
+	}
+
+	if (isNaN(option)) {
+		option =0;
+	}
+
+	return option = {
+		0: product.options[option].id_variant_1,
+		1: product.options[option].id_variant_2,
+		2: product.options[option].id_variant_3
+	};
 }
 
 function animate_updated_value(selector, value, fx)

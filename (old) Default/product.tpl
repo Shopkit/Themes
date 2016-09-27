@@ -27,6 +27,7 @@ Description: Product Page
 				{% if product.images %}
 
 					<div class="row thumbs hidden-phone">
+						<div class="span1"><a href="{{ product.image.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ product.image.square }}" alt="{{ product.title }}"></a></div>
 						{% for thumb in product.images %}
 							<div class="span1"><a href="{{ thumb.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ thumb.square }}" alt="{{ product.title }}"></a></div>
 						{% endfor %}
