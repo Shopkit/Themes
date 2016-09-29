@@ -17,9 +17,12 @@ Version: 1.0
 
 		<meta name="description" content="{{ description }}">
 		<meta name="keywords" content="{{ tags }}">
-		<meta name="author" content="Shopkit">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="theme-color" content="{{ store.basecolor }}">
+
+		{% if store.show_branding %}
+			<meta name="author" content="Shopkit">
+		{% endif %}
 
 		{% if store.translate_meta %}
 			<meta name="google-translate-customization" content="{{ store.translate_meta }}">
