@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Complete order page
 #}
 
@@ -6,7 +6,7 @@ Description: Complete order page
 
 {% block content %}
 
-	<div class="container">	
+	<div class="container">
 
 		<div class="text-center margin-bottom">
 			<i class="fa fa-check fa-5x text-success"></i>
@@ -28,8 +28,8 @@ Description: Complete order page
 					{% if order.multibanco is defined  %}
 						<div class="text-center">
 							<div class="well inline-block">
-								<img src="/templates/assets/common/icons/payments/multibanco-color.png" height="45" alt="Multibanco" title="Multibanco" class="margin-bottom-md">
-								
+								<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco-color.png') }}" height="45" alt="Multibanco" title="Multibanco" class="margin-bottom-md">
+
 								<p class="text-nowrap">
 									<strong>Entidade:</strong> <span class="text-muted">{{ order.multibanco.entity }}</span>
 								</p>
@@ -56,11 +56,13 @@ Description: Complete order page
 
 				{% endif %}
 
-				<p class="text-center"><a class="btn btn-lg btn-primary" href="/"><i class="fa fa-times"></i> Fechar</a></p>
+				{% if order.payment == 'Paypal' and order.paypal_url is defined %}
+					<p class="text-center"><a href="{{ order.paypal_url  }}" target="_blank" class="btn btn-info btn-lg"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a></p>
+				{% endif %}
 
 			</div>
 		</div>
 
 	</div>
-		
+
 {% endblock %}

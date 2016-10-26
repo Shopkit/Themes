@@ -155,11 +155,11 @@ Description: Confirm order page
 							<h3 class="margin-bottom-sm bordered">Encomenda</h3>
 
 							<dl class="dl-horizontal text-left">
-								{% if store.taxes_included == false and cart.taxes > 0 %}
-									<dt>IVA</dt>
-									<dd class="text-dark price">{{ cart.taxes | money_with_sign }}</dd>
-								{% endif %}
+								<dt>Subtotal:</dt>
+								<dd class="text-dark bold price">{{ cart.subtotal | money_with_sign }}</dd>
+							</dl>
 
+							<dl class="dl-horizontal text-left">
 								<dt>Portes de envio</dt>
 								<dd class="text-dark price">{{ cart.total_shipping | money_with_sign }}</dd>
 
@@ -167,20 +167,29 @@ Description: Confirm order page
 									<dt>Desconto</dt>
 									<dd class="text-dark price">- {{ cart.discount | money_with_sign }}</dd>
 								{% endif %}
+
+								{% if store.taxes_included == false and cart.taxes > 0 %}
+									<dt>IVA</dt>
+									<dd class="text-dark price">{{ cart.taxes | money_with_sign }}</dd>
+								{% endif %}
 							</dl>
 
 							<hr>
 
-							<dl class="dl-horizontal text-left h3 margin-bottom">
+							<dl class="dl-horizontal text-left h3 margin-bottom-xs">
 								<dt>Total:</dt>
 								<dd class="text-dark bold price">{{ cart.total | money_with_sign }}</dd>
 							</dl>
 
-							<p class="margin-bottom-0 text-center"><button class="btn btn-lg btn-primary btn-block"><i class="fa fa-fw fa-check"></i> Confirmar</button></p>
+							{% if store.taxes_included %}
+								<div class="text-right">
+									<small class="text-muted">Inclui IVA a {{ cart.total_taxes | money_with_sign }}</small>
+								</div>
+							{% endif %}
+
+							<p class="margin-top margin-bottom-0 text-center"><button class="btn btn-lg btn-primary btn-block"><i class="fa fa-fw fa-check"></i> Confirmar</button></p>
 
 						</div>
-
-
 
 					</div>
 
