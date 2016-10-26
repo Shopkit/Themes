@@ -28,57 +28,63 @@ Description: Confirm order page
 	{% if cart.items %}
 		
 		{{ form_open('cart/complete', { 'class' : 'form' }) }}
-			
+
 			<table class="table table-bordered table-cart">
 				<thead>
 					<tr>
 						<th>Título</th>
-						<th>Quantidade</th>
-						<th>SubTotal</th>
+						<th class="text-right">Quantidade</th>
+						<th class="text-right">Subtotal</th>
 					</tr>
 				</thead>
-				
+
 				<tbody>
-					
-					{% for item in cart.items %} 
+					{% for item in cart.items %}
 						<tr>
 							<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
 							<td class="text-right">{{ item.qty }}</td>
-							<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
+							<td class="text-right">{{ item.subtotal | money_with_sign }}</td>
 						</tr>
 					{% endfor %}
-					
 				</tbody>
-				
+
 				<tfoot>
-					
-					{% if store.taxes_included == false and cart.taxes > 0 %}
 					<tr>
-						<td class="discount">Taxa / Imposto (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
-						<td align="right" class="discount price text-right" colspan="2">{{ cart.taxes | money_with_sign }}</td>
+						<td>Subtotal</td>
+						<td align="right" class=" bold text-right" colspan="2" style="border-left: 0;">{{ cart.subtotal | money_with_sign }}</td>
 					</tr>
-					{% endif %}
-					
+
 					<tr>
-						<td class="discount">Portes de Envio</td>
-						<td align="right" class="discount price text-right" colspan="2">{{ cart.total_shipping | money_with_sign }}</td>
+						<td>Portes de Envio</td>
+						<td align="right" class=" text-right" colspan="2" style="border-left: 0;">{{ cart.total_shipping | money_with_sign }}</td>
 					</tr>
 
 					{% if cart.discount %}
 						<tr>
 							<td class="discount">Desconto</td>
-							<td align="right" class="discount price text-right" colspan="2">- {{ cart.discount | money_with_sign }}</td>
+							<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">- {{ cart.discount | money_with_sign }}</td>
 						</tr>
 					{% endif %}
-					
+
+					{% if store.taxes_included == false and cart.taxes > 0 %}
+						<tr>
+							<td>Taxa / Imposto (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
+							<td align="right" class=" price text-right" colspan="2">{{ cart.taxes | money_with_sign }}</td>
+						</tr>
+					{% endif %}
+
 					<tr>
-						<td class="subtotal">Total Encomenda</td>
-						<td colspan="2" class="subtotal price text-right">{{ cart.total | money_with_sign }}</td>
+						<td class="subtotal" valign="middle" style="vertical-align: middle;font-size:16px;">Total Encomenda</td>
+						<td colspan="2" class="subtotal price text-right" style="font-size:16px;border-left: 0;">
+							{{ cart.total | money_with_sign }}
+
+							{% if store.taxes_included %}
+								<div style="color:#999;font-weight: normal;font-size: 10px;margin-top:5px;">Inclui IVA a {{ cart.total_taxes | money_with_sign }}</div>
+							{% endif %}
+						</td>
 					</tr>
 				</tfoot>
 			</table>
-			
-			<hr>
 
 			<div class="row">
 

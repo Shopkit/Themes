@@ -36,7 +36,7 @@ Description: Shopping cart page
 					<tr>
 						<th>Produto</th>
 						<th>Quantidade</th>
-						<th>SubTotal</th>
+						<th style="text-align:right;">Subtotal</th>
 						<th style="text-align:center;">Remover</th>
 					</tr>
 				</thead>
