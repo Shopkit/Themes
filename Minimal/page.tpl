@@ -1,3 +1,7 @@
+{#
+Description: Page
+#}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
