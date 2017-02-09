@@ -5,10 +5,8 @@ Description: Product category page
 {% extends 'base.tpl' %}
 
 {% block content %}
-	
-	{% set products_per_page = 9 %}
 
-	{% set products = products("order:#{get.order_by} category:#{category.id} limit:#{products_per_page}") %}
+	{% set products_per_page = 9 %}
 
 	{#  Parent category #}
 	{% if category.parent %}
@@ -39,7 +37,7 @@ Description: Product category page
 
 					</ol>
 				{% endif %}
-					
+
 				{% if category.description %}
 					<div>{{ category.description }}</div>
 				{% endif %}
@@ -51,15 +49,16 @@ Description: Product category page
 					{% set get = {'order_by': store.category_default_order|default('position')} %}
 				{% endif %}
 
+				{% set products = products("order:#{get.order_by} category:#{category.id} limit:#{products_per_page}") %}
+
 				{% if products %}
 					<div class="order-options">
 						<small>Ordenar por</small> &nbsp; 
-						
-						<div class="btn-group">
 
+						<div class="btn-group">
 							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
 								{% if get.order_by and order_options[get.order_by] %}
-									{{ order_options[get.order_by] }} 
+									{{ order_options[get.order_by] }}
 								{% else %}
 									{{ order_options['position'] }}
 								{% endif %}
@@ -83,10 +82,10 @@ Description: Product category page
 						<div class="panel-heading">
 							<a href="{{ parent_category.url }}" class="link-inherit">{{ parent_category.title }}</a>
 						</div>
-						
+
 						<div class="list-group">
 
-							{% for product_category in categories %} 
+							{% for product_category in categories %}
 								{% if product_category.id == parent_category.id and product_category.children %}
 									{% for children in product_category.children %}
 										<a href="{{ children.url }}" class="list-group-item {% if children.id == category.id %}active{% endif %}">

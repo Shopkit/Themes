@@ -8,6 +8,13 @@ Description: Product catalog page
 
 	{% set products_per_page = 18 %}
 
+	{#  Setup order #}
+	{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros' } %}
+
+	{% if not get.order_by in order_options|keys %}
+		{% set get = {'order_by': store.category_default_order|default('position')} %}
+	{% endif %}
+
 	{% set products = products("order:#{get.order_by} limit:#{products_per_page}") %}
 
 	<div class="container">
@@ -16,13 +23,6 @@ Description: Product catalog page
 			<div class="col-lg-3">
 
 				<h1 class="margin-top-0 margin-bottom">Todos os produtos</h1>
-
-				{#  Setup order #}
-				{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros' } %}
-
-				{% if not get.order_by in order_options|keys %}
-					{% set get = {'order_by': store.category_default_order|default('position')} %}
-				{% endif %}
 
 				{% if products %}
 					<div class="order-options">
