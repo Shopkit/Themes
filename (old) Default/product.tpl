@@ -96,20 +96,20 @@ Description: Product Page
 									{% for option in option_groups.options %}
 
 										<option value="{{ option.id }}" data-title="{{ option.title }}">
-											{{ option.title }} 
+											{{ option.title }}
 
 											{% if option.price_on_request == true %}
 												- Preço sob consulta
 											{% else %}
 
-												{% if option.price %} 
+												{% if option.price %}
 													{% set option_display_price = option.promo ? option.price_promo : option.price %}
 													- {{ option_display_price | money_with_sign }}
 												{% endif %}
 
 											{% endif %}
 										</option>
-									
+
 									{% endfor %}
 								</select>
 
@@ -126,9 +126,13 @@ Description: Product Page
 								<i class="fa fa-shopping-cart fa-lg fa-fw"></i> Comprar
 							</button>
 
-							{% if store.taxes_included == false and product.tax > 0 %}
+							{% if product.tax > 0 %}
 								<hr>
-								<span class="muted">Ao preço do produto acresce IVA de {{ product.tax }}%</span>
+								{% if store.taxes_included == false %}
+									<span class="muted">Ao preço do produto acresce IVA de {{ product.tax }}%</span>
+								{% else %}
+									<span class="muted">IVA incluído</span>
+								{% endif %}
 							{% endif %}
 
 							{% if product.stock.stock_show %}
@@ -146,12 +150,12 @@ Description: Product Page
 
 					{% elseif product.status == 3 %}
 						<div class="alert alert-info">O produto encontra-se sem stock.</div>
-					
+
 					{% elseif product.status == 4 %}
 						<div class="alert alert-info">O produto estará disponível brevemente.</div>
-					
+
 					{% endif %}
-				
+
 				{{ form_close() }}
 
 				<p itemprop="description" content="{{ description }}">{{ product.description }}</p>
