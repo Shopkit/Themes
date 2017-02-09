@@ -43,7 +43,7 @@ Description: Product Page
 					{% set possible_prices = [] %}
 
 					{% for option in product.options %}
-						{% if option.price > 0 %}
+						{% if option.active and option.price > 0 %}
 							{% set possible_prices = possible_prices|merge([option.price]) %}
 						{% endif %}
 					{% endfor %}
@@ -157,7 +157,7 @@ Description: Product Page
 											<del class="promo-price">{{ product.price | money_with_sign }}</del>
 										{% else %}
 											<span {{ itemprop_price }} class="data-product-price price">{{ product.price | money_with_sign }}</span>  &nbsp;
-											<del></del>
+											<del class="promo-price"></del>
 										{% endif %}
 
 										{% if product.tax > 0 %}
