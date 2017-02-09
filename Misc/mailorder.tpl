@@ -201,11 +201,11 @@
 
 																	{% if order.payment.type == 'on_delivery' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/contra-reembolso.png' %}
-																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.on_delivery_msg ~ '</p>' %}
+																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.on_delivery.message|nl2br ~ '</p>' %}
 
 																	{% elseif order.payment.type == 'facility_pick_up' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/levantamento.png' %}
-																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.pick_up_msg ~ '</p>' %}
+																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.pick_up.message|nl2br ~ '</p>' %}
 
 																	{% elseif order.payment.type == 'multibanco' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/multibanco.png' %}
@@ -218,7 +218,7 @@
 
 																	{% elseif order.payment.type == 'bank_transfer' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/transferencia-bancaria.png' %}
-																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ payment.bank_transfer_msg ~ '</p>' %}
+																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.bank_transfer.message|nl2br ~ '</p>' %}
 																	{% endif %}
 
 																	<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
@@ -290,21 +290,25 @@
 																<td height="20" colspan="2" align="left">&nbsp;</td>
 															</tr>
 															<tr>
-																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Envio / Transporte</td>
-																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.shipping|money_with_sign(order.currency) }}</span></td>
+																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Subtotal</td>
+																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
 															</tr>
-
-															{% if order.total_tax > 0 %}
-																<tr>
-																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Taxa (IVA)</td>
-																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
-																</tr>
-															{% endif %}
+															<tr>
+																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Envio / Transporte</td>
+																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.shipping.value|money_with_sign(order.currency) }}</span></td>
+															</tr>
 
 															{% if order.discount > 0 %}
 																<tr>
 																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Desconto</td>
 																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">- {{ order.discount|money_with_sign(order.currency) }}</span></td>
+																</tr>
+															{% endif %}
+
+															{% if order.total_tax > 0 %}
+																<tr>
+																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Taxa (IVA)</td>
+																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
 																</tr>
 															{% endif %}
 
