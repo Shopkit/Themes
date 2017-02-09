@@ -114,8 +114,12 @@ Description: Product Page
 
 			<div class="row-fluid data-product-info">
 				<div class="span6">
-					{% if store.taxes_included == false and product.tax > 0 %}
-						<p class=""><small class="muted light">Ao preço do produto acresce IVA de {{ product.tax }}%</small></p>
+					{% if product.tax > 0 %}
+						{% if store.taxes_included == false %}
+							<p class=""><small class="muted light">Ao preço do produto acresce IVA de {{ product.tax }}%</small></p>
+						{% else %}
+							<p class=""><small class="muted light">IVA incluído</small></p>
+						{% endif %}
 					{% endif %}
 				</div>
 
