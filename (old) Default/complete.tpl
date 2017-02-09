@@ -18,7 +18,9 @@ Description: Complete order page
 	<p>A sua encomenda foi registada com sucesso com o número: <strong>{{ order.id }}</strong></p>
 
 	{% if order.msg_payment %}
-		<p>{{ order.msg_payment }}</p>
+		<div class="payment-msg">
+			<p>{{ order.msg_payment }}</p>
+		</div>
 	{% endif %}
 
 	{% if order.payment == 'Multibanco' %}
@@ -27,7 +29,7 @@ Description: Complete order page
 
 		{% if order.multibanco is defined  %}
 
-			<div class="well">
+			<div class="well multibanco-data">
 				<h4>Dados para pagamento Multibanco</h4>
 				<br>
 				<p><strong>Entidade:</strong> <span class="muted">{{ order.multibanco.entity }}</span></p>
@@ -50,7 +52,9 @@ Description: Complete order page
 	{% endif %}
 
 	{% if order.payment == 'Paypal' and order.paypal_url is defined %}
-		<p style="margin-top:15px"><a href="{{ order.paypal_url  }}" target="_blank" class="btn btn-info btn-large"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a></p>
+		<div class="paypal-data">
+			<p style="margin-top:15px"><a href="{{ order.paypal_url  }}" target="_blank" class="btn btn-info btn-large"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a></p>
+		</div>
 	{% endif %}
 
 {% endblock %}
