@@ -166,6 +166,28 @@ Description: This is the base layout. It's included in every page with this code
 				<p>Não existem produtos no carrinho</p>
 			{% endif %}
 
+			<div class="payment-logos">
+                {% if store.payments.paypal.active %}
+                    <img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" height="35">
+                {% endif %}
+
+                {% if store.payments.multibanco.active %}
+                    <img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" height="35">
+                {% endif %}
+
+                {% if store.payments.on_delivery.active %}
+                    <img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" height="35">
+                {% endif %}
+
+                {% if store.payments.bank_transfer.active %}
+                    <img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" height="35">
+                {% endif %}
+
+                {% if store.payments.pick_up.active %}
+                    <img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" height="35">
+                {% endif %}
+            </div>
+
 			<div class="text-center"><a class="close" href="#" data-target=".cart">&times;</a></div>
 
 		</section>
