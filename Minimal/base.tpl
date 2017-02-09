@@ -183,23 +183,23 @@ Version: 1.0
 				</div>
 
 				<div class="payment-logos">
-					{% if payment.paypal %}
+					{% if store.payments.paypal.active %}
 						<img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" height="35" width="56">
 					{% endif %}
 
-					{% if payment.multibanco %}
+					{% if store.payments.multibanco.active %}
 						<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" height="35" width="56">
 					{% endif %}
 
-					{% if payment.on_delivery %}
+					{% if store.payments.on_delivery.active %}
 						<img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" height="35" width="56">
 					{% endif %}
 
-					{% if payment.bank_transfer %}
+					{% if store.payments.bank_transfer.active %}
 						<img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" height="35" width="56">
 					{% endif %}
 
-					{% if payment.pick_up %}
+					{% if store.payments.pick_up.active %}
 						<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" height="35" width="56">
 					{% endif %}
 				</div>

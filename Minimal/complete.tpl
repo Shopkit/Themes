@@ -18,7 +18,7 @@ Description: Complete order page
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
 
 				{% if order.msg_payment %}
-					<div class="well">
+					<div class="well payment-msg">
 						{{ order.msg_payment }}
 					</div>
 				{% endif %}
@@ -27,7 +27,7 @@ Description: Complete order page
 
 					{% if order.multibanco is defined  %}
 						<div class="text-center">
-							<div class="well inline-block">
+							<div class="well inline-block multibanco-data">
 								<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco-color.png') }}" height="45" alt="Multibanco" title="Multibanco" class="margin-bottom-md">
 
 								<p class="text-nowrap">
@@ -57,7 +57,9 @@ Description: Complete order page
 				{% endif %}
 
 				{% if order.payment == 'Paypal' and order.paypal_url is defined %}
-					<p class="text-center"><a href="{{ order.paypal_url  }}" target="_blank" class="btn btn-info btn-lg"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a></p>
+					<div class="paypal-data">
+						<p class="text-center"><a href="{{ order.paypal_url  }}" target="_blank" class="btn btn-info btn-lg"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a></p>
+					</div>
 				{% endif %}
 
 			</div>

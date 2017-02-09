@@ -17,13 +17,6 @@ Description: Payment Page
 			<li class="active">Pagamento e Transporte</li>
 		</ol>
 
-		{% if cart.free_shipping == true %}
-			<div class="callout callout-info">
-				<h4>Informação</h4>
-				<p>Os portes de envio para esta encomenda são grátis.</p>
-			</div>
-		{% endif %}
-
 		{% if errors.form %}
 			<div class="callout callout-danger">
 				<h4>Erro</h4>
@@ -60,11 +53,7 @@ Description: Payment Page
 																<h4><label for="envio_{{ method.id }}">{{ method.title }}</label></h4> <span class="text-light-gray">&mdash;</span>
 
 																<div class="price">
-																	{% if cart.free_shipping == true %}
-																		<del>{{ method.price | money_with_sign }}</del> &nbsp; {{ 0 | money_with_sign }}
-																		{% else %}
-																		{{ method.price | money_with_sign }}
-																	{% endif %}
+																	{{ method.price | money_with_sign }}
 																</div>
 
 																{% if method.description %}
@@ -92,13 +81,14 @@ Description: Payment Page
 						<div class="payment-methods">
 							<div class="row">
 
-								{% if payment.multibanco %}
+								{% if cart.payments.multibanco.active %}
+									{% set active = cart.payments.multibanco.default or user.payment == 'Multibanco' ? true : false %}
 									<div class="col-sm-4 col-md-6 col-lg-4">
 										<div class="wrapper-radio-block">
-											<div class="well radio-block text-center {% if user.payment == 'Multibanco' or user.payment == '' %}active{% endif %}">
+											<div class="well radio-block text-center {% if active %}active{% endif %}">
 												<div class="content">
 													<div class="input">
-														<input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if user.payment == 'Multibanco' or user.payment == '' %}checked{% endif %}>
+														<input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if active %}checked{% endif %}>
 													</div>
 													<div class="inner-content">
 														<div class="multibanco payment-type">
@@ -111,13 +101,14 @@ Description: Payment Page
 									</div>
 								{% endif %}
 
-								{% if payment.paypal %}
+								{% if cart.payments.paypal.active %}
+									{% set active = cart.payments.paypal.default or user.payment == 'Paypal' ? true : false %}
 									<div class="col-sm-4 col-md-6 col-lg-4">
 										<div class="wrapper-radio-block">
-											<div class="well radio-block text-center {% if user.payment == 'Paypal' %}active{% endif %}">
+											<div class="well radio-block text-center {% if active %}active{% endif %}">
 												<div class="content">
 													<div class="input">
-														<input type="radio" name="pagamento" id="paypal" value="Paypal" {% if user.payment == 'Paypal' %}checked{% endif %}>
+														<input type="radio" name="pagamento" id="paypal" value="Paypal" {% if active %}checked{% endif %}>
 													</div>
 													<div class="inner-content">
 														<div class="paypal payment-type">
@@ -131,13 +122,14 @@ Description: Payment Page
 									</div>
 								{% endif %}
 
-								{% if payment.bank_transfer %}
+								{% if cart.payments.bank_transfer.active %}
+									{% set active = cart.payments.bank_transfer.default or user.payment == 'Transferência Bancária' ? true : false %}
 									<div class="col-sm-4 col-md-6 col-lg-4">
 										<div class="wrapper-radio-block">
-											<div class="well radio-block">
+											<div class="well radio-block {% if active %}active{% endif %}">
 												<div class="content">
 													<div class="input">
-														<input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if user.payment == 'Transferência Bancária' %}checked{% endif %}>
+														<input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if active %}checked{% endif %}>
 													</div>
 													<div class="inner-content">
 														<div class="payment-type">
@@ -151,13 +143,14 @@ Description: Payment Page
 									</div>
 								{% endif %}
 
-								{% if payment.pick_up %}
+								{% if cart.payments.pick_up.active %}
+									{% set active = cart.payments.pick_up.default or user.payment == 'Levantamento nas instalações' ? true : false %}
 									<div class="col-sm-4 col-md-6 col-lg-4">
 										<div class="wrapper-radio-block">
-											<div class="well radio-block">
+											<div class="well radio-block {% if active %}active{% endif %}">
 												<div class="content">
 													<div class="input">
-														<input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if user.payment == 'Levantamento nas instalações' %}checked{% endif %}>
+														<input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if active %}checked{% endif %}>
 													</div>
 													<div class="inner-content">
 														<div class="payment-type">
@@ -171,20 +164,21 @@ Description: Payment Page
 									</div>
 								{% endif %}
 
-								{% if payment.on_delivery %}
+								{% if cart.payments.on_delivery.active %}
+									{% set active = cart.payments.on_delivery.default or user.payment == 'À Cobrança' ? true : false %}
 									<div class="col-sm-4 col-md-6 col-lg-4">
 										<div class="wrapper-radio-block">
-											<div class="well radio-block">
+											<div class="well radio-block {% if active %}active{% endif %}">
 												<div class="content">
 													<div class="input">
-														<input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if user.payment == 'À Cobrança' %}checked{% endif %}>
+														<input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if active %}checked{% endif %}>
 													</div>
 													<div class="inner-content">
 														<div class="payment-type">
 															<h4><label for="cobranca">À Cobrança</label></h4>
 															<p>
-																{% if payment.on_delivery_value > 0 %}
-																	Acresce {{ payment.on_delivery_value | money_with_sign }} aos portes de envio
+																{% if cart.payments.on_delivery.value > 0 %}
+																	Acresce {{ cart.payments.on_delivery.value | money_with_sign }} aos portes de envio
 																	{% else %}
 																	Envio e pagamento contra reembolso.
 																{% endif %}
