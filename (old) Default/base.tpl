@@ -68,7 +68,7 @@ Github: https://github.com/Shopkit/Default
 		{% endif %}
 	</style>
 	
-	<script src="{{ assets_url('js/common/modernizr-2.5.3.min.js')}}"></script>
+	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
 
 	{{ store.custom_html }}
 
@@ -257,23 +257,23 @@ Github: https://github.com/Shopkit/Default
 
 					<div class="payment-logos" style="text-align:center">
 						{% spaceless %}
-							{% if payment.paypal %}
+							{% if store.payments.paypal.active %}
 								<img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
 							{% endif %}
 
-							{% if payment.multibanco %}
+							{% if store.payments.multibanco.active %}
 								<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
 							{% endif %}
 
-							{% if payment.on_delivery %}
+							{% if store.payments.on_delivery.active %}
 								<img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
 							{% endif %}
 
-							{% if payment.bank_transfer %}
+							{% if store.payments.bank_transfer.active %}
 								<img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
 							{% endif %}
 
-							{% if payment.pick_up %}
+							{% if store.payments.pick_up.active %}
 								<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" style="margin: 0px 4px 8px 4px; width: 55px; opacity: 0.8">
 							{% endif %}
 						{% endspaceless %}
