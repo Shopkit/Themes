@@ -324,8 +324,43 @@ function product_options(product, onload)
 
 			$('.add-cart input[name="qtd"], .add-cart button[type="submit"]').prop('disabled', disable_form_product);
 
+			product_options_url();
+
 		}, 'json');
 	}
+}
+
+function product_options_url()
+{
+	$('.select-product-options').on('change', function () {
+		var pathname = window.location.pathname;
+		var origin = window.location.origin;
+		var selected_option = { 0 : null, 1 : null, 2 : null };
+		var k = 0;
+
+		$('.select-product-options').each(function(index, el) {
+			selected_option[k] = $('option:selected', this).prop('value');
+			++k;
+		});
+
+		for (var i = 0; i < product.options.length; i++) {
+			if (product.options[i].id_variant_1 == selected_option[0] && product.options[i].id_variant_2 == selected_option[1] && product.options[i].id_variant_3 == selected_option[2] ) {
+				var option = product.options[i].id;
+			}
+		}
+
+		if (option) {
+			var query = '?option=' + option;
+		}
+
+		if (query) {
+			if (window.history.replaceState) {
+				window.history.replaceState(null, null, origin + pathname + query);
+			}
+		}
+	});
+
+	return false;
 }
 
 function product_is_vendible(product, response)
@@ -368,30 +403,49 @@ function product_is_vendible(product, response)
 }
 
 //check product default option
-function product_default_option(product) {
-
+function product_default_option(product)
+{
 	var option = 'false';
+	var query = window.location.search.substring(1);
 
-	for (var i = 0; i < product.options.length; i++) {
-		if (product.options[i].price_on_request === true) {
-			option = i;
-		} else {
-			if (product.stock.stock_enabled) {
-				if (product.stock.stock_backorder || product.options[i].stock > 0) {
-					option = i;
-				}
-			} else {
+	//get query string value
+	if (query) {
+		var option_id = query.split('option=')[1];
+		option_id = option_id.split('&')[0];
+	}
+
+	//set default option from query string
+	if (typeof option_id !== 'undefined' && product.option_groups.length > 0) {
+		for (var i = 0; i < product.options.length; i++) {
+			if (product.options[i].id == option_id ) {
 				option = i;
 			}
 		}
+	} else {
+		//get default option
+		for (var i = 0; i < product.options.length; i++) {
+			if (product.options[i].active === true) {
+				if (product.options[i].price_on_request === true) {
+					option = i;
+				} else {
+					if (product.stock.stock_enabled) {
+						if (product.stock.stock_backorder || product.options[i].stock > 0) {
+							option = i;
+						}
+					} else {
+						option = i;
+					}
+				}
 
-		if ($.isNumeric(option)) {
-			i = product.options.length;
+				if ($.isNumeric(option)) {
+					i = product.options.length;
+				}
+			}
 		}
 	}
 
 	if (isNaN(option)) {
-		option =0;
+		option = 0;
 	}
 
 	return option = {
