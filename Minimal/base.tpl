@@ -120,7 +120,7 @@ Version: 1.0
 								<li class="{% if (category.id == products_category.id) %} active {% endif %} {% if products_category.children %} dropdown {% endif %} menu-{{ products_category.handle }}">
 
 									{% if products_category.children %}
-										<a class="dropdown-toggle" href="{{ products_category.url }}">
+										<a class="dropdown-toggle" href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">
 											{{ products_category.title }} <span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu" role="menu">
