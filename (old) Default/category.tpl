@@ -21,7 +21,7 @@ Description: Product category page
 		
 		{% for product in products("order:#{category_default_order} category:#{category.id} limit:9") %} 
 			  		
-			<div class="span3 product">
+			<div class="span3 product product-id-{{ product.id }}">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
 				<div class="box">
 					<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>

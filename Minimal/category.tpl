@@ -106,7 +106,7 @@ Description: Product category page
 					<div class="row">
 						{% for product in products %} 
 							<div class="col-sm-4">
-								<article class="product">
+								<article class="product product-id-{{ product.id }}">
 
 									{% if product.promo == true %}
 										<span class="badge promo">Promoção</span>

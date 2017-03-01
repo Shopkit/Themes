@@ -13,7 +13,7 @@ Description: Home Page
 		<ul class="unstyled products">
 
 			{% for product in products %}
-				<li>
+				<li class="product-id-{{ product.id }}">
 					<a href="{{ product.url }}">
 						<img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}">
 					</a>

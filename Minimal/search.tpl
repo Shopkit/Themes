@@ -24,7 +24,7 @@ Description: Search Page
 					<div class="row">
 						{% for product in products("search order:featured limit:#{products_per_page}") %}
 							<div class="col-sm-4">
-								<article class="product">
+								<article class="product product-id-{{ product.id }}">
 
 									{% if product.promo == true %}
 										<span class="badge promo">Promoção</span>

@@ -21,7 +21,7 @@ Description: Product category page
 		<ul class="unstyled products">
 
 			{% for product in products %}
-				<li>
+				<li class="product-id-{{ product.id }}">
 					<img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}">
 
 					<div class="description">

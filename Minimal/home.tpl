@@ -50,7 +50,7 @@ Description: Home Page
 			<div class="row">
 				{% for product in products('order:featured limit:9') %} 
 					<div class="col-sm-4">
-						<article class="product">
+						<article class="product product-id-{{ product.id }}">
 
 							{% if product.promo == true %}
 								<span class="badge promo">Promoção</span>
