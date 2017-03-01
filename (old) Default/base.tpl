@@ -141,7 +141,7 @@ Github: https://github.com/Shopkit/Default
     			</div>
     		</div>
     		
-    		{% if store.image_header_1 %}
+    		{% if store.images_header %}
 
 	    		<div class="slideshow-wrapper visible-desktop">
 
@@ -151,7 +151,7 @@ Github: https://github.com/Shopkit/Default
 
 		    		<div class="slideshow">
 		    			<div>
-		    				<img src="{{ store.image_header_1 }}" alt="{{ store.name }}">
+		    				<img src="{{ store.images_header[0] }}" alt="{{ store.name }}">
 		    			</div>
 		        	</div>
 		        </div>
