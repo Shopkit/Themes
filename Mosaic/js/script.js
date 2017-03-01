@@ -287,42 +287,33 @@ function product_options_url()
     return false;
 }
 
-function product_is_vendible(product, response)
+function product_is_vendible(product, stock)
 {
-	//Check if there object is not null
-	if (response)
+	//Check product stock
+	if (product.stock.stock_enabled)
 	{
-		//Check product stock
-		if (product.stock.stock_enabled)
+		if (stock > 0)
 		{
-			if (response > 0)
+			return true;
+		}
+
+		else
+		{
+			if (product.stock.stock_backorder)
 			{
 				return true;
 			}
 
 			else
 			{
-				if (product.stock.stock_backorder)
-				{
-					return true;
-				}
-
-				else
-				{
-					return false;
-				}
+				return false;
 			}
-		}
-
-		else
-		{
-			return true;
 		}
 	}
 
 	else
 	{
-		return false;
+		return true;
 	}
 }
 
