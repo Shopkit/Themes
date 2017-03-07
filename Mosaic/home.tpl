@@ -6,7 +6,7 @@ Description: Home Page
 
 {% block content %}
 
-	{% set products = products('featured limit:12') %}
+	{% set products = products('order:featured limit:12') %}
 
 	{% if products %}
 
