@@ -70,8 +70,6 @@ Github: https://github.com/Shopkit/Default
 	
 	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
 
-	{{ store.custom_html }}
-
 	{{ head_content }}
 	
 </head>

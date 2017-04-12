@@ -72,8 +72,6 @@ Version: 1.0
 		<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
 		<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.11.2/jquery.min.js"></script>
 
-		{{ store.custom_html }}
-
 		{{ head_content }}
 
 	</head>
