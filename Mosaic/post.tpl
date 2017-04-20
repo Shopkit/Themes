@@ -7,7 +7,7 @@ Description: Blog post Page
 {% block content %}
 
 	{% if blog_post.image %}
-		<div class="bg-img" style="background-image: url({{ blog_post.image }});"></div>
+		<div class="bg-img" style="background-image: url({{ blog_post.image.full }});"></div>
 		<div class="bg-mask"></div>
 	{% endif %}
 
@@ -28,7 +28,7 @@ Description: Blog post Page
 			<hr>
 
 			{% if blog_post.image %}
-				<img class="img-stretched" src="{{ blog_post.image }}" alt="{{ blog_post.title }}">
+				<img class="img-stretched" src="{{ blog_post.image.full }}" alt="{{ blog_post.title }}">
 				<br><br>
 			{% endif %}
 
