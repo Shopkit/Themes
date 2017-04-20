@@ -71,7 +71,7 @@ Github: https://github.com/Shopkit/Default
 	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
 
 	{{ head_content }}
-	
+
 </head>
 <body class="{{ css_class }} {{ product.price_on_request ? 'price-on-request' }}">
 	
@@ -170,21 +170,21 @@ Github: https://github.com/Shopkit/Default
 				    	<ul>
 				    		<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
 				    			<h4>
-				    				<a href="{{ site_url('catalog') }}">Todos os produtos</a>
+				    				<a href="{{ site_url('catalog') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i>Todos os produtos</a>
 				    			</h4>
 				    		</li>
 				    		{% for products_category in categories %} 
 				    		
 				      			<li {% if (category.id == products_category.id) %}class="active"{% endif %}>
 				      				<h4 data-toggle="collapse" data-target="#category_{{ products_category.id }}">
-				      					<a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">{{ products_category.title }}</a>
+				      					<a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}"><i class="fa fa-chevron-down" aria-hidden="true"></i>{{ products_category.title }}</a>
 				      				</h4>
 				      				
 				      				{% if products_category.children %}
 					      				<ul id="category_{{ products_category.id }}" class="collapse {% if (category.parent == products_category.id or category.id == products_category.id or category.id == products_category.id) %}in{% endif %}">
 					      					{% for children in products_category.children %}
 					      						<li {% if (category.id== children.id) %}class="active"{% endif %}>
-					      							<a href="{{ children.url }}">{{ children.title }}</a>
+					      							<a href="{{ children.url }}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>{{ children.title }}</a>
 					      						</li>
 					      					{% endfor %}
 					      				</ul>
@@ -453,7 +453,9 @@ Github: https://github.com/Shopkit/Default
 	    		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	  		</div>
 		</div>
-		<a class="btn-language visible-desktop" href="#modal-language" role="button"  data-toggle="modal"></a>
+		<a class="btn-language visible-desktop" href="#modal-language" role="button"  data-toggle="modal">
+			<i class="fa fa-globe" aria-hidden="true"></i>
+		</a>
 	{% endif %}
 	
 	<!--[if lt IE 7]>
