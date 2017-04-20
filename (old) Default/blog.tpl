@@ -26,7 +26,7 @@ Description: Blog page
 			</div>
 			
 			{% if post.image %}
-				<p class="span2"><a href="{{ post.url }}" class="box-medium"><img src="{{ post.image }}"></a></p>
+				<p class="span2"><a href="{{ post.url }}" class="box-medium"><img src="{{ post.image.thumb }}"></a></p>
 			{% endif %}
 			
 		</div>
