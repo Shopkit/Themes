@@ -20,7 +20,7 @@ Description: Blog post Page
 
 					{% if blog_post.image %}
 						<div class="image-post margin-bottom">
-							<img src="{{ blog_post.image }}" alt="{{ blog_post.title }}" title="{{ blog_post.title }}" class="img-responsive border-radius">
+							<img src="{{ blog_post.image.full }}" alt="{{ blog_post.title }}" title="{{ blog_post.title }}" class="img-responsive border-radius">
 						</div>
 					{% endif %}
 
