@@ -23,7 +23,7 @@ Description: Blog post Page
 		</div>
 			
 		{% if blog_post.image %}
-			<p class="span3"><a href="{{ blog_post.image }}" class="box-medium fancy"><img src="{{ blog_post.image }}"></a></p>
+			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium fancy"><img src="{{ blog_post.image.thumb }}" alt="{{ blog_post.title }}"></a></p>
 		{% endif %}
 			
 	</div>
@@ -43,7 +43,7 @@ Description: Blog post Page
 		</div>
 
 		<div class="span1">
-			<a href="http://pinterest.com/pin/create/button/?url={{ blog_post.url }}&media={{ blog_post.image }}&description={{ description }}" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+			<a href="http://pinterest.com/pin/create/button/?url={{ blog_post.url }}&media={{ blog_post.image.full }}&description={{ description }}" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
 		</div>
 	</div>
 
