@@ -850,6 +850,10 @@ h2, h3, h4, h5, h6 {
 		margin-top: @padding;
 		margin-bottom: @padding;
 		color: #999;
+
+		img {
+			.img-responsive;
+		}
 	}
 
 	.add-cart {
@@ -1098,6 +1102,14 @@ h1 + .breadcrumb {
 	}
 }
 
+.page-post {
+	article {
+		img {
+			.img-responsive;
+		}
+	}
+}
+
 .social-btn-share {
 	float: left;
 	height: 20px;
@@ -1229,9 +1241,11 @@ h1 + .breadcrumb {
 }
 
 //Pages
-.page-page img {
-	max-width: 100%;
-	height: auto;
+.page-page, .page-contact {
+	img {
+		max-width: 100%;
+		height: auto;
+	}
 }
 
 //Footer
