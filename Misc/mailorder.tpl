@@ -1,5 +1,4 @@
 {# Settings and variables of the e-mail template #}
-
 {% set show_logo = true %} {# Show logo #}
 {% set logo_img_url = store.logo %} {# Logo image URL. Replace store.logo with an absolute URL if you want to use another logo #}
 
@@ -8,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width-width, initial-scale=1.0" />
-		<title>E-mail order</title>
+		<title>Encomenda #{{ order.id }}</title>
 		<style type="text/css">
 			/* Based on The MailChimp Reset INLINE: Yes. */
 			/* Client-specific Styles */
@@ -71,35 +70,55 @@
 			a.link-white, .link-white a {
 				color: #ffffff;
 			}
+			/* Mediaqueries */
+			@media screen and (max-width: 768px) {
+				.table-width-wrapper {
+					width: 100%;
+					/*min-width: 380px;*/
+				}
 
+				.table-width-inner {
+					width: 95%;
+				}
+
+				.table-hz-margin {
+					width: 2.5%;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" id="backgroundTable" style="background-color: #f5f5f5;font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;font-size:14px; color:#999;">
 			<tr>
 				<td align="center" valign="top" bgcolor="#f5f5f5" style="background-color: #f5f5f5">
-					<table width="620" border="0" cellpadding="0" cellspacing="0" align="center">
+					<table width="620" border="0" cellpadding="0" cellspacing="0" align="center" class="table-width-wrapper">
 						<tbody>
 							<tr>
-								<td width="20">&nbsp;</td>
-								<td width="580">
-									<table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+								<td width="20" class="table-hz-margin">&nbsp;</td>
+								<td width="580" class="table-width-inner">
+									<table width="580" border="0" align="center" cellpadding="0" cellspacing="0" class="table-width-inner">
 										<tr>
-											<td height="60">&nbsp;</td>
+											<td height="60" class="table-vt-margin">&nbsp;</td>
 										</tr>
 										<tr>
 											<td align="center">
-
 												{% if show_logo == true and logo_img_url %}
 													<a href="/"><img src="{{ logo_img_url }}" height="60" alt="{{ store.name }}" title="{{ store.name }}" border="0" style="height:60px;"/></a>
 												{% else %}
 													<a href="/" style="font-size:40px; color: #666; text-decoration: none;">{{ store.name }}</a>
 												{% endif %}
-
 											</td>
 										</tr>
 										<tr>
-											<td height="60">&nbsp;</td>
+											<td height="30">&nbsp;</td>
+										</tr>
+										{% if is_email %}
+											<tr>
+												<td align="center" style="color:#ccc;font-size:12px;"><a href="{{ order.permalink }}" target="_blank">Não consegue ver o e-mail?</a></td>
+											</tr>
+										{% endif %}
+										<tr>
+											<td height="30">&nbsp;</td>
 										</tr>
 										<tr>
 											<td>
@@ -130,8 +149,10 @@
 																	</td>
 																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;">Encomenda enviada</span></td>
 																	<td align="right" class="link-white">
-																		{% if order.invoice_permalink %}
-																		<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
+																		{% if order.tracking_url %}
+																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																		{% elseif order.invoice_permalink %}
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -150,7 +171,9 @@
 																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;">Encomenda paga</span></td>
 																	<td align="right" class="link-white">
 																		{% if order.invoice_permalink %}
-																		<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
+																		{% elseif order.tracking_url %}
+																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -189,13 +212,10 @@
 																		<br /><span style="white-space:nowrap;">{{ order.status_description }}</span>
 																	</p>
 
-																	{% if order.shipment_method %}
-																		<p style="margin:0 0 0 0;color:#999;">
-																			<strong style="color:#666;">Envio</strong>
-																			<br />{{ order.shipment_method }}
-																		</p>
-																	{% endif %}
-
+																	<p style="margin:0 0 0 0;color:#999;">
+																		<strong style="color:#666;">Envio</strong>
+																		<br />{{ order.shipment_method ?: 'n/a' }}
+																	</p>
 																</td>
 																<td width="50%" align="right" valign="top" style="padding:30px 20px;">
 
@@ -203,7 +223,7 @@
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/contra-reembolso.png' %}
 																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.on_delivery.message|nl2br ~ '</p>' %}
 
-																	{% elseif order.payment.type == 'facility_pick_up' %}
+																	{% elseif order.payment.type == 'pick_up' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/levantamento.png' %}
 																		{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.pick_up.message|nl2br ~ '</p>' %}
 
@@ -214,7 +234,7 @@
 
 																	{% elseif order.payment.type == 'paypal' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/paypal.png' %}
-																		{% set payment_data = '<p style="margin:5px 0 5px 0"><a href="' ~ order.payment.data ~ '" target="_blank" style="display: inline-block; padding:15px 20px; line-height:100%; color:#fff; border-radius:3px; text-decoration:none; font-size:14px; background-color: #009cde;" class="link-white">Pagar via Paypal</a></p>' %}
+																		{% set payment_data = '<p style="margin:5px 0 5px 0"><a href="' ~ order.payment.data ~ '" target="_blank" style="display: inline-block; padding:10px 20px; line-height:100%; color:#fff; border-radius:3px; text-decoration:none; font-size:14px; background-color: #009cde;" class="link-white">Pagar via Paypal</a></p>' %}
 
 																	{% elseif order.payment.type == 'bank_transfer' %}
 																		{% set payment_img = 'https://drwfxyu78e9uq.cloudfront.net/templates/assets/common/icons/payments/transferencia-bancaria.png' %}
@@ -262,7 +282,7 @@
 
 																{% for product in order.products %}
 																	<tr>
-																		<td width="50"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;" border="0" /></td>
+																		<td width="50"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
 																		<td width="20">&nbsp;</td>
 																		<td valign="middle" style="font-size: 14px;line-height:24px;">
 																			<strong style="color:#666;">{{ product.title }}</strong>
@@ -321,23 +341,44 @@
 													<div style="background-color:#ffffff;border-bottom:1px solid #eee;line-height: 160%;">
 														<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;">
 															<tr>
-																<td width="50%" align="left" valign="top" style="border-right:1px solid #eee;padding:30px 20px;">
-																	<p style="margin: 0 0 10px 0; line-height:120%;">
+																<td width="50%" align="left" valign="top" style="padding:30px 20px;">
+																	<p style="margin: 0 0 10px 0; line-height:24px;">
 																		<strong style="color:#666; display:block; font-size:24px;">{{ order.client.name }}</strong>
 																	</p>
-																	<p style="margin: 0 0 20px 0;font-size:14px;line-height:24px;">
+																	<p style="margin: 0 0 0 0;font-size:14px;line-height:24px;">
 																		<a href="mailto:{{ order.client.email }}" style="text-decoration:underline;color:#333">{{ order.client.email }}</a>
 																	</p>
+																</td>
+																<td width="50%" align="left" valign="top" style="padding:30px 20px;">
 																	<p style="margin: 0 0 0 0;font-size:14px;line-height:24px;color:#999999;">
-																		<strong>Telefone:</strong> {{ order.client.phone ?: 'n/a' }}
-																		<br />
-																		<strong>Contribuinte:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
+																		<strong style="color: #666">Empresa:</strong> {{ order.client.company ?: 'n/a' }}<br>
+																		<strong style="color: #666">NIF:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
 																	</p>
 																</td>
+															</tr>
+															<tr>
+																<td colspan="2" height="1" style="border-bottom:1px solid #eee"></td>
+															</tr>
+															<tr>
+																<td width="50%" align="left" valign="top" style="padding:30px 20px;font-size:14px;line-height:24px;color:#999999;border-right:1px solid #eee;">
+																	<p style="margin:0 0 0 0;color:#666"><strong>Morada de envio</strong></p>
+																	<p style="margin:0 0 0 0">{{ order.client.delivery.address }} {{ order.client.delivery.address_extra }}</p>
+																	<p style="margin:0 0 0 0">{{ order.client.delivery.zip_code }} {{ order.client.delivery.city }}</p>
+																	<p style="margin:0 0 0 0">{{ order.client.delivery.country }}</p>
+																	<p style="margin:0 0 0 0">Telefone: {{ order.client.delivery.phone ?: 'n/a' }}</p>
+																	{% if order.tracking_url %}
+																		<p><a href="{{ order.tracking_url }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Seguir envio</a></p>
+																	{% endif %}
+																</td>
 																<td width="50%" align="left" valign="top" style="padding:30px 20px;font-size:14px;line-height:24px;color:#999999;">
-																	<p style="margin:0 0 0 0">{{ order.client.address|nl2br }}</p>
-																	<p style="margin:0 0 0 0">{{ order.client.postcode }} {{ order.client.town }}</p>
-																	<p style="margin:0 0 0 0">{{ order.client.country }}</p>
+																	<p style="margin:0 0 0 0;color:#666"><strong>Morada de facturação</strong></p>
+																	<p style="margin:0 0 0 0">{{ order.client.billing.address }} {{ order.client.billing.address_extra }}</p>
+																	<p style="margin:0 0 0 0">{{ order.client.billing.zip_code }} {{ order.client.billing.city }}</p>
+																	<p style="margin:0 0 0 0">{{ order.client.billing.country }}</p>
+																	<p style="margin:0 0 0 0">Telefone: {{ order.client.billing.phone ?: 'n/a' }}</p>
+																	{% if order.invoice_permalink %}
+																		<p><a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Ver factura</a></p>
+																	{% endif %}
 																</td>
 															</tr>
 														</table>
@@ -369,7 +410,7 @@
 												<strong>{{ store.name }}</strong><br />
 
 												{% if store.show_email %}
-												<a href="mailto:{{ store.email }}" style="color: #999">{{ store.email }}</a><br />
+													<a href="mailto:{{ store.email }}" style="color: #999">{{ store.email }}</a><br />
 												{% endif %}
 
 												{{ store.address|nl2br }}
@@ -383,24 +424,23 @@
 										</tr>
 
 										{% if store.show_branding %}
-										<tr>
-											<td height="30">&nbsp;</td>
-										</tr>
-										<tr>
-											<td align="center">
-												<div style="display:inline-block; border-top: 1px solid #ddd; padding-left:30px; padding-right:30px; padding-top:30px;">
-													<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" target="_blank"><img class="logo-footer" src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black-transparent.png" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
-												</div>
-											</td>
-										</tr>
+											<tr>
+												<td height="30">&nbsp;</td>
+											</tr>
+											<tr>
+												<td align="center">
+													<div style="display:inline-block; border-top: 1px solid #ddd; padding-left:30px; padding-right:30px; padding-top:30px;">
+														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" target="_blank"><img class="logo-footer" src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black-transparent.png" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
+													</div>
+												</td>
+											</tr>
 										{% endif %}
-
 										<tr>
-											<td height="60">&nbsp;</td>
+											<td height="60" class="table-vt-margin">&nbsp;</td>
 										</tr>
 									</table>
 								</td>
-								<td width="20">&nbsp;</td>
+								<td width="20" class="table-hz-margin">&nbsp;</td>
 							</tr>
 						</tbody>
 					</table>
