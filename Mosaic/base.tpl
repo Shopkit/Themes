@@ -58,8 +58,6 @@ Description: This is the base layout. It's included in every page with this code
 
 	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
 
-	{{ store.custom_html }}
-
 	{{ head_content }}
 
 </head>
