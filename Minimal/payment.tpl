@@ -76,123 +76,65 @@ Description: Payment Page
 							</div>
 						{% endif %}
 
-						<h3 class="margin-bottom">Pagamento</h3>
+						{% if cart.payments %}
+							<h3 class="margin-bottom">Pagamento</h3>
 
-						<div class="payment-methods">
-							<div class="row">
+							<div class="payment-methods">
+								<div class="row">
 
-								{% if cart.payments.multibanco.active %}
-									{% set active = cart.payments.multibanco.default or user.payment == 'Multibanco' ? true : false %}
-									<div class="col-sm-4 col-md-6 col-lg-4">
-										<div class="wrapper-radio-block">
-											<div class="well radio-block text-center {% if active %}active{% endif %}">
-												<div class="content">
-													<div class="input">
-														<input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if active %}checked{% endif %}>
-													</div>
-													<div class="inner-content">
-														<div class="multibanco payment-type">
-															<p><img src="/templates/assets/common/icons/payments/multibanco-color.png" height="45" alt="Multibanco" title="Multibanco"></p>
+									{% for payment in cart.payments %}
+										{% if payment.active %}
+
+	                                        {% if user.payment %}
+	                                            {% set active = user.payment == payment.title ? true : false %}
+	                                        {% else %}
+	                                            {% set active = payment.default ? true : false %}
+	                                        {% endif %}
+
+											<div class="col-sm-4 col-md-6 col-lg-4">
+												<div class="wrapper-radio-block">
+													<div class="well radio-block {% if active %}active{% endif %}">
+														<div class="content">
+															<div class="input">
+																<input type="radio" name="pagamento" id="{{ payment.alias }}" value="{{ payment.title }}" {% if active %}checked{% endif %}>
+															</div>
+															<div class="inner-content">
+																<div class="{{ payment.alias }} payment-type">
+																	{% if payment.alias == 'multibanco' %}
+																		<p><img src="/templates/assets/common/icons/payments/multibanco-color.png" height="45" alt="{{ payment.title }}" title="{{ payment.title }}"></p>
+																	{% elseif payment.alias == 'paypal' %}
+																		<img src="/templates/assets/common/icons/payments/paypal-color.png" height="35" alt="{{ payment.title }}" title="{{ payment.title }}">
+																		<p><img src="/templates/assets/common/icons/payments/paypal-financial-color.png" height="15" alt="Cartões de crédito aceites" title="Visa, Mastercard, American Express"></p>
+																	{% elseif payment.alias == 'bank_transfer' %}
+																		<h4><label for="{{ payment.alias }}">Transferência</label></h4>
+																		<p>Transferência bancária ou interbancária.</p>
+																	{% elseif payment.alias == 'pick_up' %}
+																		<h4><label for="{{ payment.alias }}">Instalações</label></h4>
+																		<p>Levantamento nas instalações. Portes grátis.</p>
+																	{% elseif payment.alias == 'on_delivery' %}
+																		<h4><label for="{{ payment.alias }}">À Cobrança</label></h4>
+																		<p>{% if payment.value > 0 %}
+																				Acresce {{ payment.value | money_with_sign }} aos portes de envio
+																			{% else %}
+																				Envio e pagamento contra reembolso.
+																			{% endif %}
+																		</p>
+																	{% endif %}
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</div>
-								{% endif %}
 
-								{% if cart.payments.paypal.active %}
-									{% set active = cart.payments.paypal.default or user.payment == 'Paypal' ? true : false %}
-									<div class="col-sm-4 col-md-6 col-lg-4">
-										<div class="wrapper-radio-block">
-											<div class="well radio-block text-center {% if active %}active{% endif %}">
-												<div class="content">
-													<div class="input">
-														<input type="radio" name="pagamento" id="paypal" value="Paypal" {% if active %}checked{% endif %}>
-													</div>
-													<div class="inner-content">
-														<div class="paypal payment-type">
-															<img src="/templates/assets/common/icons/payments/paypal-color.png" height="35" alt="Paypal" title="Paypal">
-															<p><img src="/templates/assets/common/icons/payments/paypal-financial-color.png" height="15" alt="Cartões de crédito aceites" title="Visa, Mastercard, American Express"></p>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								{% endif %}
+										{% endif %}
+									{% endfor %}
 
-								{% if cart.payments.bank_transfer.active %}
-									{% set active = cart.payments.bank_transfer.default or user.payment == 'Transferência Bancária' ? true : false %}
-									<div class="col-sm-4 col-md-6 col-lg-4">
-										<div class="wrapper-radio-block">
-											<div class="well radio-block {% if active %}active{% endif %}">
-												<div class="content">
-													<div class="input">
-														<input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if active %}checked{% endif %}>
-													</div>
-													<div class="inner-content">
-														<div class="payment-type">
-															<h4><label for="transferencia_bancaria">Transferência</label></h4>
-															<p>Transferência bancária ou interbancária.</p>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								{% endif %}
-
-								{% if cart.payments.pick_up.active %}
-									{% set active = cart.payments.pick_up.default or user.payment == 'Levantamento nas instalações' ? true : false %}
-									<div class="col-sm-4 col-md-6 col-lg-4">
-										<div class="wrapper-radio-block">
-											<div class="well radio-block {% if active %}active{% endif %}">
-												<div class="content">
-													<div class="input">
-														<input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if active %}checked{% endif %}>
-													</div>
-													<div class="inner-content">
-														<div class="payment-type">
-															<h4><label for="levantamento">Instalações</label></h4>
-															<p>Levantamento nas instalações. Portes grátis.</p>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								{% endif %}
-
-								{% if cart.payments.on_delivery.active %}
-									{% set active = cart.payments.on_delivery.default or user.payment == 'À Cobrança' ? true : false %}
-									<div class="col-sm-4 col-md-6 col-lg-4">
-										<div class="wrapper-radio-block">
-											<div class="well radio-block {% if active %}active{% endif %}">
-												<div class="content">
-													<div class="input">
-														<input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if active %}checked{% endif %}>
-													</div>
-													<div class="inner-content">
-														<div class="payment-type">
-															<h4><label for="cobranca">À Cobrança</label></h4>
-															<p>
-																{% if cart.payments.on_delivery.value > 0 %}
-																	Acresce {{ cart.payments.on_delivery.value | money_with_sign }} aos portes de envio
-																	{% else %}
-																	Envio e pagamento contra reembolso.
-																{% endif %}
-															</p>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								{% endif %}
-
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						<hr>
 
 						<div class="row">
 							<div class="col-sm-6">
