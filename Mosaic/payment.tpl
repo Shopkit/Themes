@@ -57,34 +57,34 @@ Description: Shopping cart page
 
 				{% endif %}
 
-				<div class="payment-methods">
-					<h4>Método de Pagamento</h4>
-					<br>
+				{% if cart.payments %}
+					<div class="payment-methods">
+						<h4>Pagamento</h4>
+						<br>
 
-					{% if cart.payments.multibanco.active %}
-						<label class="radio"><input type="radio" name="pagamento" id="multibanco" value="Multibanco" {% if cart.payments.multibanco.default or user.payment == 'Multibanco' %}checked{% endif %}> Multibanco</label>
-					{% endif %}
+						{% for payment in cart.payments %}
+							{% if payment.active %}
 
-					{% if cart.payments.paypal.active %}
-						<label class="radio"><input type="radio" name="pagamento" id="paypal" value="Paypal" {% if cart.payments.paypal.default or user.payment == 'Paypal' %}checked{% endif %}> Paypal</label>
-					{% endif %}
+								{% if user.payment %}
+									{% set active = user.payment == payment.title ? true : false %}
+								{% else %}
+									{% set active = payment.default ? true : false %}
+								{% endif %}
 
-					{% if cart.payments.bank_transfer.active %}
-						<label class="radio"><input type="radio" name="pagamento" id="transferencia_bancaria" value="Transferência Bancária" {% if cart.payments.bank_transfer.default or user.payment == 'Transferência Bancária' %}checked{% endif %}> Transferência Bancária</label>
-					{% endif %}
+								<label class="radio"><input type="radio" name="pagamento" id="{{ payment.alias }}" value="{{ payment.title }}" {% if active %}checked{% endif %}> {{ payment.title }}
+									{% if payment.value > 0 %}
+										<small class="muted">(Acresce <strong>{{ payment.value | money_with_sign }}</strong> aos portes de envio)</small>
+									{% endif %}
+									{% if (payment.alias == 'pick_up')  %}
+										<small class="muted">(Os portes de envio são <strong>grátis</strong>)</small>
+									{% endif %}
+								</label>
 
-					{% if cart.payments.pick_up.active %}
-						<label class="radio"><input type="radio" name="pagamento" id="levantamento" value="Levantamento nas instalações" {% if cart.payments.pick_up.default or user.payment == 'Levantamento nas instalações' %}checked{% endif %}> Levantamento nas instalações <small class="muted">(Os portes de envio são <strong>grátis</strong>)</small></label>
-					{% endif %}
-
-					{% if cart.payments.on_delivery.active %}
-						<label class="radio"><input type="radio" name="pagamento" id="cobranca" value="À Cobrança" {% if cart.payments.on_delivery.default or user.payment == 'À Cobrança' %}checked{% endif %}> À Cobrança
-							{% if cart.payments.on_delivery.value > 0 %}
-								<small class="muted">(Acresce <strong>{{ cart.payments.on_delivery.value | money_with_sign }}</strong> aos portes de envio)</small>
 							{% endif %}
-						</label>
-					{% endif %}
-				</div>
+						{% endfor %}
+
+					</div>
+				{% endif %}
 
 				<hr>
 
