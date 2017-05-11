@@ -86,6 +86,8 @@
 				}
 			}
 		</style>
+
+		{{ order_schema }}
 	</head>
 	<body>
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" id="backgroundTable" style="background-color: #f5f5f5;font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;font-size:14px; color:#999;">
