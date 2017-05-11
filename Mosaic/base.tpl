@@ -201,7 +201,7 @@ Description: This is the base layout. It's included in every page with this code
 		<section>
 
 			<ul class="unstyled list">
-				<li {% if (current_page == 'catalog') %} class="active" {% endif %}>
+				<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
 					<a href="{{ site_url('catalog') }}">Todos os produtos</a>
 				</li>
 				{% for products_category in categories %}
