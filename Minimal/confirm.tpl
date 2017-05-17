@@ -32,7 +32,7 @@ Description: Confirm order page
 
 						<h3 class="margin-top-0">Produtos</h3>
 
-						<div class="table-responsive">
+						<div class="table-responsive table-cart-responsive">
 							<table class="table table-cart table-confirm">
 								<thead>
 									<tr>

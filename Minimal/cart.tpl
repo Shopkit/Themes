@@ -29,7 +29,7 @@ Description: Shopping cart page
 
 					{{ form_open('cart/update', {'class' : 'form-inline'}) }}
 
-						<div class="table-responsive">
+						<div class="table-responsive table-cart-responsive">
 							<table class="table table-cart">
 
 								<tbody>
