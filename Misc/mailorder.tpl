@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Encomenda #{{ order.id }}</title>
 		<style type="text/css">
 			/* Based on The MailChimp Reset INLINE: Yes. */
@@ -85,6 +85,23 @@
 					width: 2.5%;
 				}
 			}
+			@media screen and (max-width: 480px) {
+                .td-payment-img-sep, .td-payment-img  {
+                    display: none !important;
+                    visibility: hidden;
+                }
+                .order-total {
+                    font-size: 20px !important;
+                    text-align: left;
+                }
+                .btn-header {
+                	padding: 10px !important;
+                }
+
+                .td-img-order-status, .img-order-status {
+                	width: 30px !important;
+                }
+            }
 		</style>
 
 		{{ order_schema }}
@@ -131,11 +148,11 @@
 														<div style="background-color:#d9534f;padding:15px 20px;border-top-left-radius: 3px;border-top-right-radius: 3px;">
 															<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
 																<tr>
-																	<td width="40"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/cancel.png" width="40" alt="canceled" border="0" /></td>
+																	<td width="40" class="td-img-order-status"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/cancel.png" width="40" alt="canceled" border="0" class="img-order-status"/></td>
 																	<td width="20">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;">Encomenda cancelada</span></td>
+																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda cancelada</span></td>
 																</tr>
 															</table>
 														</div>
@@ -145,16 +162,16 @@
 														<div style="background-color:#00d4ed;padding:15px 20px;border-top-left-radius: 3px;border-top-right-radius: 3px;">
 															<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
 																<tr>
-																	<td width="40"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/sent.png" width="40" alt="paid" border="0" /></td>
+																	<td width="40" class="td-img-order-status"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/sent.png" width="40" alt="paid" border="0" class="img-order-status"/></td>
 																	<td width="20">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;">Encomenda enviada</span></td>
+																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda enviada</span></td>
 																	<td align="right" class="link-white">
 																		{% if order.tracking_url %}
-																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
 																		{% elseif order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -166,16 +183,16 @@
 														<div style="background-color:#8dc059;padding:15px 20px;border-top-left-radius: 3px;border-top-right-radius: 3px;">
 															<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
 																<tr>
-																	<td width="40"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/check.png" width="40" alt="paid" border="0" /></td>
+																	<td width="40" class="td-img-order-status"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/check.png" width="40" alt="paid" border="0" class="img-order-status"/></td>
 																	<td width="20">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;">Encomenda paga</span></td>
+																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda paga</span></td>
 																	<td align="right" class="link-white">
 																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
 																		{% elseif order.tracking_url %}
-																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -211,7 +228,7 @@
 
 																	<p style="margin:0 0 15px 0;color:#999;">
 																		<strong style="color:#666;">Estado</strong>
-																		<br /><span style="white-space:nowrap;">{{ order.status_description }}</span>
+																		<br /><span class="order-status-description">{{ order.status_description }}</span>
 																	</p>
 
 																	<p style="margin:0 0 0 0;color:#999;">
@@ -245,14 +262,14 @@
 
 																	<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
 																		<tr>
-																			<td width="70" align="left" valign="top">
+																			<td width="70" align="left" valign="top" class="td-payment-img">
 																				{% if payment_img %}
-																					<img src="{{ payment_img }}" width="70" style="opacity:0.5;display:block" alt="{{ payment_method }}" border="0" />
+																					<img class="payment-img" src="{{ payment_img }}" width="70" style="opacity:0.5;display:block" alt="{{ payment_method }}" border="0" />
 																				{% endif %}
 																			</td>
-																			<td width="20" align="left" valign="top">&nbsp;</td>
+																			<td width="20" align="left" valign="top" class="td-payment-img-sep">&nbsp;</td>
 																			<td align="right" valign="middle" style="line-height:100%; font-size:24px; font-weight:bold; color:#000;">
-																				<p style="margin:0 0 0 0; font-size:24px; white-space:nowrap;">{{ order.total|money_with_sign(order.currency) }}</p>
+																				<p class="order-total" style="margin:0 0 0 0; font-size:24px; white-space:nowrap;">{{ order.total|money_with_sign(order.currency) }}</p>
 																			</td>
 																		</tr>
 																		<tr>
