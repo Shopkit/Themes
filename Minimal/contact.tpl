@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Contact Page
 #}
 
@@ -6,10 +6,10 @@ Description: Contact Page
 
 {% block content %}
 
-	<div class="container">	
+	<div class="container">
 
 		<h1 class="margin-top-0 margin-bottom">{{ store.page.contact.title }}</h1>
-	
+
 		{% if store.latitude and store.longitude %}
 			<div class="margin-bottom">
 				<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
@@ -19,7 +19,7 @@ Description: Contact Page
 		<div class="row">
 
 			<div class="col-sm-3">
-				
+
 				<div>
 					{% if store.show_email %}
 						<p><strong>E-mail</strong><br>{{ safe_mailto(store.email) }}</p>
@@ -34,7 +34,7 @@ Description: Contact Page
 
 					{% if store.cellphone %}
 						<p>
-							<strong>Telemovel</strong><br>
+							<strong>Telemóvel</strong><br>
 							{{ store.cellphone }}
 						</p>
 					{% endif %}
@@ -93,7 +93,7 @@ Description: Contact Page
 							<span class="fa-stack fa-lg">
 								<i class="fa fa-circle fa-stack-2x"></i>
 								<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-							</span> 
+							</span>
 							Facebook
 						</a>
 					</p>
@@ -105,7 +105,7 @@ Description: Contact Page
 							<span class="fa-stack fa-lg">
 								<i class="fa fa-circle fa-stack-2x"></i>
 								<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-							</span> 
+							</span>
 							Twitter
 						</a>
 					</p>
@@ -117,7 +117,7 @@ Description: Contact Page
 							<span class="fa-stack fa-lg">
 								<i class="fa fa-circle fa-stack-2x"></i>
 								<i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
-							</span> 
+							</span>
 							Instagram
 						</a>
 					</p>
@@ -129,7 +129,7 @@ Description: Contact Page
 							<span class="fa-stack fa-lg">
 								<i class="fa fa-circle fa-stack-2x"></i>
 								<i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
-							</span> 
+							</span>
 							Pinterest
 						</a>
 					</p>
@@ -148,22 +148,22 @@ Description: Contact Page
 					<div>
 						<div class="form-group">
 							<label for="name">Nome</label>
-							<input type="text" class="form-control" id="name" name="name" placeholder="O seu nome" required>
+							<input type="text" class="form-control" id="name" name="name" placeholder="O seu nome" value="{{ store.page.contact.form.name|default(user.name) }}" required>
 						</div>
 
 						<div class="form-group">
 							<label for="email">E-mail</label>
-							<input type="email" class="form-control" id="email" name="email" placeholder="Endereço de e-mail" required>
+							<input type="email" class="form-control" id="email" name="email" placeholder="Endereço de e-mail" value="{{ store.page.contact.form.email|default(user.email) }}" required>
 						</div>
 
 						<div class="form-group">
 							<label for="subject">Assunto</label>
-							<input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto do contacto" value="{% if not notices.contact_form_success %}{{ get.p }}{% endif %}" required>
+							<input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto do contacto" value="{{ store.page.contact.form.subject|default(get.p) }}" required>
 						</div>
 
 						<div class="form-group">
 							<label for="message">Mensagem</label>
-							<textarea required class="form-control" id="message" name="message" placeholder="" rows="10">{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
+							<textarea required class="form-control" id="message" name="message" placeholder="" rows="10">{% if not events.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre #{get.p}" }}{% endif %}</textarea>
 						</div>
 
 						<div class="form-group">

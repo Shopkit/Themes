@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Home Page
 #}
 
@@ -31,7 +31,7 @@ Description: Home Page
 				<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 				<div class="flexslider">
 					<ul class="slides">
-						{% for image_header in store.images_header %} 
+						{% for image_header in store.images_header %}
 							<li class="slide" style="background-image:url({{ image_header }})"></li>
 						{% endfor %}
 					</ul>
@@ -46,9 +46,9 @@ Description: Home Page
 		{% endif %}
 
 		<div class="products">
-
 			<div class="row">
-				{% for product in products('order:featured limit:9') %} 
+
+				{% for product in products('order:featured limit:9') %}
 					<div class="col-sm-4">
 						<article class="product product-id-{{ product.id }}">
 
@@ -56,7 +56,7 @@ Description: Home Page
 								<span class="badge promo">Promoção</span>
 							{% endif %}
 
-							<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400">
+							<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
 
 							<div class="product-info">
 								<a class="product-details" href="{{ product.url }}">
@@ -77,7 +77,7 @@ Description: Home Page
 									</div>
 								</a>
 							</div>
-							
+
 						</article>
 					</div>
 				{% else %}
@@ -90,5 +90,5 @@ Description: Home Page
 		</div>
 
 	</div>
-									
-{% endblock %}									
+
+{% endblock %}

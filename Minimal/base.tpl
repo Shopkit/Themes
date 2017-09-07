@@ -1,7 +1,7 @@
 {#
 Template Name: Minimal
 Author: Shopkit
-Version: 1.0
+Version: 3.0
 #}
 
 <!DOCTYPE html>
@@ -52,7 +52,7 @@ Version: 1.0
 		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name }}">
 
 		<link href="//fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic" rel="stylesheet">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 		<link href="{{ store.assets.css }}" rel="stylesheet">
 
 		<style>.dropdown:hover .dropdown-menu { display: block;}</style>
@@ -80,11 +80,43 @@ Version: 1.0
 
 		<header>
 
-			{% if store.notice %}
-				<div class="store-notice">
-					{{ store.notice }}
+			<div class="store-notice clearfix">
+				{% if store.notice %}
+					<div class="small store-notice-text">
+						{{ store.notice }}
+					</div>
+				{% endif %}
+
+				{{ form_open(site_url('search'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
+					<div class="form-group">
+						<div class="search-form hidden">
+							<input type="search" name="q" class="form-control input-sm" placeholder="Pesquisa" required>
+						</div>
+
+					</div>
+					<button type="submit" class="btn-search btn btn-link"><i class="fa fa-fw fa-search"></i></button>
+				{{ form_close() }}
+
+				<div class="user-auth">
+					{% if store.settings.cart.users_registration != 'disabled' %}
+						{% if user.is_logged_in %}
+							<div class="user-loggedin">
+								<a href="{{ site_url('account') }}" class="link-account"><i class="fa fa-fw fa-user"></i> Olá {{ user.name|first_word }}</a>
+								<ul class="dropdown-menu" role="menu">
+									<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> Encomendas</a></li>
+									<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> Dados de cliente</a></li>
+									<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> Wishlist</a></li>
+									<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> Sair</a></li>
+								</ul>
+							</div>
+						{% else %}
+							<a href="#signin" class="trigger-shopkit-auth-modal link-signin"><i class="fa fa-fw fa-sign-in"></i> Login</a>
+						{% endif %}
+					{% endif %}
+
+					<a href="{{ site_url('cart') }}" class="link-cart"><i class="fa fa-fw fa-shopping-cart"></i> {{ cart.subtotal | money_with_sign }}</a>
 				</div>
-			{% endif %}
+			</div>
 
 			{# Begin logo #}
 			{% if store.logo %}
@@ -104,8 +136,6 @@ Version: 1.0
 							<span class="sr-only">Toggle navigation</span>
 							<i class="fa fa-bars"></i>
 						</button>
-
-						<a href="{{ site_url('cart') }}" class="btn-cart-mobile"><i class="fa fa-fw fa-shopping-cart"></i> {{ cart.subtotal | money_with_sign }}</a>
 
 					</div>
 
@@ -133,19 +163,7 @@ Version: 1.0
 									{% endif %}
 								</li>
 							{% endfor %}
-
-							<li class="link-cart"><a href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ cart.subtotal | money_with_sign }}</a></li>
 						</ul>
-
-						{{ form_open(site_url('search'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
-							<div class="form-group">
-								<div class="search-form hidden">
-									<input type="search" name="q" id=""search class="form-control input-sm" placeholder="Pesquisa">
-								</div>
-
-							</div>
-							<button type="submit" class="btn-search btn btn-link" data-toggle="toggle" data-target=".search-form"><i class="fa fa-search"></i></button>
-						{{ form_close() }}
 
 					</div>
 
@@ -217,6 +235,235 @@ Version: 1.0
 		</footer>
 		{# End Footer #}
 
+		{# Events #}
+		{% if events.wishlist %}
+			<div class="modal fade" id="wishlist-modal" tabindex="-1" role="dialog" aria-labelledby="wishlist-modalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-body">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<div class="text-center">
+								{% if events.wishlist.added %}
+									<i class="fa fa-heart fa-4x text-light-gray"></i>
+									<h3 class="text-muted">O produto foi adicionado à wishlist</h3>
+								{% elseif events.wishlist.removed %}
+									<i class="fa fa-heart-o fa-4x text-light-gray"></i>
+									<h3 class="text-muted">O produto foi removido da wishlist</h3>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				$(document).ready(function(){
+					$('#wishlist-modal').modal('show');
+				});
+			</script>
+		{% endif %}
+
+		{% if events.cart %}
+			<div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+							<div class="text-center">
+
+								{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
+
+									{% if events.cart.stock_qty %}
+										<i class="fa fa-ban fa-4x text-light-gray"></i>
+										<h3 class="text-muted">Não existe stock suficiente do produto</h3>
+									{% endif %}
+
+									{% if events.cart.stock_sold_single %}
+										<i class="fa fa-ban fa-4x text-light-gray"></i>
+										<h4 class="text-muted">Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ events.cart.stock_sold_single }}</strong></h4>
+									{% endif %}
+
+									{% if events.cart.no_stock %}
+										<i class="fa fa-ban fa-4x text-light-gray"></i>
+										<h3 class="text-muted">Existem produtos que não têm stock suficiente</h3>
+									{% endif %}
+
+								{% else %}
+
+									{% if events.cart.added %}
+										<i class="fa fa-check fa-4x text-light-gray"></i>
+										<h3 class="text-muted">O produto foi adicionado ao carrinho</h3>
+									{% elseif events.cart.error %}
+										<i class="fa fa-times fa-4x text-light-gray"></i>
+										<h3 class="text-muted">O produto não foi adicionado ao carrinho</h3>
+									{% elseif events.cart.updated %}
+										<i class="fa fa-refresh fa-4x text-light-gray"></i>
+										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
+									{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items %}
+										<i class="fa fa-refresh fa-4x text-light-gray"></i>
+										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
+										{% if events.cart.session_updated_items %}
+											<h4 class="text-left margin-top">Produtos adicionados</h4>
+											<ul class="text-left">
+												{% for product in events.cart.session_updated_items %}
+													<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
+												{% endfor %}
+											</ul>
+										{% endif %}
+										{% if events.cart.session_not_updated_items %}
+											<h4 class="text-left margin-top">Produtos não adicionados</h4>
+											<ul class="text-left">
+												{% for product in events.cart.session_not_updated_items %}
+													<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
+												{% endfor %}
+											</ul>
+										{% endif %}
+									{% elseif events.cart.deleted %}
+										<i class="fa fa-trash-o fa-4x text-light-gray"></i>
+										<h3 class="text-muted">O produto foi removido do carrinho.</h3>
+									{% endif %}
+
+								{% endif %}
+
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							{% if events.cart.added or events.cart.session_updated_items or events.cart.session_not_updated_items %}
+								<button type="button" class="btn btn-default" data-dismiss="modal">Continuar a comprar</button>
+								<a href="{{ site_url('cart') }}" class="btn btn-gray">Ver carrinho</a>
+							{% else %}
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							{% endif %}
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<script>
+				$(document).ready(function(){
+					$('#cart-modal').modal('show');
+				});
+			</script>
+		{% endif %}
+
+		{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_removal %}
+			<div class="modal fade" id="newsletter-modal" tabindex="-1" role="dialog" aria-labelledby="newsletter-modalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+							<div class="text-center">
+								{% if events.newsletter_error %}
+									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
+									<h3 class="text-muted">Não foi possível efectuar o registo na newsletter:</h3>
+									<p>{{ events.newsletter_error }}</p>
+								{% endif %}
+
+								{% if events.newsletter_status_success %}
+									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
+									<h3 class="text-muted">O seu e-mail foi inscrito com sucesso.</h3>
+								{% endif %}
+
+								{% if events.newsletter_status_error %}
+									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
+									<h3 class="text-muted">O seu e-mail já se encontra inscrito na nossa newsletter.</h3>
+								{% endif %}
+
+								{% if events.newsletter_removal %}
+									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
+									<h3 class="text-muted">Newsletter</h3>
+									<p>{{ events.newsletter_removal }}</p>
+								{% endif %}
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<script>
+				$(document).ready(function(){
+					$('#newsletter-modal').modal('show');
+				});
+			</script>
+		{% endif %}
+
+		{% if events.paypal_success %}
+			<div class="modal fade" id="paypal-modal" tabindex="-1" role="dialog" aria-labelledby="paypal-modalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+							<div class="text-center">
+								<i class="fa  fa-paypal fa-4x text-light-gray"></i>
+								<h3 class="text-muted">O pagamento Paypal foi registado e processado com sucesso.</h3>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<script>
+				$(document).ready(function(){
+					$('#paypal-modal').modal('show');
+				});
+			</script>
+		{% endif %}
+
+		{% if events.contact_form_success or events.contact_form_errors %}
+			<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+							<div class="text-center">
+								{% if events.contact_form_success %}
+									<i class="fa fa-envelope fa-4x text-light-gray"></i>
+									<h3 class="text-muted">A sua mensagem foi enviada com sucesso.</h3>
+									<p>Obrigado pelo contacto.</p>
+								{% endif %}
+
+								{% if events.contact_form_errors %}
+									<i class="fa fa-envelope fa-4x text-light-gray"></i>
+									<h3 class="text-muted">Não foi possivel enviar a sua mensagem:</h3>
+									<p>{{ events.contact_form_errors }}</p>
+								{% endif %}
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<script>
+				$(document).ready(function(){
+					$('#contact-modal').modal('show');
+				});
+			</script>
+		{% endif %}
+
 		{% if apps.google_translate %}
 			<button class="btn btn-default btn-lang" data-toggle="modal" data-target="#language-switch"><i class="fa fa-language"></i></button>
 
@@ -236,208 +483,6 @@ Version: 1.0
 					</div>
 				</div>
 			</div>
-		{% endif %}
-
-
-		{# Events #}
-		{% if notices.cart %}
-
-			<div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-
-						<div class="modal-body">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-							<div class="text-center">
-
-								{% if notices.cart.stock_qty or notices.cart.stock_sold_single or notices.cart.no_stock %}
-
-									{% if notices.cart.stock_qty %}
-										<i class="fa fa-ban fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Não existe stock suficiente do produto</h3>
-									{% endif %}
-
-									{% if notices.cart.stock_sold_single %}
-										<i class="fa fa-ban fa-4x text-light-gray"></i>
-										<h4 class="text-muted">Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ notices.cart.stock_sold_single }}</strong></h4>
-									{% endif %}
-
-									{% if notices.cart.no_stock %}
-										<i class="fa fa-ban fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Existem produtos que não têm stock suficiente</h3>
-									{% endif %}
-
-								{% else %}
-
-									{% if notices.cart.added %}
-										<i class="fa fa-check fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O produto foi adicionado ao carrinho</h3>
-									{% elseif notices.cart.error %}
-										<i class="fa fa-times fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O produto não foi adicionado ao carrinho</h3>
-									{% elseif notices.cart.updated %}
-										<i class="fa fa-refresh fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
-									{% elseif notices.cart.deleted %}
-										<i class="fa fa-trash-o fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O produto foi removido do carrinho.</h3>
-									{% endif %}
-
-								{% endif %}
-
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							{% if notices.cart.added %}
-								<button type="button" class="btn btn-default" data-dismiss="modal">Continuar a comprar</button>
-								<a href="{{ site_url('cart') }}" class="btn btn-gray">Ver carrinho</a>
-							{% else %}
-								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-							{% endif %}
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-			<script>
-				$(document).ready(function(){
-					$('#cart-modal').modal('show');
-				});
-			</script>
-
-		{% endif %}
-
-		{% if notices.newsletter_error or notices.newsletter_status_success or notices.newsletter_status_error or notices.newsletter_removal %}
-
-			<div class="modal fade" id="newsletter-modal" tabindex="-1" role="dialog" aria-labelledby="newsletter-modalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-
-						<div class="modal-body">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-							<div class="text-center">
-
-								<div class="modal-body">
-									{% if notices.newsletter_error %}
-										<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Não foi possível efectuar o registo na newsletter:</h3>
-										<p>{{ notices.newsletter_error }}</p>
-									{% endif %}
-
-									{% if notices.newsletter_status_success %}
-										<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O seu e-mail foi inscrito com sucesso.</h3>
-									{% endif %}
-
-									{% if notices.newsletter_status_error %}
-										<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O seu e-mail já se encontra inscrito na nossa newsletter.</h3>
-									{% endif %}
-
-									{% if notices.newsletter_removal %}
-										<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Newsletter</h3>
-										<p>{{ notices.newsletter_removal }}</p>
-									{% endif %}
-								</div>
-
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-			<script>
-				$(document).ready(function(){
-					$('#newsletter-modal').modal('show');
-				});
-			</script>
-
-		{% endif %}
-
-		{% if notices.paypal_success %}
-
-			<div class="modal fade" id="paypal-modal" tabindex="-1" role="dialog" aria-labelledby="paypal-modalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-
-						<div class="modal-body">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-							<div class="text-center">
-								<div class="modal-body">
-									<i class="fa  fa-paypal fa-4x text-light-gray"></i>
-									<h3 class="text-muted">O pagamento Paypal foi registado e processado com sucesso.</h3>
-								</div>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-			<script>
-				$(document).ready(function(){
-					$('#paypal-modal').modal('show');
-				});
-			</script>
-
-		{% endif %}
-
-		{% if notices.contact_form_success or notices.contact_form_errors %}
-
-			<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-
-						<div class="modal-body">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-							<div class="text-center">
-								<div class="modal-body">
-									{% if notices.contact_form_success %}
-										<i class="fa fa-envelope fa-4x text-light-gray"></i>
-										<h3 class="text-muted">A sua mensagem foi enviada com sucesso.</h3>
-										<p>Obrigado pelo contacto.</p>
-									{% endif %}
-
-									{% if notices.contact_form_errors %}
-										<i class="fa fa-envelope fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Não foi possivel enviar a sua mensagem:</h3>
-										<p>{{ notices.contact_form_errors }}</p>
-									{% endif %}
-
-								</div>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-			<script>
-				$(document).ready(function(){
-					$('#contact-modal').modal('show');
-				});
-			</script>
-
 		{% endif %}
 
 		{# //End Events #}

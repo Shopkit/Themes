@@ -33,7 +33,7 @@ Description: Payment Page
 						{% if cart.shipping_methods %}
 							<div class="shipping-methods">
 								<h3 class="margin-top-0">Transporte</h3>
-								<p class="margin-bottom text-light-gray">{{ user.country }}</p>
+								<p class="margin-bottom text-light-gray">{{ user.delivery.country }}</p>
 
 								<div class="row">
 

@@ -19,121 +19,269 @@ Description: Order data form page
 		{% if errors.form %}
 			<div class="callout callout-danger">
 				<h4>Erro</h4>
-				<p>{{ errors.form }}</p>
+				{{ errors.form }}
 			</div>
 		{% endif %}
 
 		{{ form_open('cart/post/payment', {'role': 'form'}) }}
 
+			<input type="hidden" name="user-auth-data" value="true">
+
 			<div class="row">
 				<div class="col-md-8 col-lg-8">
 
-					<div class="row">
-						<div class="col-sm-7">
-							<div class="form-group">
-								<label for="nome">Nome <small class="text-light-gray normal">(*)</small></label>
-								<input type="text" name="nome" id="nome" class="form-control" value="{{ user.name }}" required>
+					{% if not user.is_logged_in %}
+						{% if store.settings.cart.users_registration == 'optional' %}
+							<div class="well">
+								Já tem uma conta? <a href="#signin" class="trigger-shopkit-auth-modal">Faça Login</a>.
 							</div>
-						</div>
-
-						<div class="col-sm-5">
-							<div class="form-group">
-								<label for="contribuinte">Contribuinte</label>
-								<input type="text" name="contribuinte" id="contribuinte" class="form-control" value="{{ user.tax_id }}">
+						{% elseif store.settings.cart.users_registration == 'required' %}
+							<div class="well">
+								Para prosseguir com a compra deverá fazer <a href="#signin" class="trigger-shopkit-auth-modal">login ou registar-se</a>.
 							</div>
-						</div>
-					</div>
+						{% endif %}
+					{% endif %}
 
-					<br>
+					{% if store.settings.cart.users_registration != 'required' or user.is_logged_in %}
 
-					<div class="row">
-						<div class="col-sm-7">
-							<div class="form-group">
-								<label for="email">E-mail <small class="text-light-gray normal">(*)</small></label>
-								<input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required>
+						{% if user.is_logged_in %}
+							{# If user is logged in, no need to show the form #}
+							<div class="row">
+								<div class="col-sm-6">
+									<h3>Dados de cliente</h3>
+									{{ user.email }}<br>
+									NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+									Empresa: {{ user.company ? user.company : 'n/a' }}
+								</div>
 							</div>
-						</div>
 
-						<div class="col-sm-5">
-							<div class="form-group">
-								<label for="telefone">Telefone</label>
-								<input type="text" name="telefone" id="telefone" class="form-control" value="{{ user.phone }}">
+							<div class="row">
+								<div class="col-sm-6">
+									<h3>Morada de envio</h3>
+									{% if user.delivery.address %}
+										<p>
+											{{ user.delivery.name }}<br>
+											{{ user.delivery.address }} {{ user.delivery.address_extra }}<br>
+											{{ user.delivery.zip_code }} {{ user.delivery.city }}<br>
+											{{ user.delivery.country }}
+										</p>
+										<p>
+											{{ user.delivery.phone ? 'Telefone: ' ~ user.delivery.phone : '' }}
+										</p>
+									{% else %}
+										<p>Não tem nenhuma morada de envio definida.</p>
+									{% endif %}
+									<a href="{{ site_url('account/profile') }}">Editar</a>
+								</div>
+								<div class="col-sm-6">
+									<h3>Morada de facturação</h3>
+									{% if user.billing.address %}
+										<p>
+											{{ user.billing.name }}<br>
+											{{ user.billing.address }} {{ user.billing.address_extra }}<br>
+											{{ user.billing.zip_code }} {{ user.billing.city }}<br>
+											{{ user.billing.country }}
+										</p>
+										<p>
+											{{ user.billing.phone ? 'Telefone: ' ~ user.billing.phone : '' }}
+										</p>
+									{% else %}
+										<p>Não tem nenhuma morada de facturação definida.</p>
+									{% endif %}
+									<a href="{{ site_url('account/profile') }}">Editar</a>
+								</div>
 							</div>
-						</div>
-					</div>
+						{% else %}
 
-					<br>
+							<h3 class="margin-bottom text-gray light">Dados de cliente</h3>
 
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label for="morada">Morada <small class="text-light-gray normal">(*)</small></label>
-								<textarea  class="form-control" cols="80" rows="4" id="morada" name="morada" placeholder="Introduza a morada onde quer receber a encomenda" required>{{ user.address }}</textarea>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label for="email">E-mail <small class="text-light-gray normal">(*)</small></label>
+										<input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
+							<div class="row">
+								{% if store.settings.cart.field_company != 'hidden' %}
+									<div class="col-sm-8">
+										<div class="form-group">
+											<label for="company">Empresa {{ store.settings.cart.field_company == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
+											<input type="text" name="company" id="company" class="form-control" value="{{ user.company }}" placeholder="{{ store.settings.cart.field_company == 'optional' ? 'Opcional' }}" {{ store.settings.cart.field_company == 'required' ? 'required' }}>
+										</div>
+									</div>
+								{% endif %}
 
-					<br>
-
-					<div class="row">
-
-						<div class="col-sm-3">
-							<div class="form-group">
-								<label for="cp">Código Postal <small class="text-light-gray normal">(*)</small></label>
-								<input type="text" name="cp" id="cp" class="form-control" value="{{ user.zip_code }}" required>
+								{% if store.settings.cart.field_fiscal_id != 'hidden' %}
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label for="fiscal_id">NIF {{ store.settings.cart.field_fiscal_id == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
+											<input type="text" name="fiscal_id" id="fiscal_id" class="form-control" value="{{ user.fiscal_id }}" placeholder="{{ store.settings.cart.field_fiscal_id == 'optional' ? 'Opcional' }}" {{ store.settings.cart.field_fiscal_id == 'required' ? 'required' }}>
+										</div>
+									</div>
+								{% endif %}
 							</div>
-						</div>
 
-						<div class="col-sm-5">
-							<div class="form-group">
-								<label for="localidade">Localidade <small class="text-light-gray normal">(*)</small></label>
-								<input type="text" name="localidade" id="localidade" class="form-control" value="{{ user.city }}" required>
+							<h3 class="margin-bottom text-gray light">Morada de envio</h3>
+
+							<div class="delivery-info">
+								<div class="row">
+									<div class="col-sm-8">
+										<div class="form-group">
+											<label for="delivery_name">Nome <small class="text-light-gray normal">(*)</small></label>
+											<input type="text" name="delivery_name" id="delivery_name" class="form-control" value="{{ user.delivery.name }}">
+										</div>
+									</div>
+									{% if store.settings.cart.field_delivery_phone != 'hidden' %}
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label for="delivery_phone">Telefone {{ store.settings.cart.field_delivery_phone == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
+												<input type="text" name="delivery_phone" id="delivery_phone" class="form-control" value="{{ user.delivery.phone }}" placeholder="{{ store.settings.cart.field_delivery_phone == 'optional' ? 'Opcional' }}">
+											</div>
+										</div>
+									{% endif %}
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="delivery_address">Morada <small class="text-light-gray normal">(*)</small></label>
+											<div class="row">
+												<div class="col-sm-8">
+													<input type="text" id="delivery_address" class="form-control" placeholder="Endereço" name="delivery_address" value="{{ user.delivery.address }}" data-places="route" required>
+												</div>
+												<div class="col-sm-4">
+													<input type="text" class="form-control" placeholder="Nr., Andar, etc. (opcional)" name="delivery_address_extra" id="delivery_address_extra" value="{{ user.delivery.address_extra }}" autocomplete="off">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label for="delivery_zip_code">Código Postal <small class="text-light-gray normal">(*)</small></label>
+											<input type="text" name="delivery_zip_code" id="delivery_zip_code" class="form-control" value="{{ user.delivery.zip_code }}" data-places="postal_code" required>
+										</div>
+									</div>
+									<div class="col-sm-5">
+										<div class="form-group">
+											<label for="delivery_city">Localidade <small class="text-light-gray normal">(*)</small></label>
+											<input type="text" name="delivery_city" id="delivery_city" class="form-control" value="{{ user.delivery.city }}" data-places="locality" required>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label for="delivery_country">País <small class="text-light-gray normal">(*)</small></label>
+											<select name="delivery_country" id="delivery_country" class="form-control" required>
+												{% for key, country in countries %}
+													<option value="{{ key }}" {% if user.delivery.country_code == key %} selected {% endif %}>{{ country }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
 
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="pais">País <small class="text-light-gray normal">(*)</small></label>
-								<select name="pais" id="pais" class="form-control" required>
-									{% for key, country in countries %}
-										<option value="{{ key }}" {% if user.country_code == key %} selected {% endif %}>{{ country }}</option>
-									{% endfor %}
-								</select>
+							<h3 class="margin-bottom text-gray light">Morada de facturação</h3>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="billing_info_same_delivery" id="billing_info_same_delivery" value="1" {% if not user.billing.same_as_delivery is same as(false) %} checked {% endif %} data-target=".billing-info">
+									A morada de facturação é igual à morada de envio
+								</label>
 							</div>
-						</div>
+							<div class="{% if not user.billing.same_as_delivery is same as(false) %}hidden{% endif %} billing-info">
+								<div class="row">
+									<div class="col-sm-8">
+										<div class="form-group">
+											<label for="billing_name">Nome <small class="text-light-gray normal">(*)</small></label>
+											<input type="text" name="billing_name" id="billing_name" class="form-control" value="{{ user.billing.name }}">
+										</div>
+									</div>
+									{% if store.settings.cart.field_billing_phone != 'hidden' %}
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label for="billing_phone">Telefone {{ store.settings.cart.field_billing_phone == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
+												<input type="text" name="billing_phone" id="billing_phone" class="form-control" value="{{ user.billing.phone }}" placeholder="{{ store.settings.cart.field_billing_phone == 'optional' ? 'Opcional' }}">
+											</div>
+										</div>
+									{% endif %}
+								</div>
 
-					</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="billing_address">Morada <small class="text-light-gray normal">(*)</small></label>
+											<div class="row">
+												<div class="col-sm-8">
+													<input type="text" id="billing_address" class="form-control" placeholder="Endereço" name="billing_address" value="{{ user.billing.address }}" data-places="route">
+												</div>
+												<div class="col-sm-4">
+													<input type="text" class="form-control" placeholder="Nr., Andar, etc. (opcional)" name="billing_address_extra" id="billing_address_extra" value="{{ user.billing.address_extra }}">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 
-					<br>
-
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label for="observacoes">Observações <small class="text-light-gray normal">(opcional)</small></label>
-								<textarea cols="80" rows="4" class="form-control" id="observacoes" name="observacoes" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.notes }}</textarea>
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label for="billing_zip_code">Código Postal <small class="text-light-gray normal">(*)</small></label>
+											<input type="text" name="billing_zip_code" id="billing_zip_code" class="form-control" value="{{ user.billing.zip_code }}" data-places="postal_code">
+										</div>
+									</div>
+									<div class="col-sm-5">
+										<div class="form-group">
+											<label for="billing_city">Localidade <small class="text-light-gray normal">(*)</small></label>
+											<input type="text" name="billing_city" id="billing_city" class="form-control" value="{{ user.billing.city }}" data-places="locality">
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label for="billing_country">País <small class="text-light-gray normal">(*)</small></label>
+											<select name="billing_country" id="billing_country" class="form-control">
+												{% for key, country in countries %}
+													<option value="{{ key }}" {% if user.billing.country_code == key %} selected {% endif %}>{{ country }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
 							</div>
 
 							{% if apps.newsletter %}
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1">
+										<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}>
 										Pretendo registar-me na newsletter
 									</label>
 								</div>
 							{% endif %}
 
-							<footer class="clearfix">
-								<div class="pull-left steps hidden-xs">
-									Passo 1 de 3
-								</div>
-								<div class="pull-right">
-									<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
-								</div>
-							</footer>
+						{% endif %}
 
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group margin-top">
+									<label for="observations">Observações <small class="text-light-gray normal">(opcional)</small></label>
+									<textarea cols="80" rows="4" class="form-control" id="observations" name="observations" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.observations }}</textarea>
+								</div>
+
+								<footer class="clearfix">
+									<div class="pull-left steps hidden-xs">
+										Passo 1 de 3
+									</div>
+									<div class="pull-right">
+										<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
+									</div>
+								</footer>
+
+							</div>
 						</div>
-					</div>
-
+					{% endif %}
 
 				</div>
 

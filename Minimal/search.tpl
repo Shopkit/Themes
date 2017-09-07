@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Search Page
 #}
 
@@ -8,7 +8,7 @@ Description: Search Page
 
 	{% set products_per_page = 9 %}
 
-	<div class="container">	
+	<div class="container">
 
 		<div class="row">
 
@@ -20,8 +20,8 @@ Description: Search Page
 			<div class="col-sm-12 col-md-9">
 
 				<div class="products">
-
 					<div class="row">
+
 						{% for product in products("search order:featured limit:#{products_per_page}") %}
 							<div class="col-sm-4">
 								<article class="product product-id-{{ product.id }}">
@@ -30,7 +30,7 @@ Description: Search Page
 										<span class="badge promo">Promoção</span>
 									{% endif %}
 
-									<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400">
+									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
 
 									<div class="product-info">
 										<a class="product-details" href="{{ product.url }}">
@@ -51,7 +51,7 @@ Description: Search Page
 											</div>
 										</a>
 									</div>
-									
+
 								</article>
 							</div>
 						{% else %}
@@ -62,7 +62,7 @@ Description: Search Page
 
 					</div>
 				</div>
-				
+
 			</div>
 
 		</div>

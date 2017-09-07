@@ -21,7 +21,7 @@ Description: Confirm order page
 		{% if errors.form %}
 			<div class="callout callout-danger">
 				<h4>Erro</h4>
-				<p>{{ errors.form }}</p>
+				{{ errors.form }}
 			</div>
 		{% endif %}
 
@@ -33,7 +33,7 @@ Description: Confirm order page
 						<h3 class="margin-top-0">Produtos</h3>
 
 						<div class="table-responsive table-cart-responsive">
-							<table class="table table-cart table-confirm">
+							<table class="table table-cart table-confirm margin-bottom-0">
 								<thead>
 									<tr>
 										<th colspan="2">Produto</th>
@@ -55,7 +55,7 @@ Description: Confirm order page
 											<td class="text-right">
 												{{ item.qty }}
 											</td>
-											<td class="text-right">
+											<td class="text-right price">
 												{{ item.subtotal | money_with_sign }}
 											</td>
 										</tr>
@@ -65,77 +65,73 @@ Description: Confirm order page
 							</table>
 						</div>
 
-						<div class="well">
+						<div class="row">
+							<div class="col-sm-6">
+								<h3>Pagamento</h3>
+								<p>{{ user.payment }}</p>
+							</div>
+							<div class="visible-xs margin-bottom"></div>
+							<div class="col-sm-6">
+								{% if user.shipping_method %}
+									<h3>Transporte</h3>
+									<p>{{ user.shipping_method.title }}</p>
+								{% endif %}
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-6">
+								<h3>Dados de cliente</h3>
+								{{ user.email }}<br>
+								NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+								Empresa: {{ user.company ? user.company : 'n/a' }}
+							</div>
+						</div>
+
+						<div class="confirm-data">
 							<div class="row">
 								<div class="col-sm-6">
-									<h3>Pagamento</h3>
-									<p>{{ user.payment }}</p>
+									<h3>Morada de envio</h3>
+									<p>
+										{{ user.delivery.name }}<br>
+										{{ user.delivery.address }} {{ user.delivery.address_extra }}<br>
+										{{ user.delivery.zip_code }} {{ user.delivery.city }}<br>
+										{{ user.delivery.country }}
+									</p>
+									<p>
+										{{ user.delivery.phone ? 'Telefone: ' ~ user.delivery.phone : '' }}
+									</p>
 								</div>
 								<div class="visible-xs margin-bottom"></div>
 								<div class="col-sm-6">
-									{% if user.shipping_method %}
-										<h3>Transporte</h3>
-										<p>{{ user.shipping_method.title }}</p>
-									{% endif %}
+									<h3>Morada de facturação</h3>
+									<p>
+										{{ user.billing.name }}<br>
+										{{ user.billing.address }} {{ user.billing.address_extra }}<br>
+										{{ user.billing.zip_code }} {{ user.billing.city }}<br>
+										{{ user.billing.country }}
+									</p>
+									<p>
+										{{ user.billing.phone ? 'Telefone: ' ~ user.billing.phone : '' }}
+									</p>
 								</div>
 							</div>
 						</div>
 
-						<div class="well">
-
-							<h3 class="margin-bottom-md">Dados de Envio</h3>
-
-							<div class="confirm-data">
-
-								<div class="row margin-bottom-sm">
-									<div class="col-sm-6">
-										<p><strong>Nome</strong><br>{{ user.name }}</p>
-									</div>
-									<div class="col-sm-6">
-										<p><strong>Morada</strong><br>{{ user.address|nl2br }}</p>
-									</div>
-								</div>
-
-								<div class="row margin-bottom-sm">
-									<div class="col-sm-6">
-										<p><strong>E-mail</strong><br>{{ user.email }}</p>
-									</div>
-									<div class="col-sm-6">
-										<p><strong>Código Postal</strong><br>{{ user.zip_code }}</p>
-									</div>
-								</div>
-
-								<div class="row margin-bottom-sm">
-									<div class="col-sm-6">
-										<p><strong>Nr. Contribuinte</strong><br>{{ user.tax_id ?: 'n/a' }}</p>
-									</div>
-									<div class="col-sm-6">
-										<p><strong>Localidade</strong><br>{{ user.city }}</p>
-									</div>
-								</div>
-
-								<div class="row margin-bottom-sm">
-									<div class="col-sm-6">
-										<p><strong>Telefone</strong><br>{{ user.phone ?: 'n/a' }}</p>
-									</div>
-									<div class="col-sm-6">
-										<p><strong>País</strong><br>{{ user.country ?: 'n/a' }}</p>
-									</div>
-								</div>
-
-								<p class="margin-bottom-0"><strong>Observações</strong><br>{{ user.notes ?: 'n/a' }}</p>
-							</div>
-						</div>
+						{% if user.observations %}
+							<h3>Observações</h3>
+							<p>{{ user.observations|nl2br }}</p>
+						{% endif %}
 
 						{% if user.custom_field %}
-						    <div class="well">
-						        {% for custom_fields in user.custom_field %}
-						            {% set custom_field = custom_fields|json_decode %}
-						            <h3 class="margin-bottom-md">{{ custom_field.title }}</h3>
-						            <p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
-						            {{ loop.last ? '' : '<hr>' }}
-						        {% endfor %}
-						    </div>
+							<div class="well">
+								{% for custom_fields in user.custom_field %}
+									{% set custom_field = custom_fields|json_decode %}
+									<h3 class="margin-bottom-md">{{ custom_field.title }}</h3>
+									<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+									{{ loop.last ? '' : '<hr>' }}
+								{% endfor %}
+							</div>
 						{% endif %}
 
 						<footer class="clearfix hidden-xs hidden-sm">
@@ -184,6 +180,25 @@ Description: Confirm order page
 							{% if store.taxes_included %}
 								<div class="text-right">
 									<small class="text-muted">Inclui IVA a {{ cart.total_taxes | money_with_sign }}</small>
+								</div>
+							{% endif %}
+
+							{% if not user.is_logged_in and (store.settings.cart.page_terms or store.settings.cart.page_privacy) %}
+								<hr>
+								<div class="accept_terms checkbox">
+									<label>
+										<input type="checkbox" name="accept_terms" id="accept_terms" value="1" required>
+										Li e concordo com
+										{% if store.settings.cart.page_terms %}
+											os <a href="{{ store.settings.cart.page_terms.url }}" target="_blank">termos e condições</a>
+										{% endif %}
+
+										{% if store.settings.cart.page_terms and store.settings.cart.page_privacy %}e com{% endif %}
+
+										{% if store.settings.cart.page_privacy %}
+											a <a href="{{ store.settings.cart.page_privacy.url }}" target="_blank">política de privacidade</a>
+										{% endif %}
+									</label>
 								</div>
 							{% endif %}
 

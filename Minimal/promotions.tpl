@@ -8,18 +8,18 @@ Description: Promotions Page
 
 	{% set products_per_page = 9 %}
 
-	<div class="container">	
+	<div class="container">
 
 		<h1 class="margin-top-0 margin-bottom">Promoções</h1>
 
 		<div class="products">
-
 			<div class="row">
-				{% for product in products("on_sale limit:#{products_per_page}") %} 
+
+				{% for product in products("on_sale limit:#{products_per_page}") %}
 					<div class="col-sm-4">
 						<article class="product product-id-{{ product.id }}">
 
-							<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400">
+							<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
 
 							<div class="product-info">
 								<a class="product-details" href="{{ product.url }}">
@@ -40,7 +40,7 @@ Description: Promotions Page
 									</div>
 								</a>
 							</div>
-							
+
 						</article>
 					</div>
 				{% else %}
@@ -51,7 +51,7 @@ Description: Promotions Page
 
 			</div>
 		</div>
-		
+
 		<nav class="text-center">
 			{{ pagination("on_sale limit:#{products_per_page}") }}
 		</nav>

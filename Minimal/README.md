@@ -1,5 +1,5 @@
-### Minimal 
+### Minimal theme
 
 Clean and minimalistic grid theme for modern online stores.
 
-http://minimal.shopk.it/
+https://minimal.shopk.it/

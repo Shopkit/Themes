@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Product category page
 #}
 
@@ -102,9 +102,9 @@ Description: Product category page
 
 			<div class="col-lg-9">
 				<div class="products margin-top-0">
-
 					<div class="row">
-						{% for product in products %} 
+
+						{% for product in products %}
 							<div class="col-sm-4">
 								<article class="product product-id-{{ product.id }}">
 
@@ -112,7 +112,7 @@ Description: Product category page
 										<span class="badge promo">Promoção</span>
 									{% endif %}
 
-									<img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400">
+									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
 
 									<div class="product-info">
 										<a class="product-details" href="{{ product.url }}">
@@ -133,7 +133,7 @@ Description: Product category page
 											</div>
 										</a>
 									</div>
-									
+
 								</article>
 							</div>
 						{% else %}
@@ -150,14 +150,8 @@ Description: Product category page
 				</nav>
 
 			</div>
-
 		</div>
 
-		
-
-		
-
 	</div>
-
 
 {% endblock %}
