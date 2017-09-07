@@ -381,6 +381,7 @@
 															<tr>
 																<td width="50%" align="left" valign="top" style="padding:30px 20px;font-size:14px;line-height:24px;color:#999999;border-right:1px solid #eee;">
 																	<p style="margin:0 0 0 0;color:#666"><strong>Morada de envio</strong></p>
+																	<p style="margin:0 0 0 0">{{ order.client.delivery.name }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.delivery.address }} {{ order.client.delivery.address_extra }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.delivery.zip_code }} {{ order.client.delivery.city }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.delivery.country }}</p>
@@ -391,6 +392,7 @@
 																</td>
 																<td width="50%" align="left" valign="top" style="padding:30px 20px;font-size:14px;line-height:24px;color:#999999;">
 																	<p style="margin:0 0 0 0;color:#666"><strong>Morada de facturação</strong></p>
+																	<p style="margin:0 0 0 0">{{ order.client.billing.name }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.billing.address }} {{ order.client.billing.address_extra }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.billing.zip_code }} {{ order.client.billing.city }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.billing.country }}</p>
