@@ -1,3 +1,0 @@
-### Old default theme
-
-#### Deprecated 

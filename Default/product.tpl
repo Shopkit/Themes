@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Product Page
 #}
 
@@ -10,7 +10,7 @@ Description: Product Page
 		//Javascript object with product information
 		var product = {{ product|json_encode }};
 	</script>
-	
+
 	<article itemscope itemtype="http://schema.org/Product">
 
 		<ul class="breadcrumb">
@@ -78,15 +78,15 @@ Description: Product Page
 				{{ form_open_cart(product.id, { 'class' : 'well form-inline form-cart add-cart' }) }}
 
 					<h4>Adicionar ao carrinho</h4>
-					
+
 					{% if product.reference %}
 						<h6><small>Referência: <span itemprop="sku">{{ product.reference }}</span></small></h6>
 					{% endif %}
-					
+
 					<br>
-					
+
 					{% if product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
-						
+
 						{% if product.option_groups %}
 							{% for option_groups in product.option_groups %}
 
@@ -129,7 +129,7 @@ Description: Product Page
 							{% if product.tax > 0 %}
 								<hr>
 								{% if store.taxes_included == false %}
-									<span class="muted">Ao preço do produto acresce IVA de {{ product.tax }}%</span>
+									<span class="muted">Ao preço acresce IVA a {{ product.tax }}%</span>
 								{% else %}
 									<span class="muted">IVA incluído</span>
 								{% endif %}
@@ -143,7 +143,7 @@ Description: Product Page
 						</div>
 
 						<div class="data-product-on-request">
-							<a class="btn btn-inverse price-on-request" href="{{ site_url('contatos') }}?p={{ product.title }}">
+							<a class="btn btn-inverse price-on-request" href="{{ site_url("contatos?p=") ~ "Produto #{product.title}"|url_encode }}">
 								<i class="fa fa-envelope-o fa-lg fa-fw"></i> Contactar
 							</a>
 						</div>
@@ -154,6 +154,16 @@ Description: Product Page
 					{% elseif product.status == 4 %}
 						<div class="alert alert-info">O produto estará disponível brevemente.</div>
 
+					{% endif %}
+
+					{% if user.is_logged_in %}
+						<div class="wishlist margin-top-sm">
+							{% if not product.wishlist.status %}
+								<a href="{{ product.wishlist.add_url }}" class="text-muted"><i class="fa fa-heart fa-fw"></i> Adicionar à wishlist</a>
+							{% else %}
+								<a href="{{ product.wishlist.remove_url }}" class="text-muted"><i class="fa fa-heart-o fa-fw"></i> Remover da wishlist</a>
+							{% endif %}
+						</div>
 					{% endif %}
 
 				{{ form_close() }}

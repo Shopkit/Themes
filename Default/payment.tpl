@@ -20,7 +20,7 @@ Description: Payment Page
 		<div class="alert alert-error">
 			<button type="button" class="close" data-dismiss="alert">×</button>
 			<h5>Erro</h5>
-			<p>{{ errors.form }}</p>
+			{{ errors.form }}
 		</div>
 	{% endif %}
 
@@ -31,7 +31,7 @@ Description: Payment Page
 			{% if cart.shipping_methods %}
 
 				<div class="shipping-methods">
-					<h4>Transporte <small>({{ user.country }})</small></h4>
+					<h4>Transporte <small>({{ user.delivery.country }})</small></h4>
 					<br>
 
 					{% for method in cart.shipping_methods %}

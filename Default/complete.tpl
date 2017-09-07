@@ -14,7 +14,7 @@ Description: Complete order page
 	<h1>Encomenda registada</h1>
 	<br>
 
-	<p><strong>Obrigado {{ user.name }},</strong></p>
+	<p><strong>Obrigado {{ user.delivery.name }},</strong></p>
 	<p>A sua encomenda foi registada com sucesso com o número: <strong>{{ order.id }}</strong></p>
 
 	{% if order.msg_payment %}
