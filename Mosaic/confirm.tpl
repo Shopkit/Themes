@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Confirm order page
 #}
 
@@ -18,8 +18,8 @@ Description: Confirm order page
 				Confirmação
 			</p><br>
 
-			<h1>Confirmação</h1>	
-				
+			<h1>Confirmação</h1>
+
 			<hr>
 
 			{% if errors.form %}
@@ -29,9 +29,9 @@ Description: Confirm order page
 					<p>{{ errors.form }}</p>
 				</div>
 			{% endif %}
-		
+
 			{% if cart.items %}
-				
+
 				{{ form_open('cart/complete', { 'class' : 'form' }) }}
 
 					<table class="table table-bordered table-cart">
@@ -92,77 +92,109 @@ Description: Confirm order page
 					</table>
 
 					<div class="row-fluid">
-
-						<div class="span4">
+						<div class="span6">
 							<h4>Pagamento</h4>
-							<br>
-							<p>{{ user.payment }}</p>
+							{{ user.payment }}
 						</div>
 
 						{% if user.shipping_method %}
-						<div class="span4 offset1">
-							<h4>Transporte</h4>
-							<br>
-							<p>{{ user.shipping_method.title }}</p>
+							<div class="span6">
+								<h4>Transporte</h4>
+								{{ user.shipping_method.title }}
 						</div>
 						{% endif %}
-
 					</div>
-					
-					<hr>
-					
-					<h4>Dados de Envio</h4>
-					<br>
-					
+
 					<div class="row-fluid">
-						
-						<div class="span5">
-							<strong>Nome</strong><br>{{ user.name }}<br><br>
-							<strong>E-mail</strong><br>{{ user.email }}<br><br>
-							<strong>Nr. Contribuinte</strong><br>{{ user.tax_id }}<br><br>
-							<strong>Telefone</strong><br>{{ user.phone }}
+						<div class="span4">
+							<h4 class="margin-top">Dados de cliente</h4>
+							{{ user.email }}<br>
+							NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+							Empresa: {{ user.company ? user.company : 'n/a' }}
 						</div>
-						
-						<div class="span5 offset1">
-							<strong>Morada</strong><br>{{ user.address }}<br><br>
-							<strong>Código Postal</strong><br>{{ user.zip_code }}<br><br>
-							<strong>Localidade</strong><br>{{ user.city }}<br><br>
-							<strong>País</strong><br>{{ user.country }}
-						</div>
-						
 					</div>
 
-					<br>
-					<strong>Observações</strong><br>{{ user.notes }}
-					
+					<div class="confirm-data">
+						<div class="row-fluid">
+							<div class="span6">
+								<h4 class="margin-top">Morada de envio</h4>
+								<p>
+									{{ user.delivery.name }}<br>
+									{{ user.delivery.address }} {{ user.delivery.address_extra }}<br>
+									{{ user.delivery.zip_code }} {{ user.delivery.city }}<br>
+									{{ user.delivery.country }}
+								</p>
+								<p>
+									{{ user.delivery.phone ? 'Telefone: ' ~ user.delivery.phone : '' }}
+								</p>
+							</div>
+
+							<div class="span6">
+								<h4 class="margin-top">Morada de facturação</h4>
+								<p>
+									{{ user.billing.name }}<br>
+									{{ user.billing.address }} {{ user.billing.address_extra }}<br>
+									{{ user.billing.zip_code }} {{ user.billing.city }}<br>
+									{{ user.billing.country }}
+								</p>
+								<p>
+									{{ user.billing.phone ? 'Telefone: ' ~ user.billing.phone : '' }}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					{% if user.observations %}
+						<h4>Observações</h4>
+						<p>{{ user.observations|nl2br }}</p>
+					{% endif %}
+
 					<hr>
 
 					{% if user.custom_field %}
-				        {% for custom_fields in user.custom_field %}
-				            {% set custom_field = custom_fields|json_decode %}
-				            <h4>{{ custom_field.title }}</h4>
-				            <p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
-				            {{ loop.last ? '' : '<hr>' }}
-				        {% endfor %}
-					    <hr>
+						{% for custom_fields in user.custom_field %}
+							{% set custom_field = custom_fields|json_decode %}
+							<h4>{{ custom_field.title }}</h4>
+							<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+							{{ loop.last ? '' : '<hr>' }}
+						{% endfor %}
+						<hr>
 					{% endif %}
-					
+
+					{% if not user.is_logged_in and (store.settings.cart.page_terms or store.settings.cart.page_privacy) %}
+						<div class="accept_terms checkbox">
+							<label>
+								<input type="checkbox" name="accept_terms" id="accept_terms" value="1" required>
+								Li e concordo com
+								{% if store.settings.cart.page_terms %}
+									os <a href="{{ store.settings.cart.page_terms.url }}" target="_blank">termos e condições</a>
+								{% endif %}
+
+								{% if store.settings.cart.page_terms and store.settings.cart.page_privacy %}e com{% endif %}
+
+								{% if store.settings.cart.page_privacy %}
+									a <a href="{{ store.settings.cart.page_privacy.url }}" target="_blank">política de privacidade</a>
+								{% endif %}
+							</label>
+						</div>
+						<hr>
+					{% endif %}
+
 					<button type="submit" class="button" style="width:200px">
 						<i class="fa fa-chevron-right"></i>
 						<span>Confirmar Encomenda</span>
 					</button> &nbsp; &bull; &nbsp; <a href="{{ site_url('cart') }}">Editar Carrinho</a>
-					
+
 				{{ form_close() }}
-					
+
 			{% else %}
-					
+
 				<p>Não existem produtos no carrinho.</p>
-					
+
 			{% endif %}
 
-			
 		</section>
 
 	</div>
-		
+
 {% endblock %}

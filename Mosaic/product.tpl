@@ -1,6 +1,20 @@
-{# 
+{#
 Description: Product Page
 #}
+
+{% macro wishlist_block(product, user) %}
+	{% if user.is_logged_in %}
+		<div class="wishlist">
+			{% if not product.wishlist.status %}
+				<a href="{{ product.wishlist.add_url }}"><i class="fa fa-heart fa-fw fa-lg"></i></a>
+			{% else %}
+				<a href="{{ product.wishlist.remove_url }}"><i class="fa fa-heart-o fa-fw fa-lg"></i></a>
+			{% endif %}
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% import _self as product_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -85,7 +99,7 @@ Description: Product Page
 									{% if option.active %}
 										{% set option_display_price = option.promo ? option.price_promo : option.price %}
 
-										<option value="{{ option.id }}" data-price="{{ option.price | money_with_sign }}" data-promo="{{ option.promo ? 'true' : 'false' }}" data-price-promo="{{ option.price_promo | money_with_sign }}" data-stock="{{ option.stock }}" {% if  product.stock.stock_enabled and not product.stock.stock_backorder and option.stock <= 0 and not option.price_on_request   %}disabled{% endif %} data-title="{{ option.title }}" data-request="{{ option.price_on_request ? 'true' : 'false' }}" data-reference="{{ option.reference }}" data-image="{{ option.image.full }}">
+										<option value="{{ option.id }}" data-id_variant_1="{{ option.id_variant_1 }}" data-id_variant_2="{{ option.id_variant_2 }}" data-id_variant_3="{{ option.id_variant_3 }}" {% if product.stock.stock_enabled and not product.stock.stock_backorder and option.stock <= 0 and not option.price_on_request %}disabled{% endif %}>
 											{{ option.title }} &ndash; {{ option.price_on_request == true ? 'Preço sob consulta' : option_display_price | money_with_sign }}
 										</option>
 									{% endif %}
@@ -93,6 +107,8 @@ Description: Product Page
 								{% endfor %}
 							</select>
 						{% endif %}
+
+						{{ product_macros.wishlist_block(product, user) }}
 
 						<div class="data-product-info">
 							<button type="submit" class="btn btn-link pull-right">Adicionar ao Carrinho</button>
@@ -105,9 +121,17 @@ Description: Product Page
 					</div>
 
 				{% elseif product.status == 3 %}
-					<h4>O produto encontra-se sem stock.</h4>
+					<div class="product-not-vendible">
+						<h4>O produto encontra-se sem stock.</h4>
+
+						{{ product_macros.wishlist_block(product, user) }}
+					</div>
 				{% elseif product.status == 4 %}
-					<h4>O produto estará disponível brevemente.</h4>
+					<div class="product-not-vendible">
+						<h4>O produto estará disponível brevemente.</h4>
+
+						{{ product_macros.wishlist_block(product, user) }}
+					</div>
 				{% endif %}
 
 			{{ form_close() }}
@@ -116,7 +140,7 @@ Description: Product Page
 				<div class="span6">
 					{% if product.tax > 0 %}
 						{% if store.taxes_included == false %}
-							<p class=""><small class="muted light">Ao preço do produto acresce IVA de {{ product.tax }}%</small></p>
+							<p class=""><small class="muted light">Ao preço acresce IVA a {{ product.tax }}%</small></p>
 						{% else %}
 							<p class=""><small class="muted light">IVA incluído</small></p>
 						{% endif %}

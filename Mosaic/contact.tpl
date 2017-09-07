@@ -1,24 +1,24 @@
-{# 
+{#
 Description: Contact Page
 #}
 
 {% extends 'base.tpl' %}
 
 {% block content %}
-	
+
 	<div class="content">
 
 		<article class="page">
 
 			<h1>{{ store.page.contact.title }}</h1>
-				
+
 			<hr>
 
 			{% if store.latitude and store.longitude %}
 				<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
-			{% endif %}
 
-			<hr>
+				<hr>
+			{% endif %}
 
 			<h3>{{ store.name }}</h3>
 			<br>
@@ -44,13 +44,13 @@ Description: Contact Page
 					{% endif %}
 
 					{% if store.cellphone %}
-						<h5>Telemovel</h5>
+						<h5>Telemóvel</h5>
 						<p>{{ store.cellphone }}</p><br>
 					{% endif %}
 				</div>
 
 			</div>
-			
+
 			{% if store.page.contact.content %}
 				<hr>
 				{{ store.page.contact.content }}
@@ -62,40 +62,36 @@ Description: Contact Page
 			<br>
 
 			{{ form_open('contact_form', 'class="contact-form" id="contact-form"') }}
-			
+
 				<label for="name">Nome <small class="muted">(*)</small></label>
-				<input type="text" name="name" id="name" class="input-block-level" required>
+				<input type="text" name="name" id="name" class="input-block-level" placeholder="O seu nome" value="{{ store.page.contact.form.name|default(user.name) }}" required>
 				<br><br>
-				
+
 				<label for="email">E-mail <small class="muted">(*)</small></label>
-				<input type="email" name="email" id="email" class="input-block-level" required>
+				<input type="email" name="email" id="email" class="input-block-level" placeholder="Endereço de e-mail" value="{{ store.page.contact.form.email|default(user.email) }}" required>
 				<br><br>
-				
+
 				<label for="subject">Assunto <small class="muted">(*)</small></label>
-				<input type="text" name="subject" id="subject" class="input-block-level" value="{% if not notices.contact_form_success %}{{ get.p }}{% endif %}" required>
+				<input type="text" name="subject" id="subject" class="input-block-level" placeholder="Assunto do contacto" value="{{ store.page.contact.form.subject|default(get.p) }}" required>
 				<br><br>
-				
+
 				<label for="message">Mensagem <small class="muted">(*)</small></label>
-				<textarea rows="6" class="input-block-level" id="message" name="message" required>{% if not notices.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre o produto #{get.p}" }}{% endif %}</textarea>
-				
-				<br>
+				<textarea rows="6" class="input-block-level" id="message" name="message" required>{% if not events.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre #{get.p}" }}{% endif %}</textarea>
 
-				<div class="g-recaptcha" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
-
-				<br>
+				<div class="g-recaptcha margin-top margin-bottom" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
 
 				<button type="submit" class="button" style="width:175px">
 					<span>Enviar Mensagem</span>
 					<i class="fa fa-envelope"></i>
 				</button>
-				
+
 			{{ form_close() }}
 
 			{% if apps.facebook_page %}
 				<hr>
 				<div class="fb-like-box" data-width="690" data-height="250" data-href="{{ apps.facebook_page.facebook_url }}" data-show-faces="true" data-show-border="false" data-stream="false" data-header="false"></div>
 			{% endif %}
-			
+
 		</article>
 
 	</div>

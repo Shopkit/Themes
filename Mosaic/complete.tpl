@@ -13,7 +13,7 @@ Description: Complete order page
 			<h1>Encomenda registada</h1>
 			<hr>
 
-			<strong>Obrigado {{ user.name }},</strong><br>
+			<strong>Obrigado {{ user.delivery.name }},</strong><br>
 			A sua encomenda foi registada com sucesso com o número: <strong>{{ order.id }}</strong><br><br>
 
 			{% if order.msg_payment %}
@@ -22,11 +22,9 @@ Description: Complete order page
 				</div>
 			{% endif %}
 
-			<br><br>
+			<br>
 
 			{% if order.payment == 'Multibanco' %}
-
-				<br>
 
 				{% if order.multibanco is defined  %}
 

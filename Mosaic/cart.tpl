@@ -1,13 +1,12 @@
-{# 
+{#
 Description: Shopping cart page
 #}
 
 {% extends 'base.tpl' %}
 
 {% block content %}
-	
-	<div class="content">
 
+	<div class="content">
 		<section class="page">
 
 			<p class="breadcrumbs">
@@ -16,17 +15,17 @@ Description: Shopping cart page
 			</p><br>
 
 			<h1>Carrinho de Compras</h1>
-				
+
 			<hr>
 
 			{% if cart.items %}
 
-				{% if notices.cart.no_stock %}
+				{% if events.cart.no_stock %}
 					<div class="alert">
 						<h5>Aviso</h5>
 						<p>Os seguintes produtos não foram atualizados por falta de stock:</p>
 						<ul>
-							{% for key in notices.cart.no_stock %}
+							{% for key in events.cart.no_stock %}
 								<li>{{ cart.items[key].title }}</li>
 							{% endfor %}
 						</ul>
@@ -34,7 +33,7 @@ Description: Shopping cart page
 				{% endif %}
 
 				{{ form_open('cart/update') }}
-						
+
 					<table class="table table-bordered table-cart">
 						<thead>
 							<tr>
@@ -44,10 +43,10 @@ Description: Shopping cart page
 								<th style="text-align:center;">Remover</th>
 							</tr>
 						</thead>
-								
+
 						<tbody>
-									
-						{% for item in cart.items %} 
+
+						{% for item in cart.items %}
 							<tr>
 								<td>{{ item.title }}</td>
 								<td><div class="form-inline"><input class="span1" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" class="btn-small"><i class="fa fa-refresh"></i></button></div></td>
@@ -55,11 +54,10 @@ Description: Shopping cart page
 								<td style="text-align:center;"><a href="{{ item.remove_link }}" class="btn-small"><i class="fa fa-trash-o"></i></a></td>
 							</tr>
 						{% endfor %}
-									
+
 						</tbody>
-								
+
 						<tfoot>
-							
 							<tr>
 								<td class="subtotal">Subtotal Encomenda</td>
 								<td colspan="2" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
@@ -67,7 +65,7 @@ Description: Shopping cart page
 							</tr>
 						</tfoot>
 					</table>
-					
+
 					<p>
 						<a class="button" href="{{ site_url('cart/data') }}">
 							<i class="fa fa-chevron-right"></i>
@@ -75,18 +73,15 @@ Description: Shopping cart page
 						</a>
 					</p>
 
-						
 				{{ form_close() }}
 
 			{% else %}
-					
+
 				<p>Não existem produtos no carrinho.</p>
-						
+
 			{% endif %}
 
-			
 		</section>
-
 	</div>
-		
+
 {% endblock %}

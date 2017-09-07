@@ -1,7 +1,7 @@
 {#
 Template Name: Mosaic
 Author: Shopkit
-Version: 1.2
+Version: 3.0
 Description: This is the base layout. It's included in every page with this code: {% extends 'base.tpl' %}
 #}
 
@@ -57,6 +57,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
+	<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.9.1/jquery.min.js"></script>
 
 	{{ head_content }}
 
@@ -67,9 +68,21 @@ Description: This is the base layout. It's included in every page with this code
 
 		<header>
 
+			{% if store.settings.cart.users_registration != 'disabled' %}
+				{% if user.is_logged_in %}
+					<a href="{{ site_url('account') }}" class="link-account btn-slide" data-target=".account"><i class="fa fa-user"></i></a>
+				{% else %}
+					<a href="#signin" class="trigger-shopkit-auth-modal link-signin"><i class="fa fa-sign-in"></i></a>
+				{% endif %}
+			{% endif %}
+
 			<a href="{{ site_url('cart') }}" class="btn-cart btn-slide" data-target=".cart">
 				<span>{{ cart.item_count }}</span>
 				<i class="fa fa-shopping-cart"></i>
+			</a>
+
+			<a href="#" class="btn-navbar">
+				<i class="fa fa-bars"></i>
 			</a>
 
 			{% if apps.newsletter %}
@@ -77,10 +90,6 @@ Description: This is the base layout. It's included in every page with this code
 					<i class="fa fa-envelope"></i>
 				</a>
 			{% endif %}
-
-			<a href="#" class="btn-navbar">
-				<i class="fa fa-bars"></i>
-			</a>
 
 			<div class="inner-header">
 
@@ -122,6 +131,7 @@ Description: This is the base layout. It's included in every page with this code
 
 			<nav class="social-nav">
 				<ul class="unstyled">
+					{% if apps.newsletter %}<li><a href="#" class="btn-newsletter btn-slide" data-target=".newsletter"><i class="fa fa-envelope"></i></a></li>{% endif %}
 					{% if store.facebook %}<li><a target="_blank" href="{{ store.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
 					{% if store.twitter %}<li><a target="_blank" href="{{ store.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
 					{% if store.instagram %}<li><a target="_blank" href="{{ store.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
@@ -165,26 +175,26 @@ Description: This is the base layout. It's included in every page with this code
 			{% endif %}
 
 			<div class="payment-logos">
-                {% if store.payments.paypal.active %}
-                    <img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" height="35">
-                {% endif %}
+				{% if store.payments.paypal.active %}
+					<img src="{{ assets_url('templates/assets/common/icons/payments/paypal.png') }}" alt="Paypal" title="Paypal" height="35">
+				{% endif %}
 
-                {% if store.payments.multibanco.active %}
-                    <img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" height="35">
-                {% endif %}
+				{% if store.payments.multibanco.active %}
+					<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco.png') }}" alt="Multibanco" title="Multibanco" height="35">
+				{% endif %}
 
-                {% if store.payments.on_delivery.active %}
-                    <img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" height="35">
-                {% endif %}
+				{% if store.payments.on_delivery.active %}
+					<img src="{{ assets_url('templates/assets/common/icons/payments/contra-reembolso.png') }}" alt="Contra Reembolso" title="Contra Reembolso" height="35">
+				{% endif %}
 
-                {% if store.payments.bank_transfer.active %}
-                    <img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" height="35">
-                {% endif %}
+				{% if store.payments.bank_transfer.active %}
+					<img src="{{ assets_url('templates/assets/common/icons/payments/transferencia-bancaria.png') }}" alt="Transferência Bancária" title="Transferência Bancária" height="35">
+				{% endif %}
 
-                {% if store.payments.pick_up.active %}
-                    <img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" height="35">
-                {% endif %}
-            </div>
+				{% if store.payments.pick_up.active %}
+					<img src="{{ assets_url('templates/assets/common/icons/payments/levantamento.png') }}" alt="Levantamento nas instalações" title="Levantamento nas instalações" height="35">
+				{% endif %}
+			</div>
 
 			<div class="text-center"><a class="close" href="#" data-target=".cart">&times;</a></div>
 
@@ -221,6 +231,24 @@ Description: This is the base layout. It's included in every page with this code
 		</section>
 
 	</div>
+
+	{% if store.settings.cart.users_registration != 'disabled' and user.is_logged_in %}
+		<div class="account slide-bar">
+			<header>
+				<h3>Olá {{ user.name|first_word }}</h3>
+			</header>
+			<section>
+				<ul class="unstyled list">
+					<li class="{{ current_page == 'account' ? 'active' }}"><a href="{{ site_url('account') }}">A minha conta</a></li>
+					<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">Encomendas</a></li>
+					<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">Dados de cliente</a></li>
+					<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">Wishlist</a></li>
+					<li><a href="{{ site_url('account/logout')}}">Sair</a></li>
+				</ul>
+				<div class="text-center"><a class="close" href="#" data-target=".account">&times;</a></div>
+			</section>
+		</div>
+	{% endif %}
 
 	{% if apps.newsletter %}
 		<div class="newsletter slide-bar">
@@ -272,31 +300,115 @@ Description: This is the base layout. It's included in every page with this code
 
 	</section>
 
-	{% if notices.newsletter_error or notices.newsletter_status_success or notices.newsletter_status_error or notices.newsletter_removal %}
+	{# Events #}
+	{% if events.wishlist %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Wishlist</h3>
+			</div>
+			<div class="modal-body">
+				{% if events.wishlist.added %}
+					<p>O produto foi adicionado à wishlist</p>
+				{% elseif events.wishlist.removed %}
+					<p>O produto foi removido da wishlist</p>
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if events.cart %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Carrinho de Compras</h3>
+			</div>
+			<div class="modal-body">
+				{% set button_label = 'Fechar' %}
+
+				{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
+
+					{% if events.cart.stock_qty %}
+						<p>Não existe stock suficiente do produto</p>
+					{% endif %}
+
+					{% if events.cart.stock_sold_single %}
+						<p>Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ events.cart.stock_sold_single }}</strong></p>
+					{% endif %}
+
+					{% if events.cart.no_stock %}
+						<p>Existem produtos que não têm stock suficiente</p>
+					{% endif %}
+
+				{% else %}
+
+					{% if events.cart.added %}
+						<p>O produto <strong>{{ events.cart.added }}</strong> foi adicionado ao carrinho.</p>
+						{% set button_label = 'Continuar a comprar' %}
+					{% elseif events.cart.error %}
+						<p>O produto não foi adicionado ao carrinho.</p>
+						{% set button_label = 'Continuar a comprar' %}
+					{% elseif events.cart.updated %}
+						<p>O carrinho de compras foi actualizado</p>
+					{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items %}
+						<p>O carrinho de compras foi actualizado</p>
+						{% if events.cart.session_updated_items %}
+							<p><strong>Produtos adicionados</strong></p>
+							<ul>
+								{% for product in events.cart.session_updated_items %}
+									<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+						{% if events.cart.session_not_updated_items %}
+							<p><strong>Produtos não adicionados</strong></p>
+							<ul>
+								{% for product in events.cart.session_not_updated_items %}
+									<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					{% elseif events.cart.deleted %}
+						<p>O produto foi removido do carrinho.</p>
+					{% endif %}
+
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">{{ button_label }}</a>
+				{% if events.cart.added %}
+					<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> Ver Carrinho</a>
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_removal %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>Newsletter</h3>
 			</div>
 			<div class="modal-body">
-
-				{% if notices.newsletter_error %}
+				{% if events.newsletter_error %}
 					<h5>Não foi possível efectuar o registo na newsletter:</h5>
-					<p>{{ notices.newsletter_error }}</p>
+					<p>{{ events.newsletter_error }}</p>
 				{% endif %}
 
-				{% if notices.newsletter_status_success %}
+				{% if events.newsletter_status_success %}
 					<p>O seu e-mail foi inscrito com sucesso.</p>
 				{% endif %}
 
-				{% if notices.newsletter_status_error %}
+				{% if events.newsletter_status_error %}
 					<p>O seu e-mail já se encontra inscrito na nossa newsletter.</p>
 				{% endif %}
 
-				{% if notices.newsletter_removal %}
-					<p>{{ notices.newsletter_removal }}</p>
+				{% if events.newsletter_removal %}
+					<p>{{ events.newsletter_removal }}</p>
 				{% endif %}
-
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
@@ -304,16 +416,14 @@ Description: This is the base layout. It's included in every page with this code
 		</div>
 	{% endif %}
 
-	{% if notices.paypal_success %}
+	{% if events.paypal_success %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>Paypal</h3>
 			</div>
 			<div class="modal-body">
-
 				<p>O pagamento Paypal foi registado e processado com sucesso.</p>
-
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
@@ -321,73 +431,21 @@ Description: This is the base layout. It's included in every page with this code
 		</div>
 	{% endif %}
 
-	{% if notices.cart %}
-		<div class="modal hide fade modal-alert">
-	  		<div class="modal-header">
-	    		<button type="button" class="close" data-dismiss="modal">×</button>
-	    		<h3>Carrinho de Compras</h3>
-	  		</div>
-	  		<div class="modal-body">
-
-	  			{% set button_label = 'Fechar' %}
-
-	  			{% if notices.cart.added %}
-	    			<p>O produto <strong>{{ notices.cart.added }}</strong> foi adicionado ao carrinho.</p>
-	    			{% set button_label = 'Continuar a comprar' %}
-	    		{% endif %}
-
-	    		{% if notices.cart.error %}
-	    			<p>O produto não foi adicionado ao carrinho.</p>
-	    			{% set button_label = 'Continuar a comprar' %}
-	    		{% endif %}
-
-	    		{% if notices.cart.updated %}
-	    			<p>O carrinho de compras foi actualizado</p>
-	    		{% endif %}
-
-	    		{% if notices.cart.deleted %}
-	    			<p>O produto foi removido do carrinho.</p>
-	    		{% endif %}
-
-	    		{% if notices.cart.stock_qty %}
-	    			<p>Não existe stock suficiente do produto</p>
-	    		{% endif %}
-
-	    		{% if notices.cart.stock_sold_single %}
-	    			<p>Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ notices.cart.stock_sold_single }}</strong></p>
-	    		{% endif %}
-
-	    		{% if notices.cart.no_stock %}
-					<p>Existem produtos que não têm stock suficiente</p>
-				{% endif %}
-
-	  		</div>
-	  		<div class="modal-footer">
-	    		<a href="#" class="btn" data-dismiss="modal">{{ button_label }}</a>
-	    		{% if notices.cart.added %}
-	    			<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> Ver Carrinho</a>
-	    		{% endif %}
-	  		</div>
-		</div>
-	{% endif %}
-
-	{% if notices.contact_form_success or notices.contact_form_errors %}
+	{% if events.contact_form_success or events.contact_form_errors %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>Formulário de Contacto</h3>
 			</div>
 			<div class="modal-body">
-
-				{% if notices.contact_form_success %}
+				{% if events.contact_form_success %}
 					<p>A sua mensagem foi enviada com sucesso. Obrigado pelo contacto.</p>
 				{% endif %}
 
-				{% if notices.contact_form_errors %}
+				{% if events.contact_form_errors %}
 					<p>Não foi possivel enviar a sua mensagem:</p>
-					<p>{{ notices.contact_form_errors }}</p>
+					<p>{{ events.contact_form_errors }}</p>
 				{% endif %}
-
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
@@ -426,8 +484,6 @@ Description: This is the base layout. It's included in every page with this code
 	<![endif]-->
 
 	<div id="fb-root"></div>
-
-	<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.9.1/jquery.min.js"></script>
 
 	<script src="{{ store.assets.plugins }}"></script>
 	<script src="{{ store.assets.scripts }}"></script>
