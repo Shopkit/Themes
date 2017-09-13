@@ -6,11 +6,6 @@ Description: Product Page
 
 {% block content %}
 
-	<script>
-		//Javascript object with product information
-		var product = {{ product|json_encode }};
-	</script>
-
 	<article itemscope itemtype="http://schema.org/Product">
 
 		<ul class="breadcrumb">

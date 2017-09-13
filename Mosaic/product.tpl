@@ -20,11 +20,6 @@ Description: Product Page
 
 {% block content %}
 
-	<script>
-		//Javascript object with product information
-		var product = {{ product|json_encode }};
-	</script>
-
 	<div class="bg-img" style="background-image: url({{ product.image.full }});"></div>
 	<div class="bg-mask"></div>
 

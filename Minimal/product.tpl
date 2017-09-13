@@ -18,11 +18,6 @@ Description: Product Page
 
 {% block content %}
 
-	<script>
-		//Javascript object with product information
-		var product = {{ product|json_encode }};
-	</script>
-
 	<div class="container">
 
 		<article class="product-detail" itemscope itemtype="http://schema.org/Product">
