@@ -136,7 +136,7 @@ Description: Orders account page
 												<a href="{{ product.url }}">{{ product.title }}</a><br>
 												<small class="text-muted">{{ product.option }}</small>
 											</td>
-											<td class="text-right">
+											<td class="text-right nowrap">
 												<span class="text-muted">{{ product.quantity }}x {{ product.price|money_with_sign(user.order_detail.currency) }}</span><br>
 												{% set product_subtotal = product.price * product.quantity %}
 												{{ product_subtotal|money_with_sign(user.order_detail.currency) }}

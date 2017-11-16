@@ -712,17 +712,18 @@ footer a {
 .padding-right-lg { padding-right: @padding*2; }
 
 .nowrap { white-space: nowrap; }
+.table-responsive { width: 100%; overflow-y: auto;}
 
 /* Media Queries */
 
 @media (min-width: 768px) {
-    .list-group {
-        &.list-group-horizontal {
-            & > .row-fluid {
-                display: flex;
-            }
-        }
-    }
+	.list-group {
+		&.list-group-horizontal {
+			& > .row-fluid {
+				display: flex;
+			}
+		}
+	}
 }
 
 @media (max-width: 767px) {

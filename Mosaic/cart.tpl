@@ -34,37 +34,39 @@ Description: Shopping cart page
 
 				{{ form_open('cart/update') }}
 
-					<table class="table table-bordered table-cart">
-						<thead>
-							<tr>
-								<th>Produto</th>
-								<th>Quantidade</th>
-								<th style="text-align:right;">Subtotal</th>
-								<th style="text-align:center;">Remover</th>
-							</tr>
-						</thead>
+					<div class="table-responsive">
+						<table class="table table-bordered table-cart">
+							<thead>
+								<tr>
+									<th>Produto</th>
+									<th>Quantidade</th>
+									<th style="text-align:right;">Subtotal</th>
+									<th style="text-align:center;">Remover</th>
+								</tr>
+							</thead>
 
-						<tbody>
+							<tbody>
 
-						{% for item in cart.items %}
-							<tr>
-								<td>{{ item.title }}</td>
-								<td><div class="form-inline"><input class="span1" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" class="btn-small"><i class="fa fa-refresh"></i></button></div></td>
-								<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
-								<td style="text-align:center;"><a href="{{ item.remove_link }}" class="btn-small"><i class="fa fa-trash-o"></i></a></td>
-							</tr>
-						{% endfor %}
+							{% for item in cart.items %}
+								<tr>
+									<td>{{ item.title }}</td>
+									<td><div class="form-inline"><input class="span1" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" class="btn-small"><i class="fa fa-refresh"></i></button></div></td>
+									<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
+									<td style="text-align:center;"><a href="{{ item.remove_link }}" class="btn-small"><i class="fa fa-trash-o"></i></a></td>
+								</tr>
+							{% endfor %}
 
-						</tbody>
+							</tbody>
 
-						<tfoot>
-							<tr>
-								<td class="subtotal">Subtotal Encomenda</td>
-								<td colspan="2" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
-								<td class="subtotal">&nbsp;</td>
-							</tr>
-						</tfoot>
-					</table>
+							<tfoot>
+								<tr>
+									<td class="subtotal">Subtotal Encomenda</td>
+									<td colspan="2" class="subtotal price text-right">{{ cart.subtotal | money_with_sign }}</td>
+									<td class="subtotal">&nbsp;</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
 
 					<p>
 						<a class="button" href="{{ site_url('cart/data') }}">

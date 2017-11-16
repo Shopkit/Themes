@@ -42,7 +42,7 @@ Description: Wishlist account page
 
 											 <small class="text-muted">Adicionado em {{ product.created_at|date("d \\d\\e F \\d\\e Y") }}</small>
 										</td>
-										<td class="text-right">
+										<td class="text-right nowrap">
 		                                    <a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="Remover"><i class="fa fa-fw fa-trash fa-lg"></i></a> &nbsp; 
 		                                    <a href="{{ product.add_cart_url }}" class="text-muted small" title="Adicionar ao carrinho"><i class="fa fa-fw fa-cart-plus fa-lg"></i></a>
 		                                </td>
