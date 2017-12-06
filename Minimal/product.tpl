@@ -50,7 +50,7 @@ Description: Product Page
 				{% set possible_prices = [] %}
 
 				{% for option in product.options %}
-					{% if option.active and option.price > 0 %}
+					{% if option.active %}
 						{% set possible_prices = possible_prices|merge([option.price]) %}
 					{% endif %}
 				{% endfor %}
@@ -213,7 +213,7 @@ Description: Product Page
 															{% if option.price_on_request == true %}
 																- Preço sob consulta
 															{% else %}
-																{% if option.price %}
+																{% if option.price is not null %}
 																	{% set option_display_price = option.promo ? option.price_promo : option.price %}
 																	- {{ option_display_price | money_with_sign }}
 																{% endif %}

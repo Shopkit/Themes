@@ -96,12 +96,10 @@ Description: Product Page
 											{% if option.price_on_request == true %}
 												- Preço sob consulta
 											{% else %}
-
-												{% if option.price %}
+												{% if option.price is not null %}
 													{% set option_display_price = option.promo ? option.price_promo : option.price %}
 													- {{ option_display_price | money_with_sign }}
 												{% endif %}
-
 											{% endif %}
 										</option>
 
