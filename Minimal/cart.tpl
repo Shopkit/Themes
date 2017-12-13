@@ -24,6 +24,13 @@ Description: Shopping cart page
 				</div>
 			{% endif %}
 
+			{% if errors.form %}
+				<div class="callout callout-danger">
+					<h4>Erro</h4>
+					<p>{{ errors.form }}</p>
+				</div>
+			{% endif %}
+
 			<div class="row">
 				<div class="col-md-8 col-lg-8">
 

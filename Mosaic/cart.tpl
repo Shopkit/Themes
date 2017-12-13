@@ -32,6 +32,14 @@ Description: Shopping cart page
 					</div>
 				{% endif %}
 
+				{% if errors.form %}
+					<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<h5>Erro</h5>
+						<p>{{ errors.form }}</p>
+					</div>
+				{% endif %}
+
 				{{ form_open('cart/update') }}
 
 					<div class="table-responsive">
