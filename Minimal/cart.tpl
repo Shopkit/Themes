@@ -42,7 +42,7 @@ Description: Shopping cart page
 								<tbody>
 
 									{% for item in cart.items %}
-										<tr>
+										<tr data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
 											<td class="cart-img">
 												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title }}" title="{{ item.title }}" class="border-radius"></a>
 											</td>
