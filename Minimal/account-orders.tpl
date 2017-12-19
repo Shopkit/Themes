@@ -162,7 +162,7 @@ Description: Orders account page
 										</tr>
 									{% endif %}
 
-									{% if user.order_detail.discount > 0 %}
+									{% if user.order_detail.coupon_code %}
 										<tr>
 											<td colspan="2">Desconto <small class="text-muted">({{user.order_detail.coupon_code}})</small></td>
 											<td class="text-right">- {{ user.order_detail.discount|money_with_sign(user.order_detail.currency) }}</td>

@@ -159,7 +159,7 @@ Description: Confirm order page
 								<dt>Portes de envio</dt>
 								<dd class="text-dark price">{{ cart.total_shipping | money_with_sign }}</dd>
 
-								{% if cart.discount %}
+								{% if cart.coupon %}
 									<dt>Desconto</dt>
 									<dd class="text-dark price">- {{ cart.discount | money_with_sign }}</dd>
 								{% endif %}

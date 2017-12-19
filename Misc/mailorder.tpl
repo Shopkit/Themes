@@ -365,7 +365,7 @@
 																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">{{ order.shipping.value|money_with_sign(order.currency) }}</span></td>
 															</tr>
 
-															{% if order.discount > 0 %}
+															{% if order.coupon %}
 																<tr>
 																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999">Desconto</td>
 																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999"><span style="white-space:nowrap;">- {{ order.discount|money_with_sign(order.currency) }}</span></td>

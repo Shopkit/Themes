@@ -64,7 +64,7 @@ Description: Confirm order page
 								<td align="right" class=" text-right" colspan="2" style="border-left: 0;">{{ cart.total_shipping | money_with_sign }}</td>
 							</tr>
 
-							{% if cart.discount %}
+							{% if cart.coupon %}
 								<tr>
 									<td class="discount">Desconto</td>
 									<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">- {{ cart.discount | money_with_sign }}</td>
