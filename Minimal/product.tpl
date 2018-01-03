@@ -249,7 +249,7 @@ Description: Product Page
 							<div class="data-product-on-request">
 								<div class="row">
 									<div class="col-sm-7 col-md-12 col-lg-7">
-										<a href="{{ site_url("contatos?p=") ~ "Produto #{product.title}"|url_encode }}" class="btn btn-gray text-uppercase price-on-request"><i class="fa fa-envelope fa-fw"></i> Contactar</a>
+										<a href="{{ site_url("contact?p=") ~ "Produto #{product.title}"|url_encode }}" class="btn btn-gray text-uppercase price-on-request"><i class="fa fa-envelope fa-fw"></i> Contactar</a>
 									</div>
 									<div class="col-sm-5 col-md-12 col-lg-5">
 										{{ product_macros.wishlist_block(product, user) }}

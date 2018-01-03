@@ -49,7 +49,7 @@ Description: Orders account page
 							</div>
 						</div>
 					</div>
-					<p class="margin-bottom margin-top-xxs"><a href='{{ site_url("contatos?p=") ~ "Encomenda ##{user.order_detail.id}"|url_encode }}' class="text-underline" target="_blank"><small>Contactar acerca desta encomenda</small></a></p>
+					<p class="margin-bottom margin-top-xxs"><a href='{{ site_url("contact?p=") ~ "Encomenda ##{user.order_detail.id}"|url_encode }}' class="text-underline" target="_blank"><small>Contactar acerca desta encomenda</small></a></p>
 
 					{% if user.order_detail.client_note %}
 						<div class="well">

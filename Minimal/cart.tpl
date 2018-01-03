@@ -74,7 +74,6 @@ Description: Shopping cart page
 							<a class="btn btn-primary" href="{{ site_url('cart/data') }}"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</a>
 						</footer>
 
-
 					{{ form_close() }}
 
 				</div>
@@ -89,7 +88,7 @@ Description: Shopping cart page
 
 					<div class="well text-center">
 						<h3 class="margin-bottom-md">Questões?</h3>
-						<p class="margin-bottom-md">Se tiver dúvidas sobre sua compra, ou quaisquer outras questões, <a href="{{ site_url('contatos') }}">entre em contacto</a>.</p>
+						<p class="margin-bottom-md">Se tiver dúvidas sobre sua compra, ou quaisquer outras questões, <a href="{{ site_url('contact') }}">entre em contacto</a>.</p>
 					</div>
 
 				</div>

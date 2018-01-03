@@ -110,7 +110,7 @@ Description: Product Page
 						</div>
 
 						<div class="data-product-on-request">
-							<a class="btn btn-link pull-right price-on-request" href="{{ site_url('contatos') }}?p={{ product.title }}">Contactar</a>
+							<a class="btn btn-link pull-right price-on-request" href="{{ site_url('contact') }}?p={{ product.title }}">Contactar</a>
 						</div>
 
 					</div>

@@ -136,7 +136,7 @@ Description: Product Page
 						</div>
 
 						<div class="data-product-on-request">
-							<a class="btn btn-inverse price-on-request" href="{{ site_url("contatos?p=") ~ "Produto #{product.title}"|url_encode }}">
+							<a class="btn btn-inverse price-on-request" href="{{ site_url("contact?p=") ~ "Produto #{product.title}"|url_encode }}">
 								<i class="fa fa-envelope-o fa-lg fa-fw"></i> Contactar
 							</a>
 						</div>
