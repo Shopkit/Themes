@@ -8,7 +8,11 @@ Description: Last products page
 
 	{% set products = products('new limit:12') %}
 
-	<h1 class="wide">Novidades</h1>
+	<h1 class="wide">{{ store.page.new.title }}</h1>
+
+	{% if store.page.new.content %}
+		<div class="wide">{{ store.page.new.content }}</div>
+	{% endif %}
 
 	{% if products %}
 
@@ -22,6 +26,7 @@ Description: Last products page
 						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
 
 						<span class="price">
+
 						{% if product.price_on_request == true %}
 							Preço sob consulta
 						{% else %}
@@ -50,6 +55,8 @@ Description: Last products page
 			{% endfor %}
 
 		</ul>
+
+		{{ pagination("new limit:12") }}
 
 	{% else %}
 		<p class="wide">Não existem produtos.</p>

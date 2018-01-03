@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Last products page
 #}
 
@@ -8,23 +8,23 @@ Description: Last products page
 
 	<ul class="breadcrumb">
 		<li><a href="/">Home</a><span class="divider">›</span></li>
-		<li class="active">Novidades</li>
+		<li class="active">{{ store.page.new.title }}</li>
 	</ul>
 
-	<h1>Novidades</h1>
-	<br>
+	<h1>{{ store.page.new.title }}</h1>
+	<p>{{ store.page.new.content }}</p>
+	<hr>
 
 	<div class="row products">
 
-		{% for product in products('new') %} 
+		{% for product in products('new limit:9') %}
 
 			<div class="span3 product product-id-{{ product.id }}">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}"></a>
 				<div class="box">
 					<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-					
 					<p>{{ product.description_short }}</p>
-					
+
 					<span class="price">
 						{% if product.price_on_request == true %}
 							Preço sob consulta
@@ -46,6 +46,14 @@ Description: Last products page
 			</div>
 
 		{% endfor %}
+
+		<div class="span9 product">
+
+			<hr>
+
+			{{ pagination('new limit:9') }}
+
+		</div>
 
 	</div>
 

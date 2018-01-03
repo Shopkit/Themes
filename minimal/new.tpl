@@ -10,11 +10,20 @@ Description: Last products page
 
 	<div class="container">
 
-		<h1 class="margin-top-0 margin-bottom">Novidades</h1>
+		<h1 class="margin-top-0 margin-bottom">{{ store.page.new.title }}</h1>
 
 		<div class="products">
-			<div class="row">
+			{% if store.page.new.content %}
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="page-content margin-bottom">
+							{{ store.page.new.content }}
+						</div>
+					</div>
+				</div>
+			{% endif %}
 
+			<div class="row">
 				{% for product in products("new limit:#{products_per_page}") %}
 					<div class="col-sm-4">
 						<article class="product product-id-{{ product.id }}">
@@ -56,7 +65,7 @@ Description: Last products page
 			</div>
 		</div>
 
-		<nav class="text-center" data-animation="fadeInUp" data-delay="0">
+		<nav class="text-center">
 			{{ pagination("new limit:#{products_per_page}") }}
 		</nav>
 
