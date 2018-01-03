@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Promotions Page
 #}
 
@@ -10,11 +10,20 @@ Description: Promotions Page
 
 	<div class="container">
 
-		<h1 class="margin-top-0 margin-bottom">Promoções</h1>
+		<h1 class="margin-top-0 margin-bottom">{{ store.page.sales.title }}</h1>
 
 		<div class="products">
-			<div class="row">
+			{% if store.page.sales.content %}
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="page-content margin-bottom">
+							{{ store.page.sales.content }}
+						</div>
+					</div>
+				</div>
+			{% endif %}
 
+			<div class="row">
 				{% for product in products("on_sale limit:#{products_per_page}") %}
 					<div class="col-sm-4">
 						<article class="product product-id-{{ product.id }}">

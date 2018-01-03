@@ -8,7 +8,11 @@ Description: Promotions Page
 
 	{% set products = products('on_sale limit:12') %}
 
-	<h1 class="wide">Promoções</h1>
+	<h1 class="wide">{{ store.page.sales.title }}</h1>
+
+	{% if store.page.sales.content %}
+		<div class="wide">{{ store.page.sales.content }}</div>
+	{% endif %}
 
 	{% if products %}
 
@@ -51,6 +55,8 @@ Description: Promotions Page
 			{% endfor %}
 
 		</ul>
+
+		{{ pagination("on_sale limit:12") }}
 
 	{% else %}
 		<p class="wide">Não existem produtos.</p>
