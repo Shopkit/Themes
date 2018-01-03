@@ -66,6 +66,11 @@ Description: Product Page
 
 					</h4>
 
+					<p><small class="muted data-promo-percentage">
+						{% if product.price_promo_percentage == true %}
+							Desconto de {{ product.price_promo_percentage }}%
+						{% endif %}
+					</small></p>
 				</div>
 
 				<br>

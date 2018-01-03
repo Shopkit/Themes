@@ -51,6 +51,12 @@ Description: Product Page
 								{% endif %}
 							{% endif %}
 						</div>
+
+						<p class="text-right"><small class="muted light data-promo-percentage">
+							{% if product.price_promo_percentage == true %}
+								Desconto de {{ product.price_promo_percentage }}%
+							{% endif %}
+						</small></p>
 					</div>
 
 				</div>

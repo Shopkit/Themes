@@ -178,9 +178,13 @@ function product_options(product, onload) {
 						if (response.promo === true) {
 							$('.price del').text(response.price_formatted);
 							price_txt = response.price_promo_formatted;
+							if (response.price_promo_percentage) {
+								$('.data-promo-percentage').text('Desconto de '+response.price_promo_percentage+'%');
+							}
 						} else {
 							$('.price del').text('');
 							price_txt = response.price_formatted;
+							$('.data-promo-percentage').text('');
 						}
 
 						disable_form_product = false;
@@ -218,6 +222,7 @@ function product_options(product, onload) {
 
 			if (disable_form_product === true) {
 				$('.price del').text('');
+				$('.data-promo-percentage').text('');
 			}
 
 			$('.data-product-price').text(price_txt);

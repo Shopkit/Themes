@@ -151,14 +151,12 @@ Description: Product Page
 									{% elseif product.status == 3 %}
 										<meta itemprop="availability" content="http://schema.org/OutOfStock"/>
 									{% endif %}
-
 								{% endif %}
 
 								{% if product.price_on_request == true %}
 									<span {{ itemprop_price }} class="data-product-price price">Preço sob consulta</span> &nbsp;
-									<del></del>
+									<del class="promo-price"></del>
 								{% else %}
-
 									{% if product.promo == true %}
 										<span {{ itemprop_price }} class="data-product-price price">{{ product.price_promo | money_with_sign }}</span> &nbsp;
 										<del class="promo-price">{{ product.price | money_with_sign }}</del>
@@ -166,6 +164,14 @@ Description: Product Page
 										<span {{ itemprop_price }} class="data-product-price price">{{ product.price | money_with_sign }}</span>  &nbsp;
 										<del class="promo-price"></del>
 									{% endif %}
+								{% endif %}
+
+								<div class="data-product-info">
+									<small class="text-light-gray block data-promo-percentage">
+										{% if product.price_promo_percentage == true %}
+											Desconto de {{ product.price_promo_percentage }}%
+										{% endif %}
+									</small>
 
 									{% if product.tax > 0 %}
 										{% if store.taxes_included == false %}
@@ -174,10 +180,9 @@ Description: Product Page
 											<small class="text-light-gray block"><em>IVA incluído</em></small>
 										{% endif %}
 									{% endif %}
-
-								{% endif %}
-
+								</div>
 							</div>
+
 						</div>
 
 						<div class="col-xs-6 col-md-5 col-lg-6">
