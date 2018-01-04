@@ -43,7 +43,7 @@ Description: Product category page
 				{% endif %}
 
 				{#  Setup order #}
-				{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros' } %}
+				{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
 
 				{% if not get.order_by in order_options|keys %}
 					{% set get = {'order_by': store.category_default_order|default('position')} %}
