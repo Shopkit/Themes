@@ -114,6 +114,12 @@ $(document).ready(function() {
 	});
 });
 
+$(window).load(function() {
+	$('.fb-page, .fb-comments').each(function() {
+		$(this).attr('data-width', $(this).parent().width());
+	});
+});
+
 function masonry() {
 	if (Modernizr.mq('only screen and (max-width: 767px)')) {
 		$('.products').masonry('destroy').removeAttr('style');

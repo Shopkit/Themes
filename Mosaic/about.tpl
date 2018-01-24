@@ -31,7 +31,7 @@ Description: About page
 			
 			{% if apps.facebook_page %}
 				<hr>
-				<div class="fb-like-box" data-width="690" data-height="250" data-href="{{ apps.facebook_page.facebook_url }}" data-show-faces="true" data-show-border="false" data-stream="false" data-header="false"></div>
+				<div class="fb-page" data-href="{{ apps.facebook_page.facebook_url }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="{{ apps.facebook_page.facebook_url }}" class="fb-xfbml-parse-ignore"><a href="{{ apps.facebook_page.facebook_url }}">Facebook</a></blockquote></div>
 			{% endif %}
 			
 		</section>

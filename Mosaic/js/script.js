@@ -219,6 +219,10 @@ $(window).load(function() {
 
 		}
 	});
+
+	$('.fb-page, .fb-comments').each(function() {
+		$(this).attr('data-width', $(this).parent().width());
+	});
 });
 
 function product_options(product, onload) {
