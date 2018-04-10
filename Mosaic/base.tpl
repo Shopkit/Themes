@@ -489,6 +489,25 @@ Description: This is the base layout. It's included in every page with this code
 	<script src="{{ store.assets.scripts }}"></script>
 
 	<script>
+		/* Facebook JS SDK */
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId : {{ apps.facebook_login.app_id|default(267439666615965) }},
+				autoLogAppEvents : true,
+				cookie: true,
+				xfbml : true,
+				version : 'v2.11'
+			});
+			$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
+		};
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "https://connect.facebook.net/pt_PT/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		/* End Facebook JS SDK */
 
 		var basecolor = '{{ store.basecolor }}';
 
@@ -513,7 +532,6 @@ Description: This is the base layout. It's included in every page with this code
 		{% endif %}
 
 		Modernizr.load([
-			{load: '//connect.facebook.net/pt_PT/all.js#xfbml=1&appId=267439666615965'}
 			{% if apps.google_translate %} ,{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}{% endif %}
 		]);
 

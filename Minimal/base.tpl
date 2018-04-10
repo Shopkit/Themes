@@ -487,7 +487,29 @@ Version: 3.0
 
 		{# //End Events #}
 
+		<div id="fb-root"></div>
+
 		<script>
+			/* Facebook JS SDK */
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId : {{ apps.facebook_login.app_id|default(267439666615965) }},
+					autoLogAppEvents : true,
+					cookie: true,
+					xfbml : true,
+					version : 'v2.11'
+				});
+				$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
+			};
+			(function(d, s, id){
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {return;}
+				js = d.createElement(s); js.id = id;
+				js.src = "https://connect.facebook.net/pt_PT/sdk.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+			/* End Facebook JS SDK */
+
 			{% if not apps.google_analytics_ec %}
 				/* Google Analytics */
 				var _gaq = _gaq || [];
