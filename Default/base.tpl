@@ -381,7 +381,7 @@ Github: https://github.com/Shopkit/Default
 						{% set button_label = 'Continuar a comprar' %}
 					{% elseif events.cart.updated %}
 						<p>O carrinho de compras foi actualizado</p>
-					{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items %}
+					{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items or events.cart.session_updated %}
 						<p>O carrinho de compras foi actualizado</p>
 						{% if events.cart.session_updated_items %}
 							<p><strong>Produtos adicionados</strong></p>

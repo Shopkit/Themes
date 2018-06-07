@@ -18,6 +18,7 @@ $(document).ready(function() {
 				}, delay * 1000);
 			}
 		});
+		$('.navbar-nav .dropdown-toggle').removeAttr('data-toggle');
 	}
 
 	$('.store-notice .navbar-form .btn-search').on('click', function() {

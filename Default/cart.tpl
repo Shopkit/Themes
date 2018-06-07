@@ -15,6 +15,18 @@ Description: Shopping cart page
 
 	<br>
 
+	{% if events.cart.session_updated %}
+		<div class="alert">
+			<h5>Aviso</h5>
+			<p>O carrinho de compras foi actualizado:</p>
+			<ul>
+				{% for key in events.cart.session_updated %}
+					<li><strong>{{ key.title }}</strong> ({{ key.message }})</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
 	{% if cart.items %}
 
 		{% if events.cart.no_stock %}

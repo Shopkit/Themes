@@ -55,8 +55,6 @@ Version: 3.0
 		<link href="//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 		<link href="{{ store.assets.css }}" rel="stylesheet">
 
-		<style>.dropdown:hover .dropdown-menu { display: block;}</style>
-
 		{% if store.custom_css %}
 			<style>{{ store.custom_css }}</style>
 		{% endif %}
@@ -148,7 +146,7 @@ Version: 3.0
 								<li class="{% if (category.id == products_category.id) %} active {% endif %} {% if products_category.children %} dropdown {% endif %} menu-{{ products_category.handle }}">
 
 									{% if products_category.children %}
-										<a class="dropdown-toggle" href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">
 											{{ products_category.title }} <span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu" role="menu">
@@ -278,12 +276,10 @@ Version: 3.0
 										<i class="fa fa-ban fa-4x text-light-gray"></i>
 										<h3 class="text-muted">Não existe stock suficiente do produto</h3>
 									{% endif %}
-
 									{% if events.cart.stock_sold_single %}
 										<i class="fa fa-ban fa-4x text-light-gray"></i>
 										<h4 class="text-muted">Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ events.cart.stock_sold_single }}</strong></h4>
 									{% endif %}
-
 									{% if events.cart.no_stock %}
 										<i class="fa fa-ban fa-4x text-light-gray"></i>
 										<h3 class="text-muted">Existem produtos que não têm stock suficiente</h3>
@@ -300,9 +296,10 @@ Version: 3.0
 									{% elseif events.cart.updated %}
 										<i class="fa fa-refresh fa-4x text-light-gray"></i>
 										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
-									{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items %}
+									{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items or events.cart.session_updated %}
 										<i class="fa fa-refresh fa-4x text-light-gray"></i>
 										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
+
 										{% if events.cart.session_updated_items %}
 											<h4 class="text-left margin-top">Produtos adicionados</h4>
 											<ul class="text-left">
