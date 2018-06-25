@@ -96,7 +96,7 @@ Description: Shopping cart page
 				<hr>
 
 				<button type="submit" class="button" style="width:175px">
-					<span>Rever Encomenda</span>
+					<span>Prosseguir</span>
 					<i class="fa fa-chevron-right"></i>
 				</button>
 

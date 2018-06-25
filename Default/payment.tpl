@@ -90,7 +90,7 @@ Description: Payment Page
 
 			<hr>
 
-			<button type="submit" class="btn btn-large">Rever Encomenda ›</button>
+			<button type="submit" class="btn btn-large">Prosseguir ›</button>
 
 		{{ form_close() }}
 

@@ -150,7 +150,7 @@ Description: Payment Page
 								Passo 2 de 3
 							</div>
 							<div class="pull-right">
-								<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Rever Encomenda <i class="fa fa-fw fa-arrow-right"></i></button>
+								<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
 							</div>
 						</footer>
 

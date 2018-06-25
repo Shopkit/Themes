@@ -256,7 +256,7 @@ function product_options(product, onload) {
 							price_txt = response.price_promo_formatted;
 
 							if (response.price_promo_percentage) {
-								$('.data-promo-percentage').text('Desconto de '+response.price_promo_percentage+'%');
+								$('.data-promo-percentage').text('Desconto de ' + response.price_promo_percentage + '%');
 							}
 						} else {
 							$('.product .price del').text('');
@@ -322,12 +322,12 @@ function product_options_url() {
 		var option = $(this).prop('value');
 
 		if (option) {
-			var query = '?option=' + option;
-		}
+			var url = UpdateQueryString('option', option);
 
-		if (query) {
-			if (window.history.replaceState) {
-				window.history.replaceState(null, null, origin + pathname + query);
+			if (url) {
+				if (window.history.replaceState) {
+					window.history.replaceState(null, null, url);
+				}
 			}
 		}
 	});
@@ -359,13 +359,8 @@ function product_is_vendible(product, response) {
 
 //check product default option
 function product_default_option(product) {
-	var option_id = 'false';
-	var query = window.location.search.substring(1);
-
-	if (query) {
-		var option_id = query.split('option=')[1];
-		option_id = option_id.split('&')[0];
-	}
+	//get query string value
+	var option_id = qs["option"];
 
 	return option_id;
 }
@@ -411,5 +406,3 @@ function data_places(address_components) {
 
 	return places_data;
 }
-
-var countries_alpha_2 = { "PT": "PRT", "AF": "AFG", "ZA": "ZAF", "AL": "ALB", "DE": "DEU", "AD": "AND", "AO": "AGO", "AI": "AIA", "AQ": "ATA", "AG": "ATG", "SA": "SAU", "DZ": "DZA", "AR": "ARG", "AM": "ARM", "AW": "ABW", "AU": "AUS", "AT": "AUT", "AZ": "AZE", "BS": "BHS", "BH": "BHR", "BD": "BGD", "BB": "BRB", "BE": "BEL", "BZ": "BLZ", "BJ": "BEN", "BM": "BMU", "BY": "BLR", "BO": "BOL", "BA": "BIH", "BW": "BWA", "BR": "BRA", "BN": "BRN", "BG": "BGR", "BF": "BFA", "BI": "BDI", "BT": "BTN", "CV": "CPV", "CM": "CMR", "KH": "KHM", "CA": "CAN", "QA": "QAT", "KZ": "KAZ", "TD": "TCD", "CL": "CHL", "CN": "CHN", "CY": "CYP", "CO": "COL", "KM": "COM", "KP": "PRK", "KR": "KOR", "CI": "CIV", "CR": "CRI", "HR": "HRV", "CU": "CUB", "CW": "CUW", "DK": "DNK", "DJ": "DJI", "DM": "DMA", "EG": "EGY", "SV": "SLV", "AE": "ARE", "EC": "ECU", "ER": "ERI", "SK": "SVK", "SI": "SVN", "ES": "ESP", "PS": "PSE", "FM": "FSM", "US": "USA", "EE": "EST", "ET": "ETH", "FJ": "FJI", "PH": "PHL", "FI": "FIN", "FR": "FRA", "GA": "GAB", "GM": "GMB", "GH": "GHA", "GE": "GEO", "GI": "GIB", "GD": "GRD", "GR": "GRC", "GL": "GRL", "GP": "GLP", "GU": "GUM", "GT": "GTM", "GG": "GGY", "GY": "GUY", "GF": "GUF", "GN": "GIN", "GQ": "GNQ", "GW": "GNB", "HT": "HTI", "HN": "HND", "HK": "HKG", "HU": "HUN", "YE": "YEM", "BV": "BVT", "IM": "IMN", "CX": "CXR", "HM": "HMD", "NF": "NFK", "KY": "CYM", "CC": "CCK", "CK": "COK", "FO": "FRO", "GS": "SGS", "FK": "FLK", "MP": "MNP", "MH": "MHL", "UM": "UMI", "PN": "PCN", "SB": "SLB", "TC": "TCA", "VI": "VIR", "VG": "VGB", "IN": "IND", "ID": "IDN", "IR": "IRN", "IQ": "IRQ", "IE": "IRL", "IS": "ISL", "IL": "ISR", "IT": "ITA", "JM": "JAM", "JP": "JPN", "JE": "JEY", "JO": "JOR", "KI": "KIR", "KW": "KWT", "LA": "LAO", "LS": "LSO", "LV": "LVA", "LB": "LBN", "LR": "LBR", "LY": "LBY", "LI": "LIE", "LT": "LTU", "LU": "LUX", "MO": "MAC", "MG": "MDG", "MY": "MYS", "MW": "MWI", "MV": "MDV", "ML": "MLI", "MT": "MLT", "MA": "MAR", "MQ": "MTQ", "MU": "MUS", "MR": "MRT", "YT": "MYT", "MX": "MEX", "MZ": "MOZ", "MD": "MDA", "MC": "MCO", "MN": "MNG", "ME": "MNE", "MS": "MSR", "MM": "MMR", "NA": "NAM", "NR": "NRU", "NP": "NPL", "NI": "NIC", "NE": "NER", "NG": "NGA", "NU": "NIU", "NO": "NOR", "NC": "NCL", "NZ": "NZL", "OM": "OMN", "NL": "NLD", "BQ": "BES", "PW": "PLW", "PA": "PAN", "PG": "PNG", "PK": "PAK", "PY": "PRY", "PE": "PER", "PF": "PYF", "PL": "POL", "PR": "PRI", "KE": "KEN", "KG": "KGZ", "GB": "GBR", "CF": "CAF", "CZ": "CZE", "MK": "MKD", "CD": "COD", "CG": "COG", "DO": "DOM", "RE": "REU", "RO": "ROU", "RW": "RWA", "RU": "RUS", "EH": "ESH", "WS": "WSM", "AS": "ASM", "SM": "SMR", "SH": "SHN", "LC": "LCA", "BL": "BLM", "KN": "KNA", "MF": "MAF", "SX": "SXM", "PM": "SPM", "ST": "STP", "VC": "VCT", "SC": "SYC", "SN": "SEN", "SL": "SLE", "RS": "SRB", "SG": "SGP", "SY": "SYR", "SO": "SOM", "LK": "LKA", "SZ": "SWZ", "SD": "SDN", "SS": "SSD", "SE": "SWE", "CH": "CHE", "SR": "SUR", "SJ": "SJM", "TH": "THA", "TW": "TWN", "TJ": "TJK", "TZ": "TZA", "TF": "ATF", "IO": "IOT", "TL": "TLS", "TG": "TGO", "TO": "TON", "TK": "TKL", "TT": "TTO", "TN": "TUN", "TM": "TKM", "TR": "TUR", "TV": "TUV", "UA": "UKR", "UG": "UGA", "UY": "URY", "UZ": "UZB", "VU": "VUT", "VA": "VAT", "VE": "VEN", "VN": "VNM", "WF": "WLF", "ZM": "ZMB", "ZW": "ZWE" };
