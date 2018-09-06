@@ -92,26 +92,6 @@ $(document).ready(function() {
 		var target = _this.data('target');
 		$(target).toggleClass('hidden');
 	});
-
-	$.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDrsZsLYT4ntjtQ4DFgtw0ZG-WfMMn4z28&libraries=places", function() {
-		$('#delivery_address').geocomplete().bind('geocode:result', function(event, result) {
-			$.each(data_places(result.address_components), function(index, value) {
-				$('.delivery-info input[data-places="' + index + '"]').prop('value', value);
-				if (index == 'country') {
-					$('.delivery-info #delivery_country').val(countries_alpha_2[value]);
-				}
-			});
-		});
-
-		$('#billing_address').geocomplete().bind('geocode:result', function(event, result) {
-			$.each(data_places(result.address_components), function(index, value) {
-				$('.billing-info input[data-places="' + index + '"]').prop('value', value);
-				if (index == 'country') {
-					$('.billing-info #billing_country').val(countries_alpha_2[value]);
-				}
-			});
-		});
-	});
 });
 
 $(window).load(function() {
@@ -342,30 +322,4 @@ function product_default_option(product) {
 		1: product.options[option].id_variant_2,
 		2: product.options[option].id_variant_3
 	};
-}
-
-function data_places(address_components) {
-	var places_data = {};
-	var componentForm = {
-		street_number: 'short_name',
-		route: 'long_name',
-		locality: 'long_name',
-		administrative_area_level_1: 'short_name',
-		country: 'short_name',
-		postal_code: 'short_name',
-		postal_code_prefix: 'short_name'
-	};
-
-	for (var i = 0; i < address_components.length; i++) {
-		var addressType = address_components[i].types[0];
-		if (componentForm[addressType]) {
-			places_data[addressType] = address_components[i][componentForm[addressType]];
-		}
-	}
-
-	if (places_data['postal_code_prefix']) {
-		places_data['postal_code'] = places_data['postal_code_prefix'];
-	}
-
-	return places_data;
 }
