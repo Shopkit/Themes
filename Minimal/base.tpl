@@ -1,7 +1,7 @@
 {#
 Template Name: Minimal
 Author: Shopkit
-Version: 3.0
+Version: 3.1
 #}
 
 <!DOCTYPE html>
@@ -496,7 +496,9 @@ Version: 3.0
 					xfbml : true,
 					version : 'v2.11'
 				});
-				$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
+				FB.getLoginStatus(function(){
+					$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
+				});
 			};
 			(function(d, s, id){
 				var js, fjs = d.getElementsByTagName(s)[0];

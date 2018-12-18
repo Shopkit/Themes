@@ -25,7 +25,7 @@ Description: Payment Page
 		{% endif %}
 
 		{% if cart.items %}
-			{{ form_open('cart/post/confirm', { 'role' : 'form' }) }}
+			{{ form_open('cart/post/confirm', { 'class' : 'form', 'id' : 'form-payment' }) }}
 
 				<div class="row">
 					<div class="col-md-8 col-lg-8">
@@ -35,44 +35,30 @@ Description: Payment Page
 								<h3 class="margin-top-0">Transporte</h3>
 								<p class="margin-bottom text-light-gray">{{ user.delivery.country }}</p>
 
-								<div class="row">
-
+								<ul class="list-group">
 									{% for method in cart.shipping_methods %}
-										<div class="col-sm-6">
-											<div class="wrapper-radio-block">
-												<div class="well radio-block {% if user.shipping_method.id == method.id or (loop.index == 1 and not user.shipping_method.id) %}active{% endif %}">
-
-													<div class="content">
-														<div class="input">
-															<input type="radio" name="envio" id="envio_{{ method.id }}" value="{{ method.id }}" {% if loop.index == 1 or user.shipping_method.id == method.id %}checked{% endif %}>
-														</div>
-
-														<div class="inner-content">
-															<div class="shipping-method">
-
-																<h4><label for="envio_{{ method.id }}">{{ method.title }}</label></h4> <span class="text-light-gray">&mdash;</span>
-
-																<div class="price">
-																	{{ method.price | money_with_sign }}
-																</div>
-
-																{% if method.description %}
-																	<p>{{ method.description }}</p>
-																{% endif %}
-
-															</div>
+										<li class="list-group-item list-radio-block {% if user.shipping_method.id == method.id or (loop.index == 1 and not user.shipping_method.id) %}list-group-item-active{% endif %}">
+											<label for="shipping_method_{{ method.id }}">
+												<div class="list-radio-content">
+													<div class="list-radio-input">
+														<input type="radio" name="envio" id="shipping_method_{{ method.id }}" value="{{ method.id }}" {% if loop.index == 1 or user.shipping_method.id == method.id %}checked{% endif %}>
+													</div>
+													<div class="list-radio-description">
+														<div class="shipping_method">
+															<h4>{{ method.title }}</h4>
+															{% if method.description %}
+																<p>{{ method.description }}</p>
+															{% endif %}
 														</div>
 													</div>
-
+													<div class="list-radio-price">
+														<div class="price">{{ method.price == 0 ? 'Grátis' : method.price|money_with_sign }}</div>
+													</div>
 												</div>
-											</div>
-										</div>
-										{% if loop.index0 % 2 == 1 %}
-											<div class="clearfix hidden-xs"></div>
-										{% endif %}
+											</label>
+										</li>
 									{% endfor %}
-
-								</div>
+								</ul>
 							</div>
 						{% endif %}
 
@@ -80,57 +66,46 @@ Description: Payment Page
 							<h3 class="margin-bottom">Pagamento</h3>
 
 							<div class="payment-methods">
-								<div class="row">
+								<ul class="list-group">
 
 									{% for payment in cart.payments %}
 										{% if payment.active %}
 
-	                                        {% if user.payment %}
-	                                            {% set active = user.payment == payment.title ? true : false %}
-	                                        {% else %}
-	                                            {% set active = payment.default ? true : false %}
-	                                        {% endif %}
+											{% if user.payment %}
+												{% set active = user.payment == payment.title ? true : false %}
+											{% else %}
+												{% set active = payment.default ? true : false %}
+											{% endif %}
 
-											<div class="col-sm-4 col-md-6 col-lg-4">
-												<div class="wrapper-radio-block">
-													<div class="well radio-block {% if active %}active{% endif %}">
-														<div class="content">
-															<div class="input">
-																<input type="radio" name="pagamento" id="{{ payment.alias }}" value="{{ payment.title }}" {% if active %}checked{% endif %}>
-															</div>
-															<div class="inner-content">
-																<div class="{{ payment.alias }} payment-type">
-																	{% if payment.alias == 'multibanco' %}
-																		<p><img src="/templates/assets/common/icons/payments/multibanco-color.png" height="45" alt="{{ payment.title }}" title="{{ payment.title }}"></p>
-																	{% elseif payment.alias == 'paypal' %}
-																		<img src="/templates/assets/common/icons/payments/paypal-color.png" height="35" alt="{{ payment.title }}" title="{{ payment.title }}">
-																		<p><img src="/templates/assets/common/icons/payments/paypal-financial-color.png" height="15" alt="Cartões de crédito aceites" title="Visa, Mastercard, American Express"></p>
-																	{% elseif payment.alias == 'bank_transfer' %}
-																		<h4><label for="{{ payment.alias }}">Transferência</label></h4>
-																		<p>Transferência bancária ou interbancária.</p>
-																	{% elseif payment.alias == 'pick_up' %}
-																		<h4><label for="{{ payment.alias }}">Instalações</label></h4>
-																		<p>Levantamento nas instalações. Portes grátis.</p>
-																	{% elseif payment.alias == 'on_delivery' %}
-																		<h4><label for="{{ payment.alias }}">À Cobrança</label></h4>
-																		<p>{% if payment.value > 0 %}
-																				Acresce {{ payment.value | money_with_sign }} aos portes de envio
-																			{% else %}
-																				Envio e pagamento contra reembolso.
-																			{% endif %}
-																		</p>
-																	{% endif %}
-																</div>
+											<li class="list-group-item list-radio-block payment-method-{{ payment.alias }} {% if active %}list-group-item-active{% endif %}">
+												<label for="{{ payment.alias }}">
+													<div class="list-radio-content">
+														<div class="list-radio-input">
+															<input type="radio" name="pagamento" id="{{ payment.alias }}" value="{{ payment.title }}" {% if active %}checked{% endif %}>
+														</div>
+														<div class="list-radio-description">
+															<div class="shipping_method">
+																<h4>{{ payment.title }}</h4>
+																<p>{{ payment.description }}</p>
 															</div>
 														</div>
+														<div class="clearfix visible-xs-block"></div>
+														<div class="list-radio-logo">
+															{% if payment.logo %}
+																<img src="{{ payment.logo }}" alt="{{ payment.title }}" title="{{ payment.title }}" height="25">
+															{% endif %}
+														</div>
 													</div>
-												</div>
-											</div>
+												</label>
+												{% if payment.alias == 'credit_card' %}
+													<div id="card-element"></div>
+												{% endif %}
+											</li>
 
 										{% endif %}
 									{% endfor %}
 
-								</div>
+								</ul>
 							</div>
 						{% endif %}
 

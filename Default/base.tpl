@@ -1,7 +1,7 @@
 {#
 Template Name: Shopkit Default Template
 Author: Shopkit
-Version: 3.0
+Version: 3.1
 Description: This is the base layout. It is included in every page with this code {% extends 'base.tpl' %}
 Github: https://github.com/Shopkit/Default
 #}
@@ -526,7 +526,9 @@ Github: https://github.com/Shopkit/Default
 				xfbml : true,
 				version : 'v2.11'
 			});
-			$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
+			FB.getLoginStatus(function(){
+				$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
+			});
 		};
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];

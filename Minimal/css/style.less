@@ -1436,6 +1436,116 @@ form footer {
 
 }
 
+.list-group-item {
+	border-color: #eee;
+}
+
+.list-group {
+	margin-bottom: @padding;
+
+	.list-group-item.list-radio-block {
+		padding-top: @padding/2;
+		padding-bottom: @padding/2;
+		& > label {
+			display: block;
+			cursor: pointer;
+			margin: 0;
+		}
+		&.list-group-item-active {
+			//active
+		}
+		div.list-radio-content {
+			.clearfix;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			div.list-radio-input {
+				float: left;
+				width: 10%;
+				min-width: 20px;
+			}
+			div.list-radio-description {
+				float: left;
+				width: 65%;
+				h4 {
+					margin: 0;
+					font-weight: @bold;
+					font-size: 16px;
+					color: #333;
+					display: inline-block;
+				}
+
+				p {
+					color: #999;
+					margin: @padding/12 0 0 0;
+					font-weight: @normal;
+				}
+
+			}
+			div.list-radio-logo {
+				float: right;
+				width: 25%;
+				min-width: 150px;
+				text-align: right;
+			}
+			div.list-radio-price {
+				float: right;
+				width: 25%;
+				min-width: 60px;
+				text-align: right;
+				.price {
+					.h4;
+					font-size: 16px;
+					color: #333;
+					margin: 0;
+					font-weight: @normal;
+
+					del {
+						color: #ccc;
+						font-weight: @normal;
+						.small;
+					}
+				}
+			}
+		}
+	}
+}
+.payment-methods {
+	.list-group {
+		.list-group-item.list-radio-block div.list-radio-content {
+			display: block;
+		}
+		.list-group-item.list-radio-block div.list-radio-content div.list-radio-logo {
+			float: none;
+			width: auto;
+			min-width: 0;
+			text-align: left;
+			margin-left: 10%;
+			margin-top: 15px;
+		}
+		.list-group-item.list-radio-block div.list-radio-content div.list-radio-description {
+			//width: 70%;
+			width: 90%;
+		}
+	}
+	.payment-method-credit_card {
+		.list-radio-logo img {
+			height: 25px;
+		}
+	}
+	.payment-method-multibanco {
+		.list-radio-logo img {
+			height: 30px;
+		}
+	}
+	.payment-method-paypal {
+		.list-radio-logo img {
+			height: 25px;
+		}
+	}
+}
+
 .wrapper-radio-block {
 
 	margin-bottom: @padding;
@@ -1921,6 +2031,43 @@ form footer {
 					margin-bottom: -2px;
 					border-radius: 0 @border-radius @border-radius 0;
 				}
+			}
+		}
+		.list-group-item.list-radio-block {
+			div.list-radio-content {
+				div.list-radio-input {
+					width: 5%;
+				}
+
+				div.list-radio-description {
+					width: 80%;
+				}
+
+				div.list-radio-logo {
+					width: 25%;
+				}
+
+				div.list-radio-price {
+					width: 15%;
+				}
+			}
+		}
+	}
+	.payment-methods {
+		.list-group {
+			.list-group-item.list-radio-block div.list-radio-content {
+				display: flex;
+			}
+			.list-group-item.list-radio-block div.list-radio-content div.list-radio-logo {
+				float: right;
+				width: 25%;
+				min-width: 150px;
+				text-align: right;
+				margin-left: 0;
+				margin-top: 0;
+			}
+			.list-group-item.list-radio-block div.list-radio-content div.list-radio-description {
+				width: 70%;
 			}
 		}
 	}

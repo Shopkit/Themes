@@ -109,16 +109,16 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$('.shipping-methods .radio-block').on('click', function() {
+	$('.shipping-methods .list-radio-block').on('click', function() {
 		var _this = $(this);
-		$('.shipping-methods .radio-block').removeClass('active').find('input').prop('checked', false);
-		_this.addClass('active').find('input').prop('checked', true).trigger('change');
+		$('.shipping-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
+		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
 	});
 
-	$('.payment-methods .radio-block').on('click', function() {
+	$('.payment-methods .list-radio-block').on('click', function() {
 		var _this = $(this);
-		$('.payment-methods .radio-block').removeClass('active').find('input').prop('checked', false);
-		_this.addClass('active').find('input').prop('checked', true).trigger('change');
+		$('.payment-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
+		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
 	});
 
 	//Cart / Shopkit functions

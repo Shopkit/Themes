@@ -92,6 +92,18 @@ $(document).ready(function() {
 		var target = _this.data('target');
 		$(target).toggleClass('hidden');
 	});
+
+	$('.shipping-methods .list-radio-block').on('click', function() {
+		var _this = $(this);
+		$('.shipping-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
+		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
+	});
+
+	$('.payment-methods .list-radio-block').on('click', function() {
+		var _this = $(this);
+		$('.payment-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
+		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
+	});
 });
 
 $(window).load(function() {
