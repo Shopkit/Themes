@@ -28,7 +28,9 @@ Description: Last products page
 					<div class="col-sm-4">
 						<article class="product product-id-{{ product.id }}">
 
-							{% if product.promo == true %}
+							{% if product.status_alias == 'out_of_stock' %}
+								<span class="badge out_of_stock">Sem stock</span>
+							{% elseif product.promo == true %}
 								<span class="badge promo">Promoção</span>
 							{% endif %}
 
