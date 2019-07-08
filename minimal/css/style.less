@@ -900,6 +900,17 @@ h2, h3, h4, h5, h6 {
 	}
 }
 
+.product-has-options {
+	.add-cart:not(.form-enabled) {
+		opacity: 0.25;
+
+		select, input, button, textarea {
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+	}
+}
+
 //categories
 h1 + .breadcrumb {
 	margin-top: -@padding/1.5;
@@ -1875,7 +1886,6 @@ form footer {
 			//.background-color(#fff, 95%);
 			position: absolute;
 			right: 0;
-			top: -5px;
 			padding: 0;
 			border: 0;
 			padding: 0 0 0 @padding/2;
@@ -2161,6 +2171,7 @@ form footer {
 			float: right;
 			padding-left: @padding;
 			z-index: 3;
+			top: -5px;
 
 			.btn-search {
 				color: #999;
@@ -2182,6 +2193,9 @@ form footer {
 			.search-form {
 				top: 0;
 			}
+		}
+		.languages-dropdown {
+			padding: 0 0 0 @padding;
 		}
 	}
 }
@@ -2218,7 +2232,30 @@ form footer {
 	}
 }
 
+//Apps
+//Google Translate
+.skiptranslate {
+    display: none;
+}
 
+.languages-dropdown {
+	padding: 0 @padding/2 0 0;
+
+	&.open > .dropdown-toggle.btn-default, .dropdown-toggle.btn-default {
+		background: none;
+		padding: 0;
+		border: 0;
+		opacity: 0;
+	}
+
+	.dropdown-menu {
+		min-width: 0;
+	}
+}
+
+body.has-google-translate {
+    top: inherit !important;
+}
 
 //Helpers
 .list-reset {
@@ -2370,7 +2407,6 @@ a.link-inherit {
 .animated.fast { -webkit-animation-duration: 0.5s; animation-duration: 0.5s; }
 
 // Third party
-
 //FlexSlider Necessary Styles
 .flexslider{margin:0;padding:0}.flexslider .slides>li{display:none;-webkit-backface-visibility:hidden}.flexslider .slides img{width:100%;display:block}.flex-pauseplay span{text-transform:capitalize}.slides:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}html[xmlns] .slides{display:block}* html .slides{height:1%}.no-js .slides>li:first-child{display:block}
 

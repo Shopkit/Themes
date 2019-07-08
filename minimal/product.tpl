@@ -20,53 +20,7 @@ Description: Product Page
 
 	<div class="container">
 
-		<article class="product-detail" itemscope itemtype="http://schema.org/Product">
-
-			{# Categories microdata (only visible for screen readers) #}
-			{% set categories_microdata = '<div class="sr-only"><ul>' %}
-
-			{% for category in product.categories %}
-
-				{% set itemprop_category %}
-					<li itemprop="category">
-
-						{% if category.parent %}
-							{% set parent = category(category.parent) %}
-							<a href="{{ parent.url }}">{{ parent.title }}</a> ›
-						{% endif %}
-
-						<a href="{{ category.url }}">{{ category.title }}</a>
-					</li>
-				{% endset %}
-
-				{% set categories_microdata = categories_microdata ~ itemprop_category %}
-
-			{% endfor %}
-
-			{% set categories_microdata = categories_microdata ~ '</ul></div>' %}
-
-			{# AggregateOffer Microdata #}
-			{% if product.options %}
-				{% set possible_prices = [] %}
-
-				{% for option in product.options %}
-					{% if option.active %}
-						{% set possible_prices = possible_prices|merge([option.price]) %}
-					{% endif %}
-				{% endfor %}
-
-				{% if possible_prices|length and ( min(possible_prices) != max(possible_prices) ) %}
-					{% set price_offers = true %}
-					<div itemprop="offers" itemscope itemtype="http://schema.org/AggregateOffer">
-						<meta itemprop="priceCurrency" content="{{ store.currency }}" />
-						<meta itemprop="lowPrice" content="{{ min(possible_prices) }}" />
-						<meta itemprop="highPrice" content="{{ max(possible_prices) }}" />
-						{{ categories_microdata }}
-					</div>
-				{% endif %}
-			{% endif %}
-
-			{% set itemprop_price = price_offers == true ? '' : 'itemprop="price"' %}
+		<article class="product-detail">
 
 			<div class="big-image-holder">
 				<img />
@@ -86,7 +40,7 @@ Description: Product Page
 							<ul class="slides">
 
 								<li class="slide">
-									<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}" itemprop="image" width="600"></a>
+									<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}" width="600"></a>
 								</li>
 
 								{% if product.images %}
@@ -114,45 +68,34 @@ Description: Product Page
 					{% if product.file %}
 						<div class="row">
 							<div class="col-xs-10">
-								<h1 itemprop="name">{{ product.title }}</h1>
+								<h1>{{ product.title }}</h1>
 							</div>
 							<div class="col-xs-2 text-right">
 								<a target="_blank" href="{{ product.file }}" class="text-light-gray file-download"><i class="fa fa-fw fa-download"></i></a>
 							</div>
 						</div>
 					{% else %}
-						<h1 itemprop="name">{{ product.title }}</h1>
+						<h1>{{ product.title }}</h1>
 					{% endif %}
 
 					{% if product.reference %}
-						<small class="text-light-gray block">SKU: <span itemprop="sku">{{ product.reference }}</span></small>
+						<small class="text-light-gray block">SKU: <span class="sku">{{ product.reference }}</span></small>
 					{% endif %}
 
 					<div class="row block-price">
 						<div class="col-xs-6 col-md-7 col-lg-6">
 
-							<div {% if not price_offers == true %} itemprop="offers" itemscope itemtype="http://schema.org/Offer" {% endif %}>
-
-								{% if not price_offers == true %}
-									<meta itemprop="priceCurrency" content="{{ store.currency }}" />
-									{{ categories_microdata }}
-
-									{% if product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
-										<meta itemprop="availability" content="http://schema.org/InStock"/>
-									{% elseif product.status == 3 %}
-										<meta itemprop="availability" content="http://schema.org/OutOfStock"/>
-									{% endif %}
-								{% endif %}
+							<div>
 
 								{% if product.price_on_request == true %}
-									<span {{ itemprop_price }} class="data-product-price price">Preço sob consulta</span> &nbsp;
+									<span class="data-product-price price">Preço sob consulta</span> &nbsp;
 									<del class="promo-price"></del>
 								{% else %}
 									{% if product.promo == true %}
-										<span {{ itemprop_price }} class="data-product-price price">{{ product.price_promo | money_with_sign }}</span> &nbsp;
+										<span class="data-product-price price">{{ product.price_promo | money_with_sign }}</span> &nbsp;
 										<del class="promo-price">{{ product.price | money_with_sign }}</del>
 									{% else %}
-										<span {{ itemprop_price }} class="data-product-price price">{{ product.price | money_with_sign }}</span>  &nbsp;
+										<span class="data-product-price price">{{ product.price | money_with_sign }}</span>  &nbsp;
 										<del class="promo-price"></del>
 									{% endif %}
 								{% endif %}
@@ -269,7 +212,7 @@ Description: Product Page
 
 					{% endif %}
 
-					<div class="description" itemprop="description" content="{{ description }}">
+					<div class="description">
 						{{ product.description }}
 					</div>
 

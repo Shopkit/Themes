@@ -112,7 +112,7 @@ Description: Shopping cart page
 				<div class="col-md-8 col-md-offset-2">
 					<div class="well text-center margin-top">
 						<h3 class="normal">Não existem produtos no carrinho</h3>
-						<p>Descubra os nossos <a href="{{ site_url('new') }}">produtos mais recentes</a> ou veja as nossas <a href="{{ site_url('sales') }}">promoções</a>.</p>
+						<p>Descubra os nossos <a href="{{ site_url('new') }}" class="text-underline">produtos mais recentes</a> ou veja as nossas <a href="{{ site_url('sales') }}" class="text-underline">promoções</a>.</p>
 					</div>
 				</div>
 			</div>

@@ -62,7 +62,7 @@ Description: This is the base layout. It's included in every page with this code
 	{{ head_content }}
 
 </head>
-<body class="template-mosaic {{ css_class }} {{ product.price_on_request ? 'price-on-request' }}">
+<body class="template-mosaic {{ css_class }}">
 
 	<section class="sidebar">
 
@@ -137,7 +137,22 @@ Description: This is the base layout. It's included in every page with this code
 					{% if store.instagram %}<li><a target="_blank" href="{{ store.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
 					{% if store.pinterest %}<li><a target="_blank" href="{{ store.pinterest }}"><i class="fa fa-pinterest"></i></a></li>{% endif %}
 					<li><a href="{{ site_url('rss') }}"><i class="fa fa-rss"></i></a></li>
-					{% if apps.google_translate %}<li><a href="#modal-language" role="button" data-toggle="modal"><i class="fa fa-language"></i></a></li>{% endif %}
+					{% if apps.google_translate %}
+						<li>
+							{% set default_lang = apps.google_translate.default_language %}
+							<div class="languages-dropdown btn-group">
+								<button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="current-language"><span class="flag-icon"></span></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li class="googtrans-{{ default_lang }}"><a href="{{ current_url() }}" lang="{{ default_lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[default_lang] }}"></span></a></li>
+									{% for lang in apps.google_translate.languages|split(',') if lang != default_lang %}
+										<li class="googtrans-{{ lang }}"><a href="#googtrans({{ lang }})" lang="{{ lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[lang] }}"></span></a></li>
+									{% endfor %}
+								</ul>
+							</div>
+						</li>
+					{% endif %}
 				</ul>
 			</nav>
 
@@ -449,21 +464,6 @@ Description: This is the base layout. It's included in every page with this code
 		</div>
 	{% endif %}
 
-	{% if apps.google_translate %}
-		<div class="modal hide fade" id="modal-language" role="dialog" aria-labelledby="modal-languageLabel" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 id="modal-languageLabel">Language</h3>
-			</div>
-			<div class="modal-body">
-				<div id="google_translate_element"></div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			</div>
-		</div>
-	{% endif %}
-
 	<!--[if lt IE 8]>
 	<div class="modal hide fade modal-alert">
 		<div class="modal-header">
@@ -529,18 +529,6 @@ Description: This is the base layout. It's included in every page with this code
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 			/* End Google Analytics */
-		{% endif %}
-
-
-		{% if apps.google_translate %}
-			Modernizr.load([
-				{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}
-			]);
-
-			function googleTranslateElementInit()
-			{
-				new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ apps.google_translate.languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
-			}
 		{% endif %}
 
 		{% if store.custom_js %}

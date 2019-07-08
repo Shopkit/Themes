@@ -24,12 +24,12 @@ $(document).ready(function() {
 	$('.store-notice .navbar-form .btn-search').on('click', function() {
 		if ($('.store-notice .navbar-form .search-form').hasClass('hidden')) {
 			$('.store-notice .navbar-form .search-form').removeClass('hidden');
-			$('.store-notice .user-auth').addClass('opacity-0');
+			$('.store-notice .user-auth, .store-notice .languages-dropdown').addClass('opacity-0');
 			return false;
 		} else {
 			if (!$('.store-notice .navbar-form .search-form input').val()) {
 				$('.store-notice .navbar-form .search-form').addClass('hidden');
-				$('.store-notice .user-auth').removeClass('opacity-0');
+				$('.store-notice .user-auth, .store-notice .languages-dropdown').removeClass('opacity-0');
 			}
 		}
 
@@ -219,7 +219,7 @@ function product_options(product, onload) {
 	onload = typeof onload !== 'undefined' ? onload : false;
 
 	if ($('.select-product-options').length) {
-		$('.add-cart').fadeTo('fast', 0.25);
+		$('.add-cart').fadeTo('fast', 0.25).removeClass('form-enabled');
 
 		var default_option = product_default_option(product);
 
@@ -305,9 +305,10 @@ function product_options(product, onload) {
 
 			animate_updated_value('.data-product-price', price_txt, 'flash');
 			animate_updated_value('.data-product-stock_qty', stock_qty, 'flash');
-			animate_updated_value('span[itemprop="sku"]', reference, 'flash');
+			animate_updated_value('span.sku', reference, 'flash');
 
 			$('.add-cart input[name="qtd"], .add-cart button[type="submit"]').prop('disabled', disable_form_product);
+			$('.add-cart').addClass('form-enabled');
 
 			product_options_url();
 

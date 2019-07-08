@@ -56,7 +56,7 @@ Description: Contact Page
 				<label for="message">Mensagem <small class="muted">(*)</small></label>
 				<textarea rows="6" class="span5" id="message" name="message" required>{% if not events.contact_form_success %}{{ get.p ? "Desejo receber mais informações sobre #{get.p}" }}{% endif %}</textarea>
 
-				<div class="g-recaptcha margin-top-xs margin-bottom-sm" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
+				<div class="g-recaptcha margin-top-xs margin-bottom-sm" id="g-recaptcha-contact"></div>
 
 				<button type="submit" class="btn btn-large">Enviar Mensagem</button>
 			{{ form_close() }}

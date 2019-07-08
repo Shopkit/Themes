@@ -23,16 +23,14 @@ Description: Product category page
 				<h1 class="margin-top-0 margin-bottom"><a href="{{ category.url }}" class="link-inherit">{{ category.title }}</a></h1>
 
 				{% if category.parent %}
-					<ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+					<ol class="breadcrumb">
 
-						<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-							<a href="{{ parent_category.url }}" itemprop="item"><span itemprop="name">{{ parent_category.title }}</span></a>
-							<meta itemprop="position" content="1" />
+						<li>
+							<a href="{{ parent_category.url }}"><span>{{ parent_category.title }}</span></a>
 						</li>
 
-						<li class="active" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-							<a href="{{ category.url }}" itemprop="item"><span itemprop="name">{{ category.title }}</span></a>
-							<meta itemprop="position" content="2" />
+						<li class="active">
+							<a href="{{ category.url }}"><span>{{ category.title }}</span></a>
 						</li>
 
 					</ol>

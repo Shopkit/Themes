@@ -820,6 +820,17 @@ header {
 	}
 }
 
+.product-has-options {
+	.add-cart:not(.form-enabled) {
+		opacity: 0.25;
+
+		select, input, button, textarea {
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+	}
+}
+
 .list-group-item {
 	border-color: #eee;
 }
@@ -952,11 +963,11 @@ footer {
 	nav.social-nav {
 		margin-bottom: @padding;
 
-		li {
+		& > ul > li {
 			display: inline-block;
-			margin: 0 5px;
+			margin: 5px;
 
-			a {
+			& > a {
 				.rounded(35px);
 				.transition(~"500ms");
 				display: block;
@@ -1536,6 +1547,63 @@ footer {
 	}
 }
 
+//Apps
+//Google Translate
+.skiptranslate {
+    display: none;
+}
+
+.languages-dropdown {
+	border: 0;
+	.rounded(35px);
+	.transition(~"500ms");
+	width: 35px;
+	height: 35px;
+	background: #fff;
+	padding: 0px;
+	position: relative;
+	font-size: 14px;
+	line-height: 35px;
+	display: block;
+
+	.dropdown-toggle {
+		outline: 0;
+		opacity: 0;
+	}
+
+	&.open, &:hover {
+		box-shadow: none;
+		background-color: #999;
+	}
+
+	.current-language {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		.transform(translate(-50%, -50%));
+		font-size: 12px;
+	}
+
+	.dropdown-menu {
+		min-width: 0;
+		top: auto;
+		bottom: 100%;
+		left: -13px;
+		border-color: #ddd;
+
+		li {
+			display: block;
+
+			a:hover {
+				background: #eee;
+			}
+		}
+	}
+}
+
+body.has-google-translate {
+    top: inherit !important;
+}
 
 /* Helpers */
 .text-white, .text-white a { color: #fff; }
@@ -1671,6 +1739,9 @@ footer {
 				width: 70%;
 			}
 		}
+	}
+	footer nav.social-nav & > ul > li {
+		margin: 0 5px;
 	}
 }
 
@@ -1815,7 +1886,6 @@ footer {
 
 
 /* Third Party */
-
 //Isotope
 .isotope-item{z-index:2;}.isotope-hidden.isotope-item{z-index:1;pointer-events:none;}.isotope,.isotope .isotope-item{-webkit-transition-duration:.8s;-moz-transition-duration:.8s;-ms-transition-duration:.8s;-o-transition-duration:.8s;transition-duration:.8s;}.isotope{-webkit-transition-property:height,width;-moz-transition-property:height,width;-ms-transition-property:height,width;-o-transition-property:height,width;transition-property:height,width;}.isotope .isotope-item{-webkit-transition-property:-webkit-transform,opacity;-moz-transition-property:-moz-transform,opacity;-ms-transition-property:-ms-transform,opacity;-o-transition-property:-o-transform,opacity;transition-property:transform,opacity;}.isotope.no-transition,.isotope.no-transition .isotope-item,.isotope .isotope-item.no-transition{-webkit-transition-duration:0;-moz-transition-duration:0;-ms-transition-duration:0;-o-transition-duration:0;transition-duration:0;}
 

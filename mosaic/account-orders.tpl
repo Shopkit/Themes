@@ -79,7 +79,7 @@ Description: Orders account page
 								</div>
 
 								{% if user.order_detail.payment.type != 'on_delivery' and user.order_detail.payment.type != 'pick_up' %}
-                                	<p><small><a href="{{ site_url('order/payment/' ~ user.order_detail.hash) }}">Alterar método de pagamento</a></small></p>
+                                	<p><small><a href="{{ site_url('order/payment/' ~ user.order_detail.hash) }}" class="text-underline">Alterar método de pagamento</a></small></p>
 								{% endif %}
 							{% endif %}
 						</div>

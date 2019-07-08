@@ -6,7 +6,7 @@ Description: Product Page
 
 {% block content %}
 
-	<article itemscope itemtype="http://schema.org/Product">
+	<article>
 
 		<ul class="breadcrumb">
 			<li><a href="/">Home</a><span class="divider">›</span></li>
@@ -17,7 +17,7 @@ Description: Product Page
 
 			<div class="span4">
 
-				<a href="{{ product.image.full }}" class="box-medium fancy" rel="{{ product.id }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" itemprop="image"></a>
+				<a href="{{ product.image.full }}" class="box-medium fancy" rel="{{ product.id }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" class="product-image"></a>
 
 				{% if product.images %}
 
@@ -45,21 +45,20 @@ Description: Product Page
 
 			<div class="span5">
 
-				<h1 itemprop="name">{{ product.title }}</h1>
+				<h1>{{ product.title }}</h1>
 
-				<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-					<meta itemprop="priceCurrency" content="{{ store.currency }}" />
+				<div>
 					<h4 class="price">
 
 						{% if product.price_on_request == true %}
-							<span itemprop="price" class="data-product-price">Preço sob consulta</span> &nbsp; 
+							<span class="data-product-price">Preço sob consulta</span> &nbsp; 
 							<del></del>
 						{% else %}
 							{% if product.promo == true %}
-								<span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp; 
+								<span class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp; 
 								<del>{{ product.price | money_with_sign }}</del>
 							{% else %}
-								<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp; 
+								<span class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp; 
 								<del></del>
 							{% endif %}
 						{% endif %}
@@ -80,7 +79,7 @@ Description: Product Page
 					<h4>Adicionar ao carrinho</h4>
 
 					{% if product.reference %}
-						<h6><small>Referência: <span itemprop="sku">{{ product.reference }}</span></small></h6>
+						<h6><small>Referência: <span class="sku">{{ product.reference }}</span></small></h6>
 					{% endif %}
 
 					<br>
@@ -166,7 +165,7 @@ Description: Product Page
 
 				{{ form_close() }}
 
-				<p itemprop="description" content="{{ description }}">{{ product.description }}</p>
+				<p class="description">{{ product.description }}</p>
 
 				{% if product.file %}
 					<div class="well well-small">

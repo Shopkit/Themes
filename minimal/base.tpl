@@ -3,7 +3,6 @@ Template Name: Minimal
 Author: Shopkit
 Version: 4.0
 #}
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -74,7 +73,7 @@ Version: 4.0
 
 	</head>
 
-	<body class="{{ css_class }} {{ product.price_on_request ? 'price-on-request' }}">
+	<body class="{{ css_class }}">
 
 		<header>
 
@@ -94,6 +93,22 @@ Version: 4.0
 					</div>
 					<button type="submit" class="btn-search btn btn-link"><i class="fa fa-fw fa-search"></i></button>
 				{{ form_close() }}
+
+				{% if apps.google_translate %}
+					{% set default_lang = apps.google_translate.default_language %}
+					<div class="languages-dropdown btn-group pull-right">
+						<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="current-language"><span class="flag-icon"></span></span> &nbsp;
+							 <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li class="googtrans-{{ default_lang }}"><a href="{{ current_url() }}" lang="{{ default_lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[default_lang] }}"></span></a></li>
+							{% for lang in apps.google_translate.languages|split(',') if lang != default_lang %}
+								<li class="googtrans-{{ lang }}"><a href="#googtrans({{ lang }})" lang="{{ lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[lang] }}"></span></a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
 
 				<div class="user-auth">
 					{% if store.settings.cart.users_registration != 'disabled' %}
@@ -454,27 +469,6 @@ Version: 4.0
 			</script>
 		{% endif %}
 
-		{% if apps.google_translate %}
-			<button class="btn btn-default btn-lang" data-toggle="modal" data-target="#language-switch"><i class="fa fa-language"></i></button>
-
-			<div class="modal fade" id="language-switch" tabindex="-1" role="dialog" aria-labelledby="language-switch" aria-hidden="true">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h4 class="modal-title">Language</h4>
-						</div>
-						<div class="modal-body">
-							<div id="google_translate_element"></div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		{% endif %}
-
 		{# //End Events #}
 
 		<div id="fb-root"></div>
@@ -522,17 +516,6 @@ Version: 4.0
 					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 				})();
 				/* End Google Analytics */
-			{% endif %}
-
-			{% if apps.google_translate %}
-				Modernizr.load([
-					{load: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'}
-				]);
-
-				function googleTranslateElementInit()
-				{
-					new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: '{{ apps.google_translate.languages }}', gaTrack: true, gaId: 'UA-28055653-2'}, 'google_translate_element');
-				}
 			{% endif %}
 
 			{% if store.custom_js %}

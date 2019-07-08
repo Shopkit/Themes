@@ -172,8 +172,8 @@
 																	</td>
 																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda enviada</span></td>
 																	<td align="right" class="link-white">
-																		{% if order.tracking_url %}
-																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																		{% if order.tracking_code or order.tracking_url %}
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
 																		{% elseif order.invoice_permalink %}
 																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
 																		{% endif %}
@@ -201,6 +201,25 @@
 															</table>
 														</div>
 
+													{% elseif order.status_alias == 'returned' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ad4e;padding:15px 20px;border-top-left-radius: 3px;border-top-right-radius: 3px;">
+															<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
+																<tr>
+																	<td width="40" class="td-img-order-status"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/undo.png" width="40" alt="returned" border="0" class="img-order-status"/></td>
+																	<td width="20">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda devolvida</span></td>
+																	<td align="right" class="link-white">
+																		{% if order.tracking_code or order.tracking_url %}
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																		{% endif %}
+																	</td>
+																</tr>
+															</table>
+														</div>
+
 													{% elseif order.paid == true %}
 														{% set have_top_bar = true %}
 														<div style="background-color:#8dc059;padding:15px 20px;border-top-left-radius: 3px;border-top-right-radius: 3px;">
@@ -214,8 +233,8 @@
 																	<td align="right" class="link-white">
 																		{% if order.invoice_permalink %}
 																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
-																		{% elseif order.tracking_url %}
-																			<a href="{{ order.tracking_url }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																		{% elseif order.tracking_code or order.tracking_url %}
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -259,11 +278,11 @@
 																		<br />{{ order.shipment_method ?: 'n/a' }}
 																	</p>
 
-																	{% if order.tracking_code %}
-																	<p style="margin:0 0 0 0;color:#999;">
-																		<strong style="color:#666;">Tracking</strong>
-																		<br /><a href="{{ order.tracking_url }}" target="_blank">{{ order.tracking_code }}</a>
-																	</p>
+																	{% if order.tracking_code or order.tracking_url %}
+																		<p style="margin:0 0 0 0;color:#999;">
+																			<strong style="color:#666;">Tracking</strong>
+																			<br /><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank">{{ order.tracking_code ?: 'Seguir envio' }}</a>
+																		</p>
 																	{% endif %}
 																</td>
 																<td width="50%" align="right" valign="top" style="padding:30px 20px;">
@@ -331,6 +350,8 @@
 																			<td colspan="3">
 																				{% if order.status_alias == 'delivered' %}
 																					<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda entregue</strong></p>
+																				{% elseif order.status_alias == 'returned' %}
+																					<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda devolvida</strong></p>
 																				{% elseif order.status_alias == 'sent' %}
 																					<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda enviada</strong> em {{ order.sent_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</p>
 																				{% elseif order.status_alias == 'canceled' %}
@@ -443,8 +464,8 @@
 																	<p style="margin:0 0 0 0">{{ order.client.delivery.zip_code }} {{ order.client.delivery.city }}</p>
 																	<p style="margin:0 0 0 0">{{ order.client.delivery.country }}</p>
 																	<p style="margin:0 0 0 0">Telefone: {{ order.client.delivery.phone ?: 'n/a' }}</p>
-																	{% if order.tracking_url %}
-																		<p><a href="{{ order.tracking_url }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Seguir envio</a></p>
+																	{% if order.tracking_code or order.tracking_url %}
+																		<p><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Seguir envio</a></p>
 																	{% endif %}
 																</td>
 																<td width="50%" align="left" valign="top" style="padding:30px 20px;font-size:14px;line-height:24px;color:#999999;">

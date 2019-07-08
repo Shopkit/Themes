@@ -158,7 +158,7 @@ Description: Contact Page
 						</div>
 
 						<div class="form-group">
-							<div class="g-recaptcha" data-sitekey="{{ apps.google_recaptcha.sitekey }}"></div>
+							<div class="g-recaptcha" id="g-recaptcha-contact"></div>
 						</div>
 
 						<button type="submit" class="btn btn-gray">Enviar Mensagem</button>

@@ -219,6 +219,7 @@ $(window).load(function() {
 
 function product_options(product, onload) {
 	if ($('.select-product-options').length) {
+		$('.add-cart').fadeTo('fast', 0.25).removeClass('form-enabled');
 
 		var _this = $('.select-product-options');
 		var option = $('option:selected', _this);
@@ -298,7 +299,9 @@ function product_options(product, onload) {
 
 			$('.data-product-price').text(price_txt);
 			$('.data-product-stock_qty').text(stock_qty);
-			$('span[itemprop="sku"]').text(reference);
+			$('span.sku').text(reference);
+
+			$('.add-cart').addClass('form-enabled');
 
 			product_options_url();
 

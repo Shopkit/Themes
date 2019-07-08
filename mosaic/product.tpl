@@ -25,28 +25,27 @@ Description: Product Page
 
 	<div class="content">
 
-		<article class="product" itemscope itemtype="http://schema.org/Product">
+		<article class="product">
 
 			<div class="row-fluid">
 
 				<div class="span8">
-					<h1 itemprop="name">{{ product.title }}</h1>
+					<h1>{{ product.title }}</h1>
 				</div>
 
 				<div class="span4">
 
-					<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-						<meta itemprop="priceCurrency" content="{{ store.currency }}" />
+					<div>
 						<div class="price">
 							{% if product.price_on_request == true %}
-								<span itemprop="price" class="data-product-price">Preço sob consulta</span>
+								<span class="data-product-price">Preço sob consulta</span>
 								<del></del>
 							{% else %}
 								{% if product.promo == true %}
-									<span itemprop="price" class="data-product-price">{{ product.price_promo | money_with_sign }}</span>
+									<span class="data-product-price">{{ product.price_promo | money_with_sign }}</span>
 									<del>{{ product.price | money_with_sign }}</del>
 								{% else %}
-									<span itemprop="price" class="data-product-price">{{ product.price | money_with_sign }}</span>
+									<span class="data-product-price">{{ product.price | money_with_sign }}</span>
 									<del></del>
 								{% endif %}
 							{% endif %}
@@ -76,7 +75,7 @@ Description: Product Page
 
 				<div class="span4">
 					{% if product.reference %}
-						<p class="text-right"><small class="muted light"><strong>Referência:</strong> <span itemprop="sku">{{ product.reference }}</span></small></p>
+						<p class="text-right"><small class="muted light"><strong>Referência:</strong> <span class="sku">{{ product.reference }}</span></small></p>
 					{% endif %}
 				</div>
 			</div>
@@ -158,7 +157,7 @@ Description: Product Page
 			<div class="flexslider">
 				<ul class="slides">
 					<li>
-						<img src="{{ product.image.full }}" alt="{{ product.title }}" itemprop="image">
+						<img src="{{ product.image.full }}" alt="{{ product.title }}">
 					</li>
 
 					{% for image in product.images %}
@@ -183,7 +182,7 @@ Description: Product Page
 
 			{% if product.description %}
 				<hr>
-				<div class="product-description break-word" itemprop="description" content="{{ description }}" >
+				<div class="product-description break-word">
 					{{ product.description }}
 				</div>
 			{% endif %}
