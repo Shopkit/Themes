@@ -300,6 +300,10 @@
 																		{% set multibanco_reference = order.payment.data.reference|split('', 3) %}
 																		{% set payment_data = '<p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">Entidade:</strong> ' ~ order.payment.data.entity ~ '</p><p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">Referência:</strong> <span style="padding: 0px 2px">' ~ multibanco_reference[0] ~ '</span><span style="padding: 0px 2px">' ~ multibanco_reference[1] ~ '</span><span style="padding: 0px 2px">' ~ multibanco_reference[2] ~ '</span></p><p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">Valor:</strong> ' ~ order.payment.data.value|money_with_sign(order.currency) ~ '</p>' %}
 
+																	{% elseif order.payment.type == 'mbway' %}
+																		{% set payment_img = store.payments.mbway.image %}
+																		{% set payment_data = '<p style="margin:0 0 0 0; line-height:24px;">Telemóvel: <strong>' ~ order.payment.data.phone ~ '</strong></p>' %}
+
 																	{% elseif order.payment.type == 'paypal' %}
 																		{% set payment_img = store.payments.paypal.image %}
 																		{% set payment_data = '<p style="margin:5px 0 5px 0;"><a href="' ~ order.payment.data.url ~ '" target="_blank" style="display: inline-block; padding:10px 20px; line-height:100%; color:#fff; border-radius:3px; text-decoration:none; font-size:14px; background-color: #009cde;" class="link-white">Pagar via Paypal</a></p>' %}
@@ -357,10 +361,14 @@
 																				{% elseif order.status_alias == 'canceled' %}
 																					<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda cancelada</strong></p>
 																				{% elseif order.paid == false %}
-																					{{ payment_data }}
+																					{% if order.payment.type == 'multibanco' and not order.payment.data.reference %}
+																						<p><small>Ocorreu um erro a gerar a referência Multibanco. <a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Tente novamente</a></small></p>
+																					{% else %}
+																						{{ payment_data }}
 
-																					{% if order.payment.type != 'on_delivery' and order.payment.type != 'pick_up' %}
-																						<p><small><a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Alterar método de pagamento</a></small></p>
+																						{% if order.payment.type != 'on_delivery' and order.payment.type != 'pick_up' %}
+																							<p><small><a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Alterar método de pagamento</a></small></p>
+																						{% endif %}
 																					{% endif %}
 																				{% elseif order.paid == true %}
 																					<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</p>

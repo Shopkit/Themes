@@ -25,7 +25,7 @@ Description: Complete order page
 
 				{% if order.payment.type == 'multibanco' %}
 
-					{% if order.payment.data %}
+					{% if order.payment.data and order.payment.data.reference %}
 						<div class="text-center">
 							<div class="well inline-block multibanco-data">
 								<img src="{{ assets_url('templates/assets/common/icons/payments/multibanco-color.png') }}" height="45" alt="Multibanco" title="Multibanco" class="margin-bottom-md">

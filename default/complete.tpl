@@ -27,7 +27,7 @@ Description: Complete order page
 
 		<br>
 
-		{% if order.payment.data %}
+		{% if order.payment.data and order.payment.data.reference %}
 
 			<div class="well multibanco-data">
 				<h4>Dados para pagamento Multibanco</h4>

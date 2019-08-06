@@ -26,7 +26,7 @@ Description: Complete order page
 
 			{% if order.payment.type == 'multibanco' %}
 
-				{% if order.payment.data %}
+				{% if order.payment.data and order.payment.data.reference %}
 
 					<div class="boxed multibanco-data">
 						<h4>Dados para pagamento Multibanco</h4>
