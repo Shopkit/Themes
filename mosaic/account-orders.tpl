@@ -14,7 +14,7 @@ Description: Orders account page
 			<div class="span12">
 
 				<p class="breadcrumbs">
-					<a href="/"><i class="fa fa-home"></i></a> ›
+					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
 					<a href="{{ site_url('account') }}">A minha conta</a> ›
 					Encomendas
 				</p><br>
@@ -136,7 +136,7 @@ Description: Orders account page
 									{% for product in user.order_detail.products %}
 										<tr>
 											<td width="40">
-												<a href="{{ product.url }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}" width="40"></a>
+												<a href="{{ product.url }}"><img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="40"></a>
 											</td>
 											<td>
 												<a href="{{ product.url }}">{{ product.title }}</a><br>

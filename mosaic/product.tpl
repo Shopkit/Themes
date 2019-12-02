@@ -68,7 +68,7 @@ Description: Product Page
 
 				<div class="span8">
 					<p class="breadcrumbs">
-						<a href="/"><i class="fa fa-home"></i></a> ›
+						<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
 						{{ product.title }}
 					</p>
 				</div>
@@ -89,7 +89,7 @@ Description: Product Page
 						<div class="data-product-info">
 							<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 
-							&nbsp; &nbsp; 
+							&nbsp; &nbsp;
 						</div>
 
 						{% if product.options %}
@@ -115,7 +115,7 @@ Description: Product Page
 						</div>
 
 						<div class="data-product-on-request">
-							<a class="btn btn-link pull-right price-on-request" href="{{ site_url('contact') }}?p={{ product.title }}">Contactar</a>
+							<a class="btn btn-link pull-right price-on-request" href="{{ site_url('contact') }}?p={{ product.title|url_encode }}">Contactar</a>
 						</div>
 
 					</div>
@@ -157,11 +157,11 @@ Description: Product Page
 			<div class="flexslider">
 				<ul class="slides">
 					<li>
-						<img src="{{ product.image.full }}" alt="{{ product.title }}">
+						<img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}">
 					</li>
 
 					{% for image in product.images %}
-						<li><img src="{{ image.full }}" alt="{{ product.title }}"></li>
+						<li><img src="{{ image.full }}" alt="{{ product.title|e_attr }}"></li>
 					{% endfor %}
 
 				</ul>
@@ -174,7 +174,7 @@ Description: Product Page
 				<div class="share">
 					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-lg fa-facebook fa-fw"></i></a> &nbsp;
 					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-lg fa-whatsapp fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ product.excerpt|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
+					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
 					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-lg fa-pinterest fa-fw"></i></a>
 				</div>
 

@@ -11,10 +11,10 @@ Description: Confirm order page
 		<section class="page">
 
 			<p class="breadcrumbs">
-				<a href="/"><i class="fa fa-home"></i></a> ›
-				<a href="{{ site_url('cart') }}">Carrinho de Compras</a> › 
-				<a href="{{ site_url('cart/data') }}">Dados de Envio</a> › 
-				<a href="{{ site_url('cart/payment') }}">Pagamento e Transporte</a> › 
+				<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+				<a href="{{ site_url('cart') }}">Carrinho de Compras</a> ›
+				<a href="{{ site_url('cart/data') }}">Dados de Envio</a> ›
+				<a href="{{ site_url('cart/payment') }}">Pagamento e Transporte</a> ›
 				Confirmação
 			</p><br>
 

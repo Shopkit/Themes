@@ -7,19 +7,28 @@ Description: Search Page
 {% block content %}
 
 	{% set products_per_page = 12 %}
-	{% set products = products("search order:featured limit:#{products_per_page}") %}
+	{% set search = products("search limit:#{products_per_page}") %}
+
+	{% set total_products = search.total_results %}
+	{% set cur_page = (pagination_segment / products_per_page) + 1 %}
+	{% set cur_page_from = pagination_segment + 1 %}
+	{% set cur_page_to = (cur_page * products_per_page) < search.total_results ? cur_page * products_per_page : search.total_results %}
 
 	<h1 class="wide">Pesquisa</h1>
 
-	{% if products %}
+	{% if search.results %}
 
-		<p class="wide">Resultados de produtos para a pesquisa: <em>{{ search.query }}</em></p>
+		{% if search.results %}
+			<p class="wide">A mostrar {{ cur_page_from }}-{{ cur_page_to }} de {{ total_products }} produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+		{% else %}
+			<p class="wide">Foram encontrados <strong>{{ search.total_results }}</strong> produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+		{% endif %}
 
 		<ul class="unstyled products">
 
-			{% for product in products %}
+			{% for product in search.results %}
 				<li class="product-id-{{ product.id }}">
-					<img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}">
+					<img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}">
 
 					<div class="description">
 						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
@@ -58,7 +67,7 @@ Description: Search Page
 		{{ pagination("search limit:#{products_per_page}") }}
 
 	{% else %}
-		<p class="wide">Não existem produtos para a pesquisa: <em>{{ search.query }}</em>.</p>
+		<p class="wide">Não existem produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
 	{% endif %}
 
 {% endblock %}

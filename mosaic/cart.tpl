@@ -10,7 +10,7 @@ Description: Shopping cart page
 		<section class="page">
 
 			<p class="breadcrumbs">
-				<a href="/"><i class="fa fa-home"></i></a> ›
+				<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
 				Carrinho de Compras
 			</p><br>
 

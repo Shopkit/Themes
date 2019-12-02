@@ -17,9 +17,9 @@ Description: About page
 
 				<div class="flexslider">
 					<ul class="slides">
-						{% if store.image_header_1 %}<li><img src="{{ store.image_header_1 }}" alt="{{ store.name }}"></li>{% endif %}
-						{% if store.image_header_2 %}<li><img src="{{ store.image_header_2 }}" alt="{{ store.name }}"></li>{% endif %}
-						{% if store.image_header_3 %}<li><img src="{{ store.image_header_3 }}" alt="{{ store.name }}"></li>{% endif %}
+						{% if store.image_header_1 %}<li><img src="{{ store.image_header_1 }}" alt="{{ store.name|e_attr }}"></li>{% endif %}
+						{% if store.image_header_2 %}<li><img src="{{ store.image_header_2 }}" alt="{{ store.name|e_attr }}"></li>{% endif %}
+						{% if store.image_header_3 %}<li><img src="{{ store.image_header_3 }}" alt="{{ store.name|e_attr }}"></li>{% endif %}
 					</ul>
 				</div>
 

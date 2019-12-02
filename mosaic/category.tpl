@@ -2,9 +2,19 @@
 Description: Product category page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
+
+	{#  Parent category #}
+	{% if category.parent %}
+		{% set parent_category = category(category.parent) %}
+	{% else %}
+		{% set parent_category = category %}
+		{% set is_parent = true %}
+	{% endif %}
 
 	{% set category_default_order = store.category_default_order|default('position') %}
 
@@ -22,7 +32,7 @@ Description: Product category page
 
 			{% for product in products %}
 				<li class="product-id-{{ product.id }}">
-					<img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}">
+					<img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}">
 
 					<div class="description">
 						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
@@ -59,6 +69,14 @@ Description: Product category page
 		</ul>
 
 		{{ pagination("category:#{category.id} limit:12") }}
+
+	{% elseif is_parent and parent_category.children %}
+
+		<ul class="unstyled categories-list">
+			{% for category in parent_category.children %}
+				{{ generic_macros.category_list(category) }}
+			{% endfor %}
+		</ul>
 
 	{% else %}
 		<p class="wide">Não existem produtos.</p>

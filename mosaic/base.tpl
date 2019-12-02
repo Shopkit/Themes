@@ -5,6 +5,24 @@ Version: 4.0
 Description: This is the base layout. It's included in every page with this code: {% extends 'base.tpl' %}
 #}
 
+{% macro category_list(category, show_number_products = true) %}
+	{% import _self as generic_macros %}
+
+	{% set category_title = category.title|e_attr %}
+	{% set category_url = category.url %}
+
+	<li class="category-id-{{ category.id }}">
+		<img src="{{ category.image.square }}" alt="{{ category_title }}" title="{{ category_title }}">
+		<div class="description">
+			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
+			{% if show_number_products %}
+				<p>{{ category.total_products }} Produtos</p>
+			{% endif %}
+			<a href="{{ category_url }}" class="button white"><span>Explorar</span></a>
+		</div>
+	</li>
+{% endmacro %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -14,8 +32,8 @@ Description: This is the base layout. It's included in every page with this code
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>{{ title }}</title>
-	<meta name="description" content="{{ description }}">
-	<meta name="keywords" content="{{ tags }}">
+	<meta name="description" content="{{ description|e_attr }}">
+	<meta name="keywords" content="{{ tags|e_attr }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	{% if store.show_branding %}
@@ -27,10 +45,10 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	<!-- Facebook Meta -->
-	<meta property="og:site_name" content="{{ store.name }}">
+	<meta property="og:site_name" content="{{ store.name|e_attr }}">
 	<meta property="og:type" content="website">
-	<meta property="og:title" content="{{ title }}">
-	<meta property="og:description" content="{{ description }}">
+	<meta property="og:title" content="{{ title|e_attr }}">
+	<meta property="og:description" content="{{ description|e_attr }}">
 	<meta property="og:url" content="{{ current_url() }}">
 
 	{% if image %}
@@ -42,22 +60,24 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 	<!-- End Facebook Meta -->
 
-	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name }}">
+	<link rel="canonical" href="{{ canonical_url }}" />
+
+	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name|e_attr }}">
 
 	{% if store.favicon %}
 		<link rel="shortcut icon" href="{{ store.favicon }}">
 	{% endif %}
 
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic">
 	<link rel="stylesheet" href="{{ store.assets.css }}">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
 
 	{% if store.custom_css %}
 		<style>{{ store.custom_css }}</style>
 	{% endif %}
 
 	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
-	<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.9.1/jquery.min.js"></script>
+	<script src="https://drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.9.1/jquery.min.js"></script>
 
 	{{ head_content }}
 
@@ -94,9 +114,9 @@ Description: This is the base layout. It's included in every page with this code
 			<div class="inner-header">
 
 				{% if store.logo %}
-					<a href="/" class="logo"><img src="{{ store.logo }}" alt="{{ store.name }}"></a>
+					<a href="{{ site_url() }}" class="logo"><img src="{{ store.logo }}" alt="{{ store.name|e_attr }}"></a>
 				{% else %}
-					<h1 class="logo"><a href="/">{{ store.name }}</a></h1>
+					<h1 class="logo"><a href="{{ site_url() }}">{{ store.name }}</a></h1>
 				{% endif %}
 
 				<div class="content-header">
@@ -113,7 +133,7 @@ Description: This is the base layout. It's included in every page with this code
 					</nav>
 
 					<form action="{{ site_url('search') }}">
-						<input type="search" placeholder="PESQUISAR" name="q">
+						<input type="search" value="{{ search ? search.query }}" placeholder="PESQUISAR" name="q">
 					</form>
 				</div>
 
@@ -215,6 +235,9 @@ Description: This is the base layout. It's included in every page with this code
 				<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
 					<a href="{{ site_url('catalog') }}">Todos os produtos</a>
 				</li>
+				<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
+					<a href="{{ site_url('categories') }}">Todas as categorias</a>
+				</li>
 				{% for products_category in categories %}
 					<li {% if (category.id == products_category.id) %}class="active"{% endif %}><a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}" data-toggle="collapse" data-target="#category_{{ products_category.id }}">{% if products_category.children %}<i class="fa fa-chevron-circle-down"></i> &nbsp; {% endif %}{{ products_category.title }}</a>
 						{% if products_category.children %}
@@ -253,7 +276,6 @@ Description: This is the base layout. It's included in every page with this code
 
 	{% if apps.newsletter %}
 		<div class="newsletter slide-bar">
-
 			<header>
 				<h3>Newsletter</h3>
 			</header>
@@ -262,16 +284,12 @@ Description: This is the base layout. It's included in every page with this code
 				<p>Inscreva-se na nossa newsletter para receber todas as novidades no seu e-mail.</p>
 				<br>
 
-				{{ form_open('newsletter/register') }}
-					<input name="nome_newsletter" type="text" placeholder="Nome" class="input-block-level" required="">
-					<input name="email_newsletter" type="email" placeholder="E-mail" class="input-block-level" required="">
-					<button class="btn btn-inverse" type="submit">Registar</button>
-				{{ form_close() }}
+				<input name="nome_newsletter" type="text" placeholder="Nome" class="input-block-level" required="">
+				<input name="email_newsletter" type="email" placeholder="E-mail" class="input-block-level" required="">
+				<button class="btn btn-inverse submit-newsletter" type="button">Registar</button>
 
 				<div class="text-center"><a class="close" href="#" data-target=".categories">&times;</a></div>
-
 			</section>
-
 		</div>
 	{% endif %}
 
@@ -387,7 +405,7 @@ Description: This is the base layout. It's included in every page with this code
 		</div>
 	{% endif %}
 
-	{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_removal %}
+	{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_status_confirmation or events.newsletter_removal %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
@@ -405,6 +423,10 @@ Description: This is the base layout. It's included in every page with this code
 
 				{% if events.newsletter_status_error %}
 					<h5 class="text-normal">O seu e-mail já se encontra inscrito na nossa newsletter.</h5>
+				{% endif %}
+
+				{% if events.newsletter_status_confirmation %}
+					<h5 class="text-normal">Foi enviado um e-mail para confirmar o seu registo.</h5>
 				{% endif %}
 
 				{% if events.newsletter_removal %}

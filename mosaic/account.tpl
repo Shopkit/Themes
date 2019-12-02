@@ -63,7 +63,7 @@ Description: User account page
 			<div class="span12">
 
 				<p class="breadcrumbs">
-					<a href="/"><i class="fa fa-home"></i></a> ›
+					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
 					A minha conta
 				</p><br>
 

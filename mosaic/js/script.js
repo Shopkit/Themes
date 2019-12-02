@@ -5,7 +5,7 @@ $(document).ready(function() {
 	// 	$('header').css({'height' : window_height});
 	// }).resize();
 
-	var $container = $('.products');
+	var $container = $('.products, .categories-list');
 	var window_height = $(window).height();
 	var window_width = $(window).width();
 
@@ -182,7 +182,6 @@ $(document).ready(function() {
 		$('.payment-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
 		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
 	});
-
 });
 
 

@@ -15,8 +15,8 @@ Description: Wishlist account page
 			<div class="span12">
 
 				<p class="breadcrumbs">
-					<a href="/"><i class="fa fa-home"></i></a> ›
-					<a href="{{ site_url('account') }}">A minha conta</a> › 
+					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+					<a href="{{ site_url('account') }}">A minha conta</a> ›
 					Wishlist
 				</p><br>
 
@@ -31,7 +31,7 @@ Description: Wishlist account page
 								{% for product in user.wishlist %}
 									<tr>
 										<td width="60">
-											<a href="{{ product.url }}"><img src="{{ product.image }}" alt="{{ product.title }}" title="{{ product.title }}" width="60"></a>
+											<a href="{{ product.url }}"><img src="{{ product.image }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="60"></a>
 										</td>
 										<td>
 											<p class="margin-bottom-0"><a href="{{ product.url }}">{{ product.title }}</a></p>
@@ -43,7 +43,7 @@ Description: Wishlist account page
 											 <small class="text-muted">Adicionado em {{ product.created_at|date("d \\d\\e F \\d\\e Y") }}</small>
 										</td>
 										<td class="text-right nowrap">
-		                                    <a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="Remover"><i class="fa fa-fw fa-trash fa-lg"></i></a> &nbsp; 
+		                                    <a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="Remover"><i class="fa fa-fw fa-trash fa-lg"></i></a> &nbsp;
 		                                    <a href="{{ product.add_cart_url }}" class="text-muted small" title="Adicionar ao carrinho"><i class="fa fa-fw fa-cart-plus fa-lg"></i></a>
 		                                </td>
 									</tr>
