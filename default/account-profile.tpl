@@ -9,7 +9,7 @@ Description: Account profile page
 {% block content %}
 
     <ul class="breadcrumb">
-        <li><a href="/">Home</a><span class="divider">›</span></li>
+        <li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
         <li><a href="{{ site_url('account') }}">A minha conta</a><span class="divider">›</span></li>
         <li class="active">Dados de cliente</li>
     </ul>

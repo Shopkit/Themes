@@ -7,7 +7,7 @@ Description: Order data form page
 {% block content %}
 
 	<ul class="breadcrumb">
-		<li><a href="/">Home</a><span class="divider">›</span></li>
+		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a><span class="divider">›</span></li>
 		<li class="active">Dados de Envio</li>
 	</ul>

@@ -6,6 +6,23 @@ Description: This is the base layout. It is included in every page with this cod
 Github: https://github.com/Shopkit/Default
 #}
 
+{% macro category_list(category, show_number_products = true) %}
+	{% import _self as generic_macros %}
+
+	{% set category_title = category.title|e_attr %}
+	{% set category_url = category.url %}
+
+	<div class="span3 category category-id-{{ category.id }}">
+		<a href="{{ category_url }}"><img src="{{ category.image.full }}" alt="{{ category_title }}" title="{{ category_title }}"></a>
+		<div class="box">
+			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
+			{% if show_number_products %}
+				<span>{{ category.total_products }} Produtos</span>
+			{% endif %}
+		</div>
+	</div>
+{% endmacro %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="pt"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="pt"> <![endif]-->
@@ -15,8 +32,8 @@ Github: https://github.com/Shopkit/Default
 	<meta charset="utf-8">
 	<title>{{ title }}</title>
 
-	<meta name="description" content="{{ description }}">
-	<meta name="keywords" content="{{ tags }}">
+	<meta name="description" content="{{ description|e_attr }}">
+	<meta name="keywords" content="{{ tags|e_attr }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	{% if store.show_branding %}
@@ -28,10 +45,10 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	<!-- Facebook Meta -->
-	<meta property="og:site_name" content="{{ store.name }}">
+	<meta property="og:site_name" content="{{ store.name|e_attr }}">
 	<meta property="og:type" content="website">
-	<meta property="og:title" content="{{ title }}">
-	<meta property="og:description" content="{{ description }}">
+	<meta property="og:title" content="{{ title|e_attr }}">
+	<meta property="og:description" content="{{ description|e_attr }}">
 	<meta property="og:url" content="{{ current_url() }}">
 	{% if image %}
 		<meta property="og:image" content="{{ image }}">
@@ -42,34 +59,22 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 	<!-- End Facebook Meta -->
 
+	<link rel="canonical" href="{{ canonical_url }}" />
+
 	{% if store.favicon %}
 		<link rel="shortcut icon" href="{{ store.favicon }}">
 	{% endif %}
 
-	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name }}">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name|e_attr }}">
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 	<link rel="stylesheet" href="{{ store.assets.css }}">
 
-	{% set darkencolor = colour_brightness(store.basecolor, -0.90) %}
-
-	<style>
-		a, h1 { color: {{ store.basecolor }}; }
-		.product:hover .box, .table-cart th { background: {{ store.basecolor }}; }
-		.col-left h3 { background-color:{{ store.basecolor }};background-image:-moz-linear-gradient(top,{{ store.basecolor }},{{ darkencolor }});background-image:-webkit-gradient(linear,0 0,0 100%,from({{ store.basecolor }}),to({{ darkencolor }}));background-image:-webkit-linear-gradient(top,{{ store.basecolor }},{{ darkencolor }});background-image:-o-linear-gradient(top,{{ store.basecolor }},{{ darkencolor }});background-image:linear-gradient(to bottom,{{ store.basecolor }},{{ darkencolor }});background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='{{ store.basecolor }}',endColorstr='{{ darkencolor }}',GradientType=0); }
-		.table-cart th:first-child { border-left: 1px solid {{ store.basecolor }}; }
-		.col-left h3:before { border-top: 7px solid {{ darkencolor }}; }
-
-		.data-product-on-request { display: none; }
-		.price-on-request .data-product-on-request { display: block; }
-		.price-on-request .data-product-info { display: none; }
-
-		{% if store.custom_css %}
-			{{ store.custom_css }}
-		{% endif %}
-	</style>
+	{% if store.custom_css %}
+		<style>{{ store.custom_css }}</style>
+	{% endif %}
 
 	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
-	<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.7.2/jquery.min.js"></script>
+	<script src="https://drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.9.1/jquery.min.js"></script>
 
 	{{ head_content }}
 
@@ -86,9 +91,9 @@ Github: https://github.com/Shopkit/Default
 
 			<div class="clearfix">
 				{% if store.logo %}
-					<p class="logo pull-left"><a href="/"><img src="{{ store.logo }}" alt="{{ store.name }}"></a></p>
+					<p class="logo pull-left"><a href="{{ site_url() }}"><img src="{{ store.logo }}" alt="{{ store.name|e_attr }}"></a></p>
 				{% else %}
-					<h1 class="logo pull-left"><a href="/">{{ store.name }}</a></h1>
+					<h1 class="logo pull-left"><a href="{{ site_url() }}">{{ store.name }}</a></h1>
 				{% endif %}
 
 				<!-- CART -->
@@ -137,7 +142,7 @@ Github: https://github.com/Shopkit/Default
 								{% endfor %}
 							</ul>
 							<form action="{{ site_url('search') }}" class="navbar-search pull-right">
-								<input type="text" name="q" placeholder="Pesquisar" class="search-query span2">
+								<input type="text" name="q" value="{{ search ? search.query }}" placeholder="Pesquisar" class="search-query span2">
 							</form>
 							{% if apps.google_translate %}
 								{% set default_lang = apps.google_translate.default_language %}
@@ -167,7 +172,7 @@ Github: https://github.com/Shopkit/Default
 
 					<div class="slideshow">
 						<div>
-							<img src="{{ store.images_header[0] }}" alt="{{ store.name }}">
+							<img src="{{ store.images_header[0] }}" alt="{{ store.name|e_attr }}">
 						</div>
 					</div>
 				</div>
@@ -202,6 +207,11 @@ Github: https://github.com/Shopkit/Default
 							<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
 								<h4>
 									<a href="{{ site_url('catalog') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i>Todos os produtos</a>
+								</h4>
+							</li>
+							<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
+								<h4>
+									<a href="{{ site_url('categories') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i>Todas as categorias</a>
 								</h4>
 							</li>
 							{% for products_category in categories %}
@@ -265,12 +275,9 @@ Github: https://github.com/Shopkit/Default
 							<h3>Newsletter</h3>
 							<p>Inscreva-se na nossa newsletter para receber todas as novidades no seu e-mail.</p>
 
-							{{ form_open('newsletter/register') }}
-								<input name="nome_newsletter" type="text" placeholder="Nome" class="span3" required>
-								<input name="email_newsletter" type="text" placeholder="E-mail" class="span3" required>
-								<button class="btn btn-inverse" type="submit">Registar</button>
-							{{ form_close() }}
-
+							<input name="nome_newsletter" type="text" placeholder="Nome" class="span3" required>
+							<input name="email_newsletter" type="text" placeholder="E-mail" class="span3" required>
+							<button class="btn btn-inverse submit-newsletter" type="button">Registar</button>
 						</section>
 					{% endif %}
 
@@ -410,7 +417,7 @@ Github: https://github.com/Shopkit/Default
 		</div>
 	{% endif %}
 
-	{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_removal %}
+	{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_status_confirmation or events.newsletter_removal %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
@@ -428,6 +435,10 @@ Github: https://github.com/Shopkit/Default
 
 				{% if events.newsletter_status_error %}
 					<h5 class="text-normal">O seu e-mail já se encontra inscrito na nossa newsletter.</h5>
+				{% endif %}
+
+				{% if events.newsletter_status_confirmation %}
+					<h5 class="text-normal">Foi enviado um e-mail para confirmar o seu registo.</h5>
 				{% endif %}
 
 				{% if events.newsletter_removal %}

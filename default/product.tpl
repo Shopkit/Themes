@@ -9,7 +9,7 @@ Description: Product Page
 	<article>
 
 		<ul class="breadcrumb">
-			<li><a href="/">Home</a><span class="divider">›</span></li>
+			<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
 			<li class="active">{{ product.title }}</li>
 		</ul>
 
@@ -17,14 +17,14 @@ Description: Product Page
 
 			<div class="span4">
 
-				<a href="{{ product.image.full }}" class="box-medium fancy" rel="{{ product.id }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" class="product-image"></a>
+				<a href="{{ product.image.full }}" class="box-medium fancy" rel="{{ product.id }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="product-image"></a>
 
 				{% if product.images %}
 
 					<div class="row thumbs hidden-phone">
-						<div class="span1"><a href="{{ product.image.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ product.image.square }}" alt="{{ product.title }}"></a></div>
+						<div class="span1"><a href="{{ product.image.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}"></a></div>
 						{% for thumb in product.images %}
-							<div class="span1"><a href="{{ thumb.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ thumb.square }}" alt="{{ product.title }}"></a></div>
+							<div class="span1"><a href="{{ thumb.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ thumb.square }}" alt="{{ product.title|e_attr }}"></a></div>
 						{% endfor %}
 					</div>
 
@@ -51,14 +51,14 @@ Description: Product Page
 					<h4 class="price">
 
 						{% if product.price_on_request == true %}
-							<span class="data-product-price">Preço sob consulta</span> &nbsp; 
+							<span class="data-product-price">Preço sob consulta</span> &nbsp;
 							<del></del>
 						{% else %}
 							{% if product.promo == true %}
-								<span class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp; 
+								<span class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp;
 								<del>{{ product.price | money_with_sign }}</del>
 							{% else %}
-								<span class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp; 
+								<span class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp;
 								<del></del>
 							{% endif %}
 						{% endif %}
@@ -165,12 +165,12 @@ Description: Product Page
 
 				{{ form_close() }}
 
-				<p class="description">{{ product.description }}</p>
+				<div class="description">{{ product.description }}</div>
 
 				{% if product.file %}
 					<div class="well well-small">
 						<h6 style="margin-top:0">Ficheiro Anexo</h6>
-						<a class="btn" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong></a>
+						<a class="btn file-download" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong></a>
 					</div>
 				{% endif %}
 
@@ -179,7 +179,7 @@ Description: Product Page
 				<div class="share">
 					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-lg fa-facebook fa-fw"></i></a> &nbsp;
 					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-lg fa-whatsapp fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ product.excerpt|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
+					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
 					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-lg fa-pinterest fa-fw"></i></a>
 				</div>
 

@@ -46,7 +46,7 @@ Description: User account page
 {% block content %}
 
     <ul class="breadcrumb">
-        <li><a href="/">Home</a><span class="divider">›</span></li>
+        <li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
         <li class="active">A minha conta</li>
     </ul>
 

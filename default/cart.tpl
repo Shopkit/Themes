@@ -7,7 +7,7 @@ Description: Shopping cart page
 {% block content %}
 
 	<ul class="breadcrumb">
-		<li><a href="/">Home</a><span class="divider">›</span></li>
+		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
 		<li class="active">Carrinho de Compras</li>
 	</ul>
 

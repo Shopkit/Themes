@@ -7,7 +7,7 @@ Description: Confirm order page
 {% block content %}
 
 	<ul class="breadcrumb">
-		<li><a href="/">Home</a><span class="divider">›</span></li>
+		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart/data') }}">Dados de Envio</a><span class="divider">›</span></li>
 		<li><a href="{{ site_url('cart/payment') }}">Pagamento e Transporte</a><span class="divider">›</span></li>

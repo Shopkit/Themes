@@ -9,7 +9,7 @@ Description: Orders account page
 {% block content %}
 
     <ul class="breadcrumb">
-        <li><a href="/">Home</a><span class="divider">›</span></li>
+        <li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
         <li><a href="{{ site_url('account') }}">A minha conta</a><span class="divider">›</span></li>
         <li class="active">Encomendas</li>
     </ul>
@@ -134,7 +134,7 @@ Description: Orders account page
                             {% for product in user.order_detail.products %}
                                 <tr>
                                     <td width="40">
-                                        <a href="{{ product.url }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}" class="border-radius" width="40"></a>
+                                        <a href="{{ product.url }}"><img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius" width="40"></a>
                                     </td>
                                     <td>
                                         <a href="{{ product.url }}">{{ product.title }}</a><br>
