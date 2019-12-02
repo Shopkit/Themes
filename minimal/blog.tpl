@@ -21,7 +21,7 @@ Description: Blog page
 
 						{% if post.image %}
 							<div class="image-post">
-								<a href="{{ post.url }}"><img src="{{ post.image.full }}" alt="{{ post.title }}" title="{{ post.title }}"></a>
+								<a href="{{ post.url }}"><img src="{{ post.image.full }}" alt="{{ post.title|e_attr }}" title="{{ post.title|e_attr }}"></a>
 							</div>
 						{% endif %}
 

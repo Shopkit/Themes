@@ -56,7 +56,7 @@ Description: Shopping cart page
 									{% for item in cart.items %}
 										<tr data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
 											<td class="cart-img">
-												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title }}" title="{{ item.title }}" class="border-radius"></a>
+												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="border-radius"></a>
 											</td>
 
 											<td>

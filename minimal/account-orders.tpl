@@ -139,7 +139,7 @@ Description: Orders account page
 									{% for product in user.order_detail.products %}
 										<tr>
 											<td class="cart-img">
-												<a href="{{ product.url }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" title="{{ product.title }}" class="border-radius"></a>
+												<a href="{{ product.url }}"><img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius"></a>
 											</td>
 											<td>
 												<h4 class="normal margin-top-0 margin-bottom-xs"><a href="{{ product.url }}">{{ product.title }}</a></h4>

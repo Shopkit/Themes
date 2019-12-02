@@ -11,7 +11,7 @@ Description: Order data form page
 		<h1 class="margin-bottom">Dados de Envio</h1>
 
 		<ol class="breadcrumb margin-bottom hidden-xs">
-			<li><a href="/">Home</a></li>
+			<li><a href="{{ site_url() }}">Home</a></li>
 			<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a></li>
 			<li class="active">Dados de Envio</li>
 		</ol>
@@ -291,7 +291,7 @@ Description: Order data form page
 						<h3 class="margin-bottom-sm bordered">Resumo</h3>
 						<dl class="dl-horizontal text-left">
 							{% for item in cart.items %}
-								<dt title="{{ item.title }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
+								<dt title="{{ item.title|e_attr }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
 								<dd class="text-dark price">{{ item.subtotal | money_with_sign }}</dd>
 							{% endfor %}
 						</dl>

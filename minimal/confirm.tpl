@@ -11,7 +11,7 @@ Description: Confirm order page
 		<h1 class="margin-bottom">Confirmação</h1>
 
 		<ol class="breadcrumb margin-bottom hidden-xs">
-			<li><a href="/">Home</a></li>
+			<li><a href="{{ site_url() }}">Home</a></li>
 			<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a></li>
 			<li><a href="{{ site_url('cart/data') }}">Dados de Envio</a></li>
 			<li><a href="{{ site_url('cart/payment') }}">Pagamento e Transporte</a></li>
@@ -47,7 +47,7 @@ Description: Confirm order page
 									{% for item in cart.items %}
 										<tr>
 											<td class="cart-img">
-												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title }}" title="{{ item.title }}" class="border-radius"></a>
+												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="border-radius"></a>
 											</td>
 											<td>
 												<h4><a href="{{ item.product_url }}">{{ item.title }}</a></h4>

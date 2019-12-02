@@ -7,6 +7,12 @@ Description: Search Page
 {% block content %}
 
 	{% set products_per_page = 9 %}
+	{% set search = products("search limit:#{products_per_page}") %}
+
+	{% set total_products = search.total_results %}
+	{% set cur_page = (pagination_segment / products_per_page) + 1 %}
+	{% set cur_page_from = pagination_segment + 1 %}
+	{% set cur_page_to = (cur_page * products_per_page) < search.total_results ? cur_page * products_per_page : search.total_results %}
 
 	<div class="container">
 
@@ -14,7 +20,11 @@ Description: Search Page
 
 			<div class="col-sm-12 col-md-3">
 				<h1 class="margin-top-0">Pesquisa</h1>
-				<p>Resultados de produtos para a pesquisa: <em>{{ search.query }}</em></p>
+				{% if search.results %}
+					<p>A mostrar {{ cur_page_from }}-{{ cur_page_to }} de {{ total_products }} produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+				{% else %}
+					<p>Foram encontrados <strong>{{ search.total_results }}</strong> produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+				{% endif %}
 			</div>
 
 			<div class="col-sm-12 col-md-9">
@@ -22,7 +32,7 @@ Description: Search Page
 				<div class="products">
 					<div class="row">
 
-						{% for product in products("search order:featured limit:#{products_per_page}") %}
+						{% for product in search.results %}
 							<div class="col-sm-4">
 								<article class="product product-id-{{ product.id }}">
 
@@ -32,7 +42,7 @@ Description: Search Page
 										<span class="badge promo">Promoção</span>
 									{% endif %}
 
-									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
+									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
 
 									<div class="product-info">
 										<a class="product-details" href="{{ product.url }}">

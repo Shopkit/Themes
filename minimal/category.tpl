@@ -2,6 +2,8 @@
 Description: Product category page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
@@ -13,6 +15,7 @@ Description: Product category page
 		{% set parent_category = category(category.parent) %}
 	{% else %}
 		{% set parent_category = category %}
+		{% set is_parent = true %}
 	{% endif %}
 
 	<div class="container">
@@ -37,7 +40,7 @@ Description: Product category page
 				{% endif %}
 
 				{% if category.description %}
-					<div>{{ category.description }}</div>
+					<div class="description">{{ category.description }}</div>
 				{% endif %}
 
 				{#  Setup order #}
@@ -51,7 +54,7 @@ Description: Product category page
 
 				{% if products %}
 					<div class="order-options">
-						<small>Ordenar por</small> &nbsp; 
+						<small>Ordenar por</small> &nbsp;
 
 						<div class="btn-group">
 							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -99,55 +102,74 @@ Description: Product category page
 			</div>
 
 			<div class="col-lg-9">
-				<div class="products margin-top-0">
-					<div class="row">
+				{% if products %}
+					<div class="products margin-top-0">
+						<div class="row">
 
-						{% for product in products %}
-							<div class="col-sm-4">
-								<article class="product product-id-{{ product.id }}">
+							{% for product in products %}
+								<div class="col-sm-4">
+									<article class="product product-id-{{ product.id }}">
 
-									{% if product.status_alias == 'out_of_stock' %}
-										<span class="badge out_of_stock">Sem stock</span>
-									{% elseif product.promo == true %}
-										<span class="badge promo">Promoção</span>
-									{% endif %}
+										{% if product.status_alias == 'out_of_stock' %}
+											<span class="badge out_of_stock">Sem stock</span>
+										{% elseif product.promo == true %}
+											<span class="badge promo">Promoção</span>
+										{% endif %}
 
-									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
+										<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
 
-									<div class="product-info">
-										<a class="product-details" href="{{ product.url }}">
-											<div>
-												<h2>{{ product.title }}</h2>
+										<div class="product-info">
+											<a class="product-details" href="{{ product.url }}">
+												<div>
+													<h2>{{ product.title }}</h2>
 
-												<span class="price">
-													{% if product.price_on_request == true %}
-														Preço sob consulta
-													{% else %}
-														{% if product.promo == true %}
-															 {{ product.price_promo | money_with_sign }} <del>{{ product.price | money_with_sign }}</del>
+													<span class="price">
+														{% if product.price_on_request == true %}
+															Preço sob consulta
 														{% else %}
-															{{ product.price | money_with_sign }}
+															{% if product.promo == true %}
+																 {{ product.price_promo | money_with_sign }} <del>{{ product.price | money_with_sign }}</del>
+															{% else %}
+																{{ product.price | money_with_sign }}
+															{% endif %}
 														{% endif %}
-													{% endif %}
-												</span>
-											</div>
-										</a>
-									</div>
+													</span>
+												</div>
+											</a>
+										</div>
 
-								</article>
-							</div>
-						{% else %}
-							<div class="col-xs-12">
-								<h3 class="margin-bottom-lg margin-top-0 text-gray light">Não existem produtos</h3>
-							</div>
-						{% endfor %}
+									</article>
+								</div>
+							{% endfor %}
 
+						</div>
 					</div>
-				</div>
 
-				<nav class="text-center">
-					{{ pagination("category:#{category.id} limit:#{products_per_page}") }}
-				</nav>
+					<nav class="text-center">
+						{{ pagination("category:#{category.id} limit:#{products_per_page}") }}
+					</nav>
+
+				{% elseif is_parent and parent_category.children %}
+					<div class="categories margin-top-0">
+						<div class="row">
+
+							{% for category in parent_category.children %}
+								<div class="col-sm-4">
+									{{ generic_macros.category_list(category) }}
+								</div>
+								{% if loop.index0%3 == 2 %}
+									<div class="clearfix hidden-xs"></div>
+								{% endif %}
+							{% endfor %}
+
+						</div>
+					</div>
+
+				{% else %}
+					<div class="col-xs-12">
+						<h3 class="margin-bottom-lg margin-top-0 text-gray light">Não existem produtos</h3>
+					</div>
+				{% endif %}
 
 			</div>
 		</div>

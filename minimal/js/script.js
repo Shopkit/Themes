@@ -24,6 +24,7 @@ $(document).ready(function() {
 	$('.store-notice .navbar-form .btn-search').on('click', function() {
 		if ($('.store-notice .navbar-form .search-form').hasClass('hidden')) {
 			$('.store-notice .navbar-form .search-form').removeClass('hidden');
+			$('.store-notice .navbar-form .search-form input').focus();
 			$('.store-notice .user-auth, .store-notice .languages-dropdown').addClass('opacity-0');
 			return false;
 		} else {

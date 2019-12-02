@@ -64,7 +64,7 @@ Description: Product catalog page
 										<span class="badge promo">Promoção</span>
 									{% endif %}
 
-									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title }}" title="{{ product.title }}" width="400" height="400"></a>
+									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
 
 									<div class="product-info">
 										<a class="product-details" href="{{ product.url }}">

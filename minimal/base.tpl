@@ -3,6 +3,31 @@ Template Name: Minimal
 Author: Shopkit
 Version: 4.0
 #}
+
+{% macro category_list(category, show_number_products = true) %}
+	{% import _self as generic_macros %}
+
+	{% set category_title = category.title|e_attr %}
+	{% set category_url = category.url %}
+
+	<article class="category category-id-{{ category.id }}">
+
+		<a href="{{ category_url }}"><img src="{{ category.image.square }}" class="img-responsive" alt="{{ category_title }}" title="{{ category_title }}" width="400" height="400"></a>
+
+		<div class="category-info">
+			<a class="category-details" href="{{ category_url }}">
+				<div>
+					<h2>{{ category_title }}</h2>
+					{% if show_number_products %}
+						<p>{{ category.total_products }} Produtos</p>
+					{% endif %}
+				</div>
+			</a>
+		</div>
+
+	</article>
+{% endmacro %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -14,8 +39,8 @@ Version: 4.0
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>{{ title }}</title>
 
-		<meta name="description" content="{{ description }}">
-		<meta name="keywords" content="{{ tags }}">
+		<meta name="description" content="{{ description|e_attr }}">
+		<meta name="keywords" content="{{ tags|e_attr }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="theme-color" content="{{ store.basecolor }}">
 
@@ -28,10 +53,10 @@ Version: 4.0
 		{% endif %}
 
 		<!-- Facebook Meta -->
-		<meta property="og:site_name" content="{{ store.name }}">
+		<meta property="og:site_name" content="{{ store.name|e_attr }}">
 		<meta property="og:type" content="website">
-		<meta property="og:title" content="{{ title }}">
-		<meta property="og:description" content="{{ description }}">
+		<meta property="og:title" content="{{ title|e_attr }}">
+		<meta property="og:description" content="{{ description|e_attr }}">
 		<meta property="og:url" content="{{ current_url() }}">
 		{% if image %}
 			<meta property="og:image" content="{{ image }}">
@@ -42,16 +67,18 @@ Version: 4.0
 		{% endif %}
 		<!-- End Facebook Meta -->
 
+		<link rel="canonical" href="{{ canonical_url }}" />
+
 		{% if store.favicon %}
 			<link rel="shortcut icon" href="{{ store.favicon }}">
 		{% endif %}
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name }}">
+		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name|e_attr }}">
 
-		<link href="//fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic" rel="stylesheet">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic" rel="stylesheet">
+		<link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 		<link href="{{ store.assets.css }}" rel="stylesheet">
 
 		{% if store.custom_css %}
@@ -67,7 +94,7 @@ Version: 4.0
 		<![endif]-->
 
 		<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
-		<script src="//drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.11.2/jquery.min.js"></script>
+		<script src="https://drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.11.2/jquery.min.js"></script>
 
 		{{ head_content }}
 
@@ -87,7 +114,7 @@ Version: 4.0
 				{{ form_open(site_url('search'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
 					<div class="form-group">
 						<div class="search-form hidden">
-							<input type="search" name="q" class="form-control input-sm" placeholder="Pesquisa" required>
+							<input type="search" name="q" value="{{ search ? search.query }}" class="form-control input-sm" placeholder="Pesquisa" required>
 						</div>
 
 					</div>
@@ -133,9 +160,9 @@ Version: 4.0
 
 			{# Begin logo #}
 			{% if store.logo %}
-				<a href="/" class="logo"><img src="{{ store.logo }}" alt="{{ store.name }}" title="{{ store.name }}" height="60"></a>
+				<a href="{{ site_url() }}" class="logo"><img src="{{ store.logo }}" alt="{{ store.name|e_attr }}" title="{{ store.name|e_attr }}" height="60"></a>
 				{% else %}
-				<h1 class="logo"><a href="/">{{ store.name }}</a></h1>
+				<h1 class="logo"><a href="{{ site_url() }}">{{ store.name }}</a></h1>
 			{% endif %}
 			{# End logo #}
 
@@ -156,6 +183,9 @@ Version: 4.0
 						<ul class="nav navbar-nav">
 							<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
 								<a href="{{ site_url('catalog') }}">Todos os produtos</a>
+							</li>
+							<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
+								<a href="{{ site_url('categories') }}">Todas as categorias</a>
 							</li>
 							{% for products_category in categories %}
 								<li class="{% if (category.id == products_category.id) %} active {% endif %} {% if products_category.children %} dropdown {% endif %} menu-{{ products_category.handle }}">
@@ -347,7 +377,7 @@ Version: 4.0
 			</script>
 		{% endif %}
 
-		{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_removal %}
+		{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_status_confirmation or events.newsletter_removal %}
 			<div class="modal fade" id="newsletter-modal" tabindex="-1" role="dialog" aria-labelledby="newsletter-modalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -356,24 +386,26 @@ Version: 4.0
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
 							<div class="text-center">
+								<i class="fa fa-envelope-o fa-4x text-light-gray"></i>
+
 								{% if events.newsletter_error %}
-									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
 									<h3 class="text-muted">Não foi possível efectuar o registo na newsletter:</h3>
 									<p>{{ events.newsletter_error }}</p>
 								{% endif %}
 
 								{% if events.newsletter_status_success %}
-									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
 									<h3 class="text-muted">O seu e-mail foi inscrito com sucesso.</h3>
 								{% endif %}
 
 								{% if events.newsletter_status_error %}
-									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
 									<h3 class="text-muted">O seu e-mail já se encontra inscrito na nossa newsletter.</h3>
 								{% endif %}
 
+								{% if events.newsletter_status_confirmation %}
+									<h3 class="text-muted">Foi enviado um e-mail para confirmar o seu registo.</h3>
+								{% endif %}
+
 								{% if events.newsletter_removal %}
-									<i class="fa  fa-envelope-o fa-4x text-light-gray"></i>
 									<h3 class="text-muted">Newsletter</h3>
 									<p>{{ events.newsletter_removal }}</p>
 								{% endif %}

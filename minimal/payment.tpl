@@ -11,7 +11,7 @@ Description: Payment Page
 		<h1 class="margin-bottom">Pagamento e Transporte</h1>
 
 		<ol class="breadcrumb margin-bottom hidden-xs">
-			<li><a href="/">Home</a></li>
+			<li><a href="{{ site_url() }}">Home</a></li>
 			<li><a href="{{ site_url('cart') }}">Carrinho de Compras</a></li>
 			<li><a href="{{ site_url('cart/data') }}">Dados de Envio</a></li>
 			<li class="active">Pagamento e Transporte</li>
@@ -116,7 +116,7 @@ Description: Payment Page
 							<h3 class="margin-bottom-sm bordered hidden-xs hidden-sm">Resumo</h3>
 							<dl class="dl-horizontal text-left hidden-xs hidden-sm">
 								{% for item in cart.items %}
-									<dt title="{{ item.title }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
+									<dt title="{{ item.title|e_attr }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
 									<dd class="text-dark price">{{ item.subtotal | money_with_sign }}</dd>
 								{% endfor %}
 							</dl>

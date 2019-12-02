@@ -53,21 +53,17 @@ Description: Contact Page
 					<div class="newsletter margin-bottom">
 						<h3 class="margin-bottom-md">Newsletter</h3>
 
-						{{ form_open('newsletter/register') }}
+						<div class="form-group">
+							<label for="newsletter_name">O seu nome</label>
+							<input type="text" name="nome_newsletter" class="form-control" id="newsletter_name" required>
+						</div>
 
-							<div class="form-group">
-								<label for="newsletter_name">O seu nome</label>
-								<input type="text" name="nome_newsletter" class="form-control" id="newsletter_name" required>
-							</div>
+						<div class="form-group">
+							<label for="newsletter_email">Email</label>
+							<input type="email" name="email_newsletter" class="form-control" id="newsletter_email" required>
+						</div>
 
-							<div class="form-group">
-								<label for="newsletter_email">Email</label>
-								<input type="email" name="email_newsletter" class="form-control" id="newsletter_email" required>
-							</div>
-
-							<button type="submit" class="btn btn-gray">Registar</button>
-
-						{{ form_close() }}
+						<button type="button" class="btn btn-gray submit-newsletter">Registar</button>
 					</div>
 				{% endif %}
 

@@ -657,7 +657,7 @@ h2, h3, h4, h5, h6 {
 
 	&.shown {
 		width: 100%;
-		height: 100%;
+		height: auto;
 		background-color: #fff;
 
 		.btn-close {
@@ -912,6 +912,67 @@ h2, h3, h4, h5, h6 {
 }
 
 //categories
+.categories {
+	margin-top: @padding;
+
+	.category {
+		position: relative;
+		margin-bottom: @padding;
+
+		img {
+			border-top-left-radius: @border-radius;
+			border-top-right-radius: @border-radius;
+			width: 100%;
+		}
+
+		.category-info {
+			.transition(opacity 1s ease);
+			.background-color(#fff, 90%);
+			position: relative;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			top: 0;
+			margin-top: 0;
+			text-align: center;
+			padding: @padding/3 @padding;
+			border-bottom-left-radius: @border-radius;
+			border-bottom-right-radius: @border-radius;
+
+			.category-details {
+				display: table;
+				height: 100%;
+				width: 100%;
+				text-decoration: none;
+
+				div {
+					display: table-cell;
+					vertical-align: middle;
+				}
+
+				h2 {
+					margin: 0 0 @padding/3 0;
+					font-size: 18px;
+					font-weight: @light;
+					text-transform: uppercase;
+					color: #333;
+					line-height: 1.4;
+				}
+
+				p {
+					color: #333;
+				}
+			}
+		}
+	}
+}
+
+.page-category {
+	.description {
+		margin-bottom: @padding;
+	}
+}
+
 h1 + .breadcrumb {
 	margin-top: -@padding/1.5;
 }
@@ -1332,7 +1393,6 @@ footer {
 			& > a, & > a:hover, & > a:focus, & > a:active {
 				background-color: #f9f9f9;
 				color: #333;
-				font-weight: @bold;
 			}
 		}
 
@@ -1550,6 +1610,11 @@ form footer {
 		}
 	}
 	.payment-method-multibanco {
+		.list-radio-logo img {
+			height: 30px;
+		}
+	}
+	.payment-method-mbway {
 		.list-radio-logo img {
 			height: 30px;
 		}
@@ -2014,7 +2079,7 @@ form footer {
 		}
 	}
 
-	 .products {
+	.products {
 		.product {
 			img {
 				width: auto;
@@ -2030,6 +2095,24 @@ form footer {
 			}
 		}
 	}
+
+	.categories {
+		.category {
+			img {
+				width: auto;
+			}
+			.category-info {
+				.opacity(0);
+				position: absolute;
+				margin-top: 0;
+
+				&:hover {
+					.opacity(1);
+				}
+			}
+		}
+	}
+
 	.list-group {
 		&.list-group-horizontal {
 			& > .row {
@@ -2235,7 +2318,7 @@ form footer {
 //Apps
 //Google Translate
 .skiptranslate {
-    display: none;
+	display: none;
 }
 
 .languages-dropdown {
@@ -2254,7 +2337,7 @@ form footer {
 }
 
 body.has-google-translate {
-    top: inherit !important;
+	top: inherit !important;
 }
 
 //Helpers
@@ -2407,6 +2490,26 @@ a.link-inherit {
 .animated.fast { -webkit-animation-duration: 0.5s; animation-duration: 0.5s; }
 
 // Third party
+
+//Sugestions
+.typeahead.dropdown-menu {
+	& > li {
+		& > a {
+			white-space: normal;
+			border-bottom: 1px solid #eee;
+
+			strong {
+				text-decoration: underline;
+			}
+		}
+		&:last-child {
+			a {
+				border-bottom: 0;
+			}
+		}
+	}
+}
+
 //FlexSlider Necessary Styles
 .flexslider{margin:0;padding:0}.flexslider .slides>li{display:none;-webkit-backface-visibility:hidden}.flexslider .slides img{width:100%;display:block}.flex-pauseplay span{text-transform:capitalize}.slides:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}html[xmlns] .slides{display:block}* html .slides{height:1%}.no-js .slides>li:first-child{display:block}
 

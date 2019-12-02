@@ -40,13 +40,13 @@ Description: Product Page
 							<ul class="slides">
 
 								<li class="slide">
-									<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title }}" title="{{ product.title }}" width="600"></a>
+									<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600"></a>
 								</li>
 
 								{% if product.images %}
 									{% for image in product.images %}
 										<li class="slide">
-											<a href="{{ image.full }}"><img src="{{ image.full }}" alt="{{ product.title }}" title="{{ product.title }}" width="600"></a>
+											<a href="{{ image.full }}"><img src="{{ image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600"></a>
 										</li>
 									{% endfor %}
 								{% endif %}
@@ -124,8 +124,8 @@ Description: Product Page
 								<h6 class="text-muted text-uppercase">Partilhar</h6>
 								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-facebook fa-fw"></i></a> &nbsp;
 								<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-whatsapp fa-fw"></i></a> &nbsp;
-								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100) }}" class="text-muted"><i class="fa fa-twitter fa-fw"></i></a> &nbsp;
-								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title }}" class="text-muted"><i class="fa fa-pinterest fa-fw"></i></a>
+								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-twitter fa-fw"></i></a> &nbsp;
+								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-pinterest fa-fw"></i></a>
 							</div>
 						</div>
 					</div>
@@ -228,6 +228,64 @@ Description: Product Page
 			</div>
 
 		</article>
+
+		{% set related_products = products("order:featured category:#{product.categories[0].id} exclude:products[#{product.id}] limit:4") %}
+
+		{% if related_products|length > 2 %}
+
+			<div class="related-products margin-top-lg">
+				<div class="text-center">
+					<h3>Também poderá gostar de</h3>
+				</div>
+
+				<div class="products">
+					<div class="row">
+
+						{% for related_product in related_products %}
+							<div class="col-xs-6 col-sm-4 col-md-3 {% if loop.index == 4 %}hidden-sm{% endif %} {% if loop.index > 2 %}hidden-xs{% endif %}">
+								<article class="product product-id-{{ related_product.id }}">
+
+									{% if related_product.status_alias == 'out_of_stock' %}
+										<span class="badge out_of_stock">Sem stock</span>
+									{% elseif related_product.promo == true %}
+										<span class="badge promo">Promoção</span>
+									{% endif %}
+
+									<a href="{{ related_product.url }}"><img src="{{ related_product.image.square }}" class="img-responsive" alt="{{ related_product.title|e_attr }}" title="{{ related_product.title|e_attr }}" width="400" height="400"></a>
+
+									<div class="product-info">
+										<a class="product-details" href="{{ related_product.url }}">
+											<div>
+												<h2>{{ related_product.title }}</h2>
+
+												<span class="price">
+													{% if related_product.price_on_request == true %}
+														Preço sob consulta
+													{% else %}
+														{% if related_product.promo == true %}
+															 {{ related_product.price_promo | money_with_sign }} <del>{{ related_product.price | money_with_sign }}</del>
+														{% else %}
+															{{ related_product.price | money_with_sign }}
+														{% endif %}
+													{% endif %}
+												</span>
+											</div>
+										</a>
+									</div>
+
+								</article>
+							</div>
+						{% else %}
+							<div class="col-xs-12 padding-bottom-lg text-center">
+								<h3 class="margin-top-0 text-gray light">Não existem produtos nesta categoria</h3>
+							</div>
+						{% endfor %}
+
+					</div>
+				</div>
+			</div>
+
+		{% endif %}
 
 	</div>
 
