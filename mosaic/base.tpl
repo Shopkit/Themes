@@ -15,7 +15,9 @@ Description: This is the base layout. It's included in every page with this code
 		<img src="{{ category.image.square }}" alt="{{ category_title }}" title="{{ category_title }}">
 		<div class="description">
 			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
-			{% if show_number_products %}
+			{% if not category.parent == 0 and category.children and show_number_products %}
+				<p>{{ category.children|length }} Categorias</p>
+			{% elseif show_number_products %}
 				<p>{{ category.total_products }} Produtos</p>
 			{% endif %}
 			<a href="{{ category_url }}" class="button white"><span>Explorar</span></a>
@@ -239,13 +241,33 @@ Description: This is the base layout. It's included in every page with this code
 					<a href="{{ site_url('categories') }}">Todas as categorias</a>
 				</li>
 				{% for products_category in categories %}
-					<li {% if (category.id == products_category.id) %}class="active"{% endif %}><a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}" data-toggle="collapse" data-target="#category_{{ products_category.id }}">{% if products_category.children %}<i class="fa fa-chevron-circle-down"></i> &nbsp; {% endif %}{{ products_category.title }}</a>
+					<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">
+
 						{% if products_category.children %}
-							<ul id="category_{{ products_category.id }}" class="collapse {% if (category.parent == products_category.id or product.categories[0].parent == products_category.id or category.id == products_category.id or category.id == products_category.id or products_category.id == product.categories[0].id) %}in{% endif %}">
-								{% for children in products_category.children %}
-									<li {% if (category.id== children.id or product.categories[0].id== children.id) %}class="active"{% endif %}><a href="{{ children.url }}"><i class="fa fa-angle-right"></i> {{ children.title }}</a></li>
+							<a href="{{ '#category_' ~ products_category.id }}" data-toggle="collapse" target="{{ '#category_' ~ products_category.id }}">{{ products_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
+
+							<ul id="{{ 'category_' ~ products_category.id }}" class="sub-categories collapse {{ (category.parent == products_category.id or product.categories[0].parent == products_category.id or category.id == products_category.id or products_category.id == product.categories[0].id) ? 'in' }}">
+								{% for sub_category in products_category.children %}
+									<li class="{{ (category.id == sub_category.id or product.categories[0].id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
+
+										{% if sub_category.children %}
+											<a href="{{ '#sub_category_' ~ sub_category.id }}" data-toggle="collapse" target="{{ '#sub_category_' ~ sub_category.id }}">{{ sub_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
+
+											<ul id="{{ 'sub_category_' ~ sub_category.id }}" class="collapse sub-subcategories {{ (category.parent == sub_category.id or product.categories[0].parent == sub_category.id or category.id == sub_category.id or sub_category.id == product.categories[0].id) ? 'in' }}">
+												{% for children in sub_category.children %}
+													<li class="{{ (category.id == children.id or product.categories[0].id == children.id) ? 'active' }} {{ 'menu-' ~ children.handle }}">
+														<a href="{{ children.url }}">{{ children.title }}</a>
+													</li>
+												{% endfor %}
+											</ul>
+										{% else %}
+											<a href="{{ sub_category.url }}">{{ sub_category.title }}</a>
+										{% endif %}
+									</li>
 								{% endfor %}
 							</ul>
+						{% else %}
+							<a href="{{ products_category.url }}">{{ products_category.title }}</a>
 						{% endif %}
 					</li>
 				{% endfor %}

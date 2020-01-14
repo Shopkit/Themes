@@ -18,7 +18,9 @@ Version: 4.0
 			<a class="category-details" href="{{ category_url }}">
 				<div>
 					<h2>{{ category_title }}</h2>
-					{% if show_number_products %}
+					{% if not category.parent == 0 and category.children and show_number_products %}
+						<p>{{ category.children|length }} Categorias</p>
+					{% elseif show_number_products %}
 						<p>{{ category.total_products }} Produtos</p>
 					{% endif %}
 				</div>
@@ -188,16 +190,31 @@ Version: 4.0
 								<a href="{{ site_url('categories') }}">Todas as categorias</a>
 							</li>
 							{% for products_category in categories %}
-								<li class="{% if (category.id == products_category.id) %} active {% endif %} {% if products_category.children %} dropdown {% endif %} menu-{{ products_category.handle }}">
+								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ products_category.children ? 'dropdown' }} {{ 'menu-' ~ products_category.handle }}">
 
 									{% if products_category.children %}
-										<a class="dropdown-toggle" data-toggle="dropdown" href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 											{{ products_category.title }} <span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu" role="menu">
-											{% for children in products_category.children %}
-												<li class="{% if (category.id== children.id) %} active {% endif %} menu-{{ children.handle }}">
-													<a href="{{ children.url }}">{{ children.title }} <span class="text-muted">({{ children.total_products }})</span></a>
+											{% for sub_category in products_category.children %}
+												<li class="{{ sub_category.children ? 'subdropdown' }} {{ (category.id == sub_category.id or category.parent == sub_category.id ? 'open') }} {{ (category.id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
+
+													{% if sub_category.children %}
+														<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+															{{ sub_category.title }} <span class="caret"></span>
+														</a>
+
+														<ul id="sub_category_{{ sub_category.id }}" class="dropdown-submenu" role="menu">
+															{% for children in sub_category.children %}
+																<li class="{{ (category.id == children.id) ? 'active' }} {{ 'menu-' ~ children.handle }}">
+																	<a href="{{ children.url }}">{{ children.title }}</a>
+																</li>
+															{% endfor %}
+														</ul>
+													{% else %}
+														<a href="{{ sub_category.url }}">{{ sub_category.title }}</a>
+													{% endif %}
 												</li>
 											{% endfor %}
 										</ul>

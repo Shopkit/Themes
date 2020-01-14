@@ -11,11 +11,18 @@ Description: Product category page
 	{% set products_per_page = 9 %}
 
 	{#  Parent category #}
-	{% if category.parent %}
-		{% set parent_category = category(category.parent) %}
-	{% else %}
+	{% if category.is_parent %}
 		{% set parent_category = category %}
 		{% set is_parent = true %}
+
+		{% if category.parent %}
+			{% set main_parent = category(category.parent) %}
+		{% else %}
+			{% set main_parent = category %}
+		{% endif %}
+	{% else %}
+		{% set parent_category = category(category.parent) %}
+		{% set main_parent = category(parent_category.parent) %}
 	{% endif %}
 
 	<div class="container">
@@ -28,10 +35,16 @@ Description: Product category page
 				{% if category.parent %}
 					<ol class="breadcrumb">
 
-						<li>
-							<a href="{{ parent_category.url }}"><span>{{ parent_category.title }}</span></a>
-						</li>
-
+						{% if main_parent and main_parent.id != category.id %}
+							<li>
+								<a href="{{ main_parent.url }}"><span>{{ main_parent.title }}</span></a>
+							</li>
+						{% endif %}
+						{% if category.id != parent_category.id and parent_category.is_parent and parent_category.is_child %}
+							<li>
+								<a href="{{ parent_category.url }}"><span>{{ parent_category.title }}</span></a>
+							</li>
+						{% endif %}
 						<li class="active">
 							<a href="{{ category.url }}"><span>{{ category.title }}</span></a>
 						</li>
@@ -77,22 +90,34 @@ Description: Product category page
 					</div>
 				{% endif %}
 
-				{% if parent_category.children %}
-					<div class="panel panel-default margin-bottom">
+				{% if main_parent.children %}
+					<div class="panel panel-default margin-bottom panel-categories">
 
 						<div class="panel-heading">
-							<a href="{{ parent_category.url }}" class="link-inherit">{{ parent_category.title }}</a>
+							<a href="{{ main_parent.url }}" class="link-inherit">{{ main_parent.title }}</a>
 						</div>
 
 						<div class="list-group">
 
-							{% for product_category in categories %}
-								{% if product_category.id == parent_category.id and product_category.children %}
-									{% for children in product_category.children %}
-										<a href="{{ children.url }}" class="list-group-item {% if children.id == category.id %}active{% endif %}">
-											{{ children.title }} <span class="text-muted">({{ children.total_products }})</span>
-										</a>
-									{% endfor %}
+							{% for sub_category in main_parent.children %}
+								{% if sub_category.children %}
+									<a data-toggle="collapse" href="{{ '#category_' ~ sub_category.id }}" data-href="{{ sub_category.url }}" aria-expanded="{{ (sub_category.id == category.id or sub_category.id == category.parent) ? 'true' :'false' }}" aria-controls="{{ 'category_' ~ sub_category.id }}" target="{{ '#category_' ~ sub_category.id }}" class="list-group-item {{ sub_category.id == category.id ? 'active' }}">
+										{{ sub_category.title }} <span class="caret"></span>
+									</a>
+
+									<div class="nav-subcategories collapse {{ (sub_category.id == category.id or sub_category.id == category.parent) ? 'in' }}" role="menu" id="category_{{ sub_category.id }}">
+										<ul >
+											{% for children in sub_category.children %}
+												<li  class="{{ (category.id == children.id) ? 'active' }} menu-{{ children.handle }}">
+													<a href="{{ children.url }}">{{ children.title }} <span class="text-muted">({{ children.total_products }})</span></a>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+								{% else %}
+									<a href="{{ sub_category.url }}" class="list-group-item {{ sub_category.id == category.id ? 'active' }}">
+										{{ sub_category.title }} <span class="text-muted">({{ sub_category.total_products }})</span>
+									</a>
 								{% endif %}
 							{% endfor %}
 

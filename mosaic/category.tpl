@@ -9,11 +9,18 @@ Description: Product category page
 {% block content %}
 
 	{#  Parent category #}
-	{% if category.parent %}
-		{% set parent_category = category(category.parent) %}
-	{% else %}
+	{% if category.is_parent %}
 		{% set parent_category = category %}
 		{% set is_parent = true %}
+
+		{% if category.parent %}
+			{% set main_parent = category(category.parent) %}
+		{% else %}
+			{% set main_parent = category %}
+		{% endif %}
+	{% else %}
+		{% set parent_category = category(category.parent) %}
+		{% set main_parent = category(parent_category.parent) %}
 	{% endif %}
 
 	{% set category_default_order = store.category_default_order|default('position') %}
@@ -21,6 +28,17 @@ Description: Product category page
 	{% set products = products("order:#{category_default_order} category:#{category.id} limit:12") %}
 
 	<h1 class="wide">{{ category.title }}</h1>
+
+	<p class="breadcrumbs wide">
+		<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+		{% if main_parent and main_parent.id != category.id %}
+			<a href="{{ main_parent.url }}">{{ main_parent.title }}</a> ›
+		{% endif %}
+		{% if category.id != parent_category.id and parent_category.is_parent and parent_category.is_child %}
+			<a href="{{ parent_category.url }}">{{ parent_category.title }}</a> ›
+		{% endif %}
+		{{ category.title }}
+	</p>
 
 	{% if category.description %}
 		<p class="wide">{{ category.description }}</p>

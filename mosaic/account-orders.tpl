@@ -70,7 +70,7 @@ Description: Orders account page
 							<h4 class="margin-bottom-xxs">Pagamento</h4>
 							<p>{{ user.order_detail.payment.title }}</p>
 
-                            {% if not user.order_detail.paid and user.order_detail.status_alias != 'canceled' %}
+							{% if not user.order_detail.paid and user.order_detail.status_alias != 'canceled' %}
 								<h5 class="margin-bottom-xxs">Dados para pagamento</h5>
 								<div class="row-fluid">
 									<div class="span9">
@@ -79,16 +79,22 @@ Description: Orders account page
 								</div>
 
 								{% if user.order_detail.payment.type != 'on_delivery' and user.order_detail.payment.type != 'pick_up' %}
-                                	<p><small><a href="{{ site_url('order/payment/' ~ user.order_detail.hash) }}" class="text-underline">Alterar método de pagamento</a></small></p>
+									<p><small><a href="{{ site_url('order/payment/' ~ user.order_detail.hash) }}" class="text-underline">Alterar método de pagamento</a></small></p>
 								{% endif %}
 							{% endif %}
 						</div>
 						<div class="span6">
-							<h4 class="margin-bottom-xxs">Transporte</h4>
-							{% if user.order_detail.shipment_method %}
-								<p>{{ user.order_detail.shipment_method }}</p>
+							{% if user.order_detail.payment.type == 'pick_up' and user.order_detail.payment.data %}
+								<h4 class="margin-bottom-xxs">Morada de levantamento</h4>
+								<p>
+									{{ user.order_detail.payment.data.name }}<br>
+									{{ user.order_detail.payment.data.address }} {{ user.order_detail.payment.data.address_extra }}<br>
+									{{ user.order_detail.payment.data.zip_code }} {{ user.order_detail.payment.data.city }}<br>
+									{{ user.order_detail.payment.data.country }}
+								</p>
 							{% else %}
-								n/a
+								<h4 class="margin-bottom-xxs">Transporte</h4>
+								<p>{{ user.order_detail.shipment_method|default('n/a') }}</p>
 							{% endif %}
 						</div>
 					</div>

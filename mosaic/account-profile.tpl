@@ -185,6 +185,7 @@ Description: Account profile page
 								<div class="form-group">
 									<label for="delivery_country">País <small class="text-light-gray normal">(*)</small></label>
 									<select name="delivery_country" id="delivery_country" class="form-control span12" required>
+										<option value selected disabled>Selecionar país</option>
 										{% for key, country in countries %}
 											<option value="{{ key }}" {% if user.delivery.country_code == key %} selected {% endif %}>{{ country }}</option>
 										{% endfor %}
@@ -252,6 +253,7 @@ Description: Account profile page
 								<div class="form-group">
 									<label for="billing_country">País <small class="text-light-gray normal">(*)</small></label>
 									<select name="billing_country" id="billing_country" class="form-control span12">
+										<option value selected disabled>Selecionar país</option>
 										{% for key, country in countries %}
 											<option value="{{ key }}" {% if user.billing.country_code == key %} selected {% endif %}>{{ country }}</option>
 										{% endfor %}

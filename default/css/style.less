@@ -233,14 +233,12 @@ header {
 	cursor: pointer;
 	color:#333;
 	//background: url(https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/templates/assets/shopkit/default/img/arrow-bottom-025.png) no-repeat 0px 4px;
-	padding: 0 0 10px 20px;
+	padding: 0 0 10px 0;
 	margin-top: 0;
 
 	i {
 		position: relative;
-		left: -20px;
-		color: #cbcbcb;
-		margin-right: -13px;
+		left: 0px;
 	}
 }
 
@@ -261,10 +259,10 @@ header {
 }
 
 .col-left nav ul li ul li:last-child {
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 }
 
-.col-left nav ul li ul li.active a, .col-left nav ul li.active h4 a {
+.col-left nav ul li ul li.active > a, .col-left nav ul li.active > h4 a, .col-left nav ul li.active > h5 a {
 	font-weight: bold;
 	color:#000;
 }
@@ -275,17 +273,43 @@ header {
 	font-size: 12px;
 	font-weight: normal;
 	padding-bottom: 0px;
-	padding-left: 32px;
+	padding-left: 15px;
 	color:#666;
 	//background: url(https://s3-eu-west-1.amazonaws.com/cdn.shopk.it/templates/assets/shopkit/default/img/arrow.png) no-repeat 18px 7px;
 	margin: 10px 0;
 
 	i {
 		position: relative;
-		right: 17px;
+		left: 0px;
 		color: #999;
-		margin-right: -12px;
 	}
+}
+
+.col-left nav ul li ul li h5 {
+	display: block;
+	font-size: 13px;
+	font-weight: normal;
+	cursor: pointer;
+	color:#333;
+	padding: 5px 0 10px 0;
+	margin: 0;
+}
+
+.col-left nav ul li ul li h5 a {
+	margin: 0;
+}
+
+.col-left nav ul li ul li ul.sub-subcategories {
+	margin: 0;
+	border: 0;
+}
+
+.col-left nav ul li ul li ul li:first-child a {
+	margin-top: 0;
+}
+
+.col-left nav ul li ul li ul li a {
+	padding-left: @padding;
 }
 
 .col-left nav.normal ul li a {
@@ -678,6 +702,9 @@ footer a {
 		}
 		&.list-group-item-active {
 			//active
+			#pickup-locations {
+				display: block;
+			}
 		}
 		&:first-child {
 			border-top-left-radius: 4px;
@@ -779,6 +806,18 @@ footer a {
 	.payment-method-paypal {
 		.list-radio-logo img {
 			height: 25px;
+		}
+	}
+
+	//Pick_up locations
+	#pickup-locations {
+		display: none;
+		margin-top: 15px;
+		margin-bottom: 0;
+
+		&>div {
+			margin-bottom: 0;
+			float: none;
 		}
 	}
 }

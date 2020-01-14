@@ -53,6 +53,18 @@ Description: Complete order page
 				</div>
 			{% endif %}
 
+			{% if order.payment.type == 'pick_up' and order.payment.data %}
+				<div class="pick_up-data">
+					<p>
+						<strong>Morada de levantamento</strong><br>
+						{{ order.payment.data.name }}<br>
+						{{ order.payment.data.address }} {{ order.payment.data.address_extra }}<br>
+						{{ order.payment.data.zip_code }} {{ order.payment.data.city }}<br>
+						{{ order.payment.data.country }}<br>
+					</p>
+				</div>
+			{% endif %}
+
 		</section>
 
 	</div>

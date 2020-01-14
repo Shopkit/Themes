@@ -9,17 +9,34 @@ Description: Product category page
 {% block content %}
 
 	{#  Parent category #}
-	{% if category.parent %}
-		{% set parent_category = category(category.parent) %}
-	{% else %}
+	{% if category.is_parent %}
 		{% set parent_category = category %}
 		{% set is_parent = true %}
+
+		{% if category.parent %}
+			{% set main_parent = category(category.parent) %}
+		{% else %}
+			{% set main_parent = category %}
+		{% endif %}
+	{% else %}
+		{% set parent_category = category(category.parent) %}
+		{% set main_parent = category(parent_category.parent) %}
 	{% endif %}
 
 	{% set products = products("order:#{category_default_order} category:#{category.id} limit:9") %}
 
 	<ul class="breadcrumb">
 		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
+		{% if main_parent and main_parent.id != category.id %}
+			<li>
+				<a href="{{ main_parent.url }}">{{ main_parent.title }}</a><span class="divider">›</span>
+			</li>
+		{% endif %}
+		{% if category.id != parent_category.id and parent_category.is_parent and parent_category.is_child %}
+			<li>
+				<a href="{{ parent_category.url }}">{{ parent_category.title }}</a><span class="divider">›</span>
+			</li>
+		{% endif %}
 		<li class="active">{{ category.title }}</li>
 	</ul>
 

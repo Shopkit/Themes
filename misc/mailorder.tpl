@@ -442,7 +442,8 @@
 
 																				{% elseif order.payment.type == 'pick_up' %}
 																					{% set payment_img = store.payments.pick_up.image %}
-																					{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.pick_up.message|nl2br ~ '</p>' %}
+																					{% set pickup_address = order.payment.data ? '<p style="line-height:18px;margin:5px 0 10px 0;"><strong>Morada de levantamento</strong><br>' ~ order.payment.data.name ~ '<br>' ~ order.payment.data.address ~ ' ' ~ order.payment.data.address_extra ~ '<br>' ~ order.payment.data.zip_code ~ ' ' ~ order.payment.data.city ~ '<br>' ~ order.payment.data.country ~ '<br></p>' : '' %}
+																					{% set payment_data = pickup_address ~ '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.pick_up.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'multibanco' %}
 																					{% set payment_img = store.payments.multibanco.image %}

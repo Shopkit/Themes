@@ -100,6 +100,27 @@ Description: Payment Page
 												{% if payment.alias == 'credit_card' %}
 													<div id="card-element"></div>
 												{% endif %}
+
+												{% if payment.alias == 'pick_up' and store.locations %}
+													<div id="pickup-locations" class="well">
+														<div class="form-group">
+															<label for="pick_up_location">Localizações</label>
+															<select name="pick_up_location" id="pick_up_location" class="form-control input-block-level">
+																<option value="" disabled {% if not user.pick_up_location %}selected{% endif %}>Selecione uma opção</option>
+
+																{% for location in store.locations %}
+																	{% set selected = false %}
+
+																	{% if user.pick_up_location %}
+																		{% set selected = user.pick_up_location.id == location.id ? true : false %}
+																	{% endif %}
+
+																	<option value="{{ location.id }}" {% if selected %}selected{% endif %}>{{ location.name }} - {{ location.city }}, {{ location.country }}</option>
+																{% endfor %}
+															</select>
+														</div>
+													</div>
+												{% endif %}
 											</li>
 
 										{% endif %}

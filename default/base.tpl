@@ -16,7 +16,9 @@ Github: https://github.com/Shopkit/Default
 		<a href="{{ category_url }}"><img src="{{ category.image.full }}" alt="{{ category_title }}" title="{{ category_title }}"></a>
 		<div class="box">
 			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
-			{% if show_number_products %}
+			{% if not category.parent == 0 and category.children and show_number_products %}
+				<span>{{ category.children|length }} Categorias</span>
+			{% elseif show_number_products %}
 				<span>{{ category.total_products }} Produtos</span>
 			{% endif %}
 		</div>
@@ -206,28 +208,51 @@ Github: https://github.com/Shopkit/Default
 						<ul>
 							<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
 								<h4>
-									<a href="{{ site_url('catalog') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i>Todos os produtos</a>
+									<a href="{{ site_url('catalog') }}">Todos os produtos</a>
 								</h4>
 							</li>
 							<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
 								<h4>
-									<a href="{{ site_url('categories') }}"><i class="fa fa-chevron-down" aria-hidden="true"></i>Todas as categorias</a>
+									<a href="{{ site_url('categories') }}">Todas as categorias</a>
 								</h4>
 							</li>
+
 							{% for products_category in categories %}
-								<li {% if (category.id == products_category.id) %}class="active"{% endif %}>
-									<h4 data-toggle="collapse" data-target="#category_{{ products_category.id }}">
-										<a href="{% if products_category.total_products > 0 or products_category.children == false %}{{ products_category.url }} {% else %}#{% endif %}"><i class="fa fa-chevron-down" aria-hidden="true"></i>{{ products_category.title }}</a>
-									</h4>
+								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">
 
 									{% if products_category.children %}
-										<ul id="category_{{ products_category.id }}" class="collapse {% if (category.parent == products_category.id or category.id == products_category.id or category.id == products_category.id) %}in{% endif %}">
-											{% for children in products_category.children %}
-												<li {% if (category.id== children.id) %}class="active"{% endif %}>
-													<a href="{{ children.url }}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>{{ children.title }}</a>
+										<h4 data-toggle="collapse" data-target="{{ '#category_' ~ products_category.id }}">
+											<a href="#">{{ products_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+										</h4>
+
+										<ul id="{{ 'category_' ~ products_category.id }}" class="sub-categories collapse {{ (category.parent == products_category.id or category.id == products_category.id) ? 'in' }}">
+											{% for sub_category in products_category.children %}
+												<li class="{{ (category.id== sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
+
+													{% if sub_category.children %}
+														<h5 data-toggle="collapse" data-target="{{ '#sub_category_' ~ sub_category.id }}">
+															<a href="#">{{ sub_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+														</h5>
+
+														<ul id="sub_category_{{ sub_category.id }}" class="sub-subcategories collapse {{ (category.parent == sub_category.id or category.id == sub_category.id) ? 'in' }}">
+															{% for children in sub_category.children %}
+																<li class="{{ (category.id== children.id) ? 'active' }} {{ 'menu-' ~ children.handle }}">
+																	<a href="{{ children.url }}">{{ children.title }}</a>
+																</li>
+															{% endfor %}
+														</ul>
+													{% else %}
+														<h5>
+															<a href="{{ sub_category.url }}">{{ sub_category.title }}</a>
+														</h5>
+													{% endif %}
 												</li>
 											{% endfor %}
 										</ul>
+									{% else %}
+										<h4>
+											<a href="{{ products_category.url }}">{{ products_category.title }}</a>
+										</h4>
 									{% endif %}
 								</li>
 							{% endfor %}

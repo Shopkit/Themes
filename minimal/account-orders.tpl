@@ -86,11 +86,17 @@ Description: Orders account page
 							{% endif %}
 						</div>
 						<div class="col-sm-6">
-							<h4 class="margin-bottom-xxs">Transporte</h4>
-							{% if user.order_detail.shipment_method %}
-								<p>{{ user.order_detail.shipment_method }}</p>
+							{% if user.order_detail.payment.type == 'pick_up' and user.order_detail.payment.data %}
+								<h4 class="margin-bottom-xxs">Morada de levantamento</h4>
+								<p>
+									{{ user.order_detail.payment.data.name }}<br>
+									{{ user.order_detail.payment.data.address }} {{ user.order_detail.payment.data.address_extra }}<br>
+									{{ user.order_detail.payment.data.zip_code }} {{ user.order_detail.payment.data.city }}<br>
+									{{ user.order_detail.payment.data.country }}
+								</p>
 							{% else %}
-								n/a
+								<h4 class="margin-bottom-xxs">Transporte</h4>
+								<p>{{ user.order_detail.shipment_method|default('n/a') }}</p>
 							{% endif %}
 						</div>
 					</div>

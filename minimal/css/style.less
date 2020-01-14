@@ -395,8 +395,6 @@ h2, h3, h4, h5, h6 {
 	.dropdown {
 
 		&.open {
-			background-color: #f9f9f9;
-
 			& > a, & > a:hover, & > a:focus {
 				background-color: transparent;
 				color: #666;
@@ -968,6 +966,9 @@ h2, h3, h4, h5, h6 {
 }
 
 .page-category {
+	h1 {
+		word-break: break-word;
+	}
 	.description {
 		margin-bottom: @padding;
 	}
@@ -1011,12 +1012,13 @@ h1 + .breadcrumb {
 	}
 
 	.list-group-item {
-		font-size: 12px;
+		font-size: 14px;
 		border-color: #eee;
 		color: #999;
 
 		span {
 			color: #ccc;
+			font-weight: @normal;
 		}
 
 		&.active {
@@ -1032,6 +1034,46 @@ h1 + .breadcrumb {
 		&:hover {
 			background-color: #fff;
 			color: #666;
+		}
+
+		&+.nav-subcategories {
+			& > ul {
+				.list-reset;
+				font-size: 14px;
+
+				& > li {
+					display: block;
+					padding: @padding/3 @padding/2 0 @padding;
+					&:last-child {
+						padding-bottom: @padding/3;
+					}
+					a {
+						color: #999;
+
+						&>span {
+							color: #ccc;
+							font-weight: @normal;
+						}
+					}
+					&.active {
+						font-weight: @bold;
+						& > a {
+							color: #333;
+						}
+					}
+				}
+			}
+		}
+	}
+	&.panel-categories {
+		.panel-heading {
+			.text-black;
+		}
+		.list-group-item {
+			&[aria-expanded="true"] {
+				font-weight: @bold;
+				color: #333;
+			}
 		}
 	}
 }
@@ -1399,11 +1441,49 @@ footer {
 		& > a {
 			padding: @padding/4 @padding/2;
 			color: #666;
+			white-space: normal;
 
-			&:hover {
+			&:hover, &:focus {
 				background-color: transparent;
 				color: #333;
 			}
+		}
+	}
+}
+
+.subdropdown {
+	.dropdown-submenu {
+		position: static;
+		display: none;
+		float: none;
+		width: auto;
+		margin-top: 0;
+		border: 0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		.list-reset;
+
+		li {
+			a {
+				display: block;
+				color: #666;
+				padding: @padding/6 @padding/2 @padding/6 @padding*1.5;
+			}
+			&.active {
+				a {
+					color: #333;
+				}
+			}
+		}
+	}
+
+	&.open {
+		&>a, &>a:hover, &>a:focus {
+			background-color: #fff;
+			color: #333;
+		}
+		.dropdown-submenu {
+			display: block;
 		}
 	}
 }
@@ -1528,6 +1608,9 @@ form footer {
 		}
 		&.list-group-item-active {
 			//active
+			#pickup-locations {
+				display: block;
+			}
 		}
 		div.list-radio-content {
 			.clearfix;
@@ -1622,6 +1705,18 @@ form footer {
 	.payment-method-paypal {
 		.list-radio-logo img {
 			height: 25px;
+		}
+	}
+
+	//Pick_up locations
+	#pickup-locations {
+		display: none;
+		margin-top: 15px;
+		margin-bottom: 0;
+
+		&>div {
+			margin-bottom: 0;
+			float: none;
 		}
 	}
 }
@@ -1982,7 +2077,7 @@ form footer {
 	.navbar-nav {
 		text-align: center;
 		float: none;
-		font-weight: 300;
+		//font-weight: 300;
 		margin: 0;
 		padding-bottom: @padding/2;
 
@@ -2001,7 +2096,7 @@ form footer {
 			display: inline-block;
 			text-transform: uppercase;
 			position: relative;
-			margin-bottom: @padding/2;
+			margin: 0 @padding/2 @padding/2 @padding/2;
 
 			&.active {
 
@@ -2020,8 +2115,7 @@ form footer {
 			}
 
 			& > a {
-				padding-top: 0;
-				padding-bottom: 0;
+				padding: 0;
 			}
 		}
 
@@ -2113,6 +2207,16 @@ form footer {
 		}
 	}
 
+	.subdropdown {
+		.dropdown-submenu {
+			li {
+				a {
+					padding-left: @padding;
+				}
+			}
+		}
+	}
+
 	.list-group {
 		&.list-group-horizontal {
 			& > .row {
@@ -2165,6 +2269,13 @@ form footer {
 			}
 			.list-group-item.list-radio-block div.list-radio-content div.list-radio-description {
 				width: 70%;
+			}
+		}
+	}
+	.dropdown-menu {
+		& > li {
+			& > a {
+				white-space: nowrap;
 			}
 		}
 	}

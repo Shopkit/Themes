@@ -176,7 +176,7 @@ h1 {
 
 	&.wide {
 		padding: 0 @padding;
-		height: @padding*2;
+		height: auto;
 		background: darken(@basecolor, 2.5%);
 		color: #fff;
 		line-height: 100%;
@@ -191,6 +191,10 @@ h1 {
 	background: #fff;
 	color: #666;
 	line-height: 130%;
+
+	&.breadcrumbs {
+		padding: @padding/3 @padding;
+	}
 }
 
 h2 {
@@ -461,7 +465,7 @@ header {
 	.list {
 		li {
 			border-bottom: 1px solid #eee;
-			line-height: 12px;
+			line-height: 14px;
 
 			a {
 				.transition(~".75s ease");
@@ -492,6 +496,15 @@ header {
 							color: @basecolor;
 						}
 					}
+
+					ul {
+						li {
+							a {
+								background: #eee;
+								padding-left: @padding*1.5;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -503,6 +516,7 @@ header {
 		display: inline-block;
 		float: none;
 		margin-top: @padding/2;
+		margin-bottom: @padding;
 		width: @padding;
 		height: @padding;
 		border-radius: @padding;
@@ -912,6 +926,9 @@ header {
 		}
 		&.list-group-item-active {
 			//active
+			#pickup-locations {
+				display: block;
+			}
 		}
 		&:first-child {
 			border-top-left-radius: 4px;
@@ -1013,6 +1030,18 @@ header {
 	.payment-method-paypal {
 		.list-radio-logo img {
 			height: 25px;
+		}
+	}
+
+	//Pick_up locations
+	#pickup-locations {
+		display: none;
+		margin-top: 15px;
+		margin-bottom: 0;
+
+		&>div {
+			margin-bottom: 0;
+			float: none;
 		}
 	}
 }
@@ -1911,10 +1940,9 @@ body.has-google-translate {
 @media (min-width: 980px) {
 	.slide-bar ul.list {
 		overflow-y: auto;
-		max-height: 500px;
+		max-height: 80vh;
 		li ul {
 			overflow-y: auto;
-			max-height: 200px;
 		}
 	}
 }

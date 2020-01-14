@@ -53,6 +53,8 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 
+	$('.categories').find('.sub-subcategories.in').closest('.sub-categories').addClass('in');
+
 	$('.btn-navbar').click(function() {
 		$('body').toggleClass('mobile-nav');
 	});
@@ -171,6 +173,8 @@ $(document).ready(function() {
 		$(target).toggleClass('hidden');
 	});
 
+	$('.payment-methods .list-radio-block.list-group-item-active').find('select#pick_up_location').prop('required', true);
+
 	$('.shipping-methods .list-radio-block').on('click', function() {
 		var _this = $(this);
 		$('.shipping-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
@@ -181,6 +185,7 @@ $(document).ready(function() {
 		var _this = $(this);
 		$('.payment-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
 		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
+		$('#pick_up_location', _this).length ? $('#pick_up_location', _this).prop('required', true) : $('.payment-methods').find('#pick_up_location').prop('required', false);
 	});
 });
 
