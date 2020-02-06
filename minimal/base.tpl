@@ -132,8 +132,10 @@ Version: 4.0
 						</button>
 						<ul class="dropdown-menu">
 							<li class="googtrans-{{ default_lang }}"><a href="{{ current_url() }}" lang="{{ default_lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[default_lang] }}"></span></a></li>
-							{% for lang in apps.google_translate.languages|split(',') if lang != default_lang %}
-								<li class="googtrans-{{ lang }}"><a href="#googtrans({{ lang }})" lang="{{ lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[lang] }}"></span></a></li>
+							{% for lang in apps.google_translate.languages|split(',') %}
+								{% if lang != default_lang %}
+									<li class="googtrans-{{ lang }}"><a href="#googtrans({{ lang }})" lang="{{ lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[lang] }}"></span></a></li>
+								{% endif %}
 							{% endfor %}
 						</ul>
 					</div>
