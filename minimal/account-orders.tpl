@@ -192,7 +192,13 @@ Description: Orders account page
 						<div class="well">
 							{% for custom_field in user.order_detail.custom_field|json_decode %}
 								<h4 class="margin-bottom-xxs">{{ custom_field.title }}</h4>
-								<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+								{% if custom_field.data %}
+									{% for data in custom_field.data %}
+										<p><strong>{{ data.key }}</strong>: {{ data.value }}</p>
+									{% endfor %}
+								{% else %}
+									<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+								{% endif %}
 								{{ loop.last ? '' : '<hr>' }}
 							{% endfor %}
 						</div>

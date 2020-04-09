@@ -78,8 +78,8 @@ Description: This is the base layout. It's included in every page with this code
 		<style>{{ store.custom_css }}</style>
 	{% endif %}
 
-	<script src="{{ assets_url('js/common/modernizr-2.7.1.min.js')}}"></script>
-	<script src="https://drwfxyu78e9uq.cloudfront.net/assets/common/vendor/jquery/1.9.1/jquery.min.js"></script>
+	<script src="{{ assets_url('assets/common/vendor/modernizr/2.7.1/modernizr.min.js') }}"></script>
+	<script src="{{ assets_url('assets/common/vendor/jquery/1.9.1/jquery.min.js') }}"></script>
 
 	{{ head_content }}
 
@@ -187,6 +187,11 @@ Description: This is the base layout. It's included in every page with this code
 			<p>&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. Todos os direitos reservados.</p>
 			{% if store.footer_info %}<p>{{ store.footer_info|nl2br }}</p>{% endif %}
 
+			{% if store.show_branding %}
+				<div class="powered-by">
+					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105"></a>
+				</div>
+			{% endif %}
 		</footer>
 
 	</section>

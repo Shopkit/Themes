@@ -128,7 +128,13 @@ Description: Confirm order page
 								{% for custom_fields in user.custom_field %}
 									{% set custom_field = custom_fields|json_decode %}
 									<h3 class="margin-bottom-md">{{ custom_field.title }}</h3>
-									<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+									{% if custom_field.data %}
+										{% for data in custom_field.data %}
+											<p><strong>{{ data.key }}</strong>: {{ data.value }}</p>
+										{% endfor %}
+									{% else %}
+										<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+									{% endif %}
 									{{ loop.last ? '' : '<hr>' }}
 								{% endfor %}
 							</div>

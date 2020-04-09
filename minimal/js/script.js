@@ -263,7 +263,7 @@ function product_options(product, onload) {
 			window['id_variant_' + (i + 1)] = option.attr('value');
 		});
 
-		var data_product_options = { id_variant_1: window.id_variant_1, id_variant_2: window.id_variant_2, id_variant_3: window.id_variant_3 }
+		var data_product_options = { id_variant_1: window.id_variant_1, id_variant_2: window.id_variant_2, id_variant_3: window.id_variant_3 };
 		var product_handle = product.handle;
 		var disable_form_product;
 
@@ -459,5 +459,5 @@ function animate_updated_value(selector, value, fx) {
 (function($) {
 	$.fn.hasScrollBar = function() {
 		return this.get(0).scrollWidth > this.get(0).clientWidth;
-	}
+	};
 })(jQuery);

@@ -95,7 +95,7 @@ $(document).ready(function() {
 		});
 
 		$(this).prop('href', $(this).prop('href') + options.slice(0, -3) + '#contact-form');
-	})
+	});
 
 	//Billing / Delivery data
 	$(document).on('change', '#billing_info_same_delivery', function(event) {
@@ -166,7 +166,7 @@ function product_options(product, onload) {
 			window['id_variant_' + (i + 1)] = option.attr('value');
 		});
 
-		var data_product_options = { id_variant_1: window.id_variant_1, id_variant_2: window.id_variant_2, id_variant_3: window.id_variant_3 }
+		var data_product_options = { id_variant_1: window.id_variant_1, id_variant_2: window.id_variant_2, id_variant_3: window.id_variant_3 };
 		var product_handle = product.handle;
 		var disable_form_product;
 
@@ -247,6 +247,8 @@ function product_options(product, onload) {
 			product_options_url();
 
 		}, 'json');
+	} else {
+		$('.form-cart').addClass('form-enabled');
 	}
 }
 

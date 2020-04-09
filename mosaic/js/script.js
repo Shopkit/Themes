@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 	$('.btn-slide, .slide-bar a.close').on('click', function() {
 
-		var data_target = $(this).attr('data-target')
+		var data_target = $(this).attr('data-target');
 		var target = $(data_target);
 		var slidebar_width = target.width();
 		var side_width = $('.sidebar').width();
@@ -164,7 +164,7 @@ $(document).ready(function() {
 		});
 
 		$(this).prop('href', $(this).prop('href') + options.slice(0, -3) + '#contact-form');
-	})
+	});
 
 	//Billing / Delivery data
 	$(document).on('change', '#billing_info_same_delivery', function(event) {
@@ -228,7 +228,7 @@ function product_options(product, onload) {
 		var _this = $('.select-product-options');
 		var option = $('option:selected', _this);
 
-		var data_product_options = { id_variant_1: option.data('id_variant_1'), id_variant_2: option.data('id_variant_2'), id_variant_3: option.data('id_variant_3') }
+		var data_product_options = { id_variant_1: option.data('id_variant_1'), id_variant_2: option.data('id_variant_2'), id_variant_3: option.data('id_variant_3') };
 		var product_handle = product.handle;
 
 		$.post('/product-options/' + product_handle, data_product_options, function(response) {
@@ -310,6 +310,8 @@ function product_options(product, onload) {
 			product_options_url();
 
 		}, 'json');
+	} else {
+		$('.add-cart').addClass('form-enabled');
 	}
 }
 

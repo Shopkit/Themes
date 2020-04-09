@@ -134,7 +134,7 @@
 	{% if store.show_branding %}
 	  	<footer class="text-center">
 	  		<div class="container">
-				<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img class="logo-footer" src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black-transparent.png" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
+				<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
 			</div>
 	  	</footer>
   	{% endif %}

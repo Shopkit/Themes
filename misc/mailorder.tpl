@@ -233,7 +233,7 @@
 														<div style="background-color:#d9534f;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#d9534f" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/cancel.png" width="40" alt="canceled" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/cancel.png') }}" width="40" alt="canceled" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
@@ -247,7 +247,7 @@
 														<div style="background-color:#00d4ed;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#00d4ed" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/sent.png" width="40" alt="paid" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/sent.png') }}" width="40" alt="paid" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
@@ -268,7 +268,7 @@
 														<div style="background-color:#8dc059;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#8dc059" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/delivered.png" width="40" alt="delivered" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/delivered.png') }}" width="40" alt="delivered" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
@@ -287,7 +287,7 @@
 														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/undo.png" width="40" alt="returned" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/undo.png') }}" width="40" alt="returned" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
@@ -306,7 +306,7 @@
 														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#999" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/pickup_available.png" width="40" alt="returned" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/pickup_available.png') }}" width="40" alt="returned" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
@@ -325,7 +325,7 @@
 														<div style="background-color:#8dc059;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#8dc059" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="https://drwfxyu78e9uq.cloudfront.net/assets/store/img/check.png" width="40" alt="paid" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/check.png') }}" width="40" alt="paid" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
@@ -698,7 +698,13 @@
 																	<td style="padding:30px 20px;">
 																		{% for custom_field in order.custom_field|json_decode %}
 																			<p style="margin: 0 0 5px 0;color:#666666;"><strong>{{ custom_field.title }}</strong></p>
-																			<p style="margin: {{ loop.last ? '0 0 0 0' : '0 0 15px 0' }};"><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+																			{% if custom_field.data %}
+																				{% for data in custom_field.data %}
+																					<p style="margin: {{ not loop.parent.loop.last and not loop.last ? '0 0 0 0' : '0 0 15px 0' }};"><strong>{{ data.key }}</strong>: {{ data.value }}</p>
+																				{% endfor %}
+																			{% else %}
+																				<p style="margin: {{ loop.last ? '0 0 0 0' : '0 0 15px 0' }};"><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
+																			{% endif %}
 																		{% endfor %}
 																	</td>
 																</tr>
@@ -749,7 +755,7 @@
 											<tr>
 												<td align="center">
 													<div style="display:inline-block; border-top: 1px solid #ddd; padding-left:30px; padding-right:30px; padding-top:30px;">
-														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" target="_blank"><img class="logo-footer" src="https://drwfxyu78e9uq.cloudfront.net/assets/frontend/img/logo-shopkit-black-transparent.png" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
+														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" target="_blank"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
 													</div>
 												</td>
 											</tr>
