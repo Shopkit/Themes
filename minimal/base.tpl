@@ -544,7 +544,7 @@ Version: 4.0
 			{% if not apps.google_analytics_ec %}
 				/* Google Analytics */
 				var _gaq = _gaq || [];
-				_gaq.push(['_setAccount', 'UA-28055653-2']);
+				_gaq.push(['_setAccount', '{{ ga_profile_id }}']);
 				_gaq.push(['_setDomainName', '{{ domain }}']);
 				_gaq.push(['_trackPageview']);
 

@@ -101,6 +101,17 @@ Description: Order data form page
 										<label for="email">E-mail <small class="text-light-gray normal">(*)</small></label>
 										<input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required>
 									</div>
+
+									{% if apps.newsletter %}
+										<div class="form-group">
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}>
+													{{ apps.newsletter.label }}
+												</label>
+											</div>
+										</div>
+									{% endif %}
 								</div>
 							</div>
 							<div class="row">
@@ -253,15 +264,6 @@ Description: Order data form page
 									</div>
 								</div>
 							</div>
-
-							{% if apps.newsletter %}
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}>
-										Pretendo registar-me na newsletter
-									</label>
-								</div>
-							{% endif %}
 
 						{% endif %}
 

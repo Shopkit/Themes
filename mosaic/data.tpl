@@ -98,9 +98,14 @@ Description: Order data form page
 						<h4 class="margin-bottom">Dados de Cliente</h4>
 
 						<div class="row-fluid">
-							<div class="span12">
+							<div class="span12 margin-bottom-sm">
 								<label for="email">E-mail <small class="muted">(*)</small></label>
 								<input type="email" name="email" id="email" class="input-block-level" value="{{ user.email }}" required>
+
+								{% if apps.newsletter %}
+									<br>
+									<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1"> {{ apps.newsletter.label }}</label>
+								{% endif %}
 							</div>
 						</div>
 
@@ -243,11 +248,6 @@ Description: Order data form page
 							<textarea cols="80" rows="4" class="input-block-level" id="observations" name="observations" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.observations }}</textarea>
 						</div>
 					</div>
-
-					{% if apps.newsletter and not user.is_logged_in %}
-						<br>
-						<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1"> Pretendo registar-me na newsletter</label>
-					{% endif %}
 
 				{% endif %}
 

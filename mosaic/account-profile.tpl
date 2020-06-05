@@ -111,7 +111,7 @@ Description: Account profile page
 								<div class="checkbox">
 									<label>
 										<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}>
-										Pretendo registar-me na newsletter
+										{{ apps.newsletter.label }}
 									</label>
 								</div>
 							{% endif %}
