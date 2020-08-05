@@ -172,6 +172,10 @@ $(document).ready(function() {
 		$(target).toggleClass('hidden');
 	});
 
+	$(document).on('blur', 'input[name$=zip_code]', function(e) {
+		set_country_by_postal_code($(this));
+	});
+
 	$('.payment-methods .list-radio-block.list-group-item-active').find('select#pick_up_location').prop('required', true);
 
 	$(document).on('click', 'a.dropdown-toggle', function(e){
@@ -189,6 +193,33 @@ $(document).ready(function() {
 			align_right ? dropdown.addClass('dropdown-menu-right') : false;
 		});
 	})();
+
+	$('.intl-validate').intlTelInput({
+		initialCountry: 'pt',
+		preferredCountries: ['pt','es','fr','ch','br','gb','de','lu','be','it','us'],
+		utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/js/utils.js'
+	});
+
+	$(document).on('keyup blur focus', '.intl-validate', function(event) {
+		var _this = $(this);
+		var e164 = event.type == 'focusout' ? true : false;
+		validate_phone_intl_input(_this, e164);
+	});
+
+	$(document).on('change', '#delivery_country, #billing_country', function(event) {
+		var _this = $(this);
+		var type = _this.attr('id').split('_')[0];
+		var phone_input = $('#'+ type +'_phone');
+		var country = _this.find('option:selected').attr('value');
+
+		if (country == 'PTA' || country == 'PTM') {
+			country = 'PRT';
+		}
+
+		if (!phone_input.val()) {
+			phone_input.intlTelInput('setCountry', getKeyByValue(countries_alpha_2, country));
+		}
+	});
 });
 
 $(window).load(function() {
@@ -227,6 +258,18 @@ $(window).load(function() {
 
 	$('.fb-page, .fb-comments').each(function() {
 		$(this).attr('data-width', $(this).parent().width());
+	});
+
+	$('.intl-validate').each(function(index) {
+		var _this = $(this);
+		setTimeout(function() {
+			if (!_this.val() && user.delivery.country_code_alpha_2) {
+				_this.intlTelInput('setCountry', user.delivery.country_code_alpha_2);
+			}
+			validate_phone_intl_input(_this, true);
+			_this.focus();
+			_this.blur();
+		}, 1500);
 	});
 
 });

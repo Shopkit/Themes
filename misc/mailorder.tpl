@@ -460,7 +460,8 @@
 
 																				{% elseif order.payment.type == 'bank_transfer' %}
 																					{% set payment_img = store.payments.bank_transfer.image %}
-																					{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.bank_transfer.message|nl2br ~ '</p>' %}
+																					{% set bank_transfer_iban = order.payment.data ? '<p style="line-height:24px;margin:5px 0 10px 0;"><strong>IBAN</strong>: ' ~ order.payment.data ~ '</p>' : '' %}
+																					{% set payment_data = bank_transfer_iban ~ '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.bank_transfer.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'credit_card' %}
 																					{% set payment_img = store.payments.credit_card.image|replace({'credit_card': slug(order.payment.data.brand)}) %}
@@ -500,6 +501,9 @@
 																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda devolvida</strong></p>
 																							{% elseif order.status_alias == 'sent' %}
 																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda enviada</strong> em {{ order.sent_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</p>
+																								{% if order.expected_arrival_from %}
+																									<p style="color:#999;line-height:20px;font-size:13px;"><strong>Entrega prevista</strong>{{ order.expected_arrival_until ? ' entre ' ~ order.expected_arrival_from|date("l (d/m/Y)") ~ ' e ' ~ order.expected_arrival_until|date("l (d/m/Y)") : ': ' ~ order.expected_arrival_from|date("l (d/m/Y)") }}  </p>
+																								{% endif %}
 																							{% elseif order.status_alias == 'canceled' %}
 																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda cancelada</strong></p>
 																							{% elseif order.paid == false %}

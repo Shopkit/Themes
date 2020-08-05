@@ -189,7 +189,7 @@ Description: Confirm order page
 								</div>
 							{% endif %}
 
-							{% if not user.is_logged_in and (store.settings.cart.page_terms or store.settings.cart.page_privacy) %}
+							{% if store.settings.cart.page_terms or store.settings.cart.page_privacy %}
 								<hr>
 								<div class="accept_terms checkbox">
 									<label>

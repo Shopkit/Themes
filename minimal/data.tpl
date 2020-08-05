@@ -148,7 +148,7 @@ Description: Order data form page
 										<div class="col-sm-4">
 											<div class="form-group">
 												<label for="delivery_phone">Telefone {{ store.settings.cart.field_delivery_phone == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
-												<input type="text" name="delivery_phone" id="delivery_phone" class="form-control" value="{{ user.delivery.phone }}" placeholder="{{ store.settings.cart.field_delivery_phone == 'optional' ? 'Opcional' }}">
+												<input type="tel" name="delivery_phone" id="delivery_phone" class="form-control intl-validate" value="{{ user.delivery.phone }}" placeholder="{{ store.settings.cart.field_delivery_phone == 'optional' ? 'Opcional' }}">
 											</div>
 										</div>
 									{% endif %}
@@ -216,7 +216,7 @@ Description: Order data form page
 										<div class="col-sm-4">
 											<div class="form-group">
 												<label for="billing_phone">Telefone {{ store.settings.cart.field_billing_phone == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
-												<input type="text" name="billing_phone" id="billing_phone" class="form-control" value="{{ user.billing.phone }}" placeholder="{{ store.settings.cart.field_billing_phone == 'optional' ? 'Opcional' }}">
+												<input type="tel" name="billing_phone" id="billing_phone" class="form-control intl-validate" value="{{ user.billing.phone }}" placeholder="{{ store.settings.cart.field_billing_phone == 'optional' ? 'Opcional' }}">
 											</div>
 										</div>
 									{% endif %}
