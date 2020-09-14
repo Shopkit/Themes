@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ store.page_title }}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
-    <style type="text/css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ store.page_title }}</title>
+	{% if store.favicon %}
+		<link rel="shortcut icon" href="{{ store.favicon }}">
+	{% endif %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<style type="text/css">
 		.jumbotron {
 			text-align: center;
 			color: #fff;
@@ -99,45 +102,45 @@
 		}
 
 		@keyframes "spin"{from{-webkit-transform:rotate(0);-moz-transform:rotate(0);-ms-transform:rotate(0);-o-transform:rotate(0);transform:rotate(0);}to{-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);-ms-transform:rotate(360deg);-o-transform:rotate(360deg);transform:rotate(360deg);}}@-moz-keyframes spin{from{-moz-transform:rotate(0);transform:rotate(0);}to{-moz-transform:rotate(360deg);transform:rotate(360deg);}}@-webkit-keyframes "spin"{from{-webkit-transform:rotate(0);transform:rotate(0);}to{-webkit-transform:rotate(360deg);transform:rotate(360deg);}}@-ms-keyframes "spin"{from{-ms-transform:rotate(0);transform:rotate(0);}to{-ms-transform:rotate(360deg);transform:rotate(360deg);}}@-o-keyframes "spin"{from{-o-transform:rotate(0);transform:rotate(0);}to{-o-transform:rotate(360deg);transform:rotate(360deg);}}@keyframes "spin-inverse"{from{-webkit-transform:rotate(0);-moz-transform:rotate(0);-ms-transform:rotate(0);-o-transform:rotate(0);transform:rotate(0);}to{-webkit-transform:rotate(-360deg);-moz-transform:rotate(-360deg);-ms-transform:rotate(-360deg);-o-transform:rotate(-360deg);transform:rotate(-360deg);}}@-moz-keyframes spin-inverse{from{-moz-transform:rotate(0);transform:rotate(0);}to{-moz-transform:rotate(-360deg);transform:rotate(-360deg);}}@-webkit-keyframes "spin-inverse"{from{-webkit-transform:rotate(0);transform:rotate(0);}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg);}}@-ms-keyframes "spin-inverse"{from{-ms-transform:rotate(0);transform:rotate(0);}to{-ms-transform:rotate(-360deg);transform:rotate(-360deg);}}@-o-keyframes "spin-inverse"{from{-o-transform:rotate(0);transform:rotate(0);}to{-o-transform:rotate(-360deg);transform:rotate(-360deg);}}
-    </style>
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	</style>
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
   </head>
   <body>
 
-  	<div class="jumbotron">
-  		<div class="container">
-  			<div class="cogs">
+	<div class="jumbotron">
+		<div class="container">
+			<div class="cogs">
 				<i class="fa fa-cog cog-big"></i>
 				<i class="fa fa-cog cog-small"></i>
 				<i class="fa fa-cog cog-small-2"></i>
 			</div>
-  		</div>
-  	</div>
+		</div>
+	</div>
 
-  	<div class="text-center content">
-  		<div class="container">
-  			{% if store.logo %}
-  				<a href="{{ site_url() }}"><img src="{{ store.logo }}" alt="{{ store.name }}" class="logo"></a>
+	<div class="text-center content">
+		<div class="container">
+			{% if store.logo %}
+				<a href="{{ site_url() }}"><img src="{{ store.logo }}" alt="{{ store.name }}" class="logo"></a>
 			{% else %}
 				<h1 class="logo"><a href="{{ site_url() }}">{{ store.name }}</a></h1>
 			{% endif %}
-	  		<h2>Estamos em manutenção</h2>
-	  		<p>Voltamos dentro de instantes</p>
-	  	</div>
-  	</div>
+			<h2>Estamos em manutenção</h2>
+			<p>Voltamos dentro de instantes</p>
+		</div>
+	</div>
 
 	{% if store.show_branding %}
-	  	<footer class="text-center">
-	  		<div class="container">
+		<footer class="text-center">
+			<div class="container">
 				<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
 			</div>
-	  	</footer>
-  	{% endif %}
+		</footer>
+	{% endif %}
 
   </body>
 </html>

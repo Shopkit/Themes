@@ -20,7 +20,7 @@ Description: Product catalog page
 
 		{% for product in products("order:#{category_default_order} limit:18") %}
 
-			<div class="span3 product product-id-{{ product.id }}">
+			<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
 
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}"></a>
 				<div class="box">

@@ -26,7 +26,7 @@ Description: Promotions Page
 			<div class="row">
 				{% for product in products("on_sale limit:#{products_per_page}") %}
 					<div class="col-sm-4">
-						<article class="product product-id-{{ product.id }}">
+						<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
 
 							<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
 

@@ -23,8 +23,6 @@ Description: Product category page
 		{% set main_parent = category(parent_category.parent) %}
 	{% endif %}
 
-	{% set products = products("order:#{category_default_order} category:#{category.id} limit:9") %}
-
 	<ul class="breadcrumb">
 		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
 		{% if main_parent and main_parent.id != category.id %}
@@ -44,15 +42,17 @@ Description: Product category page
 	<p>{{ category.description }}</p>
 	<hr>
 
+	{% set category_default_order = store.category_default_order|default('position') %}
+
+	{% set products = products("order:#{category_default_order} category:#{category.id} limit:9") %}
+
 	{% if products %}
 
 		<div class="row products">
 
-			{% set category_default_order = store.category_default_order|default('position') %}
+			{% for product in products %}
 
-			{% for product in products("order:#{category_default_order} category:#{category.id} limit:9") %}
-
-				<div class="span3 product product-id-{{ product.id }}">
+				<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
 					<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}"></a>
 					<div class="box">
 						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>

@@ -50,7 +50,7 @@ Description: Home Page
 
 				{% for product in products('order:featured limit:9') %}
 					<div class="col-sm-4">
-						<article class="product product-id-{{ product.id }}">
+						<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
 
 							{% if product.status_alias == 'out_of_stock' %}
 								<span class="badge out_of_stock">Sem stock</span>

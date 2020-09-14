@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Home Page
 #}
 
@@ -8,15 +8,15 @@ Description: Home Page
 
 	<div class="row products">
 
-		{% for product in products('order:featured') %} 
+		{% for product in products('order:featured') %}
 
-			<div class="span3 product product-id-{{ product.id }}">
+			<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
 				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}"></a>
 				<div class="box">
 					<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-					
+
 					<p>{{ product.description_short }}</p>
-					
+
 					<span class="price">
 						{% if product.price_on_request == true %}
 							Preço sob consulta

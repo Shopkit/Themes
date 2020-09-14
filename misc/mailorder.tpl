@@ -207,9 +207,9 @@
 										<tr>
 											<td align="center">
 												{% if show_logo == true and logo_img_url %}
-													<a href="{{ site_url() }}"><img src="{{ logo_img_url }}" height="60" alt="{{ store.name }}" title="{{ store.name }}" border="0" style="height:60px;"/></a>
+													<a href="{{ store.url }}"><img src="{{ logo_img_url }}" height="60" alt="{{ store.name }}" title="{{ store.name }}" border="0" style="height:60px;"/></a>
 												{% else %}
-													<a href="{{ site_url() }}" style="font-size:40px; color: #666; text-decoration: none;">{{ store.name }}</a>
+													<a href="{{ store.url }}" style="font-size:40px; color: #666; text-decoration: none;">{{ store.name }}</a>
 												{% endif %}
 											</td>
 										</tr>

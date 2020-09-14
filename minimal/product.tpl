@@ -68,18 +68,14 @@ Description: Product Page
 					{% if product.file %}
 						<div class="row">
 							<div class="col-xs-10">
-								<h1>{{ product.title }}</h1>
+								<h1 class="product-title">{{ product.title }}</h1>
 							</div>
 							<div class="col-xs-2 text-right">
 								<a target="_blank" href="{{ product.file }}" class="text-light-gray file-download"><i class="fa fa-fw fa-download"></i></a>
 							</div>
 						</div>
 					{% else %}
-						<h1>{{ product.title }}</h1>
-					{% endif %}
-
-					{% if product.reference %}
-						<small class="text-light-gray block">SKU: <span class="sku">{{ product.reference }}</span></small>
+						<h1 class="product-title">{{ product.title }}</h1>
 					{% endif %}
 
 					<div class="row block-price">
@@ -173,9 +169,14 @@ Description: Product Page
 										<input type="number" class="form-control" value="1" name="qtd" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 										<button type="submit" class="btn btn-gray text-uppercase"><i class="fa fa-cart-plus fa-fw"></i> Adicionar</button>
 
-										{% if product.stock.stock_show %}
+										{% if product.stock.stock_show or product.reference %}
 											<p class="text-light-gray small margin-top-xs margin-bottom-0">
-												<strong class="data-product-stock_qty">{{ product.stock.stock_qty }}</strong> unidades em stock
+												{% if product.stock.stock_show %}
+													<strong class="data-product-stock_qty">{{ product.stock.stock_qty }}</strong> unidades em stock {{ product.reference ? ' | ' }}
+												{% endif %}
+												{% if product.reference %}
+													SKU: <span class="sku">{{ product.reference }}</span>
+												{% endif %}
 											</p>
 										{% endif %}
 									</div>
@@ -243,7 +244,7 @@ Description: Product Page
 
 						{% for related_product in related_products %}
 							<div class="col-xs-6 col-sm-4 col-md-3 {% if loop.index == 4 %}hidden-sm{% endif %} {% if loop.index > 2 %}hidden-xs{% endif %}">
-								<article class="product product-id-{{ related_product.id }}">
+								<article class="product product-id-{{ related_product.id }}" data-id="{{ product.id }}">
 
 									{% if related_product.status_alias == 'out_of_stock' %}
 										<span class="badge out_of_stock">Sem stock</span>

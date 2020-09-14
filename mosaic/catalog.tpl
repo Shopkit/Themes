@@ -17,7 +17,7 @@ Description: Product catalog page
 		<ul class="unstyled products">
 
 			{% for product in products %}
-				<li class="product-id-{{ product.id }}">
+				<li class="product-id-{{ product.id }}" data-id="{{ product.id }}">
 					<img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}">
 
 					<div class="description">

@@ -30,7 +30,7 @@ Description: Product Page
 			<div class="row-fluid">
 
 				<div class="span8">
-					<h1>{{ product.title }}</h1>
+					<h1 class="product-title">{{ product.title }}</h1>
 				</div>
 
 				<div class="span4">

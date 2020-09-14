@@ -45,7 +45,7 @@ Description: Product Page
 
 			<div class="span5">
 
-				<h1>{{ product.title }}</h1>
+				<h1 class="product-title">{{ product.title }}</h1>
 
 				<div>
 					<h4 class="price">
