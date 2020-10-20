@@ -326,6 +326,25 @@ Github: https://github.com/Shopkit/Default
 				</aside>
 
 			</div>
+
+			{% if current_page == 'home' %}
+				{% if store.featured_blocks %}
+					<section class="featured-blocks content margin-top">
+						<div class="row">
+							{% for featured_block in store.featured_blocks %}
+								<div class="{{ loop.first ? 'offset' ~ (12 - 4 * store.featured_blocks|length) / 2 }} span4 col-featured-block">
+									<div class="featured-block">
+										<img src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40">
+										<h4 class="bold">{{ featured_block.title }}</h4>
+										<p>{{ featured_block.description }}</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</section>
+				{% endif %}
+			{% endif %}
+
 		</div>
 
 		<footer>

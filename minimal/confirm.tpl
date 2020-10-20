@@ -124,8 +124,8 @@ Description: Confirm order page
 						{% endif %}
 
 						{% if user.custom_field %}
-							<div class="well">
-								{% for custom_fields in user.custom_field %}
+							{% for custom_fields in user.custom_field %}
+								<div class="well">
 									{% set custom_field = custom_fields|json_decode %}
 									<h3 class="margin-bottom-md">{{ custom_field.title }}</h3>
 									{% if custom_field.data %}
@@ -135,9 +135,8 @@ Description: Confirm order page
 									{% else %}
 										<p><strong>{{ custom_field.key }}</strong>: {{ custom_field.value }}</p>
 									{% endif %}
-									{{ loop.last ? '' : '<hr>' }}
-								{% endfor %}
-							</div>
+								</div>
+							{% endfor %}
 						{% endif %}
 
 						<footer class="clearfix hidden-xs hidden-sm">

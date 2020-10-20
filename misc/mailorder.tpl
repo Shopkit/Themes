@@ -495,18 +495,8 @@
 																					</tr>
 																					<tr>
 																						<td colspan="3">
-																							{% if order.status_alias == 'delivered' %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda entregue</strong></p>
-																							{% elseif order.status_alias == 'returned' %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda devolvida</strong></p>
-																							{% elseif order.status_alias == 'sent' %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda enviada</strong> em {{ order.sent_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</p>
-																								{% if order.expected_arrival_from %}
-																									<p style="color:#999;line-height:20px;font-size:13px;"><strong>Entrega prevista</strong>{{ order.expected_arrival_until ? ' entre ' ~ order.expected_arrival_from|date("l (d/m/Y)") ~ ' e ' ~ order.expected_arrival_until|date("l (d/m/Y)") : ': ' ~ order.expected_arrival_from|date("l (d/m/Y)") }}  </p>
-																								{% endif %}
-																							{% elseif order.status_alias == 'canceled' %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda cancelada</strong></p>
-																							{% elseif order.paid == false %}
+
+																							{% if order.paid == false %}
 																								{% if order.payment.type == 'multibanco' and not order.payment.data.reference %}
 																									<p><small>Ocorreu um erro a gerar a referência Multibanco. <a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Tente novamente</a></small></p>
 																								{% else %}
@@ -517,7 +507,7 @@
 																									{% endif %}
 																								{% endif %}
 																							{% elseif order.paid == true %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><strong>Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</p>
+																								<p style="color:#999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" height="15" alt="paid" border="0" class="img-order-status" style="vertical-align: text-bottom;"/> <strong>Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i") }}</p>
 																							{% endif %}
 																						</td>
 																					</tr>
