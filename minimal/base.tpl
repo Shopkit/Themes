@@ -87,8 +87,8 @@ Version: 4.0
 			<style>{{ store.custom_css }}</style>
 		{% endif %}
 
-        <script src="{{ assets_url('assets/common/vendor/modernizr/2.7.1/modernizr.min.js') }}"></script>
-        <script src="{{ assets_url('assets/common/vendor/jquery/1.11.2/jquery.min.js') }}"></script>
+		<script src="{{ assets_url('assets/common/vendor/modernizr/2.7.1/modernizr.min.js') }}"></script>
+		<script src="{{ assets_url('assets/common/vendor/jquery/1.11.2/jquery.min.js') }}"></script>
 
 		{{ head_content }}
 
@@ -434,6 +434,36 @@ Version: 4.0
 			<script>
 				$(document).ready(function(){
 					$('#newsletter-modal').modal('show');
+				});
+			</script>
+		{% endif %}
+
+		{% if events.unsubscribe %}
+			<div class="modal fade" id="unsubscribe-modal" tabindex="-1" role="dialog" aria-labelledby="unsubscribe-modalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+							<div class="text-center">
+								<i class="fa fa-envelope fa-4x text-light-gray"></i>
+
+								<h3 class="text-muted">Cancelar subscrição</h3>
+								<p>A sua subscrição foi cancelada.</p>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				$(document).ready(function(){
+					$('#unsubscribe-modal').modal('show');
 				});
 			</script>
 		{% endif %}

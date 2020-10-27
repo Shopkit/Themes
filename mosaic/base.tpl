@@ -468,6 +468,24 @@ Description: This is the base layout. It's included in every page with this code
 		</div>
 	{% endif %}
 
+	{% if events.unsubscribe %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Cancelar subscrição</h3>
+			</div>
+			<div class="modal-body">
+				<div class="text-center">
+					<i class="fa fa-envelope fa-3x text-light-gray"></i>
+					<h5 class="text-normal">A sua subscrição foi cancelada.</h5>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+			</div>
+		</div>
+	{% endif %}
+
 	{% if events.payment_status %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
