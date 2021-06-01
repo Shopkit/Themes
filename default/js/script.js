@@ -1,7 +1,13 @@
 $(document).ready(function() {
 
+	var lazyLoadInstance = new LazyLoad({
+		callback_loaded: function(){
+			masonry();
+		}
+	});
+
 	if (Modernizr.mq('only screen and (min-width: 767px)')) {
-		$('.products img, .categories img').imagesLoaded(function() {
+		$('.products img, .categories img, .brands img').imagesLoaded(function() {
 
 			masonry();
 
@@ -118,7 +124,7 @@ $(document).ready(function() {
 	$('.intl-validate').intlTelInput({
 		initialCountry: 'pt',
 		preferredCountries: ['pt','es','fr','ch','br','gb','de','lu','be','it','us'],
-		utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/js/utils.js'
+		utilsScript: 'https://cdn.shopk.it/js/intl-tel-input-17.0.8/build/js/utils.js'
 	});
 
 	$(document).on('keyup blur focus', '.intl-validate', function(event) {
@@ -141,10 +147,40 @@ $(document).ready(function() {
 			phone_input.intlTelInput('setCountry', getKeyByValue(countries_alpha_2, country));
 		}
 	});
+
+	$('.product-description table, .product-tabs-content table, .product-tabs table').addClass('table').addClass('table-bordered').addClass('table-product-content');
+	$('.product-description table, .product-tabs-content table, .product-tabs table').wrap('<div class="table-responsive"></div>');
+
+	$('.page-product .tabbable').find('.nav-tabs li:first a').trigger('click');
+
+	$(window).resize(function() {
+
+		if ($('.table-responsive').length) {
+			$('.table-responsive').each(function() {
+				var _this = $(this);
+				if (_this.hasScrollBar()) {
+					_this.addClass('has-mask');
+				} else {
+					_this.removeClass('has-mask');
+				}
+			});
+		}
+
+	}).resize();
+
+	$('.table-responsive.has-mask').scroll(function() {
+		var _this = $(this);
+		var scroll_position = _this.scrollLeft();
+		if (scroll_position > 0) {
+			_this.addClass('mask-hidden');
+		} else {
+			_this.removeClass('mask-hidden');
+		}
+	});
 });
 
 $(window).load(function() {
-	$('.fb-page, .fb-comments').each(function() {
+	$('.fb-page').each(function() {
 		$(this).attr('data-width', $(this).parent().width());
 	});
 
@@ -171,9 +207,9 @@ $(window).load(function() {
 
 function masonry() {
 	if (Modernizr.mq('only screen and (max-width: 767px)')) {
-		$('.products, .categories').masonry('destroy').removeAttr('style');
+		$('.products, .categories, brands').masonry('destroy').removeAttr('style');
 	} else {
-		$('.products, .categories').masonry({ isAnimated: true });
+		$('.products, .categories, brands').masonry({ isAnimated: true });
 	}
 }
 
@@ -208,6 +244,22 @@ function product_options(product, onload) {
 			var option = $('option:selected', this);
 			window['id_variant_' + (i + 1)] = option.attr('value');
 		});
+
+		if ($('.select-product-options').length == 1 && onload == true) {
+			$.each(product.options, function(key, option){
+				var $option = $('.select-product-options option[value="'+ option.id_variant_1 +'"]'),
+					$option_text = $option.text();
+				if (option.price_on_request) {
+					$option_text += ' - Preço sob consulta';
+				} else {
+					if (option.price !== null) {
+						var option_display_price = option.promo ? option.price_promo_formatted : option.price_formatted;
+						$option_text += ' - ' + option_display_price;
+					}
+				}
+				$option.text($option_text);
+			});
+		}
 
 		var data_product_options = { id_variant_1: window.id_variant_1, id_variant_2: window.id_variant_2, id_variant_3: window.id_variant_3 };
 		var product_handle = product.handle;
@@ -395,3 +447,9 @@ function product_default_option(product) {
 		2: product.options[option].id_variant_3
 	};
 }
+
+(function($) {
+	$.fn.hasScrollBar = function() {
+		return this.get(0).scrollWidth > this.get(0).clientWidth;
+	};
+})(jQuery);

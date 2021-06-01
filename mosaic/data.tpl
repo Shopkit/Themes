@@ -104,7 +104,7 @@ Description: Order data form page
 
 								{% if apps.newsletter %}
 									<br>
-									<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1"> {{ apps.newsletter.label }}</label>
+									<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}> {{ apps.newsletter.label }}</label>
 								{% endif %}
 							</div>
 						</div>

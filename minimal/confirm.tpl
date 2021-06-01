@@ -47,7 +47,7 @@ Description: Confirm order page
 									{% for item in cart.items %}
 										<tr>
 											<td class="cart-img">
-												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="border-radius"></a>
+												<a href="{{ item.product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="border-radius lazy"></a>
 											</td>
 											<td>
 												<h4><a href="{{ item.product_url }}">{{ item.title }}</a></h4>

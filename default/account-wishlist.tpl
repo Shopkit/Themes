@@ -29,7 +29,7 @@ Description: Wishlist account page
                         {% for product in user.wishlist %}
                             <tr>
                                 <td width="50">
-                                    <a href="{{ product.url }}"><img src="{{ product.image }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="60"></a>
+                                    <a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="60" class="lazy"></a>
                                 </td>
                                 <td>
                                     <a href="{{ product.url }}"><strong>{{ product.title }}</strong></a><br>

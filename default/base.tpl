@@ -6,6 +6,42 @@ Description: This is the base layout. It is included in every page with this cod
 Github: https://github.com/Shopkit/Default
 #}
 
+{# Vars #}
+{% set products_per_page_home = store.products_per_page_home ?: 9 %}
+{% set products_per_page_catalog = store.products_per_page_catalog ?: 18 %}
+{% set categories_per_page = store.categories_per_page ?: 18 %}
+{% set brands_per_page = store.brands_per_page ?: 36 %}
+
+{% macro product_list(product) %}
+	{% import _self as generic_macros %}
+
+	{% set product_title = product.title|e_attr %}
+	{% set product_url = product.url %}
+
+	<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
+
+		<a href="{{ product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy"></a>
+		<div class="box">
+			<h3><a href="{{ product_url }}">{{ product.title }}</a></h3>
+
+			<p>{{ product.description_short }}</p>
+
+			<span class="price">
+				{% if product.price_on_request == true %}
+					Preço sob consulta
+				{% else %}
+					{% if product.promo == true %}
+						<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
+					{% else %}
+						{{ product.price | money_with_sign }}
+					{% endif %}
+				{% endif %}
+			</span>
+		</div>
+	</div>
+
+{% endmacro %}
+
 {% macro category_list(category, show_number_products = true) %}
 	{% import _self as generic_macros %}
 
@@ -13,7 +49,7 @@ Github: https://github.com/Shopkit/Default
 	{% set category_url = category.url %}
 
 	<div class="span3 category category-id-{{ category.id }}">
-		<a href="{{ category_url }}"><img src="{{ category.image.full }}" alt="{{ category_title }}" title="{{ category_title }}"></a>
+		<a href="{{ category_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.full }}" alt="{{ category_title }}" title="{{ category_title }}" class="lazy"></a>
 		<div class="box">
 			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
 			{% if not category.parent == 0 and category.children and show_number_products %}
@@ -68,7 +104,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	<link rel="alternate" href="{{ site_url('rss') }}" type="application/rss+xml" title="{{ store.name|e_attr }}">
-	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}">
 	<link rel="stylesheet" href="{{ store.assets.css }}">
 
 	{% if store.custom_css %}
@@ -219,6 +255,16 @@ Github: https://github.com/Shopkit/Default
 								</h4>
 							</li>
 
+							{% set brands = brands("limit:6") %}
+
+							{% if brands %}
+								<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
+									<h4>
+										<a href="{{ site_url('brands') }}">Todas as marcas</a>
+									</h4>
+								</li>
+							{% endif %}
+
 							{% for products_category in categories %}
 								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">
 
@@ -314,7 +360,7 @@ Github: https://github.com/Shopkit/Default
 					{% endif %}
 
 					{% if store.is_ssl %}
-						<div style="text-align: center;"><img src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="margin-top: 15px; height: 35px;"></div>
+						<div style="text-align: center;"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="margin-top: 15px; height: 35px;" class="lazy"></div>
 					{% endif %}
 
 				</aside>
@@ -334,7 +380,7 @@ Github: https://github.com/Shopkit/Default
 							{% for featured_block in store.featured_blocks %}
 								<div class="{{ loop.first ? 'offset' ~ (12 - 4 * store.featured_blocks|length) / 2 }} span4 col-featured-block">
 									<div class="featured-block">
-										<img src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40">
+										<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40" class="lazy">
 										<h4 class="bold">{{ featured_block.title }}</h4>
 										<p>{{ featured_block.description }}</p>
 									</div>
@@ -365,13 +411,13 @@ Github: https://github.com/Shopkit/Default
 			<div class="payment-logos">
 				{% for payment in store.payments %}
 					{% if payment.active and payment.image %}
-						<img src="{{ payment.image }}" alt="{{ payment.title }}" title="{{ payment.title }}">
+						<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ payment.image }}" alt="{{ payment.title }}" title="{{ payment.title }}" class="lazy">
 					{% endif %}
 				{% endfor %}
 			</div>
 
 			{% if store.show_branding %}
-				<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000; font-size: 9px">Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;"></a></p>
+				<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000; font-size: 9px">Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" class="lazy"></a></p>
 			{% endif %}
 
 		</footer>
@@ -459,40 +505,6 @@ Github: https://github.com/Shopkit/Default
 				{% if events.cart.added %}
 					<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> Ver Carrinho</a>
 				{% endif %}
-			</div>
-		</div>
-	{% endif %}
-
-	{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_status_confirmation or events.newsletter_removal %}
-		<div class="modal hide fade modal-alert">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Newsletter</h3>
-			</div>
-			<div class="modal-body">
-				{% if events.newsletter_error %}
-					<h5>Não foi possível efectuar o registo na newsletter:</h5>
-					<p>{{ events.newsletter_error }}</p>
-				{% endif %}
-
-				{% if events.newsletter_status_success %}
-					<h5 class="text-normal">O seu e-mail foi inscrito com sucesso.</h5>
-				{% endif %}
-
-				{% if events.newsletter_status_error %}
-					<h5 class="text-normal">O seu e-mail já se encontra inscrito na nossa newsletter.</h5>
-				{% endif %}
-
-				{% if events.newsletter_status_confirmation %}
-					<h5 class="text-normal">Foi enviado um e-mail para confirmar o seu registo.</h5>
-				{% endif %}
-
-				{% if events.newsletter_removal %}
-					<h5 class="text-normal">{{ events.newsletter_removal }}</h5>
-				{% endif %}
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
 			</div>
 		</div>
 	{% endif %}

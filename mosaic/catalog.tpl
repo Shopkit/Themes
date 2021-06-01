@@ -2,59 +2,70 @@
 Description: Product catalog page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
 
-	{% set category_default_order = store.category_default_order|default('position') %}
+	{#  Setup order #}
+	{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
 
-	{% set products = products("order:#{category_default_order} limit:12") %}
+	{% if not get.order_by in order_options|keys %}
+		{% set get = {'order_by': store.category_default_order|default('position')} %}
+	{% endif %}
 
-	<h1 class="wide">Todos os produtos</h1>
+	{% set products = products("order:#{get.order_by} limit:#{products_per_page_catalog}") %}
+
+	<div class="wide">
+
+		<h1 class="wide">Todos os produtos</h1>
+
+		{% if products %}
+
+			<div class="order-options-container">
+
+				<div class="order-options">
+					Ordenar por &nbsp;
+
+					<div class="btn-group">
+
+						<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+							{% if get.order_by and order_options[get.order_by] %}
+								{{ order_options[get.order_by] }}
+							{% else %}
+								{{ order_options['position'] }}
+							{% endif %}
+							<span class="caret"></span>
+						</button>
+
+						<ul class="dropdown-menu pull-right" role="menu">
+							{% for order_option, order_title in order_options %}
+								{% if order_option != get.order_by %}
+									<li><a href="{{ site_url("catalog?order_by=#{order_option}") }}">{{ order_title }}</a></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+		{% endif %}
+
+	</div>
 
 	{% if products %}
 
 		<ul class="unstyled products">
 
 			{% for product in products %}
-				<li class="product-id-{{ product.id }}" data-id="{{ product.id }}">
-					<img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}">
-
-					<div class="description">
-						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-
-						<span class="price">
-
-						{% if product.price_on_request == true %}
-							Preço sob consulta
-						{% else %}
-							{% if product.promo == true %}
-								{{ product.price_promo | money_with_sign }} &nbsp; <del>{{ product.price | money_with_sign }}</del>
-							{% else %}
-								{{ product.price | money_with_sign }}
-							{% endif %}
-						{% endif %}
-
-						</span>
-
-						{% if product.status == 1 and product.price_on_request == false and not product.option_groups %}
-							<a href="{{ product.url }}" class="button white"><i class="fa fa-shopping-cart"></i><span>Comprar</span></a>
-						{% elseif product.option_groups %}
-							<a href="{{ product.url }}" class="button white"><i class="fa fa-plus-square"></i><span>Opções</span></a>
-						{% else %}
-							<a href="{{ product.url }}" class="button white"><i class="fa fa-plus-square"></i><span>Info</span></a>
-						{% endif %}
-
-						<p class="category">{{ product.categories[0].title }}</p>
-
-					</div>
-
-				</li>
+				{{ generic_macros.product_list(product) }}
 			{% endfor %}
 
 		</ul>
 
-		{{ pagination("products limit:12") }}
+		{{ pagination("products limit:#{products_per_page_catalog}") }}
 
 	{% else %}
 		<p class="wide">Não existem produtos.</p>

@@ -4,6 +4,52 @@ Author: Shopkit
 Version: 4.0
 #}
 
+{# Vars #}
+{% set products_per_page_home = store.products_per_page_home ?: 9 %}
+{% set products_per_page_catalog = store.products_per_page_catalog ?: 18 %}
+{% set categories_per_page = store.categories_per_page ?: 18 %}
+{% set brands_per_page = store.brands_per_page ?: 36 %}
+
+{% macro product_list(product) %}
+    {% import _self as generic_macros %}
+
+    {% set product_title = product.title|e_attr %}
+    {% set product_url = product.url %}
+
+	<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
+
+		{% if product.status_alias == 'out_of_stock' %}
+			<span class="badge out_of_stock">Sem stock</span>
+		{% elseif product.promo == true %}
+			<span class="badge promo">Promoção</span>
+		{% endif %}
+
+		<a href="{{ product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" class="img-responsive lazy" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400"></a>
+
+		<div class="product-info">
+			<a class="product-details" href="{{ product_url }}">
+				<div>
+					<h2>{{ product_title }}</h2>
+
+					<span class="price">
+						{% if product.price_on_request == true %}
+							Preço sob consulta
+						{% else %}
+							{% if product.promo == true %}
+								 {{ product.price_promo | money_with_sign }} <del>{{ product.price | money_with_sign }}</del>
+							{% else %}
+								{{ product.price | money_with_sign }}
+							{% endif %}
+						{% endif %}
+					</span>
+				</div>
+			</a>
+		</div>
+
+	</article>
+
+{% endmacro %}
+
 {% macro category_list(category, show_number_products = true) %}
 	{% import _self as generic_macros %}
 
@@ -12,7 +58,7 @@ Version: 4.0
 
 	<article class="category category-id-{{ category.id }}">
 
-		<a href="{{ category_url }}"><img src="{{ category.image.square }}" class="img-responsive" alt="{{ category_title }}" title="{{ category_title }}" width="400" height="400"></a>
+		<a href="{{ category_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.square }}" class="img-responsive lazy" alt="{{ category_title }}" title="{{ category_title }}" width="400" height="400"></a>
 
 		<div class="category-info">
 			<a class="category-details" href="{{ category_url }}">
@@ -80,7 +126,7 @@ Version: 4.0
 		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name|e_attr }}">
 
 		<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic" rel="stylesheet">
-		<link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}" rel="stylesheet">
 		<link href="{{ store.assets.css }}" rel="stylesheet">
 
 		{% if store.custom_css %}
@@ -183,6 +229,14 @@ Version: 4.0
 							<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
 								<a href="{{ site_url('categories') }}">Todas as categorias</a>
 							</li>
+							{% set brands = brands("limit:6") %}
+
+							{% if brands %}
+								<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
+									<a href="{{ site_url('brands') }}">Todas as marcas</a>
+								</li>
+							{% endif %}
+
 							{% for products_category in categories %}
 								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ products_category.children ? 'dropdown' }} {{ 'menu-' ~ products_category.handle }}">
 
@@ -255,18 +309,18 @@ Version: 4.0
 				<div class="payment-logos">
 					{% for payment in store.payments %}
 						{% if payment.active and payment.image %}
-							<img src="{{ payment.image }}" alt="{{ payment.title }}" title="{{ payment.title }}">
+							<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ payment.image }}" alt="{{ payment.title }}" title="{{ payment.title }}" class="lazy">
 						{% endif %}
 					{% endfor %}
 				</div>
 
 				{% if store.is_ssl %}
-					<div class="text-center" style="margin-top:30px;"><img src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="height: 35px;"></div>
+					<div class="text-center" style="margin-top:30px;"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="height: 35px;" class="lazy"></div>
 				{% endif %}
 
 				{% if store.show_branding %}
 					<div class="powered-by">
-						Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105"></a>
+						Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105" class="lazy"></a>
 					</div>
 				{% endif %}
 
@@ -384,56 +438,6 @@ Version: 4.0
 			<script>
 				$(document).ready(function(){
 					$('#cart-modal').modal('show');
-				});
-			</script>
-		{% endif %}
-
-		{% if events.newsletter_error or events.newsletter_status_success or events.newsletter_status_error or events.newsletter_status_confirmation or events.newsletter_removal %}
-			<div class="modal fade" id="newsletter-modal" tabindex="-1" role="dialog" aria-labelledby="newsletter-modalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-
-						<div class="modal-body">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-							<div class="text-center">
-								<i class="fa fa-envelope-o fa-4x text-light-gray"></i>
-
-								{% if events.newsletter_error %}
-									<h3 class="text-muted">Não foi possível efectuar o registo na newsletter:</h3>
-									<p>{{ events.newsletter_error }}</p>
-								{% endif %}
-
-								{% if events.newsletter_status_success %}
-									<h3 class="text-muted">O seu e-mail foi inscrito com sucesso.</h3>
-								{% endif %}
-
-								{% if events.newsletter_status_error %}
-									<h3 class="text-muted">O seu e-mail já se encontra inscrito na nossa newsletter.</h3>
-								{% endif %}
-
-								{% if events.newsletter_status_confirmation %}
-									<h3 class="text-muted">Foi enviado um e-mail para confirmar o seu registo.</h3>
-								{% endif %}
-
-								{% if events.newsletter_removal %}
-									<h3 class="text-muted">Newsletter</h3>
-									<p>{{ events.newsletter_removal }}</p>
-								{% endif %}
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-			<script>
-				$(document).ready(function(){
-					$('#newsletter-modal').modal('show');
 				});
 			</script>
 		{% endif %}

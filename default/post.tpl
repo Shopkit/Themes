@@ -14,7 +14,7 @@ Description: Blog post Page
 
 	<h1>{{ blog_post.title }}</h1>
 
-	<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e M. \\d\\e Y") }}</strong></em></small></p>
+	<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
 
 	<div class="row">
 
@@ -23,7 +23,7 @@ Description: Blog post Page
 		</div>
 
 		{% if blog_post.image %}
-			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium fancy"><img src="{{ blog_post.image.thumb }}" alt="{{ blog_post.title|e_attr }}"></a></p>
+			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium fancy"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.thumb }}" alt="{{ blog_post.title|e_attr }}" class="lazy"></a></p>
 		{% endif %}
 
 	</div>

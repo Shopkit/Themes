@@ -5,11 +5,13 @@ $(document).ready(function() {
 	// 	$('header').css({'height' : window_height});
 	// }).resize();
 
-	var $container = $('.products, .categories-list');
+	var $container = $('.products, .categories-list, .brands-list');
 	var window_height = $(window).height();
 	var window_width = $(window).width();
 
 	set_layout();
+
+	var lazyLoadInstance = new LazyLoad();
 
 	$('.btn-slide, .slide-bar a.close').on('click', function() {
 
@@ -195,7 +197,7 @@ $(document).ready(function() {
 	$('.intl-validate').intlTelInput({
 		initialCountry: 'pt',
 		preferredCountries: ['pt','es','fr','ch','br','gb','de','lu','be','it','us'],
-		utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/js/utils.js'
+		utilsScript: 'https://cdn.shopk.it/js/intl-tel-input-17.0.8/build/js/utils.js'
 	});
 
 	$(document).on('keyup blur focus', '.intl-validate', function(event) {
@@ -216,6 +218,44 @@ $(document).ready(function() {
 
 		if (!phone_input.val()) {
 			phone_input.intlTelInput('setCountry', getKeyByValue(countries_alpha_2, country));
+		}
+	});
+
+	$('.product-description table, .product-tabs-content table, .product-tabs table').addClass('table').addClass('table-bordered').addClass('table-product-content');
+	$('.product-description table, .product-tabs-content table, .product-tabs table').wrap('<div class="table-responsive"></div>');
+
+	$('.panel-collapse.in').siblings('.panel-heading').addClass('active');
+
+	$('.panel-collapse').on('show.bs.collapse', function () {
+		$(this).siblings('.panel-heading').addClass('active');
+	});
+
+	$('.panel-collapse').on('hide.bs.collapse', function () {
+		$(this).siblings('.panel-heading').removeClass('active');
+	});
+
+	$(window).resize(function() {
+
+		if ($('.table-responsive').length) {
+			$('.table-responsive').each(function() {
+				var _this = $(this);
+				if (_this.hasScrollBar()) {
+					_this.addClass('has-mask');
+				} else {
+					_this.removeClass('has-mask');
+				}
+			});
+		}
+
+	}).resize();
+
+	$('.table-responsive.has-mask').scroll(function() {
+		var _this = $(this);
+		var scroll_position = _this.scrollLeft();
+		if (scroll_position > 0) {
+			_this.addClass('mask-hidden');
+		} else {
+			_this.removeClass('mask-hidden');
 		}
 	});
 });
@@ -424,3 +464,9 @@ function check_shipping(el) {
 		enable_shipping();
 	}
 }
+
+(function($) {
+	$.fn.hasScrollBar = function() {
+		return this.get(0).scrollWidth > this.get(0).clientWidth;
+	};
+})(jQuery);

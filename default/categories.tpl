@@ -8,8 +8,6 @@ Description: Categories list page
 
 {% block content %}
 
-	{% set categories_per_page = 18 %}
-
 	{% set categories = categories("limit:#{categories_per_page}") %}
 
 	<ul class="breadcrumb">

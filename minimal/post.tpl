@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Blog post Page
 #}
 
@@ -6,7 +6,7 @@ Description: Blog post Page
 
 {% block content %}
 
-	<div class="container">	
+	<div class="container">
 
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -14,13 +14,13 @@ Description: Blog post Page
 				<a href="{{ site_url('blog') }}" class="text-light-gray"><i class="fa fa-angle-left"></i> &nbsp; Blog</a>
 
 				<h1 class="margin-top-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
-				<p class="small">Escrito em {{ blog_post.date|date("d \\d\\e M. \\d\\e Y") }}</p>
+				<p class="small">Escrito em {{ blog_post.date|date("d \\d\\e F \\d\\e Y") }}</p>
 
 				<article class="margin-top">
 
 					{% if blog_post.image %}
 						<div class="image-post margin-bottom">
-							<img src="{{ blog_post.image.full }}" alt="{{ blog_post.title|e_attr }}" title="{{ blog_post.title|e_attr }}" class="img-responsive border-radius">
+							<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.full }}" alt="{{ blog_post.title|e_attr }}" title="{{ blog_post.title|e_attr }}" class="img-responsive border-radius lazy">
 						</div>
 					{% endif %}
 

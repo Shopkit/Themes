@@ -23,12 +23,12 @@ Description: Blog post Page
 			<br>
 
 			<h1>{{ blog_post.title }}</h1>
-			<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e M. \\d\\e Y") }}</strong></em></small></p>
+			<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
 
 			<hr>
 
 			{% if blog_post.image %}
-				<img class="img-stretched" src="{{ blog_post.image.full }}" alt="{{ blog_post.title|e_attr }}">
+				<img class="img-stretched lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.full }}" alt="{{ blog_post.title|e_attr }}">
 				<br><br>
 			{% endif %}
 

@@ -8,8 +8,6 @@ Description: Categories list page
 
 {% block content %}
 
-	{% set categories_per_page = 12 %}
-
 	{% set categories = categories("limit:#{categories_per_page}") %}
 
 	<h1 class="wide">Todas as categorias</h1>

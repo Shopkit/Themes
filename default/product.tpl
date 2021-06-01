@@ -17,26 +17,15 @@ Description: Product Page
 
 			<div class="span4">
 
-				<a href="{{ product.image.full }}" class="box-medium fancy" rel="{{ product.id }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="product-image"></a>
+				<a href="{{ product.image.full }}" class="box-medium fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="product-image lazy"></a>
 
 				{% if product.images %}
 
 					<div class="row thumbs hidden-phone">
-						<div class="span1"><a href="{{ product.image.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ product.image.square }}" alt="{{ product.title|e_attr }}"></a></div>
+						<div class="span1"><a href="{{ product.image.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" class="lazy"></a></div>
 						{% for thumb in product.images %}
-							<div class="span1"><a href="{{ thumb.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ thumb.square }}" alt="{{ product.title|e_attr }}"></a></div>
+							<div class="span1"><a href="{{ thumb.full }}" class="fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ thumb.square }}" alt="{{ product.title|e_attr }}" class="lazy"></a></div>
 						{% endfor %}
-					</div>
-
-				{% endif %}
-
-				{% if product.video_embed_url %}
-
-					<hr>
-					<div class="row hidden-phone">
-						<div class="span4 video-wrapper">
-							<div class="video-iframe" data-src="{{ product.video_embed_url }}">Video</div>
-						</div>
 					</div>
 
 				{% endif %}
@@ -96,15 +85,6 @@ Description: Product Page
 
 										<option value="{{ option.id }}" data-title="{{ option.title }}">
 											{{ option.title }}
-
-											{% if option.price_on_request == true %}
-												- Preço sob consulta
-											{% else %}
-												{% if option.price is not null %}
-													{% set option_display_price = option.promo ? option.price_promo : option.price %}
-													- {{ option_display_price | money_with_sign }}
-												{% endif %}
-											{% endif %}
 										</option>
 
 									{% endfor %}
@@ -165,35 +145,122 @@ Description: Product Page
 
 				{{ form_close() }}
 
-				<div class="description">{{ product.description }}</div>
+			</div>
 
-				{% if product.file %}
-					<div class="well well-small">
-						<h6 style="margin-top:0">Ficheiro Anexo</h6>
-						<a class="btn file-download" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong></a>
+			<div class="span9">
+				<div class="tabbable margin-top"> <!-- Only required for left/right tabs -->
+					<ul class="nav nav-tabs">
+						{% if product.description %}
+							<li class="active">
+								<a href="#tab-description" data-toggle="tab">Descrição</a>
+							</li>
+						{% endif %}
+						{% if product.tabs %}
+							{% for tab in product.tabs %}
+								<li>
+									<a href="#tab-{{ tab.slug }}" data-toggle="tab">{{ tab.title }}</a>
+								</li>
+							{% endfor %}
+						{% endif %}
+						{% if product.video_embed_url %}
+							<li>
+								<a href="#tab-video" data-toggle="tab">Vídeo</a>
+							</li>
+						{% endif %}
+						{% if apps.facebook_comments.comments_products %}
+							<li>
+								<a href="#tab-comments" data-toggle="tab">Comentários</a>
+							</li>
+						{% endif %}
+					</ul>
+
+					<div class="tab-content">
+						{% if product.description %}
+							<div class="tab-pane active" id="tab-description">
+								{{ product.description }}
+
+
+							</div>
+						{% endif %}
+						{% if product.tabs %}
+							{% for tab in product.tabs %}
+								<div class="tab-pane" id="tab-{{ tab.slug }}">
+									{{ tab.content }}
+								</div>
+							{% endfor %}
+						{% endif %}
+						{% if product.video_embed_url %}
+							<div class="tab-pane" id="tab-video">
+								<div class="row">
+									<div class="span12 video-wrapper">
+										<div class="video-iframe" data-src="{{ product.video_embed_url }}">Video</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+						{% if apps.facebook_comments.comments_products %}
+							<div class="tab-pane" id="tab-comments">
+								<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
+							</div>
+						{% endif %}
+
+						<div class="well well-small margin-top">
+							{% if product.file %}
+								<div class="file inline-block">
+									<h6 style="margin-top:0">Ficheiro Anexo</h6>
+									<a class="btn file-download" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>Download</strong></a>
+								</div>
+							{% endif %}
+
+							<div class="share {{ product.file ? 'pull-right' }}">
+								<h6 style="margin-top:0">Partilhar</h6>
+								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-lg fa-facebook fa-fw"></i></a> &nbsp;
+								<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-lg fa-whatsapp fa-fw"></i></a> &nbsp;
+								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
+								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-lg fa-pinterest fa-fw"></i></a>
+							</div>
+						</div>
 					</div>
-				{% endif %}
+				</div>
 
 				<hr>
 
-				<div class="share">
-					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-lg fa-facebook fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-lg fa-whatsapp fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-lg fa-pinterest fa-fw"></i></a>
-				</div>
+				{% if product.custom_fields or product.brand or product.tags %}
+					<div class="table-product-attributes margin-top">
+						<div class="table-responsive">
+							<table class="table">
+								{% if product.brand %}
+									<tr class="product-brand">
+										<th>Marca</th>
+										<td><a href="{{ product.brand.url }}" class="text-underline">{{ product.brand.title }}</a></td>
+									</tr>
+								{% endif %}
 
+								{% if product.tags %}
+									<tr class="product-tags">
+										<th>Tags</th>
+										<td>
+											<ul class="inline unstyled">
+												{% for tag in product.tags %}<li><a href="{{ tag.url }}" class="product-tag label label-outline">{{ tag.title }}</a></li>{% endfor %}
+											</u>
+										</td>
+									</tr>
+								{% endif %}
+
+								{% for custom_field in product.custom_fields %}
+									<tr class="product-custom-fields" id="custom_field_{{ custom_field.alias }}">
+										<th>{{ custom_field.title }}</th>
+										<td>{{ custom_field.value }}</td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+				{% endif %}
 			</div>
 
 		</div>
 
 	</article>
-
-	{% if apps.facebook_comments.comments_products %}
-		<div class="hidden-phone">
-			<hr>
-			<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
-		</div>
-	{% endif %}
 
 {% endblock %}

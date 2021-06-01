@@ -17,7 +17,7 @@ Description: Blog page
 	{% for post in blog_posts("limit:9") %}
 
 		<h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-		<p><small class="muted"><em>Escrito em <strong>{{ post.date|date("d \\d\\e M. \\d\\e Y") }}</strong></em></small></p>
+		<p><small class="muted"><em>Escrito em <strong>{{ post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
 
 		<div class="row">
 
@@ -26,7 +26,7 @@ Description: Blog page
 			</div>
 
 			{% if post.image %}
-				<p class="span2"><a href="{{ post.url }}" class="box-medium"><img src="{{ post.image.thumb }}"></a></p>
+				<p class="span2"><a href="{{ post.url }}" class="box-medium"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" class="lazy"></a></p>
 			{% endif %}
 
 		</div>

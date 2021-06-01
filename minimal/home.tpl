@@ -2,6 +2,8 @@
 Description: Home Page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
@@ -48,39 +50,9 @@ Description: Home Page
 		<div class="products">
 			<div class="row">
 
-				{% for product in products('order:featured limit:9') %}
+				{% for product in products("order:featured limit:#{products_per_page_home}") %}
 					<div class="col-sm-4">
-						<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
-
-							{% if product.status_alias == 'out_of_stock' %}
-								<span class="badge out_of_stock">Sem stock</span>
-							{% elseif product.promo == true %}
-								<span class="badge promo">Promoção</span>
-							{% endif %}
-
-							<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
-
-							<div class="product-info">
-								<a class="product-details" href="{{ product.url }}">
-									<div>
-										<h2>{{ product.title }}</h2>
-
-										<span class="price">
-											{% if product.price_on_request == true %}
-												Preço sob consulta
-											{% else %}
-												{% if product.promo == true %}
-													 {{ product.price_promo | money_with_sign }} <del>{{ product.price | money_with_sign }}</del>
-												{% else %}
-													{{ product.price | money_with_sign }}
-												{% endif %}
-											{% endif %}
-										</span>
-									</div>
-								</a>
-							</div>
-
-						</article>
+						{{ generic_macros.product_list(product) }}
 					</div>
 				{% else %}
 					<div class="col-xs-12 padding-bottom-lg text-center">
@@ -97,7 +69,7 @@ Description: Home Page
 					{% for featured_block in store.featured_blocks %}
 						<div class="{{ loop.first ? 'col-sm-offset-' ~ (12 - 4 * store.featured_blocks|length) / 2 }} col-sm-4 col-featured-block">
 							<div class="featured-block">
-								<img src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40">
+								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40" class="lazy">
 								<h4 class="bold">{{ featured_block.title }}</h4>
 								<p>{{ featured_block.description }}</p>
 							</div>

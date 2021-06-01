@@ -23,6 +23,15 @@ Description: Product category page
 		{% set main_parent = category(parent_category.parent) %}
 	{% endif %}
 
+	{#  Setup order #}
+	{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
+
+	{% if not get.order_by in order_options|keys %}
+		{% set get = {'order_by': store.category_default_order|default('position')} %}
+	{% endif %}
+
+	{% set products = products("order:#{get.order_by} category:#{category.id} limit:#{products_per_page_catalog}") %}
+
 	<ul class="breadcrumb">
 		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
 		{% if main_parent and main_parent.id != category.id %}
@@ -39,42 +48,41 @@ Description: Product category page
 	</ul>
 
 	<h1>{{ category.title }}</h1>
+
+	{% if products %}
+		<div class="order-options">
+			<small>Ordenar por</small> &nbsp;
+
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					{% if get.order_by and order_options[get.order_by] %}
+						{{ order_options[get.order_by] }}
+					{% else %}
+						{{ order_options['position'] }}
+					{% endif %}
+					<span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu pull-right" role="menu">
+					{% for order_option, order_title in order_options %}
+						{% if order_option != get.order_by %}
+							<li><a href="{{ category.url }}?order_by={{ order_option }}">{{ order_title }}</a></li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	{% endif %}
+
 	<p>{{ category.description }}</p>
 	<hr>
-
-	{% set category_default_order = store.category_default_order|default('position') %}
-
-	{% set products = products("order:#{category_default_order} category:#{category.id} limit:9") %}
 
 	{% if products %}
 
 		<div class="row products">
 
 			{% for product in products %}
-
-				<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
-					<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}"></a>
-					<div class="box">
-						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-
-						<p>{{ product.description_short }}</p>
-
-						<span class="price">
-
-							{% if product.price_on_request == true %}
-								Preço sob consulta
-							{% else %}
-								{% if product.promo == true %}
-									<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
-								{% else %}
-									{{ product.price | money_with_sign }}
-								{% endif %}
-							{% endif %}
-
-						</span>
-					</div>
-				</div>
-
+				{{ generic_macros.product_list(product) }}
 			{% else %}
 
 				<div class="span9 product">
@@ -85,7 +93,7 @@ Description: Product category page
 
 			<div class="span9 product">
 				<hr>
-				{{ pagination("category:#{category.id} limit:9") }}
+				{{ pagination("category:#{category.id} limit:#{products_per_page_catalog}") }}
 			</div>
 
 		</div>

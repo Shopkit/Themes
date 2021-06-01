@@ -13,6 +13,7 @@ Description: Product Page
 {% endmacro %}
 
 {% import _self as product_macros %}
+{% import 'base.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -40,13 +41,13 @@ Description: Product Page
 							<ul class="slides">
 
 								<li class="slide">
-									<a href="{{ product.image.full }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600"></a>
+									<a href="{{ product.image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
 								</li>
 
 								{% if product.images %}
 									{% for image in product.images %}
 										<li class="slide">
-											<a href="{{ image.full }}"><img src="{{ image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600"></a>
+											<a href="{{ image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
 										</li>
 									{% endfor %}
 								{% endif %}
@@ -144,15 +145,6 @@ Description: Product Page
 													{% for option in option_groups.options %}
 														<option value="{{ option.id }}" data-title="{{ option.title }}">
 															{{ option.title }}
-
-															{% if option.price_on_request == true %}
-																- Preço sob consulta
-															{% else %}
-																{% if option.price is not null %}
-																	{% set option_display_price = option.promo ? option.price_promo : option.price %}
-																	- {{ option_display_price | money_with_sign }}
-																{% endif %}
-															{% endif %}
 														</option>
 													{% endfor %}
 												</select>
@@ -168,17 +160,6 @@ Description: Product Page
 									<div class="col-sm-7 col-md-12 col-lg-7">
 										<input type="number" class="form-control" value="1" name="qtd" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 										<button type="submit" class="btn btn-gray text-uppercase"><i class="fa fa-cart-plus fa-fw"></i> Adicionar</button>
-
-										{% if product.stock.stock_show or product.reference %}
-											<p class="text-light-gray small margin-top-xs margin-bottom-0">
-												{% if product.stock.stock_show %}
-													<strong class="data-product-stock_qty">{{ product.stock.stock_qty }}</strong> unidades em stock {{ product.reference ? ' | ' }}
-												{% endif %}
-												{% if product.reference %}
-													SKU: <span class="sku">{{ product.reference }}</span>
-												{% endif %}
-											</p>
-										{% endif %}
 									</div>
 									<div class="col-sm-5 col-md-12 col-lg-5">
 										{{ product_macros.wishlist_block(product, user) }}
@@ -197,6 +178,17 @@ Description: Product Page
 								</div>
 							</div>
 
+							{% if product.stock.stock_show or product.reference %}
+								<p class="text-light-gray small margin-top-xs margin-bottom-0">
+									{% if product.stock.stock_show %}
+										<strong class="data-product-stock_qty">{{ product.stock.stock_qty }}</strong> unidades em stock {{ product.reference ? ' | ' }}
+									{% endif %}
+									{% if product.reference %}
+										SKU: <span class="sku">{{ product.reference }}</span>
+									{% endif %}
+								</p>
+							{% endif %}
+
 						{{ form_close() }}
 
 					{% elseif product.status == 3 %}
@@ -213,9 +205,68 @@ Description: Product Page
 
 					{% endif %}
 
-					<div class="description">
-						{{ product.description }}
-					</div>
+					{% if product.tabs %}
+						<div class="panel-group product-tabs margin-top" id="product-tabs" role="tablist" aria-multiselectable="true">
+							{% if product.description %}
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="tab_description">
+										<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#product-tabs" href="#panel_description" aria-expanded="true" aria-controls="panel_description">Descrição</a></h4>
+									</div>
+									<div id="panel_description" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab_description">
+										<div class="panel-body">{{ product.description }}</div>
+									</div>
+								</div>
+							{% endif %}
+
+							{% for tab in product.tabs %}
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="tab_{{ tab.slug }}">
+										<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#product-tabs" href="#panel_{{ tab.slug }}" aria-expanded="true" aria-controls="panel_{{ tab.slug }}">{{ tab.title }}</a></h4>
+									</div>
+									<div id="panel_{{ tab.slug }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab_{{ tab.slug }}">
+										<div class="panel-body">{{ tab.content }}</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% else %}
+						<div class="description">
+							{{ product.description }}
+						</div>
+					{% endif %}
+
+					{% if product.custom_fields or product.brand or product.tags %}
+						<div class="table-product-attributes margin-bottom margin-top">
+							<div class="table-responsive">
+								<table class="table">
+									{% if product.brand %}
+										<tr class="product-brand">
+											<th>Marca</th>
+											<td><a href="{{ product.brand.url }}" class="text-underline">{{ product.brand.title }}</a></td>
+										</tr>
+									{% endif %}
+
+									{% if product.tags %}
+										<tr class="product-tags">
+											<th>Tags</th>
+											<td>
+												<ul class="list-inline list-unstyled">
+													{% for tag in product.tags %}<li><a href="{{ tag.url }}" class="product-tag label label-outline">{{ tag.title }}</a></li>{% endfor %}
+												</ul>
+											</td>
+										</tr>
+									{% endif %}
+
+									{% for custom_field in product.custom_fields %}
+										<tr class="product-custom-fields" id="custom_field_{{ custom_field.alias }}">
+											<th>{{ custom_field.title }}</th>
+											<td>{{ custom_field.value }}</td>
+										</tr>
+									{% endfor %}
+								</table>
+							</div>
+						</div>
+					{% endif %}
 
 					{% if product.video_embed_url %}
 						<div class="product-video">
@@ -244,37 +295,7 @@ Description: Product Page
 
 						{% for related_product in related_products %}
 							<div class="col-xs-6 col-sm-4 col-md-3 {% if loop.index == 4 %}hidden-sm{% endif %} {% if loop.index > 2 %}hidden-xs{% endif %}">
-								<article class="product product-id-{{ related_product.id }}" data-id="{{ product.id }}">
-
-									{% if related_product.status_alias == 'out_of_stock' %}
-										<span class="badge out_of_stock">Sem stock</span>
-									{% elseif related_product.promo == true %}
-										<span class="badge promo">Promoção</span>
-									{% endif %}
-
-									<a href="{{ related_product.url }}"><img src="{{ related_product.image.square }}" class="img-responsive" alt="{{ related_product.title|e_attr }}" title="{{ related_product.title|e_attr }}" width="400" height="400"></a>
-
-									<div class="product-info">
-										<a class="product-details" href="{{ related_product.url }}">
-											<div>
-												<h2>{{ related_product.title }}</h2>
-
-												<span class="price">
-													{% if related_product.price_on_request == true %}
-														Preço sob consulta
-													{% else %}
-														{% if related_product.promo == true %}
-															 {{ related_product.price_promo | money_with_sign }} <del>{{ related_product.price | money_with_sign }}</del>
-														{% else %}
-															{{ related_product.price | money_with_sign }}
-														{% endif %}
-													{% endif %}
-												</span>
-											</div>
-										</a>
-									</div>
-
-								</article>
+								{{ generic_macros.product_list(related_product) }}
 							</div>
 						{% else %}
 							<div class="col-xs-12 padding-bottom-lg text-center">

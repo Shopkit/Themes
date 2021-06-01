@@ -2,11 +2,11 @@
 Description: Product catalog page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
-
-	{% set products_per_page = 18 %}
 
 	{#  Setup order #}
 	{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
@@ -15,7 +15,7 @@ Description: Product catalog page
 		{% set get = {'order_by': store.category_default_order|default('position')} %}
 	{% endif %}
 
-	{% set products = products("order:#{get.order_by} limit:#{products_per_page}") %}
+	{% set products = products("order:#{get.order_by} limit:#{products_per_page_catalog}") %}
 
 	<div class="container">
 
@@ -56,37 +56,7 @@ Description: Product catalog page
 
 						{% for product in products %}
 							<div class="col-sm-4">
-								<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
-
-									{% if product.status_alias == 'out_of_stock' %}
-										<span class="badge out_of_stock">Sem stock</span>
-									{% elseif product.promo == true %}
-										<span class="badge promo">Promoção</span>
-									{% endif %}
-
-									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
-
-									<div class="product-info">
-										<a class="product-details" href="{{ product.url }}">
-											<div>
-												<h2>{{ product.title }}</h2>
-
-												<span class="price">
-													{% if product.price_on_request == true %}
-														Preço sob consulta
-													{% else %}
-														{% if product.promo == true %}
-															 {{ product.price_promo | money_with_sign }} <del>{{ product.price | money_with_sign }}</del>
-														{% else %}
-															{{ product.price | money_with_sign }}
-														{% endif %}
-													{% endif %}
-												</span>
-											</div>
-										</a>
-									</div>
-
-								</article>
+								{{ generic_macros.product_list(product) }}
 							</div>
 						{% else %}
 							<div class="col-xs-12">
@@ -98,7 +68,7 @@ Description: Product catalog page
 				</div>
 
 				<nav class="text-center">
-					{{ pagination("products limit:#{products_per_page}") }}
+					{{ pagination("products limit:#{products_per_page_catalog}") }}
 				</nav>
 
 			</div>

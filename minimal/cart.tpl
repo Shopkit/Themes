@@ -56,7 +56,7 @@ Description: Shopping cart page
 									{% for item in cart.items %}
 										<tr data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
 											<td class="cart-img">
-												<a href="{{ item.product_url }}"><img src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="border-radius"></a>
+												<a href="{{ item.product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="border-radius lazy"></a>
 											</td>
 
 											<td>
@@ -82,7 +82,7 @@ Description: Shopping cart page
 						</div>
 
 						<footer>
-							<button type="submit" class="btn btn-default"><i class="fa fa-fw fa-refresh"></i> Actualizar carrinho</button> &nbsp; 
+							<button type="submit" class="btn btn-default"><i class="fa fa-fw fa-refresh"></i> Actualizar carrinho</button> &nbsp;
 							<a class="btn btn-primary" href="{{ site_url('cart/data') }}"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</a>
 						</footer>
 

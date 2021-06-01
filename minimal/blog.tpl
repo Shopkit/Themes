@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Blog page
 #}
 
@@ -8,27 +8,27 @@ Description: Blog page
 
 	{% set posts_per_page = 3 %}
 
-	<div class="container">	
+	<div class="container">
 
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 
 				<h1 class="margin-bottom">Blog</h1>
 
-				{% for post in blog_posts("limit:#{posts_per_page}") %} 
+				{% for post in blog_posts("limit:#{posts_per_page}") %}
 
 					<article class="blog-post">
 
 						{% if post.image %}
 							<div class="image-post">
-								<a href="{{ post.url }}"><img src="{{ post.image.full }}" alt="{{ post.title|e_attr }}" title="{{ post.title|e_attr }}"></a>
+								<a href="{{ post.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.full }}" alt="{{ post.title|e_attr }}" title="{{ post.title|e_attr }}" class="lazy"></a>
 							</div>
 						{% endif %}
 
 						<div class="description">
 							<h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
-							<p class="small">Escrito em {{ post.date|date("d \\d\\e M. \\d\\e Y") }}</p>
-							
+							<p class="small">Escrito em {{ post.date|date("d \\d\\e F \\d\\e Y") }}</p>
+
 							<div>
 								{{ word_limiter(post.excerpt, 100, ' ... <a href="' ~ post.url ~ '">Ler mais</a>') }}
 							</div>
@@ -41,7 +41,7 @@ Description: Blog page
 				{% endfor %}
 
 				<nav class="text-center">
-					{{ pagination("limit:#{posts_per_page}") }}	
+					{{ pagination("limit:#{posts_per_page}") }}
 				</nav>
 
 			</div>
@@ -49,6 +49,6 @@ Description: Blog page
 		</div>
 
 	</div>
-		
+
 {% endblock %}
 

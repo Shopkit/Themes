@@ -157,11 +157,11 @@ Description: Product Page
 			<div class="flexslider">
 				<ul class="slides">
 					<li>
-						<img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}">
+						<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="lazy">
 					</li>
 
 					{% for image in product.images %}
-						<li><img src="{{ image.full }}" alt="{{ product.title|e_attr }}"></li>
+						<li><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ product.title|e_attr }}" class="lazy"></li>
 					{% endfor %}
 
 				</ul>
@@ -180,10 +180,67 @@ Description: Product Page
 
 			</div>
 
-			{% if product.description %}
+			{% if product.tabs %}
+				<div class="panel-group product-tabs margin-top" id="product-tabs" role="tablist" aria-multiselectable="true">
+					{% if product.description %}
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="tab_description">
+								<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#product-tabs" href="#panel_description" aria-expanded="true" aria-controls="panel_description">Descrição</a></h4>
+							</div>
+							<div id="panel_description" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab_description">
+								<div class="panel-body">{{ product.description }}</div>
+							</div>
+						</div>
+					{% endif %}
+
+					{% for tab in product.tabs %}
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="tab_{{ tab.slug }}">
+								<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#product-tabs" href="#panel_{{ tab.slug }}" aria-expanded="true" aria-controls="panel_{{ tab.slug }}">{{ tab.title }}</a></h4>
+							</div>
+							<div id="panel_{{ tab.slug }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab_{{ tab.slug }}">
+								<div class="panel-body">{{ tab.content }}</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% elseif product.description %}
 				<hr>
 				<div class="product-description break-word">
 					{{ product.description }}
+				</div>
+			{% endif %}
+
+			{% if product.custom_fields or product.brand or product.tags %}
+				<div class="table-product-attributes margin-bottom margin-top">
+					<div class="table-responsive">
+						<table class="table">
+							{% if product.brand %}
+								<tr class="product-brand">
+									<th>Marca</th>
+									<td><a href="{{ product.brand.url }}" class="text-underline">{{ product.brand.title }}</a></td>
+								</tr>
+							{% endif %}
+
+							{% if product.tags %}
+								<tr class="product-tags">
+									<th>Tags</th>
+									<td>
+										<ul class="inline unstyled">
+											{% for tag in product.tags %}<li><a href="{{ tag.url }}" class="product-tag label label-outline">{{ tag.title }}</a></li>{% endfor %}
+										</ul>
+									</td>
+								</tr>
+							{% endif %}
+
+							{% for custom_field in product.custom_fields %}
+								<tr class="product-custom-fields" id="custom_field_{{ custom_field.alias }}">
+									<th>{{ custom_field.title }}</th>
+									<td>{{ custom_field.value }}</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</div>
 				</div>
 			{% endif %}
 

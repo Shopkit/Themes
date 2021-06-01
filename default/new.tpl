@@ -2,6 +2,8 @@
 Description: Last products page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
@@ -17,28 +19,8 @@ Description: Last products page
 
 	<div class="row products">
 
-		{% for product in products('new limit:9') %}
-
-			<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
-				<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}"></a>
-				<div class="box">
-					<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-					<p>{{ product.description_short }}</p>
-
-					<span class="price">
-						{% if product.price_on_request == true %}
-							Preço sob consulta
-						{% else %}
-							{% if product.promo == true %}
-								<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
-							{% else %}
-								{{ product.price | money_with_sign }}
-							{% endif %}
-						{% endif %}
-					</span>
-				</div>
-			</div>
-
+		{% for product in products("new limit:#{products_per_page_catalog}") %}
+			{{ generic_macros.product_list(product) }}
 		{% else %}
 
 			<div class="span9 product">
@@ -51,7 +33,7 @@ Description: Last products page
 
 			<hr>
 
-			{{ pagination('new limit:9') }}
+			{{ pagination("new limit:#{products_per_page_catalog}") }}
 
 		</div>
 

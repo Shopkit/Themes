@@ -32,7 +32,7 @@ Description: Wishlist account page
 								{% for product in user.wishlist %}
 									<tr>
 										<td class="cart-img">
-											<a href="{{ product.url }}"><img src="{{ product.image }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius"></a>
+											<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius lazy"></a>
 										</td>
 										<td>
 											<h4 class="normal margin-top-0 margin-bottom-xxs"><a href="{{ product.url }}">{{ product.title }}</a></h4>
@@ -44,7 +44,7 @@ Description: Wishlist account page
 											<small class="text-muted">Adicionado em {{ product.created_at|date("d \\d\\e F \\d\\e Y") }}</small>
 										</td>
 										<td class="cart-actions">
-											<a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="Remover"><i class="fa fa-fw fa-trash fa-lg"></i></a> &nbsp; 
+											<a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="Remover"><i class="fa fa-fw fa-trash fa-lg"></i></a> &nbsp;
 		                                    <a href="{{ product.add_cart_url }}" class="text-muted small" title="Adicionar ao carrinho"><i class="fa fa-fw fa-cart-plus fa-lg"></i></a>
 										</td>
 									</tr>

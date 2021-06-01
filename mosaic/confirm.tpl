@@ -46,7 +46,7 @@ Description: Confirm order page
 						<tbody>
 							{% for item in cart.items %}
 								<tr>
-									<td><img src="{{ item.image }}" width="22" height="22"> {{ item.title }}</td>
+									<td><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" width="22" height="22" class="lazy"> {{ item.title }}</td>
 									<td class="text-right">{{ item.qty }}</td>
 									<td class="text-right">{{ item.subtotal | money_with_sign }}</td>
 								</tr>

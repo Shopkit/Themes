@@ -98,7 +98,7 @@ Description: Shopping cart page
 												<div class="clearfix visible-phone"></div>
 												<div class="list-radio-logo">
 													{% if payment.logo %}
-														<img src="{{ payment.logo }}" alt="{{ payment.title }}" title="{{ payment.title }}" height="25">
+														<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ payment.logo }}" alt="{{ payment.title }}" title="{{ payment.title }}" height="25" class="lazy">
 													{% endif %}
 												</div>
 											</div>

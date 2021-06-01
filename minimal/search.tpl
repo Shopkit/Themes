@@ -2,17 +2,18 @@
 Description: Search Page
 #}
 
+{% import 'base.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
 
-	{% set products_per_page = 9 %}
-	{% set search = products("search limit:#{products_per_page}") %}
+	{% set search = products("search limit:#{products_per_page_catalog}") %}
 
 	{% set total_products = search.total_results %}
-	{% set cur_page = (pagination_segment / products_per_page) + 1 %}
+	{% set cur_page = (pagination_segment / products_per_page_catalog) + 1 %}
 	{% set cur_page_from = pagination_segment + 1 %}
-	{% set cur_page_to = (cur_page * products_per_page) < search.total_results ? cur_page * products_per_page : search.total_results %}
+	{% set cur_page_to = (cur_page * products_per_page_catalog) < search.total_results ? cur_page * products_per_page_catalog : search.total_results %}
 
 	<div class="container">
 
@@ -34,37 +35,7 @@ Description: Search Page
 
 						{% for product in search.results %}
 							<div class="col-sm-4">
-								<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
-
-									{% if product.status_alias == 'out_of_stock' %}
-										<span class="badge out_of_stock">Sem stock</span>
-									{% elseif product.promo == true %}
-										<span class="badge promo">Promoção</span>
-									{% endif %}
-
-									<a href="{{ product.url }}"><img src="{{ product.image.square }}" class="img-responsive" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="400" height="400"></a>
-
-									<div class="product-info">
-										<a class="product-details" href="{{ product.url }}">
-											<div>
-												<h2>{{ product.title }}</h2>
-
-												<span class="price">
-													{% if product.price_on_request == true %}
-														Preço sob consulta
-													{% else %}
-														{% if product.promo == true %}
-															 {{ product.price_promo | money_with_sign }} <del>{{ product.price | money_with_sign }}</del>
-														{% else %}
-															{{ product.price | money_with_sign }}
-														{% endif %}
-													{% endif %}
-												</span>
-											</div>
-										</a>
-									</div>
-
-								</article>
+								{{ generic_macros.product_list(product) }}
 							</div>
 						{% else %}
 							<div class="col-xs-12">
@@ -80,7 +51,7 @@ Description: Search Page
 		</div>
 
 		<nav class="text-center">
-			{{ pagination("search limit:#{products_per_page}") }}
+			{{ pagination("search limit:#{products_per_page_catalog}") }}
 		</nav>
 
 	</div>

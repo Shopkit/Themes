@@ -1,4 +1,4 @@
-{# 
+{#
 Description: Blog page
 #}
 
@@ -11,16 +11,16 @@ Description: Blog page
 		<section class="page">
 
 			<h1>Blog</h1>
-			
+
 			<hr>
 
-			{% for post in blog_posts() %} 
+			{% for post in blog_posts() %}
 
 				<article class="break-word clearfix">
 
 					<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-					<p><small class="muted"><em>Escrito em <strong>{{ post.date|date("d \\d\\e M. \\d\\e Y") }}</strong></em></small></p>
-					
+					<p><small class="muted"><em>Escrito em <strong>{{ post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
+
 					<div class="row-fluid">
 
 						<div class="span9">
@@ -28,7 +28,7 @@ Description: Blog page
 						</div>
 
 						{% if post.image %}
-							<p class="span3"><a href="{{ post.url }}"><img class="boxed" src="{{ post.image.thumb }}" alt="{{ post.title|e_attr }}"></a></p>
+							<p class="span3"><a href="{{ post.url }}"><img class="boxed lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" alt="{{ post.title|e_attr }}"></a></p>
 						{% endif %}
 
 					</div>
@@ -38,11 +38,11 @@ Description: Blog page
 				<hr>
 
 			{% else %}
-			
+
 				<h5>Não existem entradas no blog.</h5>
-			
+
 			{% endfor %}
-			
+
 		</section>
 
 	</div>

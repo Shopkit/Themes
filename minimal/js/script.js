@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+	var lazyLoadInstance = new LazyLoad();
+
 	$('.navbar-nav .dropdown-menu li.active').parents('li.dropdown').addClass('active');
 
 	$('.subdropdown > a[href="#"]').on('click', function(e) {
@@ -66,11 +68,14 @@ $(document).ready(function() {
 		}
 
 		if ($('.table-responsive').length) {
-			if ($('.table-responsive').hasScrollBar()) {
-				$('.table-responsive').addClass('has-mask');
-			} else {
-				$('.table-responsive').removeClass('has-mask');
-			}
+			$('.table-responsive').each(function() {
+				var _this = $(this);
+				if (_this.hasScrollBar()) {
+					_this.addClass('has-mask');
+				} else {
+					_this.removeClass('has-mask');
+				}
+			});
 		}
 
 	}).resize();
@@ -197,7 +202,7 @@ $(document).ready(function() {
 	$('.intl-validate').intlTelInput({
 		initialCountry: 'pt',
 		preferredCountries: ['pt','es','fr','ch','br','gb','de','lu','be','it','us'],
-		utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.0/js/utils.js'
+		utilsScript: 'https://cdn.shopk.it/js/intl-tel-input-17.0.8/build/js/utils.js'
 	});
 
 	$(document).on('keyup blur focus', '.intl-validate', function(event) {
@@ -219,6 +224,19 @@ $(document).ready(function() {
 		if (!phone_input.val()) {
 			phone_input.intlTelInput('setCountry', getKeyByValue(countries_alpha_2, country));
 		}
+	});
+
+	$('.product-description table, .product-tabs-content table, .product-tabs table').addClass('table').addClass('table-bordered').addClass('table-product-content');
+	$('.product-description table, .product-tabs-content table, .product-tabs table').wrap('<div class="table-responsive"></div>');
+
+	$('.panel-collapse.in').siblings('.panel-heading').addClass('active');
+
+	$('.panel-collapse').on('show.bs.collapse', function () {
+		$(this).siblings('.panel-heading').addClass('active');
+	});
+
+	$('.panel-collapse').on('hide.bs.collapse', function () {
+		$(this).siblings('.panel-heading').removeClass('active');
 	});
 });
 
@@ -305,6 +323,22 @@ function product_options(product, onload) {
 			var option = $('option:selected', this);
 			window['id_variant_' + (i + 1)] = option.attr('value');
 		});
+
+		if ($('.select-product-options').length == 1 && onload == true) {
+			$.each(product.options, function(key, option){
+				var $option = $('.select-product-options option[value="'+ option.id_variant_1 +'"]'),
+					$option_text = $option.text();
+				if (option.price_on_request) {
+					$option_text += ' - Preço sob consulta';
+				} else {
+					if (option.price !== null) {
+						var option_display_price = option.promo ? option.price_promo_formatted : option.price_formatted;
+						$option_text += ' - ' + option_display_price;
+					}
+				}
+				$option.text($option_text);
+			});
+		}
 
 		var data_product_options = { id_variant_1: window.id_variant_1, id_variant_2: window.id_variant_2, id_variant_3: window.id_variant_3 };
 		var product_handle = product.handle;
