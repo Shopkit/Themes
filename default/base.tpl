@@ -203,19 +203,44 @@ Github: https://github.com/Shopkit/Default
 				</div>
 			</div>
 
-			{% if store.images_header %}
-				<div class="slideshow-wrapper visible-desktop">
+			{% if store.gallery %}
+				<section class="slideshow slideshow-home">
+					<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+					<div class="flexslider">
+						<ul class="slides">
+							{% for gallery in store.gallery %}
+								{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
+								<li class="slide" style="background-image:url({{ gallery.image.full }})">
+									{% if has_slide_content %}
+									<div class="slide-content">
+										{% if gallery.title %}
+											{% if gallery.link %}
+												<h4 class="slide-title"><a href="{{ gallery.link }}">{{ gallery.title }}</a></h4>
+											{% else %}
+												<h4 class="slide-title">{{ gallery.title }}</h4>
+											{% endif %}
+										{% endif %}
+										{% if gallery.description %}
+											<div class="slide-description">{{ gallery.description }}</div>
+										{% endif %}
+										{% if gallery.button %}
+											<div class="slide-button">
+												<a href="{{ gallery.button_link }}" class="btn">{{ gallery.button }}</a>
+											</div>
+										{% endif %}
+									</div>
+								{% endif %}
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
 
 					{% if store.description %}
-						<p class="slideshow-description">{{ store.description }}</p>
-					{% endif %}
-
-					<div class="slideshow">
-						<div>
-							<img src="{{ store.images_header[0] }}" alt="{{ store.name|e_attr }}">
+						<div class="store-description">
+							{{ store.description }}
 						</div>
-					</div>
-				</div>
+					{% endif %}
+				</section>
 			{% endif %}
 
 		</header>
@@ -635,8 +660,6 @@ Github: https://github.com/Shopkit/Default
 			})();
 			/* End Google Analytics */
 		{% endif %}
-
-		{{ cross_slide_js(store.images_header) }}
 
 		{% if store.custom_js %}
 			{{ store.custom_js }}

@@ -507,7 +507,7 @@
 																									{% endif %}
 																								{% endif %}
 																							{% elseif order.paid == true %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" height="15" alt="paid" border="0" class="img-order-status" style="vertical-align: text-bottom;"/> <strong>Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i") }}</p>
+																								<p style="color:#999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" width="15" height="15" alt="paid" border="0" class="img-order-status" style="vertical-align: text-bottom; width: 15px; height: 15px;"/> <strong>Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i") }}</p>
 																							{% endif %}
 																						</td>
 																					</tr>

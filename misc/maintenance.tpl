@@ -9,7 +9,7 @@
 		<link rel="shortcut icon" href="{{ store.favicon }}">
 	{% endif %}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}">
 	<style type="text/css">
 		.jumbotron {
 			text-align: center;

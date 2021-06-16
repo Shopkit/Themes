@@ -1,3 +1,9 @@
+// Temporary Vars
+/*@basecolor: #b85c5c;
+@secondarycolor: #fff;
+@background: #fff;
+@logo_height: 50px;*/
+
 /*!
  * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -252,6 +258,17 @@ a, .btn, button, .button {
 	border-radius: @border-radius;
 }
 
+.btn-outline-white {
+	color: #fff;
+	background-color: transparent;
+	border-color: #fff;
+	border: 1px solid #fff;
+	box-shadow: none;
+	&:hover, &:active {
+		box-shadow: none;
+	}
+}
+
 //Typography
 h1 {
 	font-weight: @light;
@@ -493,15 +510,13 @@ h2, h3, h4, h5, h6 {
 	}
 
 	&.slideshow-home {
-		display: none;
-
 		.loader {
 			top: 50%;
 			margin-top: -@padding;
 		}
 
 		.slide, .slides {
-			height: 300px;
+			height: 400px;
 			overflow: hidden;
 		}
 
@@ -536,6 +551,53 @@ h2, h3, h4, h5, h6 {
 
 	.slide {
 		.opacity(0);
+
+		&.has-slide-content {
+			&:before {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				//#gradient > .vertical(fade(#000, 25%); transparent; 10%; 100%);
+                background-color: fade(#000, 20%);
+				content: '';
+			}
+		}
+
+		.slide-content {
+			position: absolute;
+			top: @padding/2;
+			left: @padding/2;
+			right: @padding/2;
+
+			.btn-outline-white {
+				background-color: fade(#fff, 5%);
+                &:hover {
+                    background-color: #fff;
+                    color: #000;
+                }
+			}
+
+			.slide-title {
+				color: #fff;
+				font-size: 36px;
+				font-weight: @bold;
+				margin-top: 0;
+				a {
+					color: #fff;
+				}
+			}
+
+			.slide-description {
+				color: #fff;
+				font-size: 18px;
+			}
+
+			.slide-button {
+				margin-top: @padding/2;
+			}
+		}
 	}
 
 	.btn-zoom {
@@ -2029,11 +2091,6 @@ form footer {
 				//left: @padding/2;
 				top: 18px;
 			}
-			&:hover {
-				.dropdown-menu {
-					display: block;
-				}
-			}
 		}
 	}
 
@@ -2073,6 +2130,16 @@ form footer {
 			top: -5px;
 			.form-control {
 				min-width: 200px;
+			}
+		}
+	}
+}
+
+.no-touch .store-notice .user-auth {
+	.user-loggedin {
+		&:hover {
+			.dropdown-menu {
+				display: block;
 			}
 		}
 	}
@@ -2431,11 +2498,18 @@ form footer {
 		}
 	}
 
-	.slideshow.slideshow-home {
-		display: block;
-
-		.slide, .slides {
-			height: 189px;
+	.slideshow {
+		&.slideshow-home {
+			.slide, .slides {
+				height: 300px;
+			}
+		}
+		.slide {
+			.slide-content {
+				top: @padding;
+				left: @padding;
+				right: @padding;
+			}
 		}
 	}
 
@@ -2627,12 +2701,6 @@ form footer {
 		.btn-zoom {
 			display: block;
 		}
-
-		&.slideshow-home {
-			.slide, .slides {
-				height: 247px;
-			}
-		}
 	}
 
 	.btn-lang {
@@ -2720,14 +2788,6 @@ form footer {
 		}
 	}
 
-	.slideshow {
-		&.slideshow-home {
-			.slide, .slides {
-				height: 300px;
-			}
-		}
-	}
-
 	.featured-blocks {
 		.col-featured-block {
 			.featured-block {
@@ -2736,6 +2796,10 @@ form footer {
 			}
 		}
 	}
+
+    .slideshow .slide .slide-content {
+        right: 33%;
+    }
 }
 
 //Apps
