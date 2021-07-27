@@ -142,10 +142,22 @@ Description: Payment Page
 								{% endfor %}
 							</dl>
 
-							<dl class="dl-horizontal text-left h4 margin-bottom-0 hidden-xs hidden-sm">
-								<dt>Subtotal:</dt>
-								<dd class="text-dark bold price">{{ cart.subtotal | money_with_sign }}</dd>
+							<hr>
+
+							<dl class="dl-horizontal text-left margin-bottom-0">
+
+								{% if not store.taxes_included or cart.total_taxes == 0 %}
+									<dt class="margin-bottom-xxs">{{ user.l10n.tax_name }}</dt>
+									<dd class="text-dark price">{{ cart.product_tax | money_with_sign }}</dd>
+								{% endif %}
+
+								<dt class="bold h4 margin-0">Subtotal</dt>
+								<dd class="bold h4 margin-0 price">{{ (store.taxes_included ? cart.subtotal : cart.subtotal_with_tax) | money_with_sign }}</dd>
 							</dl>
+
+							{% if store.taxes_included and cart.total_taxes > 0 %}
+								<div class="small text-muted margin-top-xxs">Inclui {{ user.l10n.tax_name }} a {{ cart.product_tax | money_with_sign }}</div>
+							{% endif %}
 
 							<hr>
 

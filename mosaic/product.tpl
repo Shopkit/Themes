@@ -140,9 +140,9 @@ Description: Product Page
 				<div class="span6">
 					{% if product.tax > 0 %}
 						{% if store.taxes_included == false %}
-							<p class=""><small class="muted light">Ao preço acresce IVA a {{ product.tax }}%</small></p>
+							<p class=""><small class="muted light">Ao preço acresce {{ user.l10n.tax_name }} a {{ product.tax }}%</small></p>
 						{% else %}
-							<p class=""><small class="muted light">IVA incluído</small></p>
+							<p class=""><small class="muted light">{{ user.l10n.tax_name }} incluído</small></p>
 						{% endif %}
 					{% endif %}
 				</div>

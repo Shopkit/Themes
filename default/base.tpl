@@ -204,13 +204,13 @@ Github: https://github.com/Shopkit/Default
 			</div>
 
 			{% if store.gallery %}
-				<section class="slideshow slideshow-home">
+				<section class="slideshow slideshow-home hidden-phone">
 					<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 					<div class="flexslider">
 						<ul class="slides">
 							{% for gallery in store.gallery %}
 								{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
-								<li class="slide" style="background-image:url({{ gallery.image.full }})">
+								<li class="slide {{ has_slide_content }}" style="background-image:url({{ gallery.image.full }})">
 									{% if has_slide_content %}
 									<div class="slide-content">
 										{% if gallery.title %}
@@ -598,6 +598,31 @@ Github: https://github.com/Shopkit/Default
 			</div>
 		</div>
 	{% endif %}
+
+	<div class="modal hide fade" id="user-geolocation-modal" tabindex="-1" role="dialog" aria-labelledby="user-geolocation-modalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				{{ form_open(site_url('user_location'), { 'method' : 'post', 'class' : 'no-margin'  }) }}
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="user-geolocation-modal-choose-country-region">Choose your country/region</h3>
+					</div>
+					<div class="modal-body">
+						<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">Are you in <span class="user-geolocation-modal-country"></span>? Please confirm your country.</span></p>
+						<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
+							{% for key, country in countries_en %}
+								<option value="{{ key }}">{{ country }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn user-geolocation-modal-cancel" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-inverse user-geolocation-modal-change-country-region">Change country/region</button>
+					</div>
+				{{ form_close() }}
+			</div>
+		</div>
+	</div>
 
 	<!--[if lt IE 7]>
 	<div class="modal hide fade modal-alert">

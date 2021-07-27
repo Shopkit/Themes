@@ -50,7 +50,7 @@ Description: Order data form page
 								<div class="col-sm-6">
 									<h3>Dados de cliente</h3>
 									{{ user.email }}<br>
-									NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+									{{ user.l10n.tax_id_abbr }}: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
 									Empresa: {{ user.company ? user.company : 'n/a' }}
 								</div>
 							</div>
@@ -127,7 +127,7 @@ Description: Order data form page
 								{% if store.settings.cart.field_fiscal_id != 'hidden' %}
 									<div class="col-sm-4">
 										<div class="form-group">
-											<label for="fiscal_id">NIF {{ store.settings.cart.field_fiscal_id == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
+											<label for="fiscal_id">{{ user.l10n.tax_id_abbr }} {{ store.settings.cart.field_fiscal_id == 'required' ? '<small class="text-light-gray normal">(*)</small>' }}</label>
 											<input type="text" name="fiscal_id" id="fiscal_id" class="form-control" value="{{ user.fiscal_id }}" placeholder="{{ store.settings.cart.field_fiscal_id == 'optional' ? 'Opcional' }}" {{ store.settings.cart.field_fiscal_id == 'required' ? 'required' }}>
 										</div>
 									</div>
@@ -300,10 +300,22 @@ Description: Order data form page
 							{% endfor %}
 						</dl>
 
-						<dl class="dl-horizontal text-left h4 margin-bottom-0">
-							<dt>Subtotal:</dt>
-							<dd class="text-dark bold price">{{ cart.subtotal | money_with_sign }}</dd>
+						<hr>
+
+						<dl class="dl-horizontal text-left margin-bottom-0">
+
+							{% if not store.taxes_included or cart.total_taxes == 0 %}
+                                <dt class="margin-bottom-xxs">{{ user.l10n.tax_name }}</dt>
+                                <dd class="text-dark price">{{ cart.product_tax | money_with_sign }}</dd>
+                            {% endif %}
+
+							<dt class="bold h4 margin-0">Subtotal</dt>
+                            <dd class="bold h4 margin-0 price">{{ (store.taxes_included ? cart.subtotal : cart.subtotal_with_tax) | money_with_sign }}</dd>
 						</dl>
+
+						{% if store.taxes_included and cart.total_taxes > 0 %}
+                            <div class="small text-muted margin-top-xxs">Inclui {{ user.l10n.tax_name }} a {{ cart.product_tax | money_with_sign }}</div>
+                        {% endif %}
 
 						<button class="btn btn-lg btn-primary btn-block margin-top-sm">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
 					</div>

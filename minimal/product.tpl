@@ -106,9 +106,9 @@ Description: Product Page
 
 									{% if product.tax > 0 %}
 										{% if store.taxes_included == false %}
-											<small class="text-light-gray block"><em>Ao preço do produto acresce IVA de <strong>{{ product.tax }}%</strong></em></small>
+											<small class="text-light-gray block"><em>Ao preço do produto acresce {{ user.l10n.tax_name }} de <strong>{{ product.tax }}%</strong></em></small>
 										{% else %}
-											<small class="text-light-gray block"><em>IVA incluído</em></small>
+											<small class="text-light-gray block"><em>{{ user.l10n.tax_name }} incluído</em></small>
 										{% endif %}
 									{% endif %}
 								</div>

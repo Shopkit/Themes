@@ -13,13 +13,13 @@ Description: About page
 			<h1>{{ store.page.about.title }}</h1>
 
 			{% if store.gallery %}
-				<hr>
+				<hr class="hidden-phone">
 
-				<div class="flexslider">
+				<div class="flexslider hidden-phone">
 					<ul class="slides">
 						{% for gallery in store.gallery %}
 							{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
-							<li class="slide">
+							<li class="slide {{ has_slide_content }}">
 								<img src="{{ gallery.image.full }}">
 								{% if has_slide_content %}
 								<div class="slide-content">

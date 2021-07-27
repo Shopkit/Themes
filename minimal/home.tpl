@@ -29,7 +29,7 @@ Description: Home Page
 		</ul>
 
 		{% if store.gallery %}
-			<section class="slideshow slideshow-home">
+			<section class="slideshow slideshow-home hidden-xs">
 				<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 				<div class="flexslider">
 					<ul class="slides">

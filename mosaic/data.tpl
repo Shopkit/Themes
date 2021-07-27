@@ -52,7 +52,7 @@ Description: Order data form page
 							<div class="span12">
 								<h4>Dados de cliente</h4>
 								{{ user.email }}<br>
-								NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+								{{ user.l10n.tax_id_abbr }}: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
 								Empresa: {{ user.company ? user.company : 'n/a' }}
 							</div>
 						</div>
@@ -119,7 +119,7 @@ Description: Order data form page
 
 							{% if store.settings.cart.field_fiscal_id != 'hidden' %}
 								<div class="span5">
-									<label for="fiscal_id">NIF {{ store.settings.cart.field_fiscal_id == 'required' ? '<small class="muted">(*)</small>' }}</label>
+									<label for="fiscal_id">{{ user.l10n.tax_id_abbr }} {{ store.settings.cart.field_fiscal_id == 'required' ? '<small class="muted">(*)</small>' }}</label>
 									<input type="text" name="fiscal_id" id="fiscal_id" class="input-block-level" value="{{ user.fiscal_id }}" placeholder="{{ store.settings.cart.field_fiscal_id == 'optional' ? 'Opcional' }}" {{ store.settings.cart.field_fiscal_id == 'required' ? 'required' }}>
 								</div>
 							{% endif %}

@@ -58,17 +58,17 @@ Description: Confirm order page
 						<td align="right" class=" text-right" colspan="2" style="border-left: 0;">{{ cart.total_shipping | money_with_sign }}</td>
 					</tr>
 
+					{% if not store.taxes_included or cart.total_taxes == 0 %}
+						<tr>
+							<td>Taxa / Imposto (<abbr title="Imposto sobre o valor acrescentado">{{ user.l10n.tax_name }}</abbr>)</td>
+							<td align="right" class=" price text-right" colspan="2">{{ cart.total_taxes | money_with_sign }}</td>
+						</tr>
+					{% endif %}
+
 					{% if cart.coupon %}
 						<tr>
 							<td class="discount">Desconto</td>
 							<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">- {{ cart.discount | money_with_sign }}</td>
-						</tr>
-					{% endif %}
-
-					{% if store.taxes_included == false and cart.taxes > 0 %}
-						<tr>
-							<td>Taxa / Imposto (<abbr title="Imposto sobre o valor acrescentado">IVA</abbr>)</td>
-							<td align="right" class=" price text-right" colspan="2">{{ cart.taxes | money_with_sign }}</td>
 						</tr>
 					{% endif %}
 
@@ -77,8 +77,8 @@ Description: Confirm order page
 						<td colspan="2" class="subtotal price text-right" style="font-size:16px;border-left: 0;">
 							{{ cart.total | money_with_sign }}
 
-							{% if store.taxes_included %}
-								<div style="color:#999;font-weight: normal;font-size: 10px;margin-top:5px;">Inclui IVA a {{ cart.total_taxes | money_with_sign }}</div>
+							{% if store.taxes_included and cart.total_taxes > 0 %}
+								<div style="color:#999;font-weight: normal;font-size: 10px;margin-top:5px;">Inclui {{ user.l10n.tax_name }} a {{ cart.total_taxes | money_with_sign }}</div>
 							{% endif %}
 						</td>
 					</tr>
@@ -103,7 +103,7 @@ Description: Confirm order page
 				<div class="span4">
 					<h4>Dados de cliente</h4>
 					{{ user.email }}<br>
-					NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+					{{ user.l10n.tax_id_abbr }}: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
 					Empresa: {{ user.company ? user.company : 'n/a' }}
 				</div>
 			</div>

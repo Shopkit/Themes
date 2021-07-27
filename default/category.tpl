@@ -20,7 +20,7 @@ Description: Product category page
 		{% endif %}
 	{% else %}
 		{% set parent_category = category(category.parent) %}
-		{% set main_parent = category(parent_category.parent) %}
+		{% set main_parent = category(parent_category.parent) ?: parent_category %}
 	{% endif %}
 
 	{#  Setup order #}

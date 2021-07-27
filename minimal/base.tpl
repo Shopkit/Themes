@@ -11,10 +11,10 @@ Version: 4.0
 {% set brands_per_page = store.brands_per_page ?: 36 %}
 
 {% macro product_list(product) %}
-    {% import _self as generic_macros %}
+	{% import _self as generic_macros %}
 
-    {% set product_title = product.title|e_attr %}
-    {% set product_url = product.url %}
+	{% set product_title = product.title|e_attr %}
+	{% set product_url = product.url %}
 
 	<article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
 
@@ -545,6 +545,31 @@ Version: 4.0
 				});
 			</script>
 		{% endif %}
+
+		<div class="modal fade" id="user-geolocation-modal" tabindex="-1" role="dialog" aria-labelledby="user-geolocation-modalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					{{ form_open(site_url('user_location'), { 'method' : 'post' }) }}
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h3 class="user-geolocation-modal-choose-country-region">Choose your country/region</h3>
+						</div>
+						<div class="modal-body">
+							<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">Are you in <span class="user-geolocation-modal-country"></span>? Please confirm your country.</span></p>
+							<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
+								{% for key, country in countries_en %}
+									<option value="{{ key }}">{{ country }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default user-geolocation-modal-cancel" data-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-gray user-geolocation-modal-change-country-region">Change country/region</button>
+						</div>
+					{{ form_close() }}
+				</div>
+			</div>
+		</div>
 
 		{# //End Events #}
 

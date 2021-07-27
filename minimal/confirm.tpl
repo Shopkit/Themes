@@ -83,7 +83,7 @@ Description: Confirm order page
 							<div class="col-sm-6">
 								<h3>Dados de cliente</h3>
 								{{ user.email }}<br>
-								NIF: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+								{{ user.l10n.tax_id_abbr }}: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
 								Empresa: {{ user.company ? user.company : 'n/a' }}
 							</div>
 						</div>
@@ -155,36 +155,43 @@ Description: Confirm order page
 						<div class="well">
 							<h3 class="margin-bottom-sm bordered">Encomenda</h3>
 
-							<dl class="dl-horizontal text-left">
-								<dt>Subtotal:</dt>
-								<dd class="text-dark bold price">{{ cart.subtotal | money_with_sign }}</dd>
+							<dl class="dl-horizontal text-left hidden-xs hidden-sm">
+								{% for item in cart.items %}
+									<dt title="{{ item.title|e_attr }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
+									<dd class="text-dark price">{{ item.subtotal | money_with_sign }}</dd>
+								{% endfor %}
 							</dl>
 
-							<dl class="dl-horizontal text-left">
+							<hr>
+
+							<dl class="dl-horizontal text-left margin-bottom-0">
+								<dt class="bold">Subtotal:</dt>
+								<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
+
 								<dt>Portes de envio</dt>
 								<dd class="text-dark price">{{ cart.total_shipping | money_with_sign }}</dd>
+
+								{% if not store.taxes_included or cart.total_taxes == 0 %}
+									<dt>{{ user.l10n.tax_name }}</dt>
+									<dd class="text-dark price">{{ cart.total_taxes | money_with_sign }}</dd>
+								{% endif %}
 
 								{% if cart.coupon %}
 									<dt>Desconto</dt>
 									<dd class="text-dark price">- {{ cart.discount | money_with_sign }}</dd>
 								{% endif %}
-
-								{% if store.taxes_included == false and cart.taxes > 0 %}
-									<dt>IVA</dt>
-									<dd class="text-dark price">{{ cart.taxes | money_with_sign }}</dd>
-								{% endif %}
 							</dl>
 
 							<hr>
 
-							<dl class="dl-horizontal text-left h3 margin-bottom-xs">
-								<dt>Total:</dt>
+							<dl class="dl-horizontal text-left h3 margin-bottom-0">
+								<dt>Total</dt>
 								<dd class="text-dark bold price">{{ cart.total | money_with_sign }}</dd>
 							</dl>
 
-							{% if store.taxes_included %}
+							{% if store.taxes_included and cart.total_taxes > 0 %}
 								<div class="text-right">
-									<small class="text-muted">Inclui IVA a {{ cart.total_taxes | money_with_sign }}</small>
+									<small class="text-muted">Inclui {{ user.l10n.tax_name }} a {{ cart.total_taxes | money_with_sign }}</small>
 								</div>
 							{% endif %}
 

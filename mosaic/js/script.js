@@ -293,9 +293,10 @@ $(window).load(function() {
 
 	$('.intl-validate').each(function(index) {
 		var _this = $(this);
+		var address_type = _this.attr('id').split('_')[0];
 		setTimeout(function() {
-			if (!_this.val() && user.delivery.country_code_alpha_2) {
-				_this.intlTelInput('setCountry', user.delivery.country_code_alpha_2);
+			if (!_this.val() && user[address_type].country_code_alpha_2) {
+				_this.intlTelInput('setCountry', user[address_type].country_code_alpha_2);
 			}
 			validate_phone_intl_input(_this, true);
 			_this.focus();

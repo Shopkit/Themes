@@ -106,9 +106,9 @@ Description: Product Page
 							{% if product.tax > 0 %}
 								<hr>
 								{% if store.taxes_included == false %}
-									<span class="muted">Ao preço acresce IVA a {{ product.tax }}%</span>
+									<span class="muted">Ao preço acresce {{ user.l10n.tax_name }} a {{ product.tax }}%</span>
 								{% else %}
-									<span class="muted">IVA incluído</span>
+									<span class="muted">{{ user.l10n.tax_name }} incluído</span>
 								{% endif %}
 							{% endif %}
 
@@ -192,7 +192,7 @@ Description: Product Page
 						{% if product.video_embed_url %}
 							<div class="tab-pane" id="tab-video">
 								<div class="row">
-									<div class="span12 video-wrapper">
+									<div class="span9 video-wrapper">
 										<div class="video-iframe" data-src="{{ product.video_embed_url }}">Video</div>
 									</div>
 								</div>

@@ -102,7 +102,7 @@ Description: Orders account page
                     <div class="span6">
                         <h4 class="margin-top-0 margin-bottom-xxs">Dados de cliente</h4>
                         {{ user.order_detail.client.email }}<br>
-                        NIF: {{ user.order_detail.client.fiscal_id ? user.order_detail.client.fiscal_id : 'n/a' }}<br>
+                        {{ user.order_detail.l10n.tax_id_abbr }}: {{ user.order_detail.client.fiscal_id ? user.order_detail.client.fiscal_id : 'n/a' }}<br>
                         Empresa: {{ user.order_detail.client.company ? user.order_detail.client.company : 'n/a' }}
                     </div>
                 </div>
@@ -162,7 +162,7 @@ Description: Orders account page
 
                             {% if user.order_detail.total_tax > 0 %}
                                 <tr>
-                                    <td colspan="2">Taxa (IVA)</td>
+                                    <td colspan="2">{{ user.order_detail.l10n.tax_name }}</td>
                                     <td class="text-right">{{ user.order_detail.total_tax|money_with_sign(user.order_detail.currency) }}</td>
                                 </tr>
                             {% endif %}

@@ -980,7 +980,7 @@ header {
 			right: 0;
 			bottom: 0;
 			left: 0;
-			#gradient > .vertical(fade(#000, 25%); transparent; 10%; 100%);
+			background-color: fade(contrast(@secondarycolor), 35%);
 			content: '';
 		}
 	}
@@ -1410,15 +1410,15 @@ footer {
 	}
 
 	&.btn-outline-white {
-        color: #fff;
-        background-color: transparent;
-        border-color: #fff;
-        border: 1px solid #fff;
-        box-shadow: none;
-        &:hover, &:active {
-            box-shadow: none;
-        }
-    }
+		color: #fff;
+		background-color: transparent;
+		border-color: #fff;
+		border: 1px solid #fff;
+		box-shadow: none;
+		&:hover, &:active {
+			box-shadow: none;
+		}
+	}
 }
 
 .btn-small {

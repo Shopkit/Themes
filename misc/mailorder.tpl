@@ -573,17 +573,22 @@
 																</tr>
 															{% endif %}
 
-															{% if order.total_tax > 0 %}
-																<tr>
-																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Taxa (IVA)</td>
-																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
-																</tr>
-															{% endif %}
+															<tr>
+																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Imposto ({{ order.l10n.tax_name }})</td>
+																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
+															</tr>
 
 															<tr>
 																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#333333;padding-left:20px;"><strong style="color:#333;">Total</strong></td>
 																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#333333;padding-right:20px;"><strong style="color:#333;white-space:nowrap;">{{ order.total|money_with_sign(order.currency) }}</strong></td>
 															</tr>
+
+															{% if order.tax_exemption %}
+																<tr>
+																	<td colspan="2" height="20" align="left" valign="middle" style="font-size: 11px;line-height:16px;color:#bbb;padding-left:20px;">Foi aplicada uma isenção de imposto: {{ order.tax_exemption|upper }}</td>
+																</tr>
+															{% endif %}
+
 															<tr>
 																<td height="20" colspan="2" align="left">&nbsp;</td>
 															</tr>
@@ -619,7 +624,7 @@
 																			<td class="column-table-cell fix-padding-top" style="padding:30px 20px;">
 																				<p style="margin: 0 0 0 0;font-size:14px;line-height:24px;color:#999999;">
 																					<strong style="color: #666">Empresa:</strong> {{ order.client.company ?: 'n/a' }}<br>
-																					<strong style="color: #666">NIF:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
+																					<strong style="color: #666">{{ order.l10n.tax_id_abbr }}:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
 																				</p>
 																			</td>
 																		</tr>
