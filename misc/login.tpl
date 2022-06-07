@@ -15,8 +15,18 @@
                             <input type="password" name="shopkit-auth-password" class="shopkit-auth-password shopkit-auth-input" placeholder="A minha password" required>
                         </div>
 
-                        {% if store.settings.cart.page_terms or store.settings.cart.page_privacy %}
-                            <div class="shopkit-auth-footer">
+                        <div class="shopkit-auth-footer">
+
+                            {% if store.settings.wholesale.client_signup %}
+                                <div class="checkbox margin-bottom-sm">
+                                    <label>
+                                        <input type="checkbox" name="shopkit-wholesale-signup" id="shopkit-wholesale-signup" value="1">
+                                         {{ store.settings.wholesale.checkbox_label }}
+                                    </label>
+                                </div>
+                            {% endif %}
+
+                            {% if store.settings.cart.page_terms or store.settings.cart.page_privacy %}
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="shopkit-auth-accept-terms" id="shopkit-auth-accept-terms" value="1" required>
@@ -32,8 +42,8 @@
                                          {% endif %}
                                     </label>
                                 </div>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
 
                         <div class="shopkit-auth-btn-wrapper">
                             <button type="submit" class="shopkit-auth-btn-submit">Criar Conta</button>

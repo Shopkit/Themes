@@ -67,7 +67,7 @@ Version: 4.0
 					{% if not category.parent == 0 and category.children and show_number_products %}
 						<p>{{ category.children|length }} Categorias</p>
 					{% elseif show_number_products %}
-						<p>{{ category.total_products }} Produtos</p>
+						<p class="total-products">{{ category.total_products }} Produtos</p>
 					{% endif %}
 				</div>
 			</a>
@@ -229,8 +229,8 @@ Version: 4.0
 							<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
 								<a href="{{ site_url('categories') }}">Todas as categorias</a>
 							</li>
-							{% set brands = brands("limit:6") %}
 
+							{% set brands = brands("order:#{store.brands_sorting} limit:6") %}
 							{% if brands %}
 								<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
 									<a href="{{ site_url('brands') }}">Todas as marcas</a>
@@ -241,7 +241,7 @@ Version: 4.0
 								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ products_category.children ? 'dropdown' }} {{ 'menu-' ~ products_category.handle }}">
 
 									{% if products_category.children %}
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#" data-href="{{ products_category.url }}">
 											{{ products_category.title }} <span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu" role="menu">
@@ -249,7 +249,7 @@ Version: 4.0
 												<li class="{{ sub_category.children ? 'subdropdown' }} {{ (category.id == sub_category.id or category.parent == sub_category.id ? 'open') }} {{ (category.id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
 
 													{% if sub_category.children %}
-														<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+														<a class="dropdown-toggle" data-toggle="dropdown" href="#" data-href="{{ sub_category.url }}">
 															{{ sub_category.title }} <span class="caret"></span>
 														</a>
 
@@ -320,7 +320,7 @@ Version: 4.0
 
 				{% if store.show_branding %}
 					<div class="powered-by">
-						Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105" class="lazy"></a>
+						Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
 					</div>
 				{% endif %}
 
@@ -576,30 +576,6 @@ Version: 4.0
 		<div id="fb-root"></div>
 
 		<script>
-			/* Facebook JS SDK */
-			window.fbAsyncInit = function() {
-				FB.init({
-					appId : {{ apps.facebook_login.app_id|default(267439666615965) }},
-					autoLogAppEvents : true,
-					cookie: true,
-					xfbml : true,
-					version : 'v2.11'
-				});
-				{% if apps.facebook_login %}
-					FB.getLoginStatus(function(){
-						$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
-					});
-				{% endif %}
-			};
-			(function(d, s, id){
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) {return;}
-				js = d.createElement(s); js.id = id;
-				js.src = "https://connect.facebook.net/pt_PT/sdk/xfbml.customerchat.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-			/* End Facebook JS SDK */
-
 			{% if not apps.google_analytics_ec %}
 				/* Google Analytics */
 				var _gaq = _gaq || [];

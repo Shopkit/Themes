@@ -55,7 +55,7 @@ Github: https://github.com/Shopkit/Default
 			{% if not category.parent == 0 and category.children and show_number_products %}
 				<span>{{ category.children|length }} Categorias</span>
 			{% elseif show_number_products %}
-				<span>{{ category.total_products }} Produtos</span>
+				<span class="total-products">{{ category.total_products }} Produtos</span>
 			{% endif %}
 		</div>
 	</div>
@@ -280,7 +280,7 @@ Github: https://github.com/Shopkit/Default
 								</h4>
 							</li>
 
-							{% set brands = brands("limit:6") %}
+							{% set brands = brands("order:#{store.brands_sorting} limit:6") %}
 
 							{% if brands %}
 								<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
@@ -295,7 +295,7 @@ Github: https://github.com/Shopkit/Default
 
 									{% if products_category.children %}
 										<h4 data-toggle="collapse" data-target="{{ '#category_' ~ products_category.id }}">
-											<a href="#">{{ products_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+											<a href="#" data-href="{{ products_category.url }}">{{ products_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
 										</h4>
 
 										<ul id="{{ 'category_' ~ products_category.id }}" class="sub-categories collapse {{ (category.parent == products_category.id or category.id == products_category.id) ? 'in' }}">
@@ -304,7 +304,7 @@ Github: https://github.com/Shopkit/Default
 
 													{% if sub_category.children %}
 														<h5 data-toggle="collapse" data-target="{{ '#sub_category_' ~ sub_category.id }}">
-															<a href="#">{{ sub_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+															<a href="#" data-href="{{ sub_category.url }}">{{ sub_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
 														</h5>
 
 														<ul id="sub_category_{{ sub_category.id }}" class="sub-subcategories collapse {{ (category.parent == sub_category.id or category.id == sub_category.id) ? 'in' }}">
@@ -442,7 +442,7 @@ Github: https://github.com/Shopkit/Default
 			</div>
 
 			{% if store.show_branding %}
-				<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000; font-size: 9px">Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" class="lazy"></a></p>
+				<p style="margin-top:40px; text-align: center; opacity:0.25; color: #000; font-size: 9px">Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;"></a></p>
 			{% endif %}
 
 		</footer>
@@ -642,30 +642,6 @@ Github: https://github.com/Shopkit/Default
 	<div id="fb-root"></div>
 
 	<script>
-		/* Facebook JS SDK */
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId : {{ apps.facebook_login.app_id|default(267439666615965) }},
-				autoLogAppEvents : true,
-				cookie: true,
-				xfbml : true,
-				version : 'v2.11'
-			});
-			{% if apps.facebook_login %}
-				FB.getLoginStatus(function(){
-					$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
-				});
-			{% endif %}
-		};
-		(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "https://connect.facebook.net/pt_PT/sdk/xfbml.customerchat.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		/* End Facebook JS SDK */
-
 		{% if not apps.google_analytics_ec %}
 			/* Google Analytics */
 			var _gaq = _gaq || [];

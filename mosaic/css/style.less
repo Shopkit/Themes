@@ -926,7 +926,6 @@ header {
 	}
 	span.data-product-price {
 		white-space: normal;
-		font-size: 30px;
 	}
 }
 
@@ -1279,7 +1278,8 @@ header {
 			height: 30px;
 		}
 	}
-	.payment-method-paypal {
+	.payment-method-paypal,
+	.payment-method-wallets {
 		.list-radio-logo img {
 			height: 25px;
 		}
@@ -1874,8 +1874,14 @@ a.label-outline:hover {
 	}
 }
 
+body.client-is-wholesale {
+	.total-products {
+		display: none;
+	}
+}
+
 //Catalog & Category
-.page-category, .page-catalog {
+.page-category, .page-catalog, .page-search {
 	.main > div.wide {
 		padding: 0 @padding;
 		height: auto;
@@ -2306,7 +2312,7 @@ body.has-google-translate {
 		}
 	}
 
-	.page-category, .page-catalog {
+	.page-category, .page-catalog, .page-search {
 		.main > div.wide {
 			line-height: @padding*2;
 		}

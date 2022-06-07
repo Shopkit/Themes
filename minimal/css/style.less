@@ -560,7 +560,7 @@ h2, h3, h4, h5, h6 {
 				bottom: 0;
 				left: 0;
 				//#gradient > .vertical(fade(#000, 25%); transparent; 10%; 100%);
-                background-color: fade(#000, 20%);
+				background-color: fade(#000, 20%);
 				content: '';
 			}
 		}
@@ -573,10 +573,10 @@ h2, h3, h4, h5, h6 {
 
 			.btn-outline-white {
 				background-color: fade(#fff, 5%);
-                &:hover {
-                    background-color: #fff;
-                    color: #000;
-                }
+				&:hover {
+					background-color: #fff;
+					color: #000;
+				}
 			}
 
 			.slide-title {
@@ -1223,6 +1223,12 @@ h1 + .breadcrumb {
 				color: #333;
 			}
 		}
+	}
+}
+
+body.client-is-wholesale {
+	.total-products {
+		display: none;
 	}
 }
 
@@ -1950,7 +1956,8 @@ form footer {
 			height: 30px;
 		}
 	}
-	.payment-method-paypal {
+	.payment-method-paypal,
+	.payment-method-wallets {
 		.list-radio-logo img {
 			height: 25px;
 		}
@@ -2797,9 +2804,9 @@ form footer {
 		}
 	}
 
-    .slideshow .slide .slide-content {
-        right: 33%;
-    }
+	.slideshow .slide .slide-content {
+		right: 33%;
+	}
 }
 
 //Apps

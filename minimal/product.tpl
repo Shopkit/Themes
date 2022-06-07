@@ -98,11 +98,13 @@ Description: Product Page
 								{% endif %}
 
 								<div class="data-product-info">
-									<small class="text-light-gray block data-promo-percentage">
-										{% if product.price_promo_percentage == true %}
+									{% if user.wholesale is same as(true) and product.wholesale == true and store.settings.wholesale.show_regular_price %}
+                                        <small class="text-light-gray block">Preço normal: <span class="data-price-non-wholesale">{{ product.price_non_wholesale | money_with_sign }}</span></small>
+                                    {% elseif product.price_promo_percentage == true %}
+										<small class="text-light-gray block data-promo-percentage">
 											Desconto de {{ product.price_promo_percentage }}%
-										{% endif %}
-									</small>
+										</small>
+									{% endif %}
 
 									{% if product.tax > 0 %}
 										{% if store.taxes_included == false %}

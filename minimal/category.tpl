@@ -107,14 +107,14 @@ Description: Product category page
 										<ul >
 											{% for children in sub_category.children %}
 												<li  class="{{ (category.id == children.id) ? 'active' }} menu-{{ children.handle }}">
-													<a href="{{ children.url }}">{{ children.title }} <span class="text-muted">({{ children.total_products }})</span></a>
+													<a href="{{ children.url }}">{{ children.title }} <span class="total-products text-muted">({{ children.total_products }})</span></a>
 												</li>
 											{% endfor %}
 										</ul>
 									</div>
 								{% else %}
 									<a href="{{ sub_category.url }}" class="list-group-item {{ sub_category.id == category.id ? 'active' }}">
-										{{ sub_category.title }} <span class="text-muted">({{ sub_category.total_products }})</span>
+										{{ sub_category.title }} <span class="total-products text-muted">({{ sub_category.total_products }})</span>
 									</a>
 								{% endif %}
 							{% endfor %}

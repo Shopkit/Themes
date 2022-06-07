@@ -66,7 +66,7 @@ Description: This is the base layout. It's included in every page with this code
 			{% if not category.parent == 0 and category.children and show_number_products %}
 				<p>{{ category.children|length }} Categorias</p>
 			{% elseif show_number_products %}
-				<p>{{ category.total_products }} Produtos</p>
+				<p class="total-products">{{ category.total_products }} Produtos</p>
 			{% endif %}
 			<a href="{{ category_url }}" class="button white"><span>Explorar</span></a>
 		</div>
@@ -237,7 +237,7 @@ Description: This is the base layout. It's included in every page with this code
 
 			{% if store.show_branding %}
 				<div class="powered-by">
-					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" target="_blank"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Shopkit" title="Powered by Shopkit" style="height:25px;" height="25" width="105" class="lazy"></a>
+					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
 				</div>
 			{% endif %}
 		</footer>
@@ -295,7 +295,7 @@ Description: This is the base layout. It's included in every page with this code
 				<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
 					<a href="{{ site_url('categories') }}">Todas as categorias</a>
 				</li>
-				{% set brands = brands("limit:6") %}
+				{% set brands = brands("order:#{store.brands_sorting} limit:6") %}
 
 				{% if brands %}
 					<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
@@ -306,14 +306,14 @@ Description: This is the base layout. It's included in every page with this code
 					<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">
 
 						{% if products_category.children %}
-							<a href="{{ '#category_' ~ products_category.id }}" data-toggle="collapse" target="{{ '#category_' ~ products_category.id }}">{{ products_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
+							<a href="{{ '#category_' ~ products_category.id }}" data-href="{{ products_category.url }}" data-toggle="collapse" target="{{ '#category_' ~ products_category.id }}">{{ products_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
 
 							<ul id="{{ 'category_' ~ products_category.id }}" class="sub-categories collapse {{ (category.parent == products_category.id or product.categories[0].parent == products_category.id or category.id == products_category.id or products_category.id == product.categories[0].id) ? 'in' }}">
 								{% for sub_category in products_category.children %}
 									<li class="{{ (category.id == sub_category.id or product.categories[0].id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
 
 										{% if sub_category.children %}
-											<a href="{{ '#sub_category_' ~ sub_category.id }}" data-toggle="collapse" target="{{ '#sub_category_' ~ sub_category.id }}">{{ sub_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
+											<a href="{{ '#sub_category_' ~ sub_category.id }}" data-href="{{ sub_category.url }}" data-toggle="collapse" target="{{ '#sub_category_' ~ sub_category.id }}">{{ sub_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
 
 											<ul id="{{ 'sub_category_' ~ sub_category.id }}" class="collapse sub-subcategories {{ (category.parent == sub_category.id or product.categories[0].parent == sub_category.id or category.id == sub_category.id or sub_category.id == product.categories[0].id) ? 'in' }}">
 												{% for children in sub_category.children %}
@@ -600,30 +600,6 @@ Description: This is the base layout. It's included in every page with this code
 	<script src="{{ store.assets.scripts }}"></script>
 
 	<script>
-		/* Facebook JS SDK */
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId : {{ apps.facebook_login.app_id|default(267439666615965) }},
-				autoLogAppEvents : true,
-				cookie: true,
-				xfbml : true,
-				version : 'v2.11'
-			});
-			{% if apps.facebook_login %}
-				FB.getLoginStatus(function(){
-					$('.shopkit-auth-btn-facebook').attr('disabled', false).removeClass('disabled');
-				});
-			{% endif %}
-		};
-		(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "https://connect.facebook.net/pt_PT/sdk/xfbml.customerchat.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		/* End Facebook JS SDK */
-
 		var basecolor = '{{ store.basecolor }}';
 
 		{% if not apps.google_analytics_ec %}

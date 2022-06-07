@@ -51,11 +51,13 @@ Description: Product Page
 							{% endif %}
 						</div>
 
-						<p class="text-right"><small class="muted light data-promo-percentage">
-							{% if product.price_promo_percentage == true %}
-								Desconto de {{ product.price_promo_percentage }}%
-							{% endif %}
-						</small></p>
+						{% if user.wholesale is same as(true) and product.wholesale == true and store.settings.wholesale.show_regular_price %}
+                            <p class="text-right"><small class="muted light">Preço normal: <span class="data-price-non-wholesale">{{ product.price_non_wholesale | money_with_sign }}</span></small></p>
+                        {% elseif product.price_promo_percentage == true %}
+							<p class="text-right"><small class="muted light data-promo-percentage">
+									Desconto de {{ product.price_promo_percentage }}%
+							</small></p>
+						{% endif %}
 					</div>
 
 				</div>

@@ -1006,7 +1006,7 @@ footer a {
 }
 
 //Catalog & Category
-.page-category, .page-catalog {
+.page-category, .page-catalog, .page-search {
 	h1 {
 		display:inline-block;
 	}
@@ -1251,7 +1251,8 @@ footer a {
 			height: 30px;
 		}
 	}
-	.payment-method-paypal {
+	.payment-method-paypal,
+	.payment-method-wallets {
 		.list-radio-logo img {
 			height: 25px;
 		}
@@ -1297,6 +1298,12 @@ footer a {
 
 body.has-google-translate {
 	top: inherit !important;
+}
+
+body.client-is-wholesale {
+	.total-products {
+		display: none;
+	}
 }
 
 .label-default {

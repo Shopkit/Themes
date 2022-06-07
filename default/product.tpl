@@ -54,11 +54,15 @@ Description: Product Page
 
 					</h4>
 
-					<p><small class="muted data-promo-percentage">
-						{% if product.price_promo_percentage == true %}
+					{% if user.wholesale is same as(true) and product.wholesale == true and store.settings.wholesale.show_regular_price %}
+						<p><small class="muted">
+							Preço normal: <span class="data-price-non-wholesale">{{ product.price_non_wholesale | money_with_sign }}</span>
+						</small></p>
+                    {% elseif product.price_promo_percentage == true %}
+						<p><small class="muted data-promo-percentage">
 							Desconto de {{ product.price_promo_percentage }}%
-						{% endif %}
-					</small></p>
+						</small></p>
+					{% endif %}
 				</div>
 
 				<br>

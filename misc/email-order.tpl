@@ -7,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Encomenda #{{ order.id }}</title>
+		<title>Encomenda {{ order.status_description|lower }} #{{ order.id }}</title>
 		<style type="text/css">
 			/* Based on The MailChimp Reset INLINE: Yes. */
 			/* Client-specific Styles */
@@ -68,9 +68,19 @@
 				color: #999999;
 			}
 
-			a.link-white, .link-white a {
-				color: #ffffff;
+			.no-link, .no-link a {
+				color: #999999 !important;
+				text-decoration: none !important;
+				font-size: inherit !important;
+				font-family: inherit !important;
+				font-weight: inherit !important;
+				line-height: inherit !important;
 			}
+
+			span[class="hidden-mobile"], span.hidden-mobile {
+				display: inline-block !important;
+			}
+
 			/* Mediaqueries */
 			@media screen and (max-width:768px) {
 				.table-width-wrapper {
@@ -122,6 +132,10 @@
 
 				p[class="visible-mobile"], p.visible-mobile {
 					display: block !important;
+				}
+
+				span[class="hidden-mobile"], span.hidden-mobile {
+					display: none !important;
 				}
 
 				p[class="order-id"], p.order-id, p[class="order-date"], p.order-date {
@@ -177,6 +191,10 @@
 				[class="border-top-right-radius-mobile"], .border-top-right-radius-mobile {
 					border-top-right-radius: 5px;
 				}
+
+				table[class="remove-table-height"], table.remove-table-height {
+					height: 0 !important;
+				}
             }
             @media screen and (min-width:481px) and (max-width:768px) {
             	table[class="column_table"], table.column_table {
@@ -191,7 +209,9 @@
 
 		{{ order_schema }}
 	</head>
-	<body class="{{ css_class }}">
+	<body class="{{ css_class }}" id="body">
+		<div style="display:none;">Encomenda #{{ order.id }} de {{ store.name }} {{ order.status_description|lower }}.</div>
+
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" id="backgroundTable" style="background-color: #f5f5f5;font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;font-size:14px; color:#999;">
 			<tr>
 				<td align="center" valign="top" bgcolor="#f5f5f5" style="background-color: #f5f5f5">
@@ -218,7 +238,7 @@
 										</tr>
 										{% if is_email %}
 											<tr>
-												<td align="center" style="color:#ccc;font-size:12px;"><a href="{{ order.permalink }}" target="_blank">Não consegue ver o e-mail?</a></td>
+												<td align="center" style="color:#ccc;font-size:12px;"><a href="{{ order.permalink }}" style="color:#ccc;font-size:12px;" target="_blank">Não consegue ver o e-mail?</a></td>
 											</tr>
 										{% endif %}
 										<tr>
@@ -228,7 +248,28 @@
 											<td bgcolor="#ffffff" style="border-radius:5px;">
 												<div style="border-radius:5px;">
 
-													{% if order.status_alias == 'canceled' %}
+													{% if order.paid == true and store.order_paid_default_status == order.status %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#8dc059;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#8dc059" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/check.png') }}" width="40" alt="paid" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda paga</span></td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																		{% if order.invoice_permalink %}
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Ver factura</a>
+																		{% elseif order.tracking_code or order.tracking_url %}
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																		{% endif %}
+																	</td>
+																</tr>
+															</table>
+														</div>
+
+													{% elseif order.status_alias == 'canceled' %}
 														{% set have_top_bar = true %}
 														<div style="background-color:#d9534f;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 															<table bgcolor="#d9534f" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
@@ -237,26 +278,24 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;padding-right:20px;"><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda cancelada</span></td>
+																	<td style="padding-top:15px;padding-bottom:15px;padding-right:20px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda cancelada</span></td>
 																</tr>
 															</table>
 														</div>
 
-													{% elseif order.status_alias == 'sent' %}
+													{% elseif order.status_alias == 'returned' %}
 														{% set have_top_bar = true %}
-														<div style="background-color:#00d4ed;border-top-left-radius: 5px;border-top-right-radius: 5px;">
-															<table bgcolor="#00d4ed" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/sent.png') }}" width="40" alt="paid" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/undo.png') }}" width="40" alt="returned" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda enviada</span></td>
-																	<td align="right" class="link-white" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda devolvida</span></td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
-																		{% elseif order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -272,29 +311,10 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda entregue</span></td>
-																	<td align="right" class="link-white" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda entregue</span></td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
-																		{% endif %}
-																	</td>
-																</tr>
-															</table>
-														</div>
-
-													{% elseif order.status_alias == 'returned' %}
-														{% set have_top_bar = true %}
-														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
-															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
-																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/undo.png') }}" width="40" alt="returned" border="0" class="img-order-status"/></td>
-																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
-																		<p>&nbsp;</p>
-																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda devolvida</span></td>
-																	<td align="right" class="link-white" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
-																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Ver factura</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -303,43 +323,150 @@
 
 													{% elseif order.status_alias == 'pickup_available' %}
 														{% set have_top_bar = true %}
-														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
-															<table bgcolor="#999" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+														<div style="background-color:#f0ac4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ac4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/pickup_available.png') }}" width="40" alt="returned" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/pickup_available.png') }}" width="40" alt="pickup_available" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda disponível para levantamento</span></td>
-																	<td align="right" class="link-white" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda disponível para levantamento</span></td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
 																		{% endif %}
 																	</td>
 																</tr>
 															</table>
 														</div>
 
-													{% elseif order.paid == true %}
+													{% elseif order.status_alias == 'sent' %}
 														{% set have_top_bar = true %}
-														<div style="background-color:#8dc059;border-top-left-radius: 5px;border-top-right-radius: 5px;">
-															<table bgcolor="#8dc059" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+														<div style="background-color:#00d4ed;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#00d4ed" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
 																<tr>
-																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/check.png') }}" width="40" alt="paid" border="0" class="img-order-status"/></td>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/sent.png') }}" width="40" alt="paid" border="0" class="img-order-status"/></td>
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff; text-transform:uppercase;font-size:18px;line-height:130%;">Encomenda paga</span></td>
-																	<td align="right" class="link-white" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
-																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Ver factura</a>
-																		{% elseif order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff;text-align:center;">Seguir envio</a>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda enviada</span>
+																		{% if order.expected_arrival_from %}
+																			<br><span style="font-size:11px;color:#d3f7fb;">Entrega prevista {{ order.expected_arrival_until ? 'entre ' ~  order.expected_arrival_from|date("j/m/Y") ~ ' e ' ~  order.expected_arrival_until|date("j/m/Y") : ' a ' ~ order.expected_arrival_from|date("j \\d\\e F \\d\\e Y") }}</span>
+																		{% endif %}
+																	</td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																		{% if order.tracking_code or order.tracking_url %}
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																		{% elseif order.invoice_permalink %}
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Ver factura</a>
 																		{% endif %}
 																	</td>
 																</tr>
 															</table>
 														</div>
+
+													{% elseif order.status_alias == 'waiting_shipment' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ac4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ac4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/waiting_shipment.png') }}" width="40" alt="waiting_shipment" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar expedição</span>
+																	</td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																		{% if order.tracking_code or order.tracking_url %}
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																		{% endif %}
+																	</td>
+																</tr>
+															</table>
+														</div>
+
+													{% elseif order.status_alias == 'processing' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ac4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ac4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/processing.png') }}" width="40" alt="processing" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda em processamento</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+
+													{% elseif order.status_alias == 'pending' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/pending.png') }}" width="40" alt="pending" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda pendente</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+
+													{% elseif order.status_alias == 'waiting_stock' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/waiting.png') }}" width="40" alt="waiting_stock" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar stock</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+
+													{% elseif order.status_alias == 'waiting_payment' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/waiting.png') }}" width="40" alt="waiting_payment" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar pagamento</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+
+													{% elseif order.status_alias == 'waiting_confirmation' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/waiting.png') }}" width="40" alt="waiting_confirmation" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar confirmação</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+
 													{% endif %}
 
 													{% if order.client_note %}
@@ -355,12 +482,13 @@
 														</div>
 													{% endif %}
 
-													<div class="remove-border-bottom-mobile" style="background-color:#ffffff;border-bottom:1px solid #eee; {% if have_top_bar != true and have_client_note != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
+													<div class="remove-border-bottom-mobile" style="background-color:#ffffff;border-bottom: 1px solid #eee;{% if have_top_bar != true and have_client_note != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
+
 														<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="font-size:18px;color:#999;width:100% !important;{% if have_top_bar != true and have_client_note != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
 															<tr>
 																<td class="fix-line-height-mobile" width="100%" align="left" valign="top" style="line-height:14px;font-size:18px;">
 																	<!--[if (gte mso 9)|(IE)]>
-																		<table width="100%" align="center">
+																		<table width="100%" align="center" style="border-bottom: 1px solid #eee;">
 																			<tr>
 																				<td width="50%">
 																	<![endif]-->
@@ -370,7 +498,7 @@
 																				<p class="visible-mobile" style="margin:0 0 0 0;color:#999;display:none;font-size:14px;">
 																					<strong style="color:#666;">Encomenda</strong>
 																				</p>
-																				<p class="order-id" style="margin:0 0 0 0;">#{{ order.id }}</p>
+																				<p class="order-id" style="margin:0 0 0 0;" class="no-link"><span class="hidden-mobile">Encomenda&nbsp;</span>#{{ order.id }}</p>
 																			</td>
 																		</tr>
 																	</table>
@@ -384,7 +512,7 @@
 																				<p class="visible-mobile" style="margin:0 0 0 0;color:#999;display:none;font-size:14px;">
 																					<strong style="color:#666;">Data</strong>
 																				</p>
-																				<p class="order-date" style="margin:0 0 0 0;text-align:right;"><span style="white-space:nowrap;">{{ order.created_at|date("j \\d\\e F \\d\\e Y") }}</span></p>
+																				<p class="order-date" style="margin:0 0 0 0;text-align:right;"><span style="white-space:nowrap;">{{ order.updated_at|date("j \\d\\e F \\d\\e Y") }}</span></p>
 																			</td>
 																		</tr>
 																	</table>
@@ -401,15 +529,15 @@
 													<div style="background-color:#ffffff;border-bottom:1px solid #eee;">
 														<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;">
 															<tr>
-																<td width="100%" align="left" valign="top" style="line-height:24px;font-size:14px;">
+																<td width="100%" align="left" valign="top" style="line-height:24px;font-size:14px;height:0;">
 																	<!--[if (gte mso 9)|(IE)]>
 																		<table width="100%" align="center">
 																			<tr>
 																				<td width="50%">
 																	<![endif]-->
-																		<table bgcolor="#ffffff" width="290" align="left" border="0" cellpadding="0" cellspacing="0" class="column_table">
-																			<tr>
-																			<td class="column-table-cell column-order-status fix-padding-bottom padding-top-mobile-15" style="padding:30px 20px;">
+																	<table bgcolor="#ffffff" width="290" align="left" border="0" cellpadding="0" cellspacing="0" class="column_table">
+																		<tr>
+																			<td class="column-table-cell column-order-status fix-padding-bottom padding-top-mobile-15" valign="top" style="padding:30px 20px;">
 																				<p style="margin:0 0 15px 0;color:#999;">
 																					<strong style="color:#666;">Estado</strong>
 																					<br /><span class="order-status-description">{{ order.status_description }}</span>
@@ -423,8 +551,7 @@
 																				{% if order.tracking_code or order.tracking_url %}
 																					<p class="tracking-code-block" style="margin:0 0 0 0;color:#999;">
 																						<strong style="color:#666;">Tracking</strong>
-																						<br /><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank">{{ order.tracking_code ?: 'Seguir envio' }}</a>
-																					</p>
+																						<br /><span><a x-apple-data-detectors="true" href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" style="color:#333;text-decoration:underline;" target="_blank">{{ order.tracking_code ?: 'Seguir envio' }}</a></span>																					</p>
 																				{% endif %}
 																			</td>
 																		</tr>
@@ -433,9 +560,9 @@
 																		</td>
 																		<td width="50%">
 																	<![endif]-->
-																	<table bgcolor="#ffffff" width="290" align="right" border="0" cellpadding="0" cellspacing="0" class="column_table" style="border-left:1px solid #eee;">
+																	<table bgcolor="#ffffff" width="290" align="right" border="0" cellpadding="0" cellspacing="0" class="column_table remove-table-height" style="border-left:1px solid #eee;height:100%;">
 																		<tr>
-																			<td class="column-table-cell column-order-payment-detail fix-padding-top" style="padding:30px 20px;">
+																			<td class="column-table-cell column-order-payment-detail fix-padding-top" valign="top" style="padding:30px 20px;">
 																				{% if order.payment.type == 'on_delivery' %}
 																					{% set payment_img = store.payments.on_delivery.image %}
 																					{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.on_delivery.message|nl2br ~ '</p>' %}
@@ -456,16 +583,19 @@
 
 																				{% elseif order.payment.type == 'paypal' %}
 																					{% set payment_img = store.payments.paypal.image %}
-																					{% set payment_data = '<p style="margin:5px 0 5px 0;"><a href="' ~ order.payment.data.url ~ '" target="_blank" style="display: inline-block; padding:10px 20px; line-height:100%; color:#fff; border-radius:3px; text-decoration:none; font-size:14px; background-color: #009cde;" class="link-white">Pagar via Paypal</a></p>' %}
+																					{% set payment_data = '<p style="margin:5px 0 5px 0;"><a href="' ~ order.payment.data.url ~ '" target="_blank" style="display: inline-block; padding:10px 20px; line-height:100%; color:#fff; border-radius:3px; text-decoration:none; font-size:14px; background-color: #009cde;">Pagar via Paypal</a></p>' %}
 
 																				{% elseif order.payment.type == 'bank_transfer' %}
 																					{% set payment_img = store.payments.bank_transfer.image %}
-																					{% set bank_transfer_iban = order.payment.data ? '<p style="line-height:24px;margin:5px 0 10px 0;"><strong>IBAN</strong>: ' ~ order.payment.data ~ '</p>' : '' %}
+																					{% set bank_transfer_iban = order.payment.data ? '<p style="line-height:24px;margin:5px 0 10px 0;word-break: break-all;"><strong>IBAN</strong>: ' ~ order.payment.data ~ '</p>' : '' %}
 																					{% set payment_data = bank_transfer_iban ~ '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.bank_transfer.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'credit_card' %}
 																					{% set payment_img = store.payments.credit_card.image|replace({'credit_card': slug(order.payment.data.brand)}) %}
 																					{% set payment_data = '<p style="line-height:24px;margin:5px 0 5px 0">Cartão <strong>' ~ order.payment.data.brand ~ '</strong> terminado em <strong>'~ order.payment.data.last4 ~ '</strong><br>Expira em '~ order.payment.data.exp_month ~'/' ~ order.payment.data.exp_year ~ '</p>' %}
+
+																				{% elseif order.payment.type == 'wallets' %}
+																					{% set payment_img = order.payment.data ? store.payments.wallets.image|replace({'wallets': order.payment.data.wallet}) : store.payments.wallets.image %}
 
 																				{% elseif order.payment.type == 'custom' %}
 																					{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.custom.message|nl2br ~ '</p>' %}
@@ -496,18 +626,18 @@
 																					<tr>
 																						<td colspan="3">
 
-																							{% if order.paid == false %}
+																							{% if order.paid == false and order.status_alias != 'canceled' %}
 																								{% if order.payment.type == 'multibanco' and not order.payment.data.reference %}
 																									<p><small>Ocorreu um erro a gerar a referência Multibanco. <a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Tente novamente</a></small></p>
 																								{% else %}
 																									{{ payment_data }}
 
 																									{% if order.payment.type != 'on_delivery' and order.payment.type != 'pick_up' %}
-																										<p><small><a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Alterar método de pagamento</a></small></p>
+																										<p><a x-apple-data-detectors="true" href="{{ store.url ~ 'order/payment/' ~ order.hash }}" style="color:#333;text-decoration:underline;">Alterar método de pagamento</a></p>
 																									{% endif %}
 																								{% endif %}
 																							{% elseif order.paid == true %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" width="15" height="15" alt="paid" border="0" class="img-order-status" style="vertical-align: text-bottom; width: 15px; height: 15px;"/> <strong>Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i") }}</p>
+																								<p style="color:#999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" width="16" height="16" alt="paid" border="0" class="img-payment-status" style="vertical-align: text-bottom; width: 16px; height: 16px;"/> <strong style="color: #5cb85c;">Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i") }}</p>
 																							{% endif %}
 																						</td>
 																					</tr>
@@ -524,7 +654,7 @@
 															</tr>
 														</table>
 													</div>
-													<div style="background-color:#ffffff;border-bottom:1px solid #eee;line-height: 140%;">
+													<div style="background-color:#ffffff;line-height: 140%;">
 
 														{% if order.products %}
 															<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #eee;width:100% !important;">
@@ -535,7 +665,7 @@
 																		<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{% if last_product %}padding-bottom:30px;{% endif %}"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
 																		<td class="product-vt-margin" width="20" style="padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">&nbsp;</td>
 																		<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">
-																			<strong style="color:#666;">{{ product.title }}</strong>
+																			<strong style="color:#666;">{{ product.title|replace({(' - ' ~ product.option): ''}) }}</strong>
 																			{% if product.option %}
 																				<br />{{ product.option }}&nbsp;
 																			{% endif %}
@@ -553,7 +683,7 @@
 															</table>
 														{% endif %}
 
-														<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="line-height:100%;width:100% !important;">
+														<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="line-height:100%;width:100% !important;border-bottom:1px solid #eee;">
 															<tr>
 																<td height="20" colspan="2" align="left">&nbsp;</td>
 															</tr>
@@ -623,8 +753,12 @@
 																		<tr>
 																			<td class="column-table-cell fix-padding-top" style="padding:30px 20px;">
 																				<p style="margin: 0 0 0 0;font-size:14px;line-height:24px;color:#999999;">
-																					<strong style="color: #666">Empresa:</strong> {{ order.client.company ?: 'n/a' }}<br>
-																					<strong style="color: #666">{{ order.l10n.tax_id_abbr }}:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
+																					{% if store.settings.cart.field_company != 'hidden' %}
+																						<strong style="color: #666">Empresa:</strong> {{ order.client.company ?: 'n/a' }}<br>
+																					{% endif %}
+																					{% if store.settings.cart.field_fiscal_id != 'hidden' %}
+																						<strong style="color: #666">{{ order.l10n.tax_id_abbr }}:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
+																					{% endif %}
 																				</p>
 																			</td>
 																		</tr>
@@ -640,7 +774,7 @@
 																<td colspan="2" height="1" style="border-bottom:1px solid #eee"></td>
 															</tr>
 															<tr>
-																<td width="100%" align="left" valign="top" style="font-size:14px;line-height:24px;color:#999999;">
+																<td width="100%" align="left" valign="top" style="font-size:14px;line-height:24px;color:#999999;height:0;">
 																	<!--[if (gte mso 9)|(IE)]>
 																		<table width="100%" align="center">
 																			<tr>
@@ -648,15 +782,17 @@
 																	<![endif]-->
 																	<table bgcolor="#ffffff" width="290" align="left" border="0" cellpadding="0" cellspacing="0" class="column_table">
 																		<tr>
-																			<td class="column-table-cell fix-padding-bottom" style="padding:30px 20px;">
+																			<td class="column-table-cell fix-padding-bottom" valign="top" style="padding:30px 20px;">
 																				<p style="margin:0 0 0 0;color:#666"><strong>Morada de envio</strong></p>
 																				<p style="margin:0 0 0 0">{{ order.client.delivery.name }}</p>
-																				<p style="margin:0 0 0 0">{{ order.client.delivery.address }} {{ order.client.delivery.address_extra }}</p>
-																				<p style="margin:0 0 0 0">{{ order.client.delivery.zip_code }} {{ order.client.delivery.city }}</p>
+																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.delivery.address }} {{ order.client.delivery.address_extra }}</p>
+																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.delivery.zip_code }} {{ order.client.delivery.city }}</p>
 																				<p style="margin:0 0 0 0">{{ order.client.delivery.country }}</p>
-																				<p style="margin:0 0 0 0">Telefone: {{ order.client.delivery.phone ?: 'n/a' }}</p>
+																				{% if store.settings.cart.field_delivery_phone != 'hidden' %}
+																					<p style="margin:0 0 0 0" class="no-link">Telefone: {{ order.client.delivery.phone ?: 'n/a' }}</p>
+																				{% endif %}
 																				{% if order.tracking_code or order.tracking_url %}
-																					<p><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Seguir envio</a></p>
+																					<p><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Seguir envio</a></p>
 																				{% endif %}
 																			</td>
 																		</tr>
@@ -665,17 +801,19 @@
 																		</td>
 																		<td width="50%">
 																	<![endif]-->
-																	<table bgcolor="#ffffff" width="290" align="right" border="0" cellpadding="0" cellspacing="0" class="column_table" style="border-left:1px solid #eee;">
+																	<table bgcolor="#ffffff" width="290" align="right" border="0" cellpadding="0" cellspacing="0" class="column_table remove-table-height" style="border-left:1px solid #eee;height:100%;">
 																		<tr>
-																			<td class="column-table-cell fix-padding-top" style="padding:30px 20px;">
+																			<td class="column-table-cell fix-padding-top" valign="top" style="padding:30px 20px;">
 																				<p style="margin:0 0 0 0;color:#666"><strong>Morada de facturação</strong></p>
 																				<p style="margin:0 0 0 0">{{ order.client.billing.name }}</p>
-																				<p style="margin:0 0 0 0">{{ order.client.billing.address }} {{ order.client.billing.address_extra }}</p>
-																				<p style="margin:0 0 0 0">{{ order.client.billing.zip_code }} {{ order.client.billing.city }}</p>
+																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.billing.address }} {{ order.client.billing.address_extra }}</p>
+																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.billing.zip_code }} {{ order.client.billing.city }}</p>
 																				<p style="margin:0 0 0 0">{{ order.client.billing.country }}</p>
-																				<p style="margin:0 0 0 0">Telefone: {{ order.client.billing.phone ?: 'n/a' }}</p>
+																				{% if store.settings.cart.field_billing_phone != 'hidden' %}
+																					<p style="margin:0 0 0 0" class="no-link">Telefone: {{ order.client.billing.phone ?: 'n/a' }}</p>
+																				{% endif %}
 																				{% if order.invoice_permalink %}
-																					<p><a href="{{ order.invoice_permalink }}" target="_blank" class="link-white" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Ver factura</a></p>
+																					<p><a href="{{ order.invoice_permalink }}" target="_blank" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Ver factura</a></p>
 																				{% endif %}
 																			</td>
 																		</tr>
@@ -754,7 +892,9 @@
 											<tr>
 												<td align="center">
 													<div style="display:inline-block; border-top: 1px solid #ddd; padding-left:30px; padding-right:30px; padding-top:30px;">
-														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" target="_blank"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit" height="25" style="border:0;" border="0" alt="Powered by Shopkit" /></a>
+														<span style="opacity: 0.25;margin-top: 30px;margin-bottom: 30px;text-align: center;color: #000;font-size: 9px;">Powered by</span>
+														<br>
+														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit e-commerce" height="25" style="border:0;" border="0" alt="Powered by Shopkit e-commerce" /></a>
 													</div>
 												</td>
 											</tr>

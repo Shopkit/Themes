@@ -60,6 +60,11 @@ Description: Complete order page
 									<a href="{{ order.payment.data.url }}" target="_blank" class="btn btn-info btn-lg"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a>
 								</div>
 
+							{% elseif order.payment.type == 'wallets' %}
+								<div class="wallets-data margin-top-sm">
+									<div id="payment-request-button"></div>
+								</div>
+
 							{% elseif order.payment.type == 'pick_up' and order.payment.data %}
 								<div class="pick_up-data margin-top-sm text-h6">
 									<strong>Morada de levantamento</strong><br>

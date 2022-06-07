@@ -8,7 +8,7 @@ Description: Brands list page
 
 {% block content %}
 
-	{% set brands = brands("limit:#{brands_per_page}") %}
+	{% set brands = brands("order:#{store.brands_sorting} limit:#{brands_per_page}") %}
 
 	<h1 class="wide">Todas as marcas</h1>
 

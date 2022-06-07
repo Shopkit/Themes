@@ -130,6 +130,7 @@ $(document).ready(function() {
 	$('.shipping-methods .list-radio-block').on('click', function() {
 		var _this = $(this);
 		$('.shipping-methods .list-radio-block').removeClass('list-group-item-active').find('input').prop('checked', false);
+		$('select', _this).length ? $('select', _this).prop('disabled', false) : $('.shipping-methods .list-radio-block:not(.list-group-item-active)').find('select').prop('disabled', true);
 		_this.addClass('list-group-item-active').find('input').prop('checked', true).trigger('change');
 	});
 
@@ -267,10 +268,17 @@ $(window).load(function() {
 			$('.slideshow').addClass('loaded');
 			$('.slideshow .flex-direction-nav li a.flex-disabled').parent('li').addClass('disabled');
 
+			var image_height = $('.flex-active-slide img').height();
+			$('.slideshow-product').css('min-height',image_height);
+
 			//Force first option to be triggered
 			if (typeof product !== 'undefined' && product.option_groups.length > 0) {
 				product_options(product, true);
 			}
+		},
+		after: function(){
+			var image_height = $('.flex-active-slide img').height();
+			$('.slideshow-product').css('min-height',image_height);
 		}
 	});
 
@@ -362,6 +370,9 @@ function product_options(product, onload) {
 					$('body').removeClass('price-on-request');
 
 					if (product_is_vendible(product, response)) {
+
+						$('.product-detail .data-price-non-wholesale').text(response.price_non_wholesale_formatted);
+
 						if (response.promo === true) {
 							$('.promo-price').text(response.price_formatted);
 							price_txt = response.price_promo_formatted;
@@ -402,6 +413,7 @@ function product_options(product, onload) {
 
 				reference = response.reference;
 			} else {
+				$('body').removeClass('price-on-request');
 				price_txt = 'Não disponível';
 				stock_qty = 0;
 				disable_form_product = true;

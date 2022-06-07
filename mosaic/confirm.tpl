@@ -109,8 +109,12 @@ Description: Confirm order page
 						<div class="span4">
 							<h4 class="margin-top">Dados de cliente</h4>
 							{{ user.email }}<br>
-							{{ user.l10n.tax_id_abbr }}: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
-							Empresa: {{ user.company ? user.company : 'n/a' }}
+							{% if store.settings.cart.field_fiscal_id != 'hidden' %}
+								{{ user.l10n.tax_id_abbr }}: {{ user.fiscal_id ? user.fiscal_id : 'n/a' }}<br>
+							{% endif %}
+							{% if store.settings.cart.field_company != 'hidden' %}
+								Empresa: {{ user.company ? user.company : 'n/a' }}
+							{% endif %}
 						</div>
 					</div>
 
@@ -124,9 +128,11 @@ Description: Confirm order page
 									{{ user.delivery.zip_code }} {{ user.delivery.city }}<br>
 									{{ user.delivery.country }}
 								</p>
-								<p>
-									{{ user.delivery.phone ? 'Telefone: ' ~ user.delivery.phone : '' }}
-								</p>
+								{% if store.settings.cart.field_delivery_phone != 'hidden' %}
+									<p>
+										{{ user.delivery.phone ? 'Telefone: ' ~ user.delivery.phone : '' }}
+									</p>
+								{% endif %}
 							</div>
 
 							<div class="span6">
@@ -137,9 +143,11 @@ Description: Confirm order page
 									{{ user.billing.zip_code }} {{ user.billing.city }}<br>
 									{{ user.billing.country }}
 								</p>
-								<p>
-									{{ user.billing.phone ? 'Telefone: ' ~ user.billing.phone : '' }}
-								</p>
+								{% if store.settings.cart.field_billing_phone != 'hidden' %}
+									<p>
+										{{ user.billing.phone ? 'Telefone: ' ~ user.billing.phone : '' }}
+									</p>
+								{% endif %}
 							</div>
 						</div>
 					</div>
