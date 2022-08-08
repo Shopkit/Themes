@@ -259,52 +259,95 @@ $(document).ready(function() {
 			_this.removeClass('mask-hidden');
 		}
 	});
+
+	$(window).load(function() {
+		$('.flexslider').flexslider({
+			animation: "slide",
+			slideshow: false,
+			smoothHeight: true,
+			prevText: "",
+			nextText: "",
+			start: function() {
+				//Trigger first set of options
+				var default_option = 'false';
+				if (typeof product !== 'undefined' && product.option_groups.length > 0) {
+					var default_option = product_default_option(product);
+					$('.select-product-options option[value="' + default_option + '"]').prop('selected', true).trigger('change');
+				}
+				if (isNaN(default_option)) {
+					$('.select-product-options').val(0).change();
+				}
+
+				//Force first option to be triggered
+				if (typeof product !== 'undefined' && product.option_groups.length > 0) {
+					product_options(product, true);
+				}
+
+			}
+		});
+
+		$('.fb-page, .fb-comments').each(function() {
+			$(this).attr('data-width', $(this).parent().width());
+		});
+
+		$('.intl-validate').each(function(index) {
+			var _this = $(this);
+			var address_type = _this.attr('id').split('_')[0];
+			setTimeout(function() {
+				if (!_this.val() && user[address_type].country_code_alpha_2) {
+					_this.intlTelInput('setCountry', user[address_type].country_code_alpha_2);
+				}
+				validate_phone_intl_input(_this, true);
+				_this.focus();
+				_this.blur();
+			}, 1500);
+		});
+
+		if ($('[data-load="related-products"]').length) {
+	        $('[data-load="related-products"]').each(function() {
+	            var _this = $(this);
+
+	            var products = _this.attr('data-products');
+	            var num_products = _this.attr('data-num-products');
+	            var products_per_row = _this.attr('data-products-per-row');
+	            var css_class_wrapper = _this.attr('data-css-class-wrapper');
+	            var type = _this.attr('data-type');
+
+	            $.ajax({
+	                method: 'GET',
+	                cache: true,
+	                url: '/related-products?products=' + products + '&num_products=' + num_products + '&products_per_row=' + products_per_row + '&css_class_wrapper=' + css_class_wrapper + '&type=' + type,
+	                dataType: 'html'
+	            }).done(function(data) {
+	                if (data) {
+	                    _this.find('.related-products-placement').html(data);
+	                    _this.removeClass('hidden');
+						$container = $('.related-products .products');
+						set_layout();
+						lazyLoadInstance.update();
+						$container.imagesLoaded().done(function(instance) {
+							$container.isotope({
+								resizable: false,
+								masonry: {
+									columnWidth: getUnitWidth()
+								},
+								onLayout: function() {}
+							});
+						})
+						.progress(function(instance, image) {
+							var image_tag = $(image.img);
+							image_tag.animate({ 'opacity': 1 }).parents('li').children('.spinner').fadeOut('slow', function() {
+								image_tag.parents('li').spin(false);
+							});
+						});
+	                }
+	            });
+	        });
+	    }
+	});
 });
 
 
-$(window).load(function() {
-	$('.flexslider').flexslider({
-		animation: "slide",
-		slideshow: false,
-		smoothHeight: true,
-		prevText: "",
-		nextText: "",
-		start: function() {
-			//Trigger first set of options
-			var default_option = 'false';
-			if (typeof product !== 'undefined' && product.option_groups.length > 0) {
-				var default_option = product_default_option(product);
-				$('.select-product-options option[value="' + default_option + '"]').prop('selected', true).trigger('change');
-			}
-			if (isNaN(default_option)) {
-				$('.select-product-options').val(0).change();
-			}
-
-			//Force first option to be triggered
-			if (typeof product !== 'undefined' && product.option_groups.length > 0) {
-				product_options(product, true);
-			}
-
-		}
-	});
-
-	$('.fb-page, .fb-comments').each(function() {
-		$(this).attr('data-width', $(this).parent().width());
-	});
-
-	$('.intl-validate').each(function(index) {
-		var _this = $(this);
-		var address_type = _this.attr('id').split('_')[0];
-		setTimeout(function() {
-			if (!_this.val() && user[address_type].country_code_alpha_2) {
-				_this.intlTelInput('setCountry', user[address_type].country_code_alpha_2);
-			}
-			validate_phone_intl_input(_this, true);
-			_this.focus();
-			_this.blur();
-		}, 1500);
-	});
-});
 
 function product_options(product, onload) {
 	if ($('.select-product-options').length) {

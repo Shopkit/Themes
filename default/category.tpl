@@ -2,7 +2,7 @@
 Description: Product category page
 #}
 
-{% import 'base.tpl' as generic_macros %}
+{% import 'macros.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -82,7 +82,11 @@ Description: Product category page
 		<div class="row products">
 
 			{% for product in products %}
-				{{ generic_macros.product_list(product) }}
+
+				<div class="span3">
+					{{ generic_macros.product_list(product) }}
+				</div>
+
 			{% else %}
 
 				<div class="span9 product">

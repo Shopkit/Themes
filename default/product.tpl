@@ -102,7 +102,7 @@ Description: Product Page
 
 						<div class="data-product-info">
 							Quantidade &nbsp;
-							<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
+							<input type="number" class="span1" name="qtd" value="1" min="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 							<button class="btn btn-inverse" type="submit">
 								<i class="fa fa-shopping-cart fa-lg fa-fw"></i> Comprar
 							</button>
@@ -261,6 +261,13 @@ Description: Product Page
 						</div>
 					</div>
 				{% endif %}
+
+				<div class="related-products margin-top hidden" data-load="related-products" data-products="{{ product.id }}" data-num-products="3" data-products-per-row="3" data-css-class-wrapper="product-related-products">
+					<div class="text-center">
+						<h3 class="products-title margin-bottom">{{ product.related_products.title }}</h3>
+						<div class="related-products-placement"></div>
+					</div>
+				</div>
 			</div>
 
 		</div>

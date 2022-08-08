@@ -2,7 +2,7 @@
 Description: Search Page
 #}
 
-{% import 'base.tpl' as generic_macros %}
+{% import 'macros.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -64,7 +64,11 @@ Description: Search Page
 	<div class="row products">
 
 		{% for product in search.results %}
-			{{ generic_macros.product_list(product) }}
+
+			<div class="span3">
+				{{ generic_macros.product_list(product) }}
+			</div>
+
 		{% else %}
 
 			<div class="span9 product">

@@ -89,6 +89,15 @@ Description: Shopping cart page
 
 		{{ form_close() }}
 
+		{% if store.settings.cart.related_products_intelligent %}
+			<div class="related-products margin-top hidden" data-load="related-products" data-products="{{ cart.items|column('product_id')|json_encode }}" data-num-products="3" data-products-per-row="3" data-css-class-wrapper="cart-related-products" data-type="intelligent">
+				<div class="text-center">
+					<h3 class="products-title margin-bottom">Outros clientes também compraram</h3>
+					<div class="related-products-placement"></div>
+				</div>
+			</div>
+		{% endif %}
+
 	{% else %}
 
 		<div class="alert alert-info">

@@ -2,7 +2,7 @@
 Description: Promotions Page
 #}
 
-{% import 'base.tpl' as generic_macros %}
+{% import 'macros.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 

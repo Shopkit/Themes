@@ -738,6 +738,12 @@ footer a {
 	}
 }
 
+#tab-description {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-wrap: break-word;
+}
+
 .data-product-on-request { display: none; }
 .price-on-request .data-product-on-request { display: block; }
 .price-on-request .data-product-info { display: none; }
@@ -871,6 +877,9 @@ footer a {
 
 			.panel-body {
 				border-color: #eee;
+				overflow-wrap: break-word;
+				word-wrap: break-word;
+				-ms-word-wrap: break-word;
 			}
 		}
 	}
@@ -909,6 +918,15 @@ footer a {
 			}
 		}
 	}
+}
+
+//Products related
+.products-title {
+    color: @basecolor;
+}
+
+.cart-related-products .product .box > p {
+    display: none;
 }
 
 /* Form */

@@ -13,7 +13,7 @@ Description: Product Page
 {% endmacro %}
 
 {% import _self as product_macros %}
-{% import 'base.tpl' as generic_macros %}
+{% import 'macros.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -160,7 +160,7 @@ Description: Product Page
 							<div class="data-product-info">
 								<div class="row">
 									<div class="col-sm-7 col-md-12 col-lg-7">
-										<input type="number" class="form-control" value="1" name="qtd" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
+										<input type="number" class="form-control" value="1" min="1" name="qtd" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 										<button type="submit" class="btn btn-gray text-uppercase"><i class="fa fa-cart-plus fa-fw"></i> Adicionar</button>
 									</div>
 									<div class="col-sm-5 col-md-12 col-lg-5">
@@ -283,33 +283,10 @@ Description: Product Page
 
 		</article>
 
-		{% set related_products = products("order:featured category:#{product.categories[0].id} exclude:products[#{product.id}] limit:4") %}
-
-		{% if related_products|length > 2 %}
-
-			<div class="related-products margin-top-lg">
-				<div class="text-center">
-					<h3>Também poderá gostar de</h3>
-				</div>
-
-				<div class="products">
-					<div class="row">
-
-						{% for related_product in related_products %}
-							<div class="col-xs-6 col-sm-4 col-md-3 {% if loop.index == 4 %}hidden-sm{% endif %} {% if loop.index > 2 %}hidden-xs{% endif %}">
-								{{ generic_macros.product_list(related_product) }}
-							</div>
-						{% else %}
-							<div class="col-xs-12 padding-bottom-lg text-center">
-								<h3 class="margin-top-0 text-gray light">Não existem produtos nesta categoria</h3>
-							</div>
-						{% endfor %}
-
-					</div>
-				</div>
-			</div>
-
-		{% endif %}
+		<div class="related-products hidden" data-load="related-products" data-products="{{ product.id }}" data-num-products="4" data-products-per-row="4" data-css-class-wrapper="product-related-products">
+			<h3>{{ product.related_products.title }}</h3>
+			<div class="related-products-placement margin-top"></div>
+		</div>
 
 	</div>
 

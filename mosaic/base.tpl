@@ -11,68 +11,6 @@ Description: This is the base layout. It's included in every page with this code
 {% set categories_per_page = store.categories_per_page ?: 12 %}
 {% set brands_per_page = store.brands_per_page ?: 24 %}
 
-{% macro product_list(product) %}
-	{% import _self as generic_macros %}
-
-	{% set product_title = product.title|e_attr %}
-	{% set product_url = product.url %}
-
-	<li class="product-id-{{ product.id }}" data-id="{{ product.id }}">
-		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
-
-		<div class="description">
-			<h3><a href="{{ product_url }}">{{ product.title }}</a></h3>
-
-			<span class="price">
-
-			{% if product.price_on_request == true %}
-				Preço sob consulta
-			{% else %}
-				{% if product.promo == true %}
-					{{ product.price_promo | money_with_sign }} &nbsp; <del>{{ product.price | money_with_sign }}</del>
-				{% else %}
-					{{ product.price | money_with_sign }}
-				{% endif %}
-			{% endif %}
-
-			</span>
-
-			{% if product.status == 1 and product.price_on_request == false and not product.option_groups %}
-				<a href="{{ product_url }}" class="button white"><i class="fa fa-shopping-cart"></i><span>Comprar</span></a>
-			{% elseif product.option_groups %}
-				<a href="{{ product_url }}" class="button white"><i class="fa fa-plus-square"></i><span>Opções</span></a>
-			{% else %}
-				<a href="{{ product_url }}" class="button white"><i class="fa fa-plus-square"></i><span>Info</span></a>
-			{% endif %}
-
-			<p class="category">{{ product.categories[0].title }}</p>
-
-		</div>
-
-	</li>
-
-{% endmacro %}
-
-{% macro category_list(category, show_number_products = true) %}
-	{% import _self as generic_macros %}
-
-	{% set category_title = category.title|e_attr %}
-	{% set category_url = category.url %}
-
-	<li class="category-id-{{ category.id }}">
-		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.square }}" alt="{{ category_title }}" title="{{ category_title }}" class="lazy">
-		<div class="description">
-			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
-			{% if not category.parent == 0 and category.children and show_number_products %}
-				<p>{{ category.children|length }} Categorias</p>
-			{% elseif show_number_products %}
-				<p class="total-products">{{ category.total_products }} Produtos</p>
-			{% endif %}
-			<a href="{{ category_url }}" class="button white"><span>Explorar</span></a>
-		</div>
-	</li>
-{% endmacro %}
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -289,19 +227,12 @@ Description: This is the base layout. It's included in every page with this code
 		<section>
 
 			<ul class="unstyled list">
-				<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
-					<a href="{{ site_url('catalog') }}">Todos os produtos</a>
-				</li>
-				<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
-					<a href="{{ site_url('categories') }}">Todas as categorias</a>
-				</li>
-				{% set brands = brands("order:#{store.brands_sorting} limit:6") %}
-
-				{% if brands %}
-					<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
-						<a href="{{ site_url('brands') }}">Todas as marcas</a>
+				{% for catalog_menu in store.navigation.catalogs_menus %}
+					<li class="menu-{{ catalog_menu.menu_item }} {{ current_page == catalog_menu.menu_item ? 'active' }}">
+						<a href="{{ catalog_menu.menu_url }}">{{ catalog_menu.menu_text }}</a>
 					</li>
-				{% endif %}
+				{% endfor %}
+
 				{% for products_category in categories %}
 					<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">
 

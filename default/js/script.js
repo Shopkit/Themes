@@ -163,6 +163,31 @@ $(document).ready(function() {
 			_this.removeClass('mask-hidden');
 		}
 	});
+
+	if ($('[data-load="related-products"]').length) {
+		$('[data-load="related-products"]').each(function() {
+			var _this = $(this);
+
+			var products = _this.attr('data-products');
+			var num_products = _this.attr('data-num-products');
+			var products_per_row = _this.attr('data-products-per-row');
+			var css_class_wrapper = _this.attr('data-css-class-wrapper');
+			var type = _this.attr('data-type');
+
+			$.ajax({
+				method: 'GET',
+				cache: true,
+				url: '/related-products?products=' + products + '&num_products=' + num_products + '&products_per_row=' + products_per_row + '&css_class_wrapper=' + css_class_wrapper + '&type=' + type,
+				dataType: 'html'
+			}).done(function(data) {
+				if (data) {
+					_this.find('.related-products-placement').html(data);
+					_this.removeClass('hidden');
+					lazyLoadInstance.update();
+				}
+			});
+		});
+	}
 });
 
 $(window).load(function() {

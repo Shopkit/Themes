@@ -2,7 +2,7 @@
 Description: Last products page
 #}
 
-{% import 'base.tpl' as generic_macros %}
+{% import 'macros.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -20,7 +20,11 @@ Description: Last products page
 	<div class="row products">
 
 		{% for product in products("new limit:#{products_per_page_catalog}") %}
-			{{ generic_macros.product_list(product) }}
+
+			<div class="span3">
+				{{ generic_macros.product_list(product) }}
+			</div>
+
 		{% else %}
 
 			<div class="span9 product">

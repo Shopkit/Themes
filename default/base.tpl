@@ -12,55 +12,6 @@ Github: https://github.com/Shopkit/Default
 {% set categories_per_page = store.categories_per_page ?: 18 %}
 {% set brands_per_page = store.brands_per_page ?: 36 %}
 
-{% macro product_list(product) %}
-	{% import _self as generic_macros %}
-
-	{% set product_title = product.title|e_attr %}
-	{% set product_url = product.url %}
-
-	<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
-
-		<a href="{{ product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy"></a>
-		<div class="box">
-			<h3><a href="{{ product_url }}">{{ product.title }}</a></h3>
-
-			<p>{{ product.description_short }}</p>
-
-			<span class="price">
-				{% if product.price_on_request == true %}
-					Preço sob consulta
-				{% else %}
-					{% if product.promo == true %}
-						<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
-					{% else %}
-						{{ product.price | money_with_sign }}
-					{% endif %}
-				{% endif %}
-			</span>
-		</div>
-	</div>
-
-{% endmacro %}
-
-{% macro category_list(category, show_number_products = true) %}
-	{% import _self as generic_macros %}
-
-	{% set category_title = category.title|e_attr %}
-	{% set category_url = category.url %}
-
-	<div class="span3 category category-id-{{ category.id }}">
-		<a href="{{ category_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.full }}" alt="{{ category_title }}" title="{{ category_title }}" class="lazy"></a>
-		<div class="box">
-			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
-			{% if not category.parent == 0 and category.children and show_number_products %}
-				<span>{{ category.children|length }} Categorias</span>
-			{% elseif show_number_products %}
-				<span class="total-products">{{ category.total_products }} Produtos</span>
-			{% endif %}
-		</div>
-	</div>
-{% endmacro %}
-
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="pt"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="pt"> <![endif]-->
@@ -269,26 +220,13 @@ Github: https://github.com/Shopkit/Default
 
 					<nav>
 						<ul>
-							<li class="menu-catalog {% if (current_page == 'catalog') %} active {% endif %}">
-								<h4>
-									<a href="{{ site_url('catalog') }}">Todos os produtos</a>
-								</h4>
-							</li>
-							<li class="menu-categories {% if (current_page == 'categories') %} active {% endif %}">
-								<h4>
-									<a href="{{ site_url('categories') }}">Todas as categorias</a>
-								</h4>
-							</li>
-
-							{% set brands = brands("order:#{store.brands_sorting} limit:6") %}
-
-							{% if brands %}
-								<li class="menu-brands {% if (current_page == 'brands') %} active {% endif %}">
+							{% for catalog_menu in store.navigation.catalogs_menus %}
+								<li class="menu-{{ catalog_menu.menu_item }} {{ current_page == catalog_menu.menu_item ? 'active' }}">
 									<h4>
-										<a href="{{ site_url('brands') }}">Todas as marcas</a>
+										<a href="{{ catalog_menu.menu_url }}">{{ catalog_menu.menu_text }}</a>
 									</h4>
 								</li>
-							{% endif %}
+							{% endfor %}
 
 							{% for products_category in categories %}
 								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">

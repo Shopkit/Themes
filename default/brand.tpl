@@ -2,7 +2,7 @@
 Description: Product brand page
 #}
 
-{% import 'base.tpl' as generic_macros %}
+{% import 'macros.tpl' as generic_macros %}
 
 {% extends 'base.tpl' %}
 
@@ -30,27 +30,8 @@ Description: Product brand page
 
 			{% for product in products %}
 
-				<div class="span3 product product-id-{{ product.id }}" data-id="{{ product.id }}">
-					<a href="{{ product.url }}"><img src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}"></a>
-					<div class="box">
-						<h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-
-						<p>{{ product.description_short }}</p>
-
-						<span class="price">
-
-							{% if product.price_on_request == true %}
-								Preço sob consulta
-							{% else %}
-								{% if product.promo == true %}
-									<del>{{ product.price | money_with_sign }}</del> &nbsp; {{ product.price_promo | money_with_sign }}
-								{% else %}
-									{{ product.price | money_with_sign }}
-								{% endif %}
-							{% endif %}
-
-						</span>
-					</div>
+				<div class="span3">
+					{{ generic_macros.product_list(product) }}
 				</div>
 
 			{% else %}

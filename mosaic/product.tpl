@@ -89,7 +89,7 @@ Description: Product Page
 					<div class="form-inline">
 
 						<div class="data-product-info">
-							<input type="number" class="span1" name="qtd" value="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
+							<input type="number" class="span1" name="qtd" value="1" min="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}>
 
 							&nbsp; &nbsp;
 						</div>
@@ -266,6 +266,13 @@ Description: Product Page
 
 		</article>
 
+	</div>
+
+	<div class="related-products margin-top hidden" style="z-index:2;position:relative;" data-load="related-products" data-products="{{ product.id }}" data-num-products="6" data-products-per-row="3" data-css-class-wrapper="product-related-products unstyled">
+		<div class="wide text-center">
+			<h1 class="wide">{{ product.related_products.title }}</h1>
+		</div>
+		<div class="related-products-placement"></div>
 	</div>
 
 {% endblock %}
