@@ -270,6 +270,21 @@ a, .btn, button, .button {
 }
 
 //Typography
+
+h1, .h1 { font-size: @font-size-h1; }
+h2, .h2 { font-size: @font-size-h2; }
+h3, .h3 { font-size: @font-size-h3; }
+h4, .h4 { font-size: @font-size-h4; }
+h5, .h5 { font-size: @font-size-h5; }
+h6, .h6 { font-size: @font-size-h6; }
+
+.text-h1 { font-size: @font-size-h1; }
+.text-h2 { font-size: @font-size-h2; }
+.text-h3 { font-size: @font-size-h3; }
+.text-h4 { font-size: @font-size-h4; }
+.text-h5 { font-size: @font-size-h5; }
+.text-h6 { font-size: @font-size-base; }
+
 h1 {
 	font-weight: @light;
 	color: #333;
@@ -766,28 +781,54 @@ h2, h3, h4, h5, h6 {
 		position: relative;
 		margin-bottom: @padding;
 
+        &.out_of_stock {
+            -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+        }
+
 		img {
 			border-radius: @border-radius;
 			width: 100%;
 		}
 
-		.badge {
+		.product-badges {
 			position: absolute;
 			z-index: 3;
 			top: @padding/2;
 			left: @padding/2;
 			text-transform: uppercase;
 			font-size: 11px;
-			border-radius: @border-radius;
 			font-weight: @normal;
+			text-align: center;
 
-			&.promo {
-				background-color: #f9f9f9;
-				color: #999;
-			}
-			&.out_of_stock {
-				background-color: @brand-danger;
-				color: #fff;
+			& > span {
+				color: @secondarycolor;
+				padding: 3px 7px;
+				display: block;
+				white-space: nowrap;
+				border-radius: @border-radius;
+
+				&.promo {
+					background-color: @basecolor;
+					color: contrast(@basecolor);
+
+					&:not(:only-child) {
+						border-bottom-right-radius: 0;
+						border-bottom-left-radius: 0;
+					}
+				}
+
+				&.out_of_stock, &.soon, &.new {
+					background-color: #fff;
+					color: #000;
+				}
+
+				&.product-promo-percent {
+					background-color: darken(@basecolor, 5%);
+					color: contrast(@basecolor);
+					border-top-right-radius: 0;
+					border-top-left-radius: 0;
+				}
 			}
 		}
 
@@ -1056,6 +1097,24 @@ h2, h3, h4, h5, h6 {
 		select, input, button, textarea {
 			cursor: not-allowed;
 			pointer-events: none;
+		}
+	}
+}
+
+.input-group {
+	.input-group-btn {
+		.btn.btn-default {
+			box-shadow: none;
+			border: 1px solid #eee;
+			background-color: #f9f9f9;
+			padding-left: 10px;
+			padding-right: 10px;
+
+			&:hover, &:focus, &:active {
+				box-shadow: none;
+				border: 1px solid #ddd;
+				background-color: #eee;
+			}
 		}
 	}
 }
@@ -1500,6 +1559,30 @@ body.client-is-wholesale {
 	}
 }
 
+.coupon-code-label > span {
+	display: -webkit-inline-flex;
+	display: inline-flex;
+	-webkit-flex-direction: row;
+	flex-direction: row;
+	-webkit-flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	margin: 0;
+
+	& > * {
+		-webkit-align-self: center;
+		-ms-flex-item-align: center;
+		align-self: center;
+	}
+
+	.coupon-code-text {
+		word-break: break-word;
+		white-space: normal;
+		padding: 3px 10px;
+	}
+}
+
 //Pages
 .page-page, .page-contact {
 	img {
@@ -1725,6 +1808,20 @@ footer {
 	p:last-child {
 		margin-bottom: 0;
 	}
+}
+
+.label {
+	.btn-close {
+		.text-default;
+		opacity: 0.5;
+		border: none;
+		padding: 0;
+	}
+}
+
+.label-light-bg {
+	background-color: #eee;
+	.text-default;
 }
 
 .label-default {
@@ -2398,6 +2495,14 @@ form footer {
 }
 
 //Mediaqueries
+@media (max-width: 767px) {
+	.margin-top-visible-xs {
+		.margin-top;
+	}
+	.text-left-xs {
+		text-align: left;
+	}
+}
 
 //sm
 @media (min-width: 768px) {
@@ -2672,12 +2777,20 @@ form footer {
 }
 
 @media (max-width: 991px) {
+	.margin-top-visible-md {
+		.margin-top;
+	}
 	.order-resume {
-		background: none;
-		padding: 0;
+		// background: none;
+		// padding: 0;
 		&.well {
-			border: 0;
-			margin-bottom: 0;
+			// border: 0;
+			// margin-bottom: 0;
+		}
+		.dl-horizontal:first-of-type {
+			dd:not(:last-of-type) {
+				.margin-bottom-xs;
+			}
 		}
 	}
 }
@@ -2882,6 +2995,7 @@ a.link-inherit {
 .opacity-75 { .opacity(0.75); }
 .opacity-100 { .opacity(1); }
 
+.text-default, .text-default a { color: @text-color; }
 .text-white, .text-white a { color: #fff; }
 .text-light-gray, .text-light-gray a { color: #ccc; }
 .text-gray, .text-gray a { color: #999; }

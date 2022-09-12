@@ -10,45 +10,39 @@ Description: Shopping cart page
 
 		<h1 class="margin-bottom">Carrinho de Compras</h1>
 
-		{% if events.cart.session_updated %}
-			<div class="callout callout-warning">
-				<h4>Aviso</h4>
-				<p>O carrinho de compras foi actualizado:</p>
-				<ul>
-					{% for key in events.cart.session_updated %}
-						<li><strong>{{ key.title }}</strong> ({{ key.message }})</li>
-					{% endfor %}
-				</ul>
-			</div>
-		{% endif %}
+		<ol class="breadcrumb margin-bottom hidden-xs">
+			<li><a href="{{ site_url() }}">Home</a></li>
+			<li class="active">Carrinho de Compras</li>
+		</ol>
 
 		{% if cart.items %}
-
-			{% if events.cart.no_stock %}
-				<div class="callout callout-warning">
-					<h4>Aviso</h4>
-					<p>Os seguintes produtos não foram atualizados por falta de stock:</p>
-					<ul>
-						{% for key in events.cart.no_stock %}
-							<li>{{ cart.items[key].title }}</li>
-						{% endfor %}
-					</ul>
-				</div>
-			{% endif %}
 
 			{% if errors.form %}
 				<div class="callout callout-danger">
 					<h4>Erro</h4>
-					<p>{{ errors.form }}</p>
+					{{ errors.form }}
 				</div>
 			{% endif %}
 
-			<div class="row">
-				<div class="col-md-8 col-lg-8">
+			{% if warnings.form %}
+				<div class="callout callout-warning">
+					<h4>Aviso</h4>
+					{{ warnings.form }}
+				</div>
+			{% endif %}
 
-					{{ form_open('cart/update', {'class' : 'form-inline'}) }}
+			{% if success.form %}
+				<div class="callout callout-success">
+					<h4>Sucesso</h4>
+					{{ success.form }}
+				</div>
+			{% endif %}
 
-						<div class="table-responsive table-cart-responsive">
+			{{ form_open('cart/post/data', {'class' : 'form'}) }}
+				<div class="row">
+					<div class="col-md-8 col-lg-8">
+
+						<div class="table-responsive table-cart-responsive form-inline">
 							<table class="table table-cart">
 
 								<tbody>
@@ -82,39 +76,101 @@ Description: Shopping cart page
 						</div>
 
 						<footer>
-							<button type="submit" class="btn btn-default"><i class="fa fa-fw fa-refresh"></i> Actualizar carrinho</button> &nbsp;
-							<a class="btn btn-primary" href="{{ site_url('cart/data') }}"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</a>
+							<button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default"><i class="fa fa-fw fa-refresh"></i> Actualizar carrinho</button> &nbsp;
+							<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-primary"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</button>
 						</footer>
 
-					{{ form_close() }}
+						<div class="well text-center visible-md visible-lg">
+							<h3 class="margin-bottom-md">Questões?</h3>
+							<p class="margin-bottom-md">Se tiver dúvidas sobre sua compra, ou quaisquer outras questões, <a href="{{ site_url('contact') }}">entre em contacto</a>.</p>
+						</div>
 
-					{% if store.settings.cart.related_products_intelligent %}
-						<div class="related-products margin-top-lg hidden" data-load="related-products" data-products="{{ cart.items|column('product_id')|json_encode }}" data-num-products="4" data-products-per-row="4" data-css-class-wrapper="cart-related-products" data-type="intelligent">
+					</div>
+
+					<div class="order-resume-container col-sm-12 col-sm-offset-0 col-md-4 col-md-offset-0 col-lg-3 col-lg-offset-1">
+
+						<div class="order-resume well">
+							<h3 class="margin-bottom-sm margin-top-0 bordered">Resumo</h3>
+
+							<dl class="dl-horizontal text-left margin-bottom-0">
+								<dt class="bold">Subtotal:</dt>
+								<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
+
+								{% if cart.coupon %}
+									<dt>Desconto</dt>
+									<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ cart.discount | money_with_sign }}</dd>
+								{% endif %}
+
+								<dt>Portes de envio</dt>
+								<dd class="text-dark price">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'Grátis' : cart.total_shipping | money_with_sign) : 'n/a') : cart.total_shipping | money_with_sign }}</dd>
+
+								{% if not store.taxes_included or cart.total_taxes == 0 %}
+									<dt>{{ user.l10n.tax_name }}</dt>
+									<dd class="text-dark price">{{ cart.total_taxes | money_with_sign }}</dd>
+								{% endif %}
+							</dl>
+
+							<hr>
+
+							<dl class="dl-horizontal text-left h3 margin-bottom-0">
+                                <dt>Total</dt>
+                                <dd class="bold price">{{ cart.total | money_with_sign }}</dd>
+                            </dl>
+
+                            {% if store.taxes_included and cart.total_taxes > 0 %}
+                                <div class="text-right text-left-xs">
+                                    <small class="text-muted">Inclui {{ user.l10n.tax_name }} a {{ cart.total_taxes | money_with_sign }}</small>
+                                </div>
+                            {% endif %}
+
+							<hr>
+
+							<div class="coupon-code">
+                                <label for="cupao">Cupão de desconto</label>
+
+                                <div class="coupon-code-input {{ not cart.coupon ? '' : 'hidden' }}">
+									<div class="input-group">
+                                    	<input type="text" value="{{ cart.coupon.code }}" class="form-control" id="cupao" name="cupao" placeholder="Inserir código">
+										<span class="input-group-btn">
+                                            <button type="submit" formaction="{{ site_url('cart/coupon/add') }}" class="btn btn-default">Aplicar</button>
+                                        </span>
+									</div>
+                                </div>
+
+                                <div class="coupon-code-label margin-top-xxs {{ cart.coupon ? cart.coupon.code : 'hidden' }}">
+                                    <span class="label label-light-bg h5">
+                                        <i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+                                        <span class="coupon-code-text">{{ cart.coupon.code }}</span>
+                                        <a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+                                    </span>
+                                </div>
+                            </div>
+
+							<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-block btn-primary btn-lg margin-top"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</button>
+						</div>
+
+						<div class="well text-center margin-bottom-0 hidden-md hidden-lg">
+							<h3 class="margin-bottom-md">Questões?</h3>
+							<p class="margin-bottom-md">Se tiver dúvidas sobre sua compra, ou quaisquer outras questões, <a href="{{ site_url('contact') }}">entre em contacto</a>.</p>
+						</div>
+
+					</div>
+
+				</div>
+			{{ form_close() }}
+
+			{% if store.settings.cart.related_products_intelligent %}
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="related-products margin-top hidden" data-load="related-products" data-products="{{ cart.items|column('product_id')|json_encode }}" data-num-products="4" data-products-per-row="4" data-css-class-wrapper="cart-related-products" data-type="intelligent">
 							<div class="text-center">
 								<h3>Outros clientes também compraram</h3>
 								<div class="related-products-placement product-list-no-hover margin-top"></div>
 							</div>
 						</div>
-					{% endif %}
-
-				</div>
-
-				<div class="col-sm-12 col-sm-offset-0 col-md-4 col-md-offset-0 col-lg-3 col-lg-offset-1">
-
-					<div class="well text-center">
-						<h3 class="margin-bottom-md">Subtotal</h3>
-						<p class="margin-bottom-md"><span class="h2 price bold">{{ cart.subtotal | money_with_sign }}</span></p>
-						<p><a class="btn btn-block btn-primary btn-lg" href="{{ site_url('cart/data') }}"><i class="fa fa-fw fa-shopping-cart"></i> Comprar</a></p>
 					</div>
-
-					<div class="well text-center">
-						<h3 class="margin-bottom-md">Questões?</h3>
-						<p class="margin-bottom-md">Se tiver dúvidas sobre sua compra, ou quaisquer outras questões, <a href="{{ site_url('contact') }}">entre em contacto</a>.</p>
-					</div>
-
 				</div>
-
-			</div>
+			{% endif %}
 
 		{% else %}
 			<div class="row">
@@ -128,6 +184,5 @@ Description: Shopping cart page
 		{% endif %}
 
 	</div>
-
 
 {% endblock %}

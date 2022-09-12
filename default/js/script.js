@@ -312,12 +312,14 @@ function product_options(product, onload) {
 							$('.price del').text(response.price_formatted);
 							price_txt = response.price_promo_formatted;
 							if (response.price_promo_percentage) {
-								$('.data-promo-percentage').text('Desconto de ' + response.price_promo_percentage + '%');
+								$('.data-promo-percentage').removeClass('hidden').text('Desconto de ' + response.price_promo_percentage + '%');
+                            } else {
+								$('.data-promo-percentage').addClass('hidden').text('');
 							}
 						} else {
 							$('.price del').text('');
 							price_txt = response.price_formatted;
-							$('.data-promo-percentage').text('');
+							$('.data-promo-percentage').addClass('hidden').text('');
 						}
 
 						disable_form_product = false;

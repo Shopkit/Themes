@@ -5,7 +5,22 @@
 	{% set product_title = product.title|e_attr %}
 	{% set product_url = product.url %}
 
-	<li class="product-id-{{ product.id }}" data-id="{{ product.id }}">
+	<li class="product-id-{{ product.id }} {% if product.status_alias == 'out_of_stock' %}out_of_stock{% endif %}" data-id="{{ product.id }}">
+		<span class="product-badges">
+			{% if product.status_alias == 'out_of_stock' %}
+				<span class="out_of_stock">Sem stock</span>
+			{% elseif product.status_alias == 'soon' %}
+				<span class="soon">Brevemente</span>
+			{% elseif product.promo == true %}
+				<span class="promo">Promoção</span>
+				{% if product.price_promo_percentage == true %}
+					<span class="product-promo-percent promo-percentage">-<span>{{ product.price_promo_percentage }}</span>%</span>
+				{% endif %}
+			{% elseif product.new == true %}
+				<span class="new">Novidade</span>
+			{% endif %}
+		</span>
+
 		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
 
 		<div class="description">

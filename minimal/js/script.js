@@ -53,7 +53,21 @@ $(document).ready(function() {
 		}
 	});
 
+	$(document).on('init_app_shipping_info', function(){
+		if (Modernizr.mq('only screen and (max-width: 991px)')) {
+			$('body.page-cart .order-resume').insertAfter('.table-cart-responsive + footer');
+		}
+	});
+
 	$(window).resize(function() {
+
+		if (Modernizr.mq('only screen and (max-width: 991px)')) {
+			if (typeof $('body.page-cart form .table-cart-responsive + footer').next('.order-resume')[0] === 'undefined') {
+				$('body.page-cart .order-resume').insertAfter('.table-cart-responsive + footer');
+			}
+		} else {
+			$('body.page-cart .order-resume').prependTo($('.order-resume-container'));
+		}
 
 		if ($('.navbar-nav').height() > 40) {
 			$('.navbar-nav').addClass('is-big-nav');
@@ -404,12 +418,14 @@ function product_options(product, onload) {
 							price_txt = response.price_promo_formatted;
 
 							if (response.price_promo_percentage) {
-								$('.data-promo-percentage').text('Desconto de ' + response.price_promo_percentage + '%');
+								$('.data-promo-percentage').text('Desconto de ' + response.price_promo_percentage + '%').removeClass('hidden');
+							} else {
+								$('.data-promo-percentage').text('').addClass('hidden');
 							}
 						} else {
 							$('.promo-price').text('');
 							price_txt = response.price_formatted;
-							$('.data-promo-percentage').text('');
+							$('.data-promo-percentage').text('').addClass('hidden');
 						}
 
 						disable_form_product = false;

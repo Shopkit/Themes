@@ -26,7 +26,7 @@ Description: Account profile page
 				<div class="alert alert-error">
 					<button type="button" class="close" data-dismiss="alert">×</button>
 					<h5>Erro</h5>
-					<p>{{ errors.form }}</p>
+					{{ errors.form }}
 				</div>
 			{% endif %}
 

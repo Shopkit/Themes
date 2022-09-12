@@ -25,6 +25,20 @@ Description: Confirm order page
 			</div>
 		{% endif %}
 
+		{% if warnings.form %}
+			<div class="callout callout-warning">
+				<h4>Aviso</h4>
+				{{ warnings.form }}
+			</div>
+		{% endif %}
+
+		{% if success.form %}
+			<div class="callout callout-success">
+				<h4>Sucesso</h4>
+				{{ success.form }}
+			</div>
+		{% endif %}
+
 		{% if cart.items %}
 			{{ form_open('cart/complete', { 'role' : 'form' }) }}
 				<div class="row">
@@ -160,48 +174,39 @@ Description: Confirm order page
 
 					<div class="col-md-4 col-md-offset-0 col-lg-3 col-lg-offset-1">
 
-						<div class="well">
-							<h3 class="margin-bottom-sm bordered">Encomenda</h3>
-
-							<dl class="dl-horizontal text-left hidden-xs hidden-sm">
-								{% for item in cart.items %}
-									<dt title="{{ item.title|e_attr }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
-									<dd class="text-dark price">{{ item.subtotal | money_with_sign }}</dd>
-								{% endfor %}
-							</dl>
-
-							<hr>
+						<div class="order-resume well margin-top">
+							<h3 class="margin-bottom-sm margin-top-0 bordered">Resumo</h3>
 
 							<dl class="dl-horizontal text-left margin-bottom-0">
 								<dt class="bold">Subtotal:</dt>
 								<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
 
+								{% if cart.coupon %}
+									<dt>Desconto</dt>
+									<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ cart.discount | money_with_sign }}</dd>
+								{% endif %}
+
 								<dt>Portes de envio</dt>
-								<dd class="text-dark price">{{ cart.total_shipping | money_with_sign }}</dd>
+								<dd class="text-dark price">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'Grátis' : cart.total_shipping | money_with_sign) : 'n/a') : cart.total_shipping | money_with_sign }}</dd>
 
 								{% if not store.taxes_included or cart.total_taxes == 0 %}
 									<dt>{{ user.l10n.tax_name }}</dt>
 									<dd class="text-dark price">{{ cart.total_taxes | money_with_sign }}</dd>
-								{% endif %}
-
-								{% if cart.coupon %}
-									<dt>Desconto</dt>
-									<dd class="text-dark price">- {{ cart.discount | money_with_sign }}</dd>
 								{% endif %}
 							</dl>
 
 							<hr>
 
 							<dl class="dl-horizontal text-left h3 margin-bottom-0">
-								<dt>Total</dt>
-								<dd class="text-dark bold price">{{ cart.total | money_with_sign }}</dd>
-							</dl>
+                                <dt>Total</dt>
+                                <dd class="bold price">{{ cart.total | money_with_sign }}</dd>
+                            </dl>
 
-							{% if store.taxes_included and cart.total_taxes > 0 %}
-								<div class="text-right">
-									<small class="text-muted">Inclui {{ user.l10n.tax_name }} a {{ cart.total_taxes | money_with_sign }}</small>
-								</div>
-							{% endif %}
+                            {% if store.taxes_included and cart.total_taxes > 0 %}
+                                <div class="text-right text-left-xs">
+                                    <small class="text-muted">Inclui {{ user.l10n.tax_name }} a {{ cart.total_taxes | money_with_sign }}</small>
+                                </div>
+                            {% endif %}
 
 							{% if store.settings.cart.page_terms or store.settings.cart.page_privacy %}
 								<hr>

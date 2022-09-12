@@ -23,6 +23,20 @@ Description: Order data form page
 			</div>
 		{% endif %}
 
+		{% if warnings.form %}
+			<div class="callout callout-warning">
+				<h4>Aviso</h4>
+				{{ warnings.form }}
+			</div>
+		{% endif %}
+
+		{% if success.form %}
+			<div class="callout callout-success">
+				<h4>Sucesso</h4>
+				{{ success.form }}
+			</div>
+		{% endif %}
+
 		{{ form_open('cart/post/payment', {'role': 'form'}) }}
 
 			<input type="hidden" name="user-auth-data" value="true">
@@ -273,53 +287,79 @@ Description: Order data form page
 									<label for="observations">Observações <small class="text-light-gray normal">(opcional)</small></label>
 									<textarea cols="80" rows="4" class="form-control" id="observations" name="observations" placeholder="Preencha caso queira dar instruções acerca dos produtos ou encomenda">{{ user.observations }}</textarea>
 								</div>
-
-								<footer class="clearfix">
-									<div class="pull-left steps hidden-xs">
-										Passo 1 de 3
-									</div>
-									<div class="pull-right">
-										<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
-									</div>
-								</footer>
-
 							</div>
 						</div>
 					{% endif %}
 
 				</div>
 
-				<div class="col-md-4 col-md-offset-0 col-lg-3 col-lg-offset-1 hidden-xs hidden-sm">
+				<div class="col-md-4 col-md-offset-0 col-lg-3 col-lg-offset-1">
 
-					<div class="well">
-						<h3 class="margin-bottom-sm bordered">Resumo</h3>
-						<dl class="dl-horizontal text-left">
-							{% for item in cart.items %}
-								<dt title="{{ item.title|e_attr }}"><small class="normal text-gray">{{ item.qty }}x</small> &nbsp;{{ item.title }}</dt>
-								<dd class="text-dark price">{{ item.subtotal | money_with_sign }}</dd>
-							{% endfor %}
+					<div class="well order-resume margin-top-visible-xs margin-top-visible-md margin-bottom-0">
+						<h3 class="margin-bottom-sm margin-top-0 bordered">Resumo</h3>
+
+						<dl class="dl-horizontal text-left margin-bottom-0">
+							<dt class="bold">Subtotal:</dt>
+							<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
+
+							{% if cart.coupon %}
+								<dt>Desconto</dt>
+								<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ cart.discount | money_with_sign }}</dd>
+							{% endif %}
+
+							<dt>Portes de envio</dt>
+							<dd class="text-dark price">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'Grátis' : cart.total_shipping | money_with_sign) : 'n/a') : cart.total_shipping | money_with_sign }}</dd>
+
+							{% if not store.taxes_included or cart.total_taxes == 0 %}
+								<dt>{{ user.l10n.tax_name }}</dt>
+								<dd class="text-dark price">{{ cart.total_taxes | money_with_sign }}</dd>
+							{% endif %}
 						</dl>
 
 						<hr>
 
-						<dl class="dl-horizontal text-left margin-bottom-0">
+						<dl class="dl-horizontal text-left h3 margin-bottom-0">
+                            <dt>Total</dt>
+                            <dd class="bold price">{{ cart.total | money_with_sign }}</dd>
+                        </dl>
 
-							{% if not store.taxes_included or cart.total_taxes == 0 %}
-                                <dt class="margin-bottom-xxs">{{ user.l10n.tax_name }}</dt>
-                                <dd class="text-dark price">{{ cart.product_tax | money_with_sign }}</dd>
-                            {% endif %}
-
-							<dt class="bold h4 margin-0">Subtotal</dt>
-                            <dd class="bold h4 margin-0 price">{{ (store.taxes_included ? cart.subtotal : cart.subtotal_with_tax) | money_with_sign }}</dd>
-						</dl>
-
-						{% if store.taxes_included and cart.total_taxes > 0 %}
-                            <div class="small text-muted margin-top-xxs">Inclui {{ user.l10n.tax_name }} a {{ cart.product_tax | money_with_sign }}</div>
+                        {% if store.taxes_included and cart.total_taxes > 0 %}
+                            <div class="text-right text-left-xs">
+                                <small class="text-muted">Inclui {{ user.l10n.tax_name }} a {{ cart.total_taxes | money_with_sign }}</small>
+                            </div>
                         {% endif %}
 
-						<button class="btn btn-lg btn-primary btn-block margin-top-sm">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
+						{% if cart.coupon %}
+							<hr>
+
+							<div class="coupon-code">
+								<label for="cupao">Cupão de desconto</label>
+								<div class="coupon-code-label margin-top-xxs">
+									<span class="label label-light-bg h5">
+										<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+										<span class="coupon-code-text">{{ cart.coupon.code }}</span>
+										<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+									</span>
+								</div>
+							</div>
+						{% endif %}
+
+						<button class="btn btn-lg btn-primary btn-block margin-top hidden-xs hidden-sm">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
 					</div>
 
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-8 col-lg-8">
+					<footer class="clearfix">
+						<div class="pull-left steps hidden-xs">
+							Passo 1 de 3
+						</div>
+						<div class="pull-right">
+							<small class="text-gray"><a href="{{ site_url('cart') }}">Editar carrinho</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
+						</div>
+					</footer>
 				</div>
 			</div>
 

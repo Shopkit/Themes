@@ -15,31 +15,7 @@ Description: Shopping cart page
 
 	<br>
 
-	{% if events.cart.session_updated %}
-		<div class="alert">
-			<h5>Aviso</h5>
-			<p>O carrinho de compras foi actualizado:</p>
-			<ul>
-				{% for key in events.cart.session_updated %}
-					<li><strong>{{ key.title }}</strong> ({{ key.message }})</li>
-				{% endfor %}
-			</ul>
-		</div>
-	{% endif %}
-
 	{% if cart.items %}
-
-		{% if events.cart.no_stock %}
-			<div class="alert">
-				<h5>Aviso</h5>
-				<p>Os seguintes produtos não foram atualizados por falta de stock:</p>
-				<ul>
-					{% for key in events.cart.no_stock %}
-						<li>{{ cart.items[key].title }}</li>
-					{% endfor %}
-				</ul>
-			</div>
-		{% endif %}
 
 		{% if errors.form %}
 			<div class="alert alert-error">
@@ -49,7 +25,23 @@ Description: Shopping cart page
 			</div>
 		{% endif %}
 
-		{{ form_open('cart/update') }}
+		{% if warnings.form %}
+			<div class="alert alert-warning">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<h5>Aviso</h5>
+				{{ warnings.form }}
+			</div>
+		{% endif %}
+
+		{% if success.form %}
+			<div class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<h5>Sucesso</h5>
+				{{ success.form }}
+			</div>
+		{% endif %}
+
+		{{ form_open('cart/post/data') }}
 
 			<div class="table-responsive">
 				<table class="table table-bordered table-cart">
@@ -67,7 +59,7 @@ Description: Shopping cart page
 					{% for item in cart.items %}
 						<tr data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
 							<td>{% if item.image %}<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" width="22" height="22" class="hidden-phone lazy"> {% endif %}{{ item.title }}</td>
-							<td><div class="form-inline"><input class="input-micro" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" class="btn btn-small">Alterar</button></div></td>
+							<td><div class="form-inline"><input class="input-micro" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" data-original-title="Só é possível comprar 1 unidade deste produto." title="Só é possível comprar 1 unidade deste produto." readonly {% endif %}> <button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-small">Alterar</button></div></td>
 							<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
 							<td class="text-center"><a href="{{ item.remove_link }}" class="btn btn-small"><i class="fa fa-trash"></i>&nbsp;<span class="hidden-phone">Remover</span></a></td>
 						</tr>
@@ -85,7 +77,30 @@ Description: Shopping cart page
 				</table>
 			</div>
 
-			<p><a class="btn btn-large" href="{{ site_url('cart/data') }}">Prosseguir ›</a></p>
+			<hr>
+
+			<div class="coupon-code">
+				<h4>Cupão de desconto</h4>
+
+				<div class="coupon-code-input {{ not cart.coupon ? '' : 'hidden' }}">
+					<div class="input-append">
+						<input type="text" value="{{ cart.coupon.code }}" class="form-control" id="cupao" name="cupao" placeholder="Inserir código">
+						<button type="submit" formaction="{{ site_url('cart/coupon/add') }}" class="btn btn-default">Aplicar</button>
+					</div>
+				</div>
+
+				<div class="coupon-code-label margin-top-xxs {{ cart.coupon ? cart.coupon.code : 'hidden' }}">
+					<span class="label label-light-bg h5">
+						<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+						<span class="coupon-code-text">{{ cart.coupon.code }}</span>
+						<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+					</span>
+				</div>
+			</div>
+
+			<hr>
+
+			<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-large">Prosseguir ›</button>
 
 		{{ form_close() }}
 

@@ -29,6 +29,22 @@ Description: Shopping cart page
 				</div>
 			{% endif %}
 
+			{% if warnings.form %}
+				<div class="alert alert-warning">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<h5>Aviso</h5>
+					{{ warnings.form }}
+				</div>
+			{% endif %}
+
+			{% if success.form %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<h5>Sucesso</h5>
+					{{ success.form }}
+				</div>
+			{% endif %}
+
 			{% if cart.items %}
 
 			{{ form_open('cart/post/confirm', { 'class' : 'form', 'id' : 'form-payment' }) }}
@@ -56,7 +72,7 @@ Description: Shopping cart page
 												</div>
 											</div>
 											<div class="list-radio-price">
-												<div class="price">{{ method.price == 0 ? 'Grátis' : method.price|money_with_sign }}</div>
+												<div class="price">{{ method.price == 0 or cart.coupon.type == 'shipping' ? 'Grátis' : method.price|money_with_sign }}</div>
 											</div>
 										</div>
 									</label>
@@ -136,18 +152,27 @@ Description: Shopping cart page
 					</div>
 				{% endif %}
 
+				{% if cart.coupon %}
+					<hr>
+
+					<div class="coupon-code">
+						<h4>Cupão de desconto</h4>
+
+						<div class="coupon-code-label margin-top-xxs">
+							<span class="label label-light-bg h5">
+								<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+								<span class="coupon-code-text">{{ cart.coupon.code }}</span>
+								<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+							</span>
+						</div>
+					</div>
+				{% endif %}
+
 				<hr>
 
-				<h4>Cupão de desconto</h4>
-				<br>
-
-				<input type="text" value="{{ user.coupon }}" class="span4" id="cupao" name="cupao" placeholder="Se tiver um cupão de desconto, coloque-o aqui">
-
-				<hr>
-
-				<button type="submit" class="button" style="width:175px">
-					<span>Prosseguir</span>
+				<button type="submit" class="button" style="width:200px">
 					<i class="fa fa-chevron-right"></i>
+					<span>Prosseguir</span>
 				</button>
 
 			{{ form_close() }}

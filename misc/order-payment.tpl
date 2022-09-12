@@ -97,17 +97,18 @@
                                                                 <td class="text-left">Subtotal</td>
                                                                 <td class="text-right"><span class="text-nowrap">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
                                                             </tr>
-                                                            <tr>
-                                                                <td class="text-left">Envio / Transporte</td>
-                                                                <td class="text-right"><span class="text-nowrap">{{ order.shipping.value|money_with_sign(order.currency) }}</span></td>
-                                                            </tr>
 
                                                             {% if order.coupon %}
                                                                 <tr>
                                                                     <td class="text-left">Desconto</td>
-                                                                    <td class="text-right"><span class="text-nowrap">- {{ order.discount|money_with_sign(order.currency) }}</span></td>
+                                                                    <td class="text-right"><span class="text-nowrap">{{ order.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
                                                                 </tr>
                                                             {% endif %}
+
+                                                            <tr>
+                                                                <td class="text-left">Envio / Transporte</td>
+                                                                <td class="text-right"><span class="text-nowrap">{{ order.coupon.type == 'shipping' ? 'Grátis' : order.shipping.value|money_with_sign(order.currency) }}</span></td>
+                                                            </tr>
 
                                                             {% if order.total_tax > 0 %}
                                                                 <tr>

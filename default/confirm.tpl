@@ -25,6 +25,22 @@ Description: Confirm order page
 		</div>
 	{% endif %}
 
+	{% if warnings.form %}
+		<div class="alert alert-warning">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<h5>Aviso</h5>
+			{{ warnings.form }}
+		</div>
+	{% endif %}
+
+	{% if success.form %}
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<h5>Sucesso</h5>
+			{{ success.form }}
+		</div>
+	{% endif %}
+
 	{% if cart.items %}
 
 		{{ form_open('cart/complete', { 'class' : 'form' }) }}
@@ -53,22 +69,23 @@ Description: Confirm order page
 						<td>Subtotal</td>
 						<td align="right" class=" bold text-right" colspan="2" style="border-left: 0;">{{ cart.subtotal | money_with_sign }}</td>
 					</tr>
+
+					{% if cart.coupon %}
+						<tr>
+							<td class="discount">Desconto</td>
+							<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">{{ cart.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ cart.discount | money_with_sign }}</td>
+						</tr>
+					{% endif %}
+
 					<tr>
 						<td>Portes de Envio</td>
-						<td align="right" class=" text-right" colspan="2" style="border-left: 0;">{{ cart.total_shipping | money_with_sign }}</td>
+						<td align="right" class=" text-right" colspan="2" style="border-left: 0;">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'Grátis' : cart.total_shipping | money_with_sign) : 'n/a') : cart.total_shipping | money_with_sign }}</td>
 					</tr>
 
 					{% if not store.taxes_included or cart.total_taxes == 0 %}
 						<tr>
 							<td>Taxa / Imposto (<abbr title="Imposto sobre o valor acrescentado">{{ user.l10n.tax_name }}</abbr>)</td>
-							<td align="right" class=" price text-right" colspan="2">{{ cart.total_taxes | money_with_sign }}</td>
-						</tr>
-					{% endif %}
-
-					{% if cart.coupon %}
-						<tr>
-							<td class="discount">Desconto</td>
-							<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">- {{ cart.discount | money_with_sign }}</td>
+							<td align="right" class="price text-right" colspan="2">{{ cart.total_taxes | money_with_sign }}</td>
 						</tr>
 					{% endif %}
 

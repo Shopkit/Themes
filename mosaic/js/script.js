@@ -384,12 +384,14 @@ function product_options(product, onload) {
 							price_txt = response.price_promo_formatted;
 
 							if (response.price_promo_percentage) {
-								$('.data-promo-percentage').text('Desconto de ' + response.price_promo_percentage + '%');
+								$('.data-promo-percentage').text('Desconto de ' + response.price_promo_percentage + '%').removeClass('hidden');
+							} else {
+								$('.data-promo-percentage').text('').addClass('hidden');
 							}
 						} else {
 							$('.product .price del').text('');
 							price_txt = response.price_formatted;
-							$('.data-promo-percentage').text('');
+							$('.data-promo-percentage').text('').addClass('hidden');
 						}
 
 						disable_form_product = false;

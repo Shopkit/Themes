@@ -5,13 +5,21 @@
     {% set product_title = product.title|e_attr %}
     {% set product_url = product.url %}
 
-    <article class="product product-id-{{ product.id }}" data-id="{{ product.id }}">
-
-        {% if product.status_alias == 'out_of_stock' %}
-            <span class="badge out_of_stock">Sem stock</span>
-        {% elseif product.promo == true %}
-            <span class="badge promo">Promoção</span>
-        {% endif %}
+    <article class="product product-id-{{ product.id }} {% if product.status_alias == 'out_of_stock' %}out_of_stock{% endif %}" data-id="{{ product.id }}">
+        <span class="product-badges">
+            {% if product.status_alias == 'out_of_stock' %}
+                <span class="out_of_stock">Sem stock</span>
+            {% elseif product.status_alias == 'soon' %}
+                <span class="soon">Brevemente</span>
+            {% elseif product.promo == true %}
+                <span class="promo">Promoção</span>
+                {% if product.price_promo_percentage == true %}
+                    <span class="product-promo-percent promo-percentage">-<span>{{ product.price_promo_percentage }}</span>%</span>
+                {% endif %}
+            {% elseif product.new == true %}
+                <span class="new">Novidade</span>
+            {% endif %}
+        </span>
 
         <a href="{{ product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" class="img-responsive lazy" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400"></a>
 

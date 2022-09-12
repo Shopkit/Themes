@@ -192,11 +192,11 @@ hr {
 }
 
 // .page-product {
-// 	overflow: hidden;
+//  overflow: hidden;
 
-// 	.main {
-// 		overflow: auto;
-// 	}
+//  .main {
+//      overflow: auto;
+//  }
 // }
 
 //Typography
@@ -685,6 +685,46 @@ header {
 			vertical-align: top;
 			font-size: 14px;
 
+			&.out_of_stock {
+				-webkit-filter: grayscale(1);
+				filter: grayscale(1);
+			}
+
+			.product-badges {
+				position: absolute;
+				z-index: 0;
+				top: @padding/3;
+				left: @padding/3;
+				text-transform: uppercase;
+				font-size: 11px;
+				line-height: 11px;
+				font-weight: @normal;
+				border-radius: 0;
+				text-align: center;
+
+				& > span {
+					color: @secondarycolor;
+					padding: 3px 7px;
+					display: block;
+					white-space: nowrap;
+
+					&.promo {
+						background-color: @basecolor;
+						color: contrast(@basecolor);
+					}
+
+					&.out_of_stock, &.soon, &.new {
+						background-color: #fff;
+						color: #000;
+					}
+
+					&.product-promo-percent {
+						background-color: darken(@basecolor, 5%);
+						color: contrast(@basecolor);
+					}
+				}
+			}
+
 			&:hover {
 				img {
 					.transform(scale(2.5) rotate(-5deg));
@@ -828,7 +868,7 @@ header {
 }
 
 .related-products .wide {
-    background-color: @basecolor;
+	background-color: @basecolor;
 }
 
 .product {
@@ -1566,6 +1606,52 @@ footer {
 	&.fb_iframe_widget, &.fb_iframe_widget span, &.fb_iframe_widget span iframe[style] {
 		width: 100% !important;
 	}
+}
+
+.coupon-code .coupon-code-label .label {
+	font-size: 14px;
+	text-shadow: none;
+	display: -webkit-inline-flex;
+	display: inline-flex;
+	-webkit-flex-direction: row;
+	flex-direction: row;
+	-webkit-flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	margin: 0;
+
+	& > * {
+		-webkit-align-self: center;
+		-ms-flex-item-align: center;
+		align-self: center;
+	}
+
+	.coupon-code-text {
+		word-break: break-word;
+		white-space: normal;
+		padding: 3px 10px;
+	}
+
+	.btn-close {
+		line-height: 20px;
+		font-size: 14px;
+		font-weight: normal;
+	}
+}
+
+.label {
+	.btn-close {
+		.text-default;
+		opacity: 0.5;
+		border: none;
+		padding: 0;
+	}
+}
+
+.label-light-bg {
+	background-color: #eee;
+	.text-default;
 }
 
 .label-default {

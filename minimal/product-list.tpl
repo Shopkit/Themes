@@ -2,9 +2,9 @@
 
 {% set col_mapping = {
     1 : 'col-sm-12',
-    2 : 'col-sm-6',
+    2 : 'col-xs-6',
     3 : 'col-sm-4',
-    4 : 'col-sm-3',
+    4 : 'col-sm-3 col-xs-6',
     6 : 'col-sm-2',
 } %}
 

@@ -691,23 +691,22 @@
 																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Subtotal</td>
 																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
 															</tr>
-															<tr>
-																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Envio / Transporte</td>
-																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.shipping.value|money_with_sign(order.currency) }}</span></td>
-															</tr>
 
 															{% if order.coupon %}
 																<tr>
 																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Desconto</td>
-																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">- {{ order.discount|money_with_sign(order.currency) }}</span></td>
+																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
 																</tr>
 															{% endif %}
 
 															<tr>
+																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Envio / Transporte</td>
+																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'Grátis' : order.shipping.value|money_with_sign(order.currency) }}</span></td>
+															</tr>
+															<tr>
 																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Imposto ({{ order.l10n.tax_name }})</td>
 																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
 															</tr>
-
 															<tr>
 																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#333333;padding-left:20px;"><strong style="color:#333;">Total</strong></td>
 																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#333333;padding-right:20px;"><strong style="color:#333;white-space:nowrap;">{{ order.total|money_with_sign(order.currency) }}</strong></td>

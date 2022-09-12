@@ -37,7 +37,7 @@ Description: Product Page
 				<h1 class="product-title">{{ product.title }}</h1>
 
 				<div>
-					<h4 class="price">
+					<h4 class="price margin-bottom-0">
 
 						{% if product.price_on_request == true %}
 							<span class="data-product-price">Preço sob consulta</span> &nbsp;
@@ -55,13 +55,25 @@ Description: Product Page
 					</h4>
 
 					{% if user.wholesale is same as(true) and product.wholesale == true and store.settings.wholesale.show_regular_price %}
-						<p><small class="muted">
+						<small class="muted">
 							Preço normal: <span class="data-price-non-wholesale">{{ product.price_non_wholesale | money_with_sign }}</span>
-						</small></p>
-                    {% elseif product.price_promo_percentage == true %}
-						<p><small class="muted data-promo-percentage">
-							Desconto de {{ product.price_promo_percentage }}%
-						</small></p>
+						</small>
+						<br>
+					{% endif %}
+
+					{% if not (user.wholesale is same as(true) and product.wholesale == true and store.settings.wholesale.show_regular_price) %}
+						<small class="muted data-promo-percentage {% if product.price_promo_percentage == false %}hidden{% endif %}">
+							Desconto de {% if product.price_promo_percentage == true %}{{ product.price_promo_percentage }}{% endif %}%
+						</small>
+						<br>
+					{% endif %}
+
+					{% if product.tax > 0 %}
+						{% if store.taxes_included == false %}
+							<small class="muted">Ao preço acresce {{ user.l10n.tax_name }} a {{ product.tax }}%</small>
+						{% else %}
+							<small class="muted">{{ user.l10n.tax_name }} incluído</small>
+						{% endif %}
 					{% endif %}
 				</div>
 
@@ -106,15 +118,6 @@ Description: Product Page
 							<button class="btn btn-inverse" type="submit">
 								<i class="fa fa-shopping-cart fa-lg fa-fw"></i> Comprar
 							</button>
-
-							{% if product.tax > 0 %}
-								<hr>
-								{% if store.taxes_included == false %}
-									<span class="muted">Ao preço acresce {{ user.l10n.tax_name }} a {{ product.tax }}%</span>
-								{% else %}
-									<span class="muted">{{ user.l10n.tax_name }} incluído</span>
-								{% endif %}
-							{% endif %}
 
 							{% if product.stock.stock_show %}
 								<hr>
