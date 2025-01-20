@@ -24,7 +24,7 @@ Description: Product category page
 	{% endif %}
 
 	{#  Setup order #}
-	{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
+	{% set order_options = { 'position' : 'lang.storefront.layout.order_options.position'|t, 'title' : 'lang.storefront.layout.order_options.title'|t, 'newest' : 'lang.storefront.layout.order_options.newest'|t, 'sales' : 'lang.storefront.layout.order_options.sales'|t, 'price_asc' : 'lang.storefront.layout.order_options.price_asc'|t, 'price_desc' : 'lang.storefront.layout.order_options.price_desc'|t, 'stock_desc' : 'lang.storefront.layout.order_options.stock_desc'|t, 'stock_asc' : 'lang.storefront.layout.order_options.stock_asc'|t, 'rating' : 'lang.storefront.layout.order_options.rating'|t } %}
 
 	{% if not get.order_by in order_options|keys %}
 		{% set get = {'order_by': store.category_default_order|default('position')} %}
@@ -32,8 +32,8 @@ Description: Product category page
 
 	{% set products = products("order:#{get.order_by} category:#{category.id} limit:#{products_per_page_catalog}") %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
 		{% if main_parent and main_parent.id != category.id %}
 			<li>
 				<a href="{{ main_parent.url }}">{{ main_parent.title }}</a><span class="divider">›</span>
@@ -50,28 +50,7 @@ Description: Product category page
 	<h1>{{ category.title }}</h1>
 
 	{% if products %}
-		<div class="order-options">
-			<small>Ordenar por</small> &nbsp;
-
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					{% if get.order_by and order_options[get.order_by] %}
-						{{ order_options[get.order_by] }}
-					{% else %}
-						{{ order_options['position'] }}
-					{% endif %}
-					<span class="caret"></span>
-				</button>
-
-				<ul class="dropdown-menu pull-right" role="menu">
-					{% for order_option, order_title in order_options %}
-						{% if order_option != get.order_by %}
-							<li><a href="{{ category.url }}?order_by={{ order_option }}">{{ order_title }}</a></li>
-						{% endif %}
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
+		{{ generic_macros.order_by(get, order_options, category.url ~ '?') }}
 	{% endif %}
 
 	<p>{{ category.description }}</p>
@@ -90,7 +69,7 @@ Description: Product category page
 			{% else %}
 
 				<div class="span9 product">
-					<h5>Não existem produtos.</h5>
+					<h5>{{ 'lang.storefront.category.no_products'|t }}.</h5>
 				</div>
 
 			{% endfor %}
@@ -113,7 +92,7 @@ Description: Product category page
 	{% else %}
 		<div class="row products">
 			<div class="span9 product">
-				<h5>Não existem produtos.</h5>
+				<h5>{{ 'lang.storefront.category.no_products'|t }}.</h5>
 			</div>
 		</div>
 	{% endif %}

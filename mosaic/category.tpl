@@ -24,7 +24,7 @@ Description: Product category page
 	{% endif %}
 
 	{#  Setup order #}
-	{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
+	{% set order_options = { 'position' : 'lang.storefront.layout.order_options.position'|t, 'title' : 'lang.storefront.layout.order_options.title'|t, 'newest' : 'lang.storefront.layout.order_options.newest'|t, 'sales' : 'lang.storefront.layout.order_options.sales'|t, 'price_asc' : 'lang.storefront.layout.order_options.price_asc'|t, 'price_desc' : 'lang.storefront.layout.order_options.price_desc'|t, 'stock_desc' : 'lang.storefront.layout.order_options.stock_desc'|t, 'stock_asc' : 'lang.storefront.layout.order_options.stock_asc'|t, 'rating' : 'lang.storefront.layout.order_options.rating'|t } %}
 
 	{% if not get.order_by in order_options|keys %}
 		{% set get = {'order_by': store.category_default_order|default('position')} %}
@@ -38,28 +38,7 @@ Description: Product category page
 
 		{% if products %}
 			<div class="order-options-container">
-				<div class="order-options">
-					Ordenar por &nbsp;
-
-					<div class="btn-group">
-						<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-							{% if get.order_by and order_options[get.order_by] %}
-								{{ order_options[get.order_by] }}
-							{% else %}
-								{{ order_options['position'] }}
-							{% endif %}
-							<span class="caret"></span>
-						</button>
-
-						<ul class="dropdown-menu pull-right" role="menu">
-							{% for order_option, order_title in order_options %}
-								{% if order_option != get.order_by %}
-									<li><a href="{{ category.url }}?order_by={{ order_option }}">{{ order_title }}</a></li>
-								{% endif %}
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
+				{{ generic_macros.order_by(get, order_options, category.url ~ '?') }}
 			</div>
 		{% endif %}
 
@@ -101,7 +80,7 @@ Description: Product category page
 		</ul>
 
 	{% else %}
-		<p class="wide">Não existem produtos.</p>
+		<p class="wide">{{ 'lang.storefront.category.no_products'|t }}.</p>
 	{% endif %}
 
 {% endblock %}

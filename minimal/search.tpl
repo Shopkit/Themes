@@ -9,10 +9,10 @@ Description: Search Page
 {% block content %}
 
 	{#  Setup order #}
-	{% set order_options = { 'relevance' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
+	{% set order_options = { 'relevance' : 'lang.storefront.layout.order_options.position'|t, 'title' : 'lang.storefront.layout.order_options.title'|t, 'newest' : 'lang.storefront.layout.order_options.newest'|t, 'sales' : 'lang.storefront.layout.order_options.sales'|t, 'price_asc' : 'lang.storefront.layout.order_options.price_asc'|t, 'price_desc' : 'lang.storefront.layout.order_options.price_desc'|t, 'stock_desc' : 'lang.storefront.layout.order_options.stock_desc'|t, 'stock_asc' : 'lang.storefront.layout.order_options.stock_asc'|t, 'rating' : 'lang.storefront.layout.order_options.rating'|t } %}
 
 	{% if not get.order_by in order_options|keys %}
-		{% set get = {'order_by': 'relevance'} %}
+		{% set get = {'order_by': store.theme_options.search_default_order} %}
 	{% endif %}
 
 	{% set search = products("search order:#{get.order_by} limit:#{products_per_page_catalog}") %}
@@ -22,41 +22,20 @@ Description: Search Page
 	{% set cur_page_from = pagination_segment + 1 %}
 	{% set cur_page_to = (cur_page * products_per_page_catalog) < search.total_results ? cur_page * products_per_page_catalog : search.total_results %}
 
-	<div class="container">
+	<div class="{{ layout_container }}">
 
 		<div class="row">
 
 			<div class="col-sm-12 col-md-3">
-				<h1 class="margin-top-0">Pesquisa</h1>
+				<h1 class="margin-top-0">{{ 'lang.storefront.search.title'|t }}</h1>
 				{% if search.results %}
-					<p>A mostrar {{ cur_page_from }}-{{ cur_page_to }} de {{ total_products }} produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+					<p>{{ 'lang.storefront.search.results'|t([cur_page_from, cur_page_to, total_products, search.query]) }}</p>
 				{% else %}
-					<p>Foram encontrados <strong>{{ search.total_results }}</strong> produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+					<p>{{ 'lang.storefront.search.results.variant'|t([search.total_results, search.query]) }}</p>
 				{% endif %}
 
 				{% if search.results %}
-					<div class="order-options">
-						<small>Ordenar por</small> &nbsp;
-						<div class="btn-group">
-
-							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-								{% if get.order_by and order_options[get.order_by] %}
-									{{ order_options[get.order_by] }}
-								{% else %}
-									{{ order_options['relevance'] }}
-								{% endif %}
-								<span class="caret"></span>
-							</button>
-
-							<ul class="dropdown-menu" role="menu">
-								{% for order_option, order_title in order_options %}
-									{% if order_option != get.order_by %}
-										<li><a href="{{ site_url("search?q=#{search.query}&order_by=#{order_option}") }}">{{ order_title }}</a></li>
-									{% endif %}
-								{% endfor %}
-							</ul>
-						</div>
-					</div>
+					{{ generic_macros.order_by(get, order_options, site_url("search?q=#{search.query}&")) }}
 				{% endif %}
 			</div>
 
@@ -66,12 +45,22 @@ Description: Search Page
 					<div class="row">
 
 						{% for product in search.results %}
-							<div class="col-sm-4">
+							<div class="col-xs-{{ mobile_products_per_row }} col-sm-4 col-md-{{ 12 / products_per_row }}">
 								{{ generic_macros.product_list(product) }}
 							</div>
+
+							{% if loop.index0 % products_per_row == (products_per_row - 1) %}
+								<div class="clearfix hidden-xs hidden-sm"></div>
+							{% endif %}
+							{% if loop.index0 % 3 == 2 %}
+								<div class="clearfix visible-sm"></div>
+							{% endif %}
+							{% if mobile_products_per_row == '6' and (loop.index % 2 == 0) %}
+								<div class="clearfix visible-xs"></div>
+							{% endif %}
 						{% else %}
 							<div class="col-xs-12">
-								<h3 class="margin-bottom-lg margin-top-0 text-gray light">Não existem produtos</h3>
+								<h3 class="margin-bottom-lg margin-top-0 text-muted-dark light">{{ 'lang.storefront.product_list.no_products'|t }}</h3>
 							</div>
 						{% endfor %}
 

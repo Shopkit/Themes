@@ -8,10 +8,10 @@ Description: Search Page
 
 {% block content %}
 
-	{% set order_options = { 'relevance' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
+	{% set order_options = { 'relevance' : 'lang.storefront.layout.order_options.position'|t, 'title' : 'lang.storefront.layout.order_options.title'|t, 'newest' : 'lang.storefront.layout.order_options.newest'|t, 'sales' : 'lang.storefront.layout.order_options.sales'|t, 'price_asc' : 'lang.storefront.layout.order_options.price_asc'|t, 'price_desc' : 'lang.storefront.layout.order_options.price_desc'|t, 'stock_desc' : 'lang.storefront.layout.order_options.stock_desc'|t, 'stock_asc' : 'lang.storefront.layout.order_options.stock_asc'|t, 'rating' : 'lang.storefront.layout.order_options.rating'|t } %}
 
 	{% if not get.order_by in order_options|keys %}
-		{% set get = {'order_by': 'relevance'} %}
+		{% set get = {'order_by': store.theme_options.search_default_order} %}
 	{% endif %}
 
 	{% set search = products("search order:#{get.order_by} limit:#{products_per_page_catalog}") %}
@@ -21,43 +21,22 @@ Description: Search Page
 	{% set cur_page_from = pagination_segment + 1 %}
 	{% set cur_page_to = (cur_page * products_per_page_catalog) < search.total_results ? cur_page * products_per_page_catalog : search.total_results %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
-		<li>Pesquisa<span class="divider">›</span></li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
+		<li>{{ 'lang.storefront.search.title'|t }}<span class="divider">›</span></li>
 		<li class="active">{{ search.query }}</li>
 	</ul>
 
-	<h1>Pesquisa</h1>
+	<h1>{{ 'lang.storefront.search.title'|t }}</h1>
 
 	{% if search.results %}
-		<div class="order-options">
-			<small>Ordenar por</small> &nbsp;
-			<div class="btn-group">
-
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					{% if get.order_by and order_options[get.order_by] %}
-						{{ order_options[get.order_by] }}
-					{% else %}
-						{{ order_options['relevance'] }}
-					{% endif %}
-					<span class="caret"></span>
-				</button>
-
-				<ul class="dropdown-menu pull-right" role="menu">
-					{% for order_option, order_title in order_options %}
-						{% if order_option != get.order_by %}
-							<li><a href="{{ site_url("search?q=#{search.query}&order_by=#{order_option}") }}">{{ order_title }}</a></li>
-						{% endif %}
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
+		{{ generic_macros.order_by(get, order_options, site_url("search?q=#{search.query}&")) }}
 	{% endif %}
 
 	{% if search.results %}
-		<p>A mostrar {{ cur_page_from }}-{{ cur_page_to }} de {{ total_products }} produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+		<p>{{ 'lang.storefront.search.results'|t([cur_page_from, cur_page_to, total_products, search.query]) }}</p>
 	{% else %}
-		<p>Foram encontrados <strong>{{ search.total_results }}</strong> produtos para a pesquisa: <strong><em>{{ search.query }}</em></strong></p>
+		<p>{{ 'lang.storefront.search.results.variant'|t([search.total_results, search.query]) }}</p>
 	{% endif %}
 	<br>
 
@@ -72,7 +51,7 @@ Description: Search Page
 		{% else %}
 
 			<div class="span9 product">
-				<h5>Não existem produtos.</h5>
+				<h5>{{ 'lang.storefront.product_list.no_products'|t }}</h5>
 			</div>
 
 		{% endfor %}

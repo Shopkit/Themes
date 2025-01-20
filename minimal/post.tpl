@@ -2,19 +2,21 @@
 Description: Blog post Page
 #}
 
+{% import 'macros.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
 
-	<div class="container">
+	<div class="{{ layout_container }}">
 
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 
-				<a href="{{ site_url('blog') }}" class="text-light-gray"><i class="fa fa-angle-left"></i> &nbsp; Blog</a>
+				<a href="{{ site_url('blog') }}" class="text-muted"><i class="fa fa-angle-left"></i> &nbsp; {{ 'lang.storefront.blog.title'|t }}</a>
 
 				<h1 class="margin-top-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
-				<p class="small">Escrito em {{ blog_post.date|date("d \\d\\e F \\d\\e Y") }}</p>
+				<p class="small">{{ 'lang.storefront.blog.post_date'|t([blog_post.date|format_datetime('long','none')]) }}</p>
 
 				<article class="margin-top">
 

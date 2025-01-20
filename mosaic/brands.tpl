@@ -10,7 +10,7 @@ Description: Brands list page
 
 	{% set brands = brands("order:#{store.brands_sorting} limit:#{brands_per_page}") %}
 
-	<h1 class="wide">Todas as marcas</h1>
+	<h1 class="wide">{{ 'lang.storefront.brands.title'|t }}</h1>
 
 	{% if brands %}
 
@@ -22,7 +22,7 @@ Description: Brands list page
 					<div class="description">
 						<h3><a href="{{ brand.url }}">{{ brand.title }}</a></h3>
 
-						<a href="{{ brand.url }}" class="button white"><span>Explorar</span></a>
+						<a href="{{ brand.url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}"><span>{{ 'lang.storefront.macros.button.explore'|t }}</span></a>
 					</div>
 				</li>
 			{% endfor %}
@@ -32,7 +32,7 @@ Description: Brands list page
 		{{ pagination("brands limit:#{brands_per_page}") }}
 
 	{% else %}
-		<p class="wide">Não existem marcas.</p>
+		<p class="wide">{{ 'lang.storefront.brands.no_brands'|t }}.</p>
 	{% endif %}
 
 {% endblock %}

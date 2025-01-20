@@ -1,5 +1,5 @@
-### Minimal theme
 
-Clean and minimalistic grid theme for modern online stores.
+#### Changelog
 
-https://minimal.shopk.it/
+v5.0 - 22/07/2024
+- Adaptação ao editor de templates

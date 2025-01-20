@@ -4,23 +4,23 @@ Description: User account page
 
 {% macro order_table_list(order_data) %}
 	{% if order_data %}
-		<div class="table-responsive">
-			<table class="table table-striped table-hover margin-top-sm">
+		<div class="table-responsive margin-top-sm">
+			<table class="table well-featured table-striped table-hover">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Data</th>
-						<th>Estado</th>
-						<th class="text-center">Pago</th>
-						<th class="text-right">Total</th>
-						<th class="text-center">Tracking</th>
+						<th>{{ 'lang.storefront.order.date'|t }}</th>
+						<th>{{ 'lang.storefront.order.status'|t }}</th>
+						<th class="text-center">{{ 'lang.storefront.order.paid'|t }}</th>
+						<th class="text-right">{{ 'lang.storefront.order.total'|t }}</th>
+						<th class="text-center">{{ 'lang.storefront.order.tracking'|t }}</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for order in order_data %}
 						<tr>
 							<td><a href="{{ site_url('account/orders?id=' ~ order.id)}}" style="text-decoration:underline" class="modal-order-detail"><strong>#{{ order.id }}</strong></a></td>
-							<td>{{ order.created_at|date("j F Y") }}</td>
+							<td>{{ order.created_at|format_datetime('long', 'none') }}</td>
 							<td>{{ order.status_description }}</td>
 							<td class="text-center">{{ order.paid ? '<i class="fa fa-fw fa-check text-success" aria-hidden="true"></i>' : '<i class="fa fa-fw fa-times" aria-hidden="true"></i>' }}</td>
 							<td class="text-right">{{ order.total|money_with_sign(order.currency) }}</td>
@@ -31,7 +31,7 @@ Description: User account page
 			</table>
 		</div>
 	{% else %}
-		<p>Não existem encomendas</p>
+		<p>{{ 'lang.storefront.account.order_data.no_orders'|t }}</p>
 	{% endif %}
 	<div class="row-fluid">
 		<div class="span12">
@@ -43,11 +43,11 @@ Description: User account page
 
 {% macro account_navigation() %}
 	<ul class="nav">
-		<li class="account-heading"><h4><a href="{{ site_url('account') }}" class="link-inherit">A minha conta</a></h4></li>
-		<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> Encomendas</a></li>
-		<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> Dados de cliente</a></li>
-		<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> Wishlist</a></li>
-		<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> Sair</a></li>
+		<li class="account-heading"><h4><a href="{{ site_url('account') }}" class="link-inherit">{{ 'lang.storefront.account.my_account'|t }}</a></h4></li>
+		<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
+		<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> {{ 'lang.storefront.layout.client.title'|t }}</a></li>
+		<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+		<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 	</ul>
 {% endmacro %}
 
@@ -64,18 +64,18 @@ Description: User account page
 
 				<p class="breadcrumbs">
 					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
-					A minha conta
+					{{ 'lang.storefront.account.my_account'|t }}
 				</p><br>
 
-				<h1>Olá <strong>{{ user.name|first_word }}</strong>.</h1>
+				<h1>{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
-				<h3>Últimas encomendas</h3>
+				<h3>{{ 'lang.storefront.account.latest_orders'|t }}</h3>
 				{{ account_macros.order_table_list(user.orders[:5]) }}
 
-				<h3>Os meus endereços</h3>
+				<h3>{{ 'lang.storefront.account.my_addresses'|t }}</h3>
 				<div class="row-fluid">
 					<div class="span6">
-						<h4>Morada de envio</h4>
+						<h4>{{ 'lang.storefront.order.delivery.address'|t }}</h4>
 						<p>
 							{% if user.delivery.address %}
 								{{ user.delivery.name }}<br>
@@ -83,13 +83,13 @@ Description: User account page
 								{{ user.delivery.zip_code }} {{ user.delivery.city }}<br>
 								{{ user.delivery.country }}<br>
 							{% else %}
-								Não tem nenhuma morada de envio definida.<br>
+								{{ 'lang.storefront.order.delivery.no_address'|t }}<br>
 							{% endif %}
-							<a href="{{ site_url('account/profile') }}">Editar</a>
+							<a href="{{ site_url('account/profile') }}">{{ 'lang.storefront.order.edit'|t }}</a>
 						</p>
 					</div>
 					<div class="span6">
-						<h4>Morada de facturação</h4>
+						<h4>{{ 'lang.storefront.order.billing.address'|t }}</h4>
 						<p>
 							{% if user.billing.address %}
 								{{ user.billing.name }}<br>
@@ -97,9 +97,9 @@ Description: User account page
 								{{ user.billing.zip_code }} {{ user.billing.city }}<br>
 								{{ user.billing.country }}<br>
 							{% else %}
-								Não tem nenhuma morada de facturação definida.<br>
+								{{ 'lang.storefront.order.billing.no_address'|t }}<br>
 							{% endif %}
-							<a href="{{ site_url('account/profile') }}">Editar</a>
+							<a href="{{ site_url('account/profile') }}">{{ 'lang.storefront.order.edit'|t }}</a>
 						</p>
 					</div>
 				</div>

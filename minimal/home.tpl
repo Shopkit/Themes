@@ -8,95 +8,121 @@ Description: Home Page
 
 {% block content %}
 
-	<div class="container">
+	<div class="{{ layout_container }}">
 
 		<ul class="social">
 			{% if store.facebook %}
-				<li><a href="{{ store.facebook }}" target="_blank" title="Facebook"><i class="fa fa-facebook fa-fw"></i></a></li>
+				<li><a href="{{ store.facebook }}" target="_blank" title="{{ 'lang.storefront.layout.social.facebook'|t }}"><i class="fa fa-facebook fa-fw"></i></a></li>
 			{% endif %}
 
 			{% if store.twitter %}
-				<li><a href="{{ store.twitter }}" target="_blank" title="Twitter"><i class="fa fa-twitter fa-fw"></i></a></li>
+				<li><a href="{{ store.twitter }}" target="_blank" title="{{ 'lang.storefront.layout.social.twitter'|t }}"><i class="fa fa-twitter fa-fw"></i></a></li>
 			{% endif %}
 
 			{% if store.instagram %}
-				<li><a href="{{ store.instagram }}" target="_blank" title="Instagram"><i class="fa fa-instagram fa-fw"></i></a></li>
+				<li><a href="{{ store.instagram }}" target="_blank" title="{{ 'lang.storefront.layout.social.instagram'|t }}"><i class="fa fa-instagram fa-fw"></i></a></li>
 			{% endif %}
 
 			{% if store.pinterest %}
-				<li><a href="{{ store.pinterest }}" target="_blank" title="Pinterest"><i class="fa fa-pinterest fa-fw"></i></a></li>
+				<li><a href="{{ store.pinterest }}" target="_blank" title="{{ 'lang.storefront.layout.social.pinterest'|t }}"><i class="fa fa-pinterest fa-fw"></i></a></li>
 			{% endif %}
+
+			{% if store.youtube %}
+				<li><a href="{{ store.youtube }}" target="_blank" title="{{ 'lang.storefront.layout.social.youtube'|t }}"><i class="fa fa-youtube-play fa-fw"></i></a></li>
+			{% endif %}
+
+			{% if store.linkedin %}
+				<li><a href="{{ store.linkedin }}" target="_blank" title="{{ 'lang.storefront.layout.social.linkedin'|t }}"><i class="fa fa-linkedin-square fa-fw"></i></a></li>
+			{% endif %}
+
+			{% if store.tiktok %}
+				<li><a href="{{ store.tiktok }}" target="_blank" title="{{ 'lang.storefront.layout.social.tiktok'|t }}"><i class="fa fa-tiktok fa-fw"></i></a></li>
+			{% endif %}
+
+			<li class="link-social-rss"><a href="{{ site_url('rss') }}" target="_blank" title="{{ 'lang.storefront.layout.social.rss'|t }}"><i class="fa fa-rss fa-fw"></i></a></li>
 		</ul>
 
-		{% if store.gallery %}
-			<section class="slideshow slideshow-home hidden-xs">
-				<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
-				<div class="flexslider">
-					<ul class="slides">
-						{% for gallery in store.gallery %}
-							{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
-							<li class="slide {{ has_slide_content }}" style="background-image:url({{ gallery.image.full }})">
-								{% if has_slide_content %}
-								<div class="slide-content">
-									{% if gallery.title %}
-										{% if gallery.link %}
-											<h4 class="slide-title"><a href="{{ gallery.link }}">{{ gallery.title }}</a></h4>
-										{% else %}
-											<h4 class="slide-title">{{ gallery.title }}</h4>
-										{% endif %}
-									{% endif %}
-									{% if gallery.description %}
-										<div class="slide-description">{{ gallery.description }}</div>
-									{% endif %}
-									{% if gallery.button %}
-										<div class="slide-button">
-											<a href="{{ gallery.button_link }}" class="btn btn-outline-white">{{ gallery.button }}</a>
-										</div>
-									{% endif %}
-								</div>
-							{% endif %}
-							</li>
-						{% endfor %}
-					</ul>
-				</div>
+		{{ generic_macros.gallery() }}
 
-				{% if store.description %}
-					<div class="store-description">
-						{{ store.description }}
-					</div>
-				{% endif %}
+		{% if categories and store.theme_options.home_num_categories > 0 %}
+			<section class="categories">
+				<div class="row">
+					{% for products_category in categories %}
+						{% if loop.index0 < (store.theme_options.home_num_categories ? store.theme_options.home_num_categories : 4) %}
+							<div class="col-xs-{{ 12 / mobile_categories_per_row }} {{ loop.first ? 'col-sm-offset-' ~ (12 - ((12 / store.theme_options.home_categories_per_row) * min(categories|length, store.theme_options.home_num_categories) )) / 2 }} {{ 'col-sm-' ~ (12 / store.theme_options.home_categories_per_row) }}">
+								{{ generic_macros.category_list(products_category, false) }}
+							</div>
+							{% if loop.index0 % store.theme_options.home_categories_per_row == (store.theme_options.home_categories_per_row - 1) %}
+								<div class="clearfix hidden-xs"></div>
+							{% endif %}
+							{% if mobile_categories_per_row == 2 and (loop.index % 2 == 0) %}
+                        		<div class="clearfix visible-xs"></div>
+                    		{% endif %}
+						{% endif %}
+					{% endfor %}
+				</div>
 			</section>
 		{% endif %}
 
-		<div class="products">
-			<div class="row">
+		{% set products_per_page_home = store.products_per_page_home %}
+		{% set featured_products = products("order:featured limit:#{products_per_page_home}") %}
+		{% if products_per_page_home %}
+			<div class="products">
+				<div class="row">
 
-				{% for product in products("order:featured limit:#{products_per_page_home}") %}
-					<div class="col-sm-4">
-						{{ generic_macros.product_list(product) }}
-					</div>
-				{% else %}
-					<div class="col-xs-12 padding-bottom-lg text-center">
-						<h3 class="margin-top-0 text-gray light">Não existem produtos</h3>
-					</div>
-				{% endfor %}
+					{% for product in featured_products %}
+						<div class="col-xs-{{ mobile_products_per_row }} col-sm-4 col-md-{{ 12 / products_per_row }}">
+							{{ generic_macros.product_list(product) }}
+						</div>
+						{% if loop.index0 % products_per_row == (products_per_row - 1) %}
+							<div class="clearfix hidden-xs hidden-sm"></div>
+						{% endif %}
+						{% if loop.index0 % 3 == 2 %}
+							<div class="clearfix visible-sm"></div>
+						{% endif %}
+						{% if mobile_products_per_row == '6' and (loop.index % 2 == 0) %}
+							<div class="clearfix visible-xs"></div>
+						{% endif %}
+					{% endfor %}
 
+				</div>
 			</div>
-		</div>
+		{% endif %}
 
-		{% if store.featured_blocks %}
-			<section class="featured-blocks">
+	</div>
+
+	{% if store.featured_blocks %}
+		<section class="featured-blocks">
+			<div class="{{ layout_container }}">
 				<div class="row">
 					{% for featured_block in store.featured_blocks %}
 						<div class="{{ loop.first ? 'col-sm-offset-' ~ (12 - 4 * store.featured_blocks|length) / 2 }} col-sm-4 col-featured-block">
 							<div class="featured-block">
-								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40" class="lazy">
+								<div style="-webkit-mask-image: url('{{ featured_block.icon }}');mask-image: url('{{ featured_block.icon }}');"></div>
 								<h4 class="bold">{{ featured_block.title }}</h4>
 								<p>{{ featured_block.description }}</p>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
+			</div>
+		</section>
+	{% endif %}
+
+	<div class="{{ layout_container }}">
+
+		{% set brands = brands("order:#{store.theme_options.home_brands_sorting} limit:6") %}
+		{% if brands %}
+			<section class="brands-block">
+				<h3>{{ 'lang.storefront.home.block.brands.title'|t }}</h3>
+				<div class="row">
+					{% for brand in brands %}
+						<div class="col-xs-2">
+							<a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.title }}" title="{{ brand.title }}"></a>
+						</div>
+					{% endfor %}
+				</div>
+				<p class="small margin-top"><a href="{{ site_url('brands') }}" class="text-underline">{{ 'lang.storefront.brands.title'|t }}</a></p>
 			</section>
 		{% endif %}
 

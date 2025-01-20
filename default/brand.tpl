@@ -8,10 +8,10 @@ Description: Product brand page
 
 {% block content %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
 		<li>
-			<a href="{{ site_url('brands') }}">Marcas</a><span class="divider">›</span>
+			<a href="{{ site_url('brands') }}">{{ 'lang.storefront.brand.title'|t }}</a><span class="divider">›</span>
 		</li>
 		<li class="active">{{ brand.title }}</li>
 	</ul>
@@ -37,7 +37,7 @@ Description: Product brand page
 			{% else %}
 
 				<div class="span9 product">
-					<h5>Não existem produtos.</h5>
+					<h5>{{ 'lang.storefront.brand.no_products'|t }}</h5>
 				</div>
 
 			{% endfor %}
@@ -52,7 +52,7 @@ Description: Product brand page
 	{% else %}
 		<div class="row products">
 			<div class="span9 product">
-				<h5>Não existem produtos.</h5>
+				<h5>{{ 'lang.storefront.brand.no_products'|t }}</h5>
 			</div>
 		</div>
 	{% endif %}

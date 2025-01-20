@@ -8,8 +8,8 @@ Description: Product tag page
 
 {% block content %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
 		<li class="active">{{ tag.title }}</li>
 	</ul>
 
@@ -34,7 +34,7 @@ Description: Product tag page
 			{% else %}
 
 				<div class="span9 product">
-					<h5>Não existem produtos.</h5>
+					<h5>{{ 'lang.storefront.tag.no_products'|t }}.</h5>
 				</div>
 
 			{% endfor %}
@@ -49,7 +49,7 @@ Description: Product tag page
 	{% else %}
 		<div class="row products">
 			<div class="span9 product">
-				<h5>Não existem produtos.</h5>
+				<h5>{{ 'lang.storefront.tag.no_products'|t }}.</h5>
 			</div>
 		</div>
 	{% endif %}

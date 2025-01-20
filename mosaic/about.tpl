@@ -12,10 +12,11 @@ Description: About page
 
 			<h1>{{ store.page.about.title }}</h1>
 
-			{% if store.gallery %}
-				<hr class="hidden-phone">
+			<hr>
 
-				<div class="flexslider hidden-phone">
+			{% if store.gallery %}
+
+				<div class="flexslider">
 					<ul class="slides">
 						{% for gallery in store.gallery %}
 							{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
@@ -35,7 +36,7 @@ Description: About page
 									{% endif %}
 									{% if gallery.button %}
 										<div class="slide-button">
-											<a href="{{ gallery.button_link }}" class="button btn-outline-white">{{ gallery.button }}</a>
+											<a href="{{ gallery.button_link }}" class="button">{{ gallery.button }}</a>
 										</div>
 									{% endif %}
 								</div>
@@ -45,15 +46,15 @@ Description: About page
 					</ul>
 				</div>
 
-			{% endif %}
+				<hr>
 
-			<hr>
+			{% endif %}
 
 			{{ store.page.about.content }}
 
 			{% if apps.facebook_page %}
 				<hr>
-				<div class="fb-page" data-href="{{ apps.facebook_page.facebook_url }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="{{ apps.facebook_page.facebook_url }}" class="fb-xfbml-parse-ignore"><a href="{{ apps.facebook_page.facebook_url }}">Facebook</a></blockquote></div>
+				<div class="fb-page" data-href="{{ apps.facebook_page.facebook_url }}" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="{{ apps.facebook_page.facebook_url }}" class="fb-xfbml-parse-ignore"><a href="{{ apps.facebook_page.facebook_url }}">{{ 'lang.storefront.layout.social.facebook'|t }}</a></blockquote></div>
 			{% endif %}
 
 		</section>

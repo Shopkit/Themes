@@ -10,11 +10,11 @@ Description: Categories list page
 
 	{% set categories = categories("limit:#{categories_per_page}") %}
 
-	<div class="container">
+	<div class="{{ layout_container }}">
 
 		<div class="row">
 			<div class="col-lg-3">
-				<h1 class="margin-top-0 margin-bottom">Todas as categorias</h1>
+				<h1 class="margin-top-0 margin-bottom">{{ 'lang.storefront.categories.title'|t }}</h1>
 			</div>
 
 			<div class="col-lg-9">
@@ -22,16 +22,19 @@ Description: Categories list page
 					<div class="row">
 
 						{% for category in categories %}
-							<div class="col-sm-4">
+							<div class="col-xs-{{ 12 / mobile_categories_per_row }} col-sm-4 col-md-{{ 12 / categories_per_row }}">
 								{{ generic_macros.category_list(category, false) }}
 							</div>
 
-							{% if loop.index0%3 == 2 %}
+							{% if loop.index0 % categories_per_row == (categories_per_row - 1) %}
 								<div class="clearfix hidden-xs"></div>
 							{% endif %}
+							{% if mobile_categories_per_row == 2 and (loop.index % 2 == 0) %}
+                        		<div class="clearfix visible-xs"></div>
+                    		{% endif %}
 						{% else %}
 							<div class="col-xs-12">
-								<h3 class="margin-bottom-lg margin-top-0 text-gray light">Não existem categorias</h3>
+								<h3 class="margin-bottom-lg margin-top-0 text-muted-dark light">{{ 'lang.storefront.categories.no_categories'|t }}</h3>
 							</div>
 						{% endfor %}
 

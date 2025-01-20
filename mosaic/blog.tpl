@@ -6,42 +6,48 @@ Description: Blog page
 
 {% block content %}
 
+	{% set posts = blog_posts("limit:#{posts_per_page}") %}
+
 	<div class="content">
 
 		<section class="page">
 
-			<h1>Blog</h1>
+			<h1>{{ 'lang.storefront.blog.title'|t }}</h1>
 
 			<hr>
 
-			{% for post in blog_posts() %}
+			{% if posts %}
 
-				<article class="break-word clearfix">
+				{% for post in posts %}
+					<article class="break-word clearfix">
 
-					<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-					<p><small class="muted"><em>Escrito em <strong>{{ post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
+						<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+						<p><small class="muted"><em>{{ 'lang.storefront.blog.post_date'|t([post.date|format_datetime('long','none')]) }}</strong></em></small></p>
 
-					<div class="row-fluid">
+						<div class="row-fluid">
 
-						<div class="span9">
-							{{ word_limiter(post.excerpt, 100, ' ... <a href="' ~ post.url ~ '">Ler mais</a>') }}
+							<div class="span9">
+								{{ word_limiter(post.excerpt, 100, ' ... <a href="' ~ post.url ~ '">' ~ 'lang.storefront.blog.read_more'|t ~'</a>') }}
+							</div>
+
+							{% if post.image %}
+								<p class="span3"><a href="{{ post.url }}"><img class="boxed lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" alt="{{ post.title|e_attr }}"></a></p>
+							{% endif %}
+
 						</div>
 
-						{% if post.image %}
-							<p class="span3"><a href="{{ post.url }}"><img class="boxed lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" alt="{{ post.title|e_attr }}"></a></p>
-						{% endif %}
+					</article>
 
-					</div>
+					<hr>
+				{% endfor %}
 
-				</article>
-
-				<hr>
+				{{ pagination("limit:#{posts_per_page}") }}
 
 			{% else %}
 
-				<h5>Não existem entradas no blog.</h5>
+				<h5>{{ 'lang.storefront.blog.no_posts'|t }}</h5>
 
-			{% endfor %}
+			{% endif %}
 
 		</section>
 

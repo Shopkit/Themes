@@ -23,7 +23,7 @@ Description: Product category page
 		{% set main_parent = category(parent_category.parent) ?: parent_category %}
 	{% endif %}
 
-	<div class="container">
+	<div class="{{ layout_container }}">
 
 		<div class="row">
 			<div class="col-lg-3">
@@ -55,7 +55,7 @@ Description: Product category page
 				{% endif %}
 
 				{#  Setup order #}
-				{% set order_options = { 'position' : 'Relevância', 'title' : 'Título', 'newest' : 'Mais recentes', 'sales' : 'Mais vendidos', 'price_asc' : 'Mais baratos', 'price_desc' : 'Mais caros', 'stock_desc' : 'Mais stock', 'stock_asc' : 'Menos stock' } %}
+				{% set order_options = { 'position' : 'lang.storefront.layout.order_options.position'|t, 'title' : 'lang.storefront.layout.order_options.title'|t, 'newest' : 'lang.storefront.layout.order_options.newest'|t, 'sales' : 'lang.storefront.layout.order_options.sales'|t, 'price_asc' : 'lang.storefront.layout.order_options.price_asc'|t, 'price_desc' : 'lang.storefront.layout.order_options.price_desc'|t, 'stock_desc' : 'lang.storefront.layout.order_options.stock_desc'|t, 'stock_asc' : 'lang.storefront.layout.order_options.stock_asc'|t, 'rating' : 'lang.storefront.layout.order_options.rating'|t } %}
 
 				{% if not get.order_by in order_options|keys %}
 					{% set get = {'order_by': store.category_default_order|default('position')} %}
@@ -64,32 +64,11 @@ Description: Product category page
 				{% set products = products("order:#{get.order_by} category:#{category.id} limit:#{products_per_page_catalog}") %}
 
 				{% if products %}
-					<div class="order-options">
-						<small>Ordenar por</small> &nbsp;
-
-						<div class="btn-group">
-							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-								{% if get.order_by and order_options[get.order_by] %}
-									{{ order_options[get.order_by] }}
-								{% else %}
-									{{ order_options['position'] }}
-								{% endif %}
-								<span class="caret"></span>
-							</button>
-
-							<ul class="dropdown-menu" role="menu">
-								{% for order_option, order_title in order_options %}
-									{% if order_option != get.order_by %}
-										<li><a href="{{ category.url }}?order_by={{ order_option }}">{{ order_title }}</a></li>
-									{% endif %}
-								{% endfor %}
-							</ul>
-						</div>
-					</div>
+					{{ generic_macros.order_by(get, order_options, category.url ~ '?') }}
 				{% endif %}
 
 				{% if main_parent.children %}
-					<div class="panel panel-default margin-bottom panel-categories">
+					<div class="panel well-featured {{ store.theme_options.well_featured_shadow }} panel-default margin-bottom panel-categories">
 
 						<div class="panel-heading">
 							<a href="{{ main_parent.url }}" class="link-inherit">{{ main_parent.title }}</a>
@@ -130,9 +109,19 @@ Description: Product category page
 						<div class="row">
 
 							{% for product in products %}
-								<div class="col-sm-4">
+								<div class="col-xs-{{ mobile_products_per_row }} col-sm-4 col-md-{{ 12 / products_per_row }}">
 									{{ generic_macros.product_list(product) }}
 								</div>
+
+								{% if loop.index0 % products_per_row == (products_per_row - 1) %}
+									<div class="clearfix hidden-xs hidden-sm"></div>
+								{% endif %}
+								{% if loop.index0 % 3 == 2 %}
+									<div class="clearfix visible-sm"></div>
+								{% endif %}
+								{% if mobile_products_per_row == '6' and (loop.index % 2 == 0) %}
+									<div class="clearfix visible-xs"></div>
+								{% endif %}
 							{% endfor %}
 
 						</div>
@@ -147,12 +136,15 @@ Description: Product category page
 						<div class="row">
 
 							{% for category in parent_category.children %}
-								<div class="col-sm-4">
+								<div class="col-xs-{{ 12 / mobile_categories_per_row }} col-sm-4 col-md-{{ 12 / categories_per_row }}">
 									{{ generic_macros.category_list(category) }}
 								</div>
-								{% if loop.index0%3 == 2 %}
+								{% if loop.index0 % categories_per_row == (categories_per_row - 1) %}
 									<div class="clearfix hidden-xs"></div>
 								{% endif %}
+								{% if mobile_categories_per_row == 2 and (loop.index % 2 == 0) %}
+                        			<div class="clearfix visible-xs"></div>
+                    			{% endif %}
 							{% endfor %}
 
 						</div>
@@ -160,7 +152,7 @@ Description: Product category page
 
 				{% else %}
 					<div class="col-xs-12">
-						<h3 class="margin-bottom-lg margin-top-0 text-gray light">Não existem produtos</h3>
+						<h3 class="margin-bottom-lg margin-top-0 text-muted-dark light">{{ 'lang.storefront.category.no_products'|t }}</h3>
 					</div>
 				{% endif %}
 

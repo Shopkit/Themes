@@ -10,7 +10,7 @@ Description: Categories list page
 
 	{% set categories = categories("limit:#{categories_per_page}") %}
 
-	<h1 class="wide">Todas as categorias</h1>
+	<h1 class="wide">{{ 'lang.storefront.categories.title'|t }}</h1>
 
 	{% if categories %}
 
@@ -25,7 +25,7 @@ Description: Categories list page
 		{{ pagination("categories limit:#{categories_per_page}") }}
 
 	{% else %}
-		<p class="wide">Não existem categorias.</p>
+		<p class="wide">{{ 'lang.storefront.categories.no_categories'|t }}.</p>
 	{% endif %}
 
 {% endblock %}

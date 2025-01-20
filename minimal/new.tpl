@@ -8,7 +8,7 @@ Description: Last products page
 
 {% block content %}
 
-	<div class="container">
+	<div class="{{ layout_container }}">
 
 		<h1 class="margin-top-0 margin-bottom">{{ store.page.new.title }}</h1>
 
@@ -25,12 +25,22 @@ Description: Last products page
 
 			<div class="row">
 				{% for product in products("new limit:#{products_per_page_catalog}") %}
-					<div class="col-sm-4">
+					<div class="col-xs-{{ mobile_products_per_row }} col-sm-4 col-md-{{ 12 / products_per_row }}">
 						{{ generic_macros.product_list(product) }}
 					</div>
+
+					{% if loop.index0 % products_per_row == (products_per_row - 1) %}
+						<div class="clearfix hidden-xs hidden-sm"></div>
+					{% endif %}
+					{% if loop.index0 % 3 == 2 %}
+						<div class="clearfix visible-sm"></div>
+					{% endif %}
+					{% if mobile_products_per_row == '6' and (loop.index % 2 == 0) %}
+						<div class="clearfix visible-xs"></div>
+					{% endif %}
 				{% else %}
 					<div class="col-xs-12">
-						Não existem produtos
+						{{ 'lang.storefront.product_list.no_products'|t }}
 					</div>
 				{% endfor %}
 

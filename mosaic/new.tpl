@@ -29,7 +29,7 @@ Description: Last products page
 		{{ pagination("new limit:#{products_per_page_catalog}") }}
 
 	{% else %}
-		<p class="wide">Não existem produtos.</p>
+		<p class="wide">{{ 'lang.storefront.product_list.no_products'|t }}.</p>
 	{% endif %}
 
 {% endblock %}

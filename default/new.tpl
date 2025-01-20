@@ -8,8 +8,8 @@ Description: Last products page
 
 {% block content %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
 		<li class="active">{{ store.page.new.title }}</li>
 	</ul>
 
@@ -28,7 +28,7 @@ Description: Last products page
 		{% else %}
 
 			<div class="span9 product">
-				<h5>Não existem produtos.</h5>
+				<h5>{{ 'lang.storefront.product_list.no_products'|t }}.</h5>
 			</div>
 
 		{% endfor %}

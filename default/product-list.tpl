@@ -16,7 +16,7 @@
 		</div>
 	{% else %}
 		<div class="span9">
-			<h4 class="margin-bottom-lg margin-top-0 text-gray light">Não existem produtos</h4>
+			<h4 class="margin-bottom-lg margin-top-0 text-gray light">{{ 'lang.storefront.product_list.no_products'|t }}</h4>
 		</div>
 	{% endfor %}
 </div>

@@ -10,12 +10,12 @@ Description: Categories list page
 
 	{% set categories = categories("limit:#{categories_per_page}") %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
-		<li class="active">Todas as categorias</li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
+		<li class="active">{{ 'lang.storefront.categories.title'|t }}</li>
 	</ul>
 
-	<h1>Todas as categorias</h1>
+	<h1>{{ 'lang.storefront.categories.title'|t }}</h1>
 	<hr>
 
 	<div class="row categories">
@@ -25,7 +25,7 @@ Description: Categories list page
 		{% else %}
 
 			<div class="span9 category">
-				<h5>Não existem categorias.</h5>
+				<h5>{{ 'lang.storefront.categories.no_categories'|t }}.</h5>
 			</div>
 
 		{% endfor %}

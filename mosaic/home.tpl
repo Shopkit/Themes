@@ -8,9 +8,10 @@ Description: Home Page
 
 {% block content %}
 
+	{% set products_per_page_home = store.products_per_page_home %}
 	{% set products = products("order:featured limit:#{products_per_page_home}") %}
 
-	{% if products %}
+	{% if products_per_page_home and products %}
 
 		<ul class="unstyled products">
 
@@ -20,8 +21,6 @@ Description: Home Page
 
 		</ul>
 
-	{% else %}
-		<p class="wide">Não existem produtos em destaque.</p>
 	{% endif %}
 
 {% endblock %}

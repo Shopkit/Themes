@@ -5,11 +5,15 @@ Version: 4.0
 Description: This is the base layout. It's included in every page with this code: {% extends 'base.tpl' %}
 #}
 
+{% import 'macros.tpl' as generic_macros %}
+
 {# Vars #}
-{% set products_per_page_home = store.products_per_page_home ?: 12 %}
 {% set products_per_page_catalog = store.products_per_page_catalog ?: 12 %}
 {% set categories_per_page = store.categories_per_page ?: 12 %}
 {% set brands_per_page = store.brands_per_page ?: 24 %}
+{% set store_name = store.name|e_attr  %}
+{% set posts_per_page = store.theme_options.posts_per_page ?: 3 %}
+{% set show_search_suggestions = store.theme_options.show_search_suggestions == 'block' ? '' : 'remove-typeahead' %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -32,17 +36,6 @@ Description: This is the base layout. It's included in every page with this code
 		<meta name="google-translate-customization" content="{{ store.translate_meta }}">
 	{% endif %}
 
-	<!-- Facebook Meta -->
-	<meta property="og:site_name" content="{{ store.name|e_attr }}">
-	<meta property="og:type" content="website">
-	<meta property="og:title" content="{{ title|e_attr }}">
-	<meta property="og:description" content="{{ description|e_attr }}">
-	<meta property="og:url" content="{{ current_url() }}">
-
-	{% if image %}
-		<meta property="og:image" content="{{ image }}">
-	{% endif %}
-
 	{% if apps.facebook_comments.username %}
 		<meta property="fb:admins" content="{{ apps.facebook_comments.username }}">
 	{% endif %}
@@ -56,8 +49,11 @@ Description: This is the base layout. It's included in every page with this code
 		<link rel="shortcut icon" href="{{ store.favicon }}">
 	{% endif %}
 
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic">
-	<link rel="stylesheet" href="{{ store.assets.css }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="{{ fonts }}" rel="stylesheet">
+
+	<link id="theme-css" rel="stylesheet" href="{{ store.assets.css }}">
 	<link rel="stylesheet" href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}">
 
 	{% if store.custom_css %}
@@ -80,7 +76,7 @@ Description: This is the base layout. It's included in every page with this code
 				{% if user.is_logged_in %}
 					<a href="{{ site_url('account') }}" class="link-account btn-slide" data-target=".account"><i class="fa fa-user"></i></a>
 				{% else %}
-					<a href="#signin" class="trigger-shopkit-auth-modal link-signin"><i class="fa fa-sign-in"></i></a>
+					<a href="{{ site_url('signin') }}" class="link-signin"><i class="fa fa-sign-in"></i></a>
 				{% endif %}
 			{% endif %}
 
@@ -120,16 +116,19 @@ Description: This is the base layout. It's included in every page with this code
 						</ul>
 					</nav>
 
-					<form action="{{ site_url('search') }}">
-						<input type="search" value="{{ search ? search.query }}" placeholder="PESQUISAR" name="q">
-					</form>
+					{% if store.theme_options.show_search %}
+						<form action="{{ site_url('search') }}" class="search-bar {{ show_search_suggestions }}">
+							<i class="fa fa-fw fa-search"></i>
+							<input type="search" value="{{ search ? search.query }}" placeholder="{{ 'lang.storefront.layout.header.search'|t }}" name="q">
+						</form>
+					{% endif %}
 				</div>
 
 			</div>
 
 			<nav class="secondary-nav">
 				<ul class="unstyled">
-					<li><a href="#" class="btn-slide" data-target=".categories">Categorias</a></li><li><a href="#" class="btn-slide" data-target=".pages">Páginas</a></li>
+					<li><a href="#" class="btn-slide" data-target=".categories">{{ 'lang.storefront.layout.categories.title'|t }}</a></li><li><a href="#" class="btn-slide" data-target=".pages">{{ 'lang.storefront.layout.footer.pages.title'|t }}</a></li>
 				</ul>
 			</nav>
 
@@ -144,24 +143,12 @@ Description: This is the base layout. It's included in every page with this code
 					{% if store.twitter %}<li><a target="_blank" href="{{ store.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
 					{% if store.instagram %}<li><a target="_blank" href="{{ store.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
 					{% if store.pinterest %}<li><a target="_blank" href="{{ store.pinterest }}"><i class="fa fa-pinterest"></i></a></li>{% endif %}
-					<li><a href="{{ site_url('rss') }}"><i class="fa fa-rss"></i></a></li>
+					{% if store.youtube %}<li><a target="_blank" href="{{ store.youtube }}"><i class="fa fa-youtube-play"></i></a></li>{% endif %}
+					{% if store.linkedin %}<li><a target="_blank" href="{{ store.linkedin }}"><i class="fa fa-linkedin-square"></i></a></li>{% endif %}
+					{% if store.tiktok %}<li><a target="_blank" href="{{ store.tiktok }}"><i class="fa fa-tiktok"></i></a></li>{% endif %}
+					<li class="link-social-rss"><a href="{{ site_url('rss') }}"><i class="fa fa-rss"></i></a></li>
 					{% if apps.google_translate %}
-						<li>
-							{% set default_lang = apps.google_translate.default_language %}
-							<div class="languages-dropdown btn-group">
-								<button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="current-language"><span class="flag-icon"></span></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li class="googtrans-{{ default_lang }}"><a href="{{ current_url() }}" lang="{{ default_lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[default_lang] }}"></span></a></li>
-									{% for lang in apps.google_translate.languages|split(',') %}
-										{% if lang != default_lang %}
-											<li class="googtrans-{{ lang }}"><a href="#googtrans({{ lang }})" lang="{{ lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[lang] }}"></span></a></li>
-										{% endif %}
-									{% endfor %}
-								</ul>
-							</div>
-						</li>
+						{{ generic_macros.google_translate(apps.google_translate) }}
 					{% endif %}
 				</ul>
 			</nav>
@@ -170,22 +157,34 @@ Description: This is the base layout. It's included in every page with this code
 				<div class="text-center" style="margin-bottom:30px;"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="height: 30px;" class="lazy"></div>
 			{% endif %}
 
-			<p>&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. Todos os direitos reservados.</p>
+			{% if store.theme_options.footer_images %}
+				<div class="row">
+					<div class="footer-images margin-bottom">
+						{% for footer_image in store.theme_options.footer_images %}
+							{{ footer_image.link ? '<a href="' ~ footer_image.link ~ '" target="_blank">' : '' }}
+							<img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ footer_image.image.full }}" alt="{{ footer_image.title }}" title="{{ footer_image.title }}">
+							{{ footer_image.link ? '</a>' : '' }}
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+
+			<p>&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. {{ 'lang.storefront.layout.footer.copyright'|t }}.</p>
 			{% if store.footer_info %}<p>{{ store.footer_info|nl2br }}</p>{% endif %}
 
 			{% if store.show_branding %}
 				<div class="powered-by">
-					Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
+					{{ 'lang.storefront.layout.footer.poweredby'|t }}<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
 				</div>
 			{% endif %}
 		</footer>
 
 	</section>
 
-	<div class="cart slide-bar">
+	<div class="cart slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 
 		<header>
-			<h3>Carrinho</h3>
+			<h3>{{ 'lang.storefront.cart.title'|t }}</h3>
 			<span class="price">{{ cart.subtotal | money_with_sign }}</span>
 		</header>
 
@@ -193,15 +192,27 @@ Description: This is the base layout. It's included in every page with this code
 			{% if cart.items %}
 
 				{% for item in cart.items %}
-					<p><strong>{{ item.qty }}x</strong> {{ item.title }} &ndash; <strong>{{ item.price | money_with_sign }}</strong></p>
+					<div class="cart-item">
+						<p><strong>{{ item.qty }}x</strong> {{ item.title }}</p>
+						{% if item.extras %}
+                            <div class="items-extra-wrapper">
+                                {% set item_extra_tip = '' %}
+                                {% for key, extra in item.extras %}
+                                    {% set item_extra_tip = item_extra_tip ~ extra.title ~': '~ extra.value ~ (loop.last ? '' : '</br>') %}
+                                {% endfor %}
+                                <span href="#item-extra-{{ item.item_id }}" class="inline-block small" data-toggle="tooltip" title="{{ item_extra_tip }}" data-html="true">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span></span>
+                            </div>
+                        {% endif %}
+						<p class="price"><strong>{{ item.subtotal | money_with_sign }}</strong>
+					</div>
+
+					<hr>
 				{% endfor %}
 
-				<hr>
-
-				<h3><a href="{{ site_url('cart') }}">Ver carrinho</a></h3>
+				<h3><a href="{{ site_url('cart') }}">{{ 'lang.storefront.layout.button.see_cart'|t }}</a></h3>
 
 			{% else %}
-				<p>Não existem produtos no carrinho</p>
+				<p>{{ 'lang.storefront.cart.no_products'|t }}</p>
 			{% endif %}
 
 			<div class="payment-logos">
@@ -218,18 +229,18 @@ Description: This is the base layout. It's included in every page with this code
 
 	</div>
 
-	<div class="categories slide-bar">
+	<div class="categories slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 
 		<header>
-			<h3>Categorias</h3>
+			<h3>{{ 'lang.storefront.layout.categories.title'|t }}</h3>
 		</header>
 
 		<section>
 
 			<ul class="unstyled list">
 				{% for catalog_menu in store.navigation.catalogs_menus %}
-					<li class="menu-{{ catalog_menu.menu_item }} {{ current_page == catalog_menu.menu_item ? 'active' }}">
-						<a href="{{ catalog_menu.menu_url }}">{{ catalog_menu.menu_text }}</a>
+					<li class="menu-{{ catalog_menu.menu_item }} {{ current_page == catalog_menu.menu_item ? 'active' }} {{ store.theme_options['show_menu_' ~ catalog_menu.menu_item] ? '' : 'hidden' }}">
+						<a href="{{ catalog_menu.menu_url }}">{{ ('lang.storefront.' ~ catalog_menu.menu_item ~ '.title')|t }}</a>
 					</li>
 				{% endfor %}
 
@@ -272,17 +283,17 @@ Description: This is the base layout. It's included in every page with this code
 	</div>
 
 	{% if store.settings.cart.users_registration != 'disabled' and user.is_logged_in %}
-		<div class="account slide-bar">
+		<div class="account slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 			<header>
-				<h3>Olá {{ user.name|first_word }}</h3>
+				<h3>{{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</h3>
 			</header>
 			<section>
 				<ul class="unstyled list">
-					<li class="{{ current_page == 'account' ? 'active' }}"><a href="{{ site_url('account') }}">A minha conta</a></li>
-					<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">Encomendas</a></li>
-					<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">Dados de cliente</a></li>
-					<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">Wishlist</a></li>
-					<li><a href="{{ site_url('account/logout')}}">Sair</a></li>
+					<li class="{{ current_page == 'account' ? 'active' }}"><a href="{{ site_url('account') }}">{{ 'lang.storefront.account.my_account'|t }}</a></li>
+					<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">{{ 'lang.storefront.layout.orders.title'|t }}</a></li>
+					<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">{{ 'lang.storefront.layout.client.title'|t }}</a></li>
+					<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">{{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+					<li><a href="{{ site_url('account/logout')}}">{{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 				</ul>
 				<div class="text-center"><a class="close" href="#" data-target=".account">&times;</a></div>
 			</section>
@@ -290,28 +301,28 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if apps.newsletter %}
-		<div class="newsletter slide-bar">
+		<div class="newsletter slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 			<header>
-				<h3>Newsletter</h3>
+				<h3>{{ 'lang.storefront.form.newsletter.label'|t }}</h3>
 			</header>
 
 			<section class="padding">
 				<p>Inscreva-se na nossa newsletter para receber todas as novidades no seu e-mail.</p>
 				<br>
 
-				<input name="nome_newsletter" type="text" placeholder="Nome" class="input-block-level" required="">
-				<input name="email_newsletter" type="email" placeholder="E-mail" class="input-block-level" required="">
-				<button class="btn btn-inverse submit-newsletter" type="button">Registar</button>
+				<input name="nome_newsletter" type="text" placeholder="{{ 'lang.storefront.form.name.label'|t }}" class="input-block-level" required="">
+				<input name="email_newsletter" type="email" placeholder="{{ 'lang.storefront.form.email.label'|t }}" class="input-block-level" required="">
+				<button class="btn btn-primary {{ store.theme_options.button_primary_shadow }} submit-newsletter" type="button">{{ 'lang.storefront.form.newsletter.button'|t }}</button>
 
-				<div class="text-center"><a class="close" href="#" data-target=".categories">&times;</a></div>
+				<div class="text-center"><a class="close" href="#" data-target=".newsletter">&times;</a></div>
 			</section>
 		</div>
 	{% endif %}
 
-	<div class="pages slide-bar">
+	<div class="pages slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 
 		<header>
-			<h3>Páginas</h3>
+			<h3>{{ 'lang.storefront.layout.footer.pages.title'|t }}</h3>
 		</header>
 
 		<section>
@@ -322,7 +333,7 @@ Description: This is the base layout. It's included in every page with this code
 				{% endfor %}
 			</ul>
 
-			<div class="text-center"><a class="close" href="#" data-target=".categories">&times;</a></div>
+			<div class="text-center"><a class="close" href="#" data-target=".pages">&times;</a></div>
 
 		</section>
 
@@ -332,24 +343,94 @@ Description: This is the base layout. It's included in every page with this code
 
 		{% block content %}{% endblock %}
 
+		{% set reviews = reviews("order:random product:#{product.id} limit:6") %}
+
+		{% if apps.product_reviews and apps.product_reviews.product_reviews_block and reviews.reviews %}
+			{{ generic_macros.reviews_block(reviews) }}
+		{% endif %}
+
 	</section>
+
+	{% if store.theme_options.popups|length > 0 %}
+		{% for popup in store.theme_options.popups %}
+			{% if get.preview or (('all' in popup.location) or (current_page in popup.location)) %}
+				{% if popup.type == 'popup' %}
+					<div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" tabindex="-1" role="dialog" aria-labelledby="banner-popupLabel">
+						<div class="modal-dialog {{ popup.modal_size }}" role="document">
+							<div class="modal-content">
+								<div class="modal-body" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
+									<button type="button" class="close" data-index="{{ popup.id }}" data-unique_id="{{ popup.unique_id }}" aria-label="Close" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}"><span aria-hidden="true">&times;</span></button>
+									<div class="banner-content {{ popup.image.full ? 'image-' ~ popup.image_position : 'no-image' }} {{ popup.content ? 'has-content' : 'no-content' }}">
+										{% if popup.image.full %}
+											<div class="popup-image-wrapper">
+												<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
+											</div>
+										{% endif %}
+										{% if popup.content %}
+											<div class="popup-content-wrapper">
+												<div class="banner-text">{{ popup.content }}</div>
+												{{ generic_macros.popup_interactions(popup) }}
+											</div>
+										{% else %}
+											{% if popup.interaction == 'button' or popup.interaction == 'newsletter' %}
+												<div class="popup-content-wrapper">
+													{{ generic_macros.popup_interactions(popup) }}
+												</div>
+											{% endif %}
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% elseif popup.type == 'slide' or popup.type == 'banner' %}
+					<div id="banner-{{ popup.type }}-{{ popup.unique_id }}" class="{{ popup.type == 'slide' ? popup.slide_position : popup.banner_position }} banner-theme-options hidden {{ popup.type == 'banner' and popup.style == 'full' ? 'banner-inline' : 'banner-floating' }} {{ popup.modal_size }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}">
+						<div class="banner-wrapper {{ popup.type == 'banner' ? 'size-' ~ popup.style : '' }}" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
+							<button type="button" class="close" data-index="{{ popup.id }}" data-unique_id="{{ popup.unique_id }}" aria-label="Close" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<div class="banner-content {{ popup.image.full ? 'image-' ~ popup.image_position : 'no-image' }} {{ popup.content ? 'has-content' : 'no-content' }}">
+								{% if popup.image.full and popup.type == 'slide' %}
+									<div class="popup-image-wrapper">
+										<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
+									</div>
+								{% endif %}
+								{% if popup.content %}
+									<div class="popup-content-wrapper">
+										<div class="banner-text">{{ popup.content }}</div>
+										{{ generic_macros.popup_interactions(popup) }}
+									</div>
+								{% else %}
+									{% if popup.interaction == 'button' or popup.interaction == 'newsletter' %}
+										<div class="popup-content-wrapper">
+											{{ generic_macros.popup_interactions(popup) }}
+										</div>
+									{% endif %}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	{% endif %}
 
 	{# Events #}
 	{% if events.wishlist %}
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Wishlist</h3>
+				<h3>{{ 'lang.storefront.layout.wishlist.title'|t }}</h3>
 			</div>
 			<div class="modal-body">
 				{% if events.wishlist.added %}
-					<h5 class="text-normal">O produto foi adicionado à wishlist</h5>
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.wishlist.added'|t }}</h5>
 				{% elseif events.wishlist.removed %}
-					<h5 class="text-normal">O produto foi removido da wishlist</h5>
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.wishlist.removed'|t }}</h5>
 				{% endif %}
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
 			</div>
 		</div>
 	{% endif %}
@@ -358,39 +439,39 @@ Description: This is the base layout. It's included in every page with this code
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Carrinho de Compras</h3>
+				<h3>{{ 'lang.storefront.cart.title'|t }}</h3>
 			</div>
 			<div class="modal-body">
-				{% set button_label = 'Fechar' %}
+				{% set button_label = 'lang.storefront.layout.button.close'|t %}
 
 				{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
 
 					{% if events.cart.stock_qty %}
-						<h5 class="text-normal">Não existe stock suficiente do produto</h5>
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.not_enough_stock'|t }}</h5>
 					{% endif %}
 
 					{% if events.cart.stock_sold_single %}
-						<h5 class="text-normal">Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ events.cart.stock_sold_single }}</strong></h5>
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.stock_sold_single'|t }} <strong>{{ events.cart.stock_sold_single }}</strong></h5>
 					{% endif %}
 
 					{% if events.cart.no_stock %}
-						<h5 class="text-normal">Existem produtos que não têm stock suficiente</h5>
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.products_without_stock'|t }}</h5>
 					{% endif %}
 
 				{% else %}
 
 					{% if events.cart.added %}
-						<h5 class="text-normal">O produto <strong>{{ events.cart.added }}</strong> foi adicionado ao carrinho.</h5>
-						{% set button_label = 'Continuar a comprar' %}
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.added'|t }}</h5>
+						{% set button_label = 'lang.storefront.layout.button.keep_buying'|t %}
 					{% elseif events.cart.error %}
-						<h5 class="text-normal">O produto não foi adicionado ao carrinho.</h5>
-						{% set button_label = 'Continuar a comprar' %}
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.error'|t }}.</h5>
+						{% set button_label = 'lang.storefront.layout.button.keep_buying'|t %}
 					{% elseif events.cart.updated %}
-						<h5 class="text-normal">O carrinho de compras foi actualizado</h5>
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.updated'|t }}</h5>
 					{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items or events.cart.session_updated %}
-						<h5 class="text-normal">O carrinho de compras foi actualizado</h5>
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.updated'|t }}</h5>
 						{% if events.cart.session_updated_items %}
-							<h5><strong>Produtos adicionados</strong></h5>
+							<h5><strong>{{ 'lang.storefront.layout.events.cart.updated_items'|t }}</strong></h5>
 							<ul>
 								{% for product in events.cart.session_updated_items %}
 									<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
@@ -398,7 +479,7 @@ Description: This is the base layout. It's included in every page with this code
 							</ul>
 						{% endif %}
 						{% if events.cart.session_not_updated_items %}
-							<h5><strong>Produtos não adicionados</strong></h5>
+							<h5><strong>{{ 'lang.storefront.layout.events.cart.not_updated_items'|t }}</strong></h5>
 							<ul>
 								{% for product in events.cart.session_not_updated_items %}
 									<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
@@ -406,15 +487,15 @@ Description: This is the base layout. It's included in every page with this code
 							</ul>
 						{% endif %}
 					{% elseif events.cart.deleted %}
-						<h5 class="text-normal">O produto foi removido do carrinho.</h5>
+						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.deleted'|t }}.</h5>
 					{% endif %}
 
 				{% endif %}
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">{{ button_label }}</a>
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ button_label }}</a>
 				{% if events.cart.added %}
-					<a class="btn btn-inverse" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> Ver Carrinho</a>
+					<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ 'lang.storefront.layout.button.see_cart'|t }}</a>
 				{% endif %}
 			</div>
 		</div>
@@ -424,16 +505,16 @@ Description: This is the base layout. It's included in every page with this code
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Cancelar subscrição</h3>
+				<h3>{{ 'lang.storefront.layout.events.unsubscribe_title'|t }}</h3>
 			</div>
 			<div class="modal-body">
 				<div class="text-center">
 					<i class="fa fa-envelope fa-3x text-light-gray"></i>
-					<h5 class="text-normal">A sua subscrição foi cancelada.</h5>
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.unsubscribe_text'|t }}</h5>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
 			</div>
 		</div>
 	{% endif %}
@@ -442,7 +523,7 @@ Description: This is the base layout. It's included in every page with this code
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Pagamento</h3>
+				<h3>{{ 'lang.storefront.order.payment.title'|t }}</h3>
 			</div>
 			<div class="modal-body">
 				<div class="text-center">
@@ -458,7 +539,7 @@ Description: This is the base layout. It's included in every page with this code
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
 			</div>
 		</div>
 	{% endif %}
@@ -467,20 +548,20 @@ Description: This is the base layout. It's included in every page with this code
 		<div class="modal hide fade modal-alert">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Formulário de Contacto</h3>
+				<h3>{{ 'lang.storefront.contact.contact_form.title'|t }}</h3>
 			</div>
 			<div class="modal-body">
 				{% if events.contact_form_success %}
-					<h5 class="text-normal">A sua mensagem foi enviada com sucesso. Obrigado pelo contacto.</h5>
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.contact_form_success.title'|t }} {{ 'lang.storefront.layout.events.contact_form_success.text'|t }}</h5>
 				{% endif %}
 
 				{% if events.contact_form_errors %}
-					<h5>Não foi possivel enviar a sua mensagem:</h5>
+					<h5>{{ 'lang.storefront.layout.events.contact_form_error'|t }}</h5>
 					<p>{{ events.contact_form_errors }}</p>
 				{% endif %}
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
 			</div>
 		</div>
 	{% endif %}
@@ -490,20 +571,20 @@ Description: This is the base layout. It's included in every page with this code
 			<div class="modal-content">
 				{{ form_open(site_url('user_location'), { 'method' : 'post', 'class' : 'no-margin'}) }}
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<h3 class="user-geolocation-modal-choose-country-region">Choose your country/region</h3>
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
+						<h3 class="user-geolocation-modal-choose-country-region">{{ 'lang.storefront.layout.modals.geolocation.choose_country'|t }}</h3>
 					</div>
 					<div class="modal-body">
-						<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">Are you in <span class="user-geolocation-modal-country"></span>? Please confirm your country.</span></p>
+						<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">{{ 'lang.storefront.layout.modals.geolocation.ask_country'|t }}</span></p>
 						<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
-							{% for key, country in countries_en %}
+							{% for key, country in countries %}
 								<option value="{{ key }}">{{ country }}</option>
 							{% endfor %}
 						</select>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn user-geolocation-modal-cancel" data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-inverse user-geolocation-modal-change-country-region">Change country/region</button>
+						<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }} user-geolocation-modal-cancel" data-dismiss="modal">{{ 'lang.storefront.layout.button.cancel'|t }}</button>
+						<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} user-geolocation-modal-change-country-region">{{ 'lang.storefront.layout.modals.geolocation.button.change_country'|t }}</button>
 					</div>
 				{{ form_close() }}
 			</div>
@@ -520,7 +601,7 @@ Description: This is the base layout. It's included in every page with this code
 			<p class="chromeframe">Está a usar um browser (navegador) desactualizado.<br><a href="http://browsehappy.com/" target="_blank">Actualize o seu browser</a> ou instale o  <a href="http://www.google.com/chromeframe/?redirect=true" target="_blank">Google Chrome Frame</a> para ter uma melhor e mais segura experiência de navegação.</p>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Fechar</a>
+			<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
 		</div>
 	</div>
 	<![endif]-->
@@ -532,26 +613,6 @@ Description: This is the base layout. It's included in every page with this code
 
 	<script>
 		var basecolor = '{{ store.basecolor }}';
-
-		{% if not apps.google_analytics_ec %}
-			/* Google Analytics */
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', '{{ ga_profile_id }}']);
-			_gaq.push(['_setDomainName', '{{ domain }}']);
-			_gaq.push(['_trackPageview']);
-
-			{% if apps.google_analytics %}
-				_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
-				_gaq.push(['b._trackPageview']);
-			{% endif %}
-
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-			/* End Google Analytics */
-		{% endif %}
 
 		{% if store.custom_js %}
 			{{ store.custom_js }}

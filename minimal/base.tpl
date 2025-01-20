@@ -4,11 +4,24 @@ Author: Shopkit
 Version: 4.0
 #}
 
+{% import 'macros.tpl' as generic_macros %}
+
 {# Vars #}
-{% set products_per_page_home = store.products_per_page_home ?: 9 %}
 {% set products_per_page_catalog = store.products_per_page_catalog ?: 18 %}
 {% set categories_per_page = store.categories_per_page ?: 18 %}
+{% set categories_per_row = store.theme_options.categories_per_row ?: 4 %}
+{% set mobile_categories_per_row = store.theme_options.mobile_categories_per_row ?: 1 %}
 {% set brands_per_page = store.brands_per_page ?: 36 %}
+{% set brands_per_row = store.theme_options.brands_per_row ?: 6 %}
+{% set mobile_brands_per_row = store.theme_options.mobile_brands_per_row ?: 2 %}
+{% set show_categories_navigation = store.theme_options.show_categories_navigation == 'show' ? 'show' : '' %}
+{% set store_name = store.name|e_attr  %}
+{% set layout_container = store.theme_options.layout_container == 'fluid' ? 'container-fluid' : 'container' %}
+{% set mobile_products_per_row = store.theme_options.mobile_products_per_row == '2' ? '6' : '12' %}
+{% set products_per_row = current_page == 'home' ? (store.theme_options.home_products_per_row is not null ? store.theme_options.home_products_per_row : '4') : (store.theme_options.products_per_row is not null ? store.theme_options.products_per_row : '4') %}
+{% set posts_per_page = store.theme_options.posts_per_page ?: 3 %}
+{% set posts_per_row = store.theme_options.posts_per_row ?: 1 %}
+{% set show_search_suggestions = store.theme_options.show_search_suggestions == 'block' ? '' : 'remove-typeahead' %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -34,16 +47,6 @@ Version: 4.0
 			<meta name="google-translate-customization" content="{{ store.translate_meta }}">
 		{% endif %}
 
-		<!-- Facebook Meta -->
-		<meta property="og:site_name" content="{{ store.name|e_attr }}">
-		<meta property="og:type" content="website">
-		<meta property="og:title" content="{{ title|e_attr }}">
-		<meta property="og:description" content="{{ description|e_attr }}">
-		<meta property="og:url" content="{{ current_url() }}">
-		{% if image %}
-			<meta property="og:image" content="{{ image }}">
-		{% endif %}
-
 		{% if apps.facebook_comments.username %}
 			<meta property="fb:admins" content="{{ apps.facebook_comments.username }}">
 		{% endif %}
@@ -59,9 +62,12 @@ Version: 4.0
 
 		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name|e_attr }}">
 
-		<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="{{ fonts }}" rel="stylesheet">
+
 		<link href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}" rel="stylesheet">
-		<link href="{{ store.assets.css }}" rel="stylesheet">
+		<link id="theme-css" href="{{ store.assets.css }}" rel="stylesheet">
 
 		{% if store.custom_css %}
 			<style>{{ store.custom_css }}</style>
@@ -74,7 +80,7 @@ Version: 4.0
 
 	</head>
 
-	<body class="{{ css_class }}">
+	<body class="{{ css_class }} {{ store.theme_options.modal_mask_blur != '0' ? 'modal-backdrop-blur' }}">
 
 		<header>
 
@@ -85,53 +91,40 @@ Version: 4.0
 					</div>
 				{% endif %}
 
-				{{ form_open(site_url('search'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
-					<div class="form-group">
-						<div class="search-form hidden">
-							<input type="search" name="q" value="{{ search ? search.query }}" class="form-control input-sm" placeholder="Pesquisa" required>
-						</div>
-
-					</div>
-					<button type="submit" class="btn-search btn btn-link"><i class="fa fa-fw fa-search"></i></button>
-				{{ form_close() }}
-
-				{% if apps.google_translate %}
-					{% set default_lang = apps.google_translate.default_language %}
-					<div class="languages-dropdown btn-group pull-right">
-						<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="current-language"><span class="flag-icon"></span></span> &nbsp;
-							 <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<li class="googtrans-{{ default_lang }}"><a href="{{ current_url() }}" lang="{{ default_lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[default_lang] }}"></span></a></li>
-							{% for lang in apps.google_translate.languages|split(',') %}
-								{% if lang != default_lang %}
-									<li class="googtrans-{{ lang }}"><a href="#googtrans({{ lang }})" lang="{{ lang }}"><span class="flag-icon flag-icon-{{ apps.google_translate.flags[lang] }}"></span></a></li>
-								{% endif %}
-							{% endfor %}
-						</ul>
-					</div>
-				{% endif %}
-
 				<div class="user-auth">
 					{% if store.settings.cart.users_registration != 'disabled' %}
 						{% if user.is_logged_in %}
 							<div class="user-loggedin">
-								<a href="{{ site_url('account') }}" class="link-account"><i class="fa fa-fw fa-user"></i> Olá {{ user.name|first_word }}</a>
-								<ul class="dropdown-menu" role="menu">
-									<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> Encomendas</a></li>
-									<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> Dados de cliente</a></li>
-									<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> Wishlist</a></li>
-									<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> Sair</a></li>
+								<a href="{{ site_url('account') }}" class="link-account"><i class="fa fa-fw fa-user"></i> {{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</a>
+								<ul class="dropdown-menu well-featured {{ store.theme_options.well_featured_shadow }}" role="menu">
+									<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
+									<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> {{ 'lang.storefront.layout.client.title'|t }}</a></li>
+									<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+									<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 								</ul>
 							</div>
 						{% else %}
-							<a href="#signin" class="trigger-shopkit-auth-modal link-signin"><i class="fa fa-fw fa-sign-in"></i> Login</a>
+							<a href="{{ site_url('signin') }}" class="link-signin"><i class="fa fa-fw fa-sign-in"></i> {{ 'lang.storefront.login.signin.title'|t }}</a>
 						{% endif %}
 					{% endif %}
 
 					<a href="{{ site_url('cart') }}" class="link-cart"><i class="fa fa-fw fa-shopping-cart"></i> {{ cart.subtotal | money_with_sign }}</a>
 				</div>
+
+				{% if apps.google_translate %}
+					{{ generic_macros.google_translate(apps.google_translate) }}
+				{% endif %}
+
+				{% if store.theme_options.show_search %}
+					{{ form_open(site_url('search'), { 'method' : 'get', 'class' : 'navbar-form navbar-right', 'role' : 'search' }) }}
+						<div class="form-group {{ show_search_suggestions }}">
+							<div class="search-form hidden">
+								<input type="search" name="q" value="{{ search ? search.query }}" class="form-control input-sm" placeholder="{{ 'lang.storefront.layout.header.search'|t }}" required>
+							</div>
+						</div>
+						<button type="submit" class="btn-search btn btn-link"><i class="fa fa-fw fa-search"></i></button>
+					{{ form_close() }}
+				{% endif %}
 			</div>
 
 			{# Begin logo #}
@@ -144,7 +137,7 @@ Version: 4.0
 
 			{# Begin site navigation #}
 			<nav class="navbar">
-				<div class="container">
+				<div class="{{ layout_container }}">
 
 					<div class="navbar-header">
 
@@ -158,45 +151,51 @@ Version: 4.0
 					<div class="collapse navbar-collapse" id="navbar-collapse">
 						<ul class="nav navbar-nav">
 							{% for catalog_menu in store.navigation.catalogs_menus %}
-								<li class="menu-{{ catalog_menu.menu_item }} {{ current_page == catalog_menu.menu_item ? 'active' }}">
-									<a href="{{ catalog_menu.menu_url }}">{{ catalog_menu.menu_text }}</a>
+								<li class="menu-{{ catalog_menu.menu_item }} {{ current_page == catalog_menu.menu_item ? 'active' }} {{ store.theme_options['show_menu_' ~ catalog_menu.menu_item] ? '' : 'hidden' }}">
+									<a href="{{ catalog_menu.menu_url }}">{{ ('lang.storefront.' ~ catalog_menu.menu_item ~ '.title')|t }}</a>
 								</li>
 							{% endfor %}
 
-							{% for products_category in categories %}
-								<li class="{{ (category.id == products_category.id) ? 'active' }} {{ products_category.children ? 'dropdown' }} {{ 'menu-' ~ products_category.handle }}">
+							{% if show_categories_navigation == 'show' %}
+								{% for products_category in categories %}
+									<li class="{{ (category.id == products_category.id) ? 'active' }} {{ products_category.children ? 'dropdown' }} {{ 'menu-' ~ products_category.handle }}">
 
-									{% if products_category.children %}
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#" data-href="{{ products_category.url }}">
-											{{ products_category.title }} <span class="caret"></span>
-										</a>
-										<ul class="dropdown-menu" role="menu">
-											{% for sub_category in products_category.children %}
-												<li class="{{ sub_category.children ? 'subdropdown' }} {{ (category.id == sub_category.id or category.parent == sub_category.id ? 'open') }} {{ (category.id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
+										{% if products_category.children %}
+											<a class="dropdown-toggle" data-toggle="dropdown" href="#" data-href="{{ products_category.url }}">
+												{{ products_category.title }} <span class="caret"></span>
+											</a>
+											<ul class="dropdown-menu well-featured {{ store.theme_options.well_featured_shadow }}" role="menu">
+												{% for sub_category in products_category.children %}
+													<li class="{{ sub_category.children ? 'subdropdown' }} {{ (category.id == sub_category.id or category.parent == sub_category.id ? 'open') }} {{ (category.id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
 
-													{% if sub_category.children %}
-														<a class="dropdown-toggle" data-toggle="dropdown" href="#" data-href="{{ sub_category.url }}">
-															{{ sub_category.title }} <span class="caret"></span>
-														</a>
+														{% if sub_category.children %}
+															<a class="dropdown-toggle" data-toggle="dropdown" href="#" data-href="{{ sub_category.url }}">
+																{{ sub_category.title }} <span class="caret"></span>
+															</a>
 
-														<ul id="sub_category_{{ sub_category.id }}" class="dropdown-submenu" role="menu">
-															{% for children in sub_category.children %}
-																<li class="{{ (category.id == children.id) ? 'active' }} {{ 'menu-' ~ children.handle }}">
-																	<a href="{{ children.url }}">{{ children.title }}</a>
-																</li>
-															{% endfor %}
-														</ul>
-													{% else %}
-														<a href="{{ sub_category.url }}">{{ sub_category.title }}</a>
-													{% endif %}
-												</li>
-											{% endfor %}
-										</ul>
-									{% else %}
-										<a href="{{ products_category.url }}">{{ products_category.title }}</a>
-									{% endif %}
-								</li>
-							{% endfor %}
+															<ul id="sub_category_{{ sub_category.id }}" class="dropdown-submenu" role="menu">
+																{% for children in sub_category.children %}
+																	<li class="{{ (category.id == children.id) ? 'active' }} {{ 'menu-' ~ children.handle }}">
+																		<a href="{{ children.url }}">{{ children.title }}</a>
+																	</li>
+																{% endfor %}
+															</ul>
+														{% else %}
+															<a href="{{ sub_category.url }}">{{ sub_category.title }}</a>
+														{% endif %}
+													</li>
+												{% endfor %}
+											</ul>
+										{% else %}
+											<a href="{{ products_category.url }}">{{ products_category.title }}</a>
+										{% endif %}
+									</li>
+								{% endfor %}
+							{% else %}
+								{% for primary_navigation in store.navigation.primary %}
+									<li class="menu-{{ primary_navigation.menu_text|slug }} {{ current_page == primary_navigation.menu_item ? 'active' }}"><a href="{{ primary_navigation.menu_url }}" {{ primary_navigation.target_blank ? 'target="_blank"' }}>{{ primary_navigation.menu_text }}</a></li>
+								{% endfor %}
+							{% endif %}
 						</ul>
 
 					</div>
@@ -208,19 +207,32 @@ Version: 4.0
 
 		</header>
 
+		{% if current_page != 'home' %}
+			{{ generic_macros.gallery() }}
+		{% endif %}
+
 		{# This is where content of each page will appear #}
 		{% block content %}{% endblock %}
+
+		{% set reviews = reviews("order:random product:#{product.id} limit:6") %}
+
+		{% if apps.product_reviews and apps.product_reviews.product_reviews_block and reviews.reviews %}
+			{{ generic_macros.reviews_block(reviews) }}
+		{% endif %}
 
 		{# Begin footer #}
 		<footer>
 
-			<div class="container">
+			<div class="{{ layout_container }}">
 
 				<nav>
 					<ul>
-						{% for primary_navigation in store.navigation.primary %}
-							<li class="menu-{{ primary_navigation.menu_text|slug }}"><a href="{{ primary_navigation.menu_url }}" {{ primary_navigation.target_blank ? 'target="_blank"' }}>{{ primary_navigation.menu_text }}</a></li>
-						{% endfor %}
+						{% if show_categories_navigation == 'show' %}
+							{% for primary_navigation in store.navigation.primary %}
+								<li class="menu-{{ primary_navigation.menu_text|slug }}"><a href="{{ primary_navigation.menu_url }}" {{ primary_navigation.target_blank ? 'target="_blank"' }}>{{ primary_navigation.menu_text }}</a></li>
+							{% endfor %}
+						{% endif %}
+
 
 						{% for secondary_navigation in store.navigation.secondary %}
 							<li class="menu-{{ secondary_navigation.menu_text|slug }}"><a href="{{ secondary_navigation.menu_url }}" {{ secondary_navigation.target_blank ? 'target="_blank"' }}>{{ secondary_navigation.menu_text }}</a></li>
@@ -240,13 +252,25 @@ Version: 4.0
 					{% endfor %}
 				</div>
 
+				{% if store.theme_options.footer_images %}
+					<div class="row">
+						<div class="footer-images margin-top">
+							{% for footer_image in store.theme_options.footer_images %}
+								{{ footer_image.link ? '<a href="' ~ footer_image.link ~ '" target="_blank">' : '' }}
+								<img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ footer_image.image.full }}" alt="{{ footer_image.title }}" title="{{ footer_image.title }}">
+								{{ footer_image.link ? '</a>' : '' }}
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+
 				{% if store.is_ssl %}
 					<div class="text-center" style="margin-top:30px;"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ assets_url('templates/assets/common/icons/secure-site-ssl.png') }}" alt="Site Seguro" title="Site Seguro" style="height: 35px;" class="lazy"></div>
 				{% endif %}
 
 				{% if store.show_branding %}
 					<div class="powered-by">
-						Powered by<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
+						{{ 'lang.storefront.layout.footer.poweredby'|t }}<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
 					</div>
 				{% endif %}
 
@@ -254,6 +278,68 @@ Version: 4.0
 
 		</footer>
 		{# End Footer #}
+
+		{% if store.theme_options.popups|length > 0 %}
+            {% for popup in store.theme_options.popups %}
+                {% if get.preview or (('all' in popup.location) or (current_page in popup.location)) %}
+                    {% if popup.type == 'popup' %}
+                        <div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" tabindex="-1" role="dialog" aria-labelledby="banner-popupLabel">
+                            <div class="modal-dialog {{ popup.modal_size }}" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
+                                        <button type="button" class="close" data-index="{{ popup.id }}" data-unique_id="{{ popup.unique_id }}" aria-label="Close" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}"><span aria-hidden="true">&times;</span></button>
+                                        <div class="banner-content {{ popup.image.full ? 'image-' ~ popup.image_position : 'no-image' }} {{ popup.content ? 'has-content' : 'no-content' }}">
+                                            {% if popup.image.full %}
+                                                <div class="popup-image-wrapper">
+                                                    <div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
+                                                </div>
+                                            {% endif %}
+                                            {% if popup.content %}
+                                                <div class="popup-content-wrapper">
+                                                    <div class="banner-text">{{ popup.content }}</div>
+                                                    {{ generic_macros.popup_interactions(popup) }}
+                                                </div>
+                                            {% else %}
+												{% if popup.interaction == 'button' or popup.interaction == 'newsletter' %}
+													<div class="popup-content-wrapper">
+														{{ generic_macros.popup_interactions(popup) }}
+													</div>
+												{% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% elseif popup.type == 'slide' or popup.type == 'banner' %}
+                        <div id="banner-{{ popup.type }}-{{ popup.unique_id }}" class="{{ popup.type == 'slide' ? popup.slide_position : popup.banner_position }} banner-theme-options hidden {{ popup.type == 'banner' and popup.style == 'full' ? 'banner-inline' : 'banner-floating' }} {{ popup.modal_size }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}">
+                            <div class="banner-wrapper {{ popup.type == 'banner' ? 'size-' ~ popup.style : '' }}"  style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
+                                <button type="button" class="close" data-index="{{ popup.id }}" data-unique_id="{{ popup.unique_id }}" aria-label="Close" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}"><span aria-hidden="true">&times;</span></button>
+                                <div class="banner-content {{ popup.image.full ? 'image-' ~ popup.image_position : 'no-image' }} {{ popup.content ? 'has-content' : 'no-content' }}">
+                                    {% if popup.image.full and popup.type == 'slide' %}
+                                        <div class="popup-image-wrapper">
+                                            <div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
+                                        </div>
+                                    {% endif %}
+                                    {% if popup.content %}
+                                        <div class="popup-content-wrapper">
+                                            <div class="banner-text">{{ popup.content }}</div>
+                                            {{ generic_macros.popup_interactions(popup) }}
+                                        </div>
+                                    {% else %}
+										{% if popup.interaction == 'button' or popup.interaction == 'newsletter' %}
+											<div class="popup-content-wrapper">
+												{{ generic_macros.popup_interactions(popup) }}
+											</div>
+										{% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
 		{# Events #}
 		{% if events.wishlist %}
@@ -264,11 +350,11 @@ Version: 4.0
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<div class="text-center">
 								{% if events.wishlist.added %}
-									<i class="fa fa-heart fa-4x text-light-gray"></i>
-									<h3 class="text-muted">O produto foi adicionado à wishlist</h3>
+									<i class="fa fa-heart fa-4x text-muted"></i>
+									<h3 class="text-muted">{{ 'lang.storefront.layout.events.wishlist.added'|t }}</h3>
 								{% elseif events.wishlist.removed %}
-									<i class="fa fa-heart-o fa-4x text-light-gray"></i>
-									<h3 class="text-muted">O produto foi removido da wishlist</h3>
+									<i class="fa fa-heart-o fa-4x text-muted"></i>
+									<h3 class="text-muted">{{ 'lang.storefront.layout.events.wishlist.removed'|t }}</h3>
 								{% endif %}
 							</div>
 						</div>
@@ -295,35 +381,35 @@ Version: 4.0
 								{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
 
 									{% if events.cart.stock_qty %}
-										<i class="fa fa-ban fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Não existe stock suficiente do produto</h3>
+										<i class="fa fa-ban fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.not_enough_stock'|t }}</h3>
 									{% endif %}
 									{% if events.cart.stock_sold_single %}
-										<i class="fa fa-ban fa-4x text-light-gray"></i>
-										<h4 class="text-muted">Só é possível comprar <strong>1 unidade</strong> do produto <strong>{{ events.cart.stock_sold_single }}</strong></h4>
+										<i class="fa fa-ban fa-4x text-muted"></i>
+										<h4 class="text-muted">{{ 'lang.storefront.layout.events.cart.stock_sold_single'|t }} <strong>{{ events.cart.stock_sold_single }}</strong></h4>
 									{% endif %}
 									{% if events.cart.no_stock %}
-										<i class="fa fa-ban fa-4x text-light-gray"></i>
-										<h3 class="text-muted">Existem produtos que não têm stock suficiente</h3>
+										<i class="fa fa-ban fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.products_without_stock'|t }}</h3>
 									{% endif %}
 
 								{% else %}
 
 									{% if events.cart.added %}
-										<i class="fa fa-check fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O produto foi adicionado ao carrinho</h3>
+										<i class="fa fa-check fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.added'|t }}</h3>
 									{% elseif events.cart.error %}
-										<i class="fa fa-times fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O produto não foi adicionado ao carrinho</h3>
+										<i class="fa fa-times fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.error'|t }}</h3>
 									{% elseif events.cart.updated %}
-										<i class="fa fa-refresh fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
+										<i class="fa fa-refresh fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.updated'|t }}</h3>
 									{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items or events.cart.session_updated %}
-										<i class="fa fa-refresh fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O carrinho de compras foi actualizado</h3>
+										<i class="fa fa-refresh fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.updated'|t }}</h3>
 
 										{% if events.cart.session_updated_items %}
-											<h4 class="text-left margin-top">Produtos adicionados</h4>
+											<h4 class="text-left margin-top">{{ 'lang.storefront.layout.events.cart.updated_items'|t }}</h4>
 											<ul class="text-left">
 												{% for product in events.cart.session_updated_items %}
 													<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
@@ -331,7 +417,7 @@ Version: 4.0
 											</ul>
 										{% endif %}
 										{% if events.cart.session_not_updated_items %}
-											<h4 class="text-left margin-top">Produtos não adicionados</h4>
+											<h4 class="text-left margin-top">{{ 'lang.storefront.layout.events.cart.not_updated_items'|t }}</h4>
 											<ul class="text-left">
 												{% for product in events.cart.session_not_updated_items %}
 													<li><strong>{{ product.qty }}x</strong> - {{ product.title }}</li>
@@ -339,8 +425,8 @@ Version: 4.0
 											</ul>
 										{% endif %}
 									{% elseif events.cart.deleted %}
-										<i class="fa fa-trash-o fa-4x text-light-gray"></i>
-										<h3 class="text-muted">O produto foi removido do carrinho.</h3>
+										<i class="fa fa-trash-o fa-4x text-muted"></i>
+										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.deleted'|t }}.</h3>
 									{% endif %}
 
 								{% endif %}
@@ -350,10 +436,10 @@ Version: 4.0
 
 						<div class="modal-footer">
 							{% if events.cart.added or events.cart.session_updated_items or events.cart.session_not_updated_items %}
-								<button type="button" class="btn btn-default" data-dismiss="modal">Continuar a comprar</button>
-								<a href="{{ site_url('cart') }}" class="btn btn-gray">Ver carrinho</a>
+								<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.keep_buying'|t }}</button>
+								<a href="{{ site_url('cart') }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.layout.button.see_cart'|t }}</a>
 							{% else %}
-								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
 							{% endif %}
 						</div>
 
@@ -377,15 +463,15 @@ Version: 4.0
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
 							<div class="text-center">
-								<i class="fa fa-envelope fa-4x text-light-gray"></i>
+								<i class="fa fa-envelope fa-4x text-muted"></i>
 
-								<h3 class="text-muted">Cancelar subscrição</h3>
-								<p>A sua subscrição foi cancelada.</p>
+								<h3 class="text-muted">{{ 'lang.storefront.layout.events.unsubscribe_title'|t }}</h3>
+								<p>{{ 'lang.storefront.layout.events.unsubscribe_text'|t }}</p>
 							</div>
 						</div>
 
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
 						</div>
 					</div>
 				</div>
@@ -410,9 +496,9 @@ Version: 4.0
 								{% if events.payment_status.success is same as (true) %}
 									<i class="fa fa-check fa-4x text-success"></i>
 								{% elseif events.payment_status.success is same as (false) %}
-									<i class="fa fa-times fa-4x text-light-gray"></i>
+									<i class="fa fa-times fa-4x text-muted"></i>
 								{% else %}
-									<i class="fa fa-check fa-4x text-light-gray"></i>
+									<i class="fa fa-check fa-4x text-muted"></i>
 								{% endif %}
 
 								<h3 class="text-muted">{{ events.payment_status.message }}</h3>
@@ -420,7 +506,7 @@ Version: 4.0
 						</div>
 
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
 						</div>
 
 					</div>
@@ -444,21 +530,21 @@ Version: 4.0
 
 							<div class="text-center">
 								{% if events.contact_form_success %}
-									<i class="fa fa-envelope fa-4x text-light-gray"></i>
-									<h3 class="text-muted">A sua mensagem foi enviada com sucesso.</h3>
-									<p>Obrigado pelo contacto.</p>
+									<i class="fa fa-envelope fa-4x text-muted"></i>
+									<h3 class="text-muted">{{ 'lang.storefront.layout.events.contact_form_success.title'|t }}</h3>
+									<p>{{ 'lang.storefront.layout.events.contact_form_success.text'|t }}</p>
 								{% endif %}
 
 								{% if events.contact_form_errors %}
-									<i class="fa fa-envelope fa-4x text-light-gray"></i>
-									<h3 class="text-muted">Não foi possivel enviar a sua mensagem:</h3>
+									<i class="fa fa-envelope fa-4x text-muted"></i>
+									<h3 class="text-muted">{{ 'lang.storefront.layout.events.contact_form_error'|t }}</h3>
 									<p>{{ events.contact_form_errors }}</p>
 								{% endif %}
 							</div>
 						</div>
 
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
 						</div>
 
 					</div>
@@ -477,20 +563,20 @@ Version: 4.0
 				<div class="modal-content">
 					{{ form_open(site_url('user_location'), { 'method' : 'post' }) }}
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h3 class="user-geolocation-modal-choose-country-region">Choose your country/region</h3>
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
+							<h3 class="user-geolocation-modal-choose-country-region">{{ 'lang.storefront.layout.modals.geolocation.choose_country'|t }}</h3>
 						</div>
 						<div class="modal-body">
-							<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">Are you in <span class="user-geolocation-modal-country"></span>? Please confirm your country.</span></p>
+							<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">{{ 'lang.storefront.layout.modals.geolocation.ask_country'|t }}</span></p>
 							<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
-								{% for key, country in countries_en %}
+								{% for key, country in countries %}
 									<option value="{{ key }}">{{ country }}</option>
 								{% endfor %}
 							</select>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default user-geolocation-modal-cancel" data-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-gray user-geolocation-modal-change-country-region">Change country/region</button>
+							<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }} user-geolocation-modal-cancel" data-dismiss="modal">{{ 'lang.storefront.layout.button.cancel'|t }}</button>
+							<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} user-geolocation-modal-change-country-region">{{ 'lang.storefront.layout.modals.geolocation.button.change_country'|t }}</button>
 						</div>
 					{{ form_close() }}
 				</div>
@@ -502,26 +588,6 @@ Version: 4.0
 		<div id="fb-root"></div>
 
 		<script>
-			{% if not apps.google_analytics_ec %}
-				/* Google Analytics */
-				var _gaq = _gaq || [];
-				_gaq.push(['_setAccount', '{{ ga_profile_id }}']);
-				_gaq.push(['_setDomainName', '{{ domain }}']);
-				_gaq.push(['_trackPageview']);
-
-				{% if apps.google_analytics %}
-					_gaq.push(['b._setAccount', '{{ apps.google_analytics.tracking_id }}']);
-					_gaq.push(['b._trackPageview']);
-				{% endif %}
-
-				(function() {
-					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-				})();
-				/* End Google Analytics */
-			{% endif %}
-
 			{% if store.custom_js %}
 				{{ store.custom_js }}
 			{% endif %}

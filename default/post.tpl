@@ -2,19 +2,21 @@
 Description: Blog post Page
 #}
 
+{% import 'macros.tpl' as generic_macros %}
+
 {% extends 'base.tpl' %}
 
 {% block content %}
 
-	<ul class="breadcrumb">
-		<li><a href="{{ site_url() }}">Home</a><span class="divider">›</span></li>
-		<li><a href="{{ site_url('blog') }}">Blog</a><span class="divider">›</span></li>
+	<ul class="breadcrumb well-default">
+		<li><a href="{{ site_url() }}">{{ 'lang.storefront.layout.breadcrumb.home'|t }}</a><span class="divider">›</span></li>
+		<li><a href="{{ site_url('blog') }}">{{ 'lang.storefront.blog.title'|t }}</a><span class="divider">›</span></li>
 		<li class="active">{{ blog_post.title }}</li>
 	</ul>
 
 	<h1>{{ blog_post.title }}</h1>
 
-	<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
+	<p><small class="muted"><em>{{ 'lang.storefront.blog.post_date'|t([blog_post.date|format_datetime('long','none')]) }}</strong></em></small></p>
 
 	<div class="row">
 
@@ -23,7 +25,7 @@ Description: Blog post Page
 		</div>
 
 		{% if blog_post.image %}
-			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium fancy"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.thumb }}" alt="{{ blog_post.title|e_attr }}" class="lazy"></a></p>
+			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.thumb }}" alt="{{ blog_post.title|e_attr }}" class="lazy"></a></p>
 		{% endif %}
 
 	</div>

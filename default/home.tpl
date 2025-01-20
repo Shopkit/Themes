@@ -8,22 +8,25 @@ Description: Home Page
 
 {% block content %}
 
-	<div class="row products">
+	{% set products_per_page_home = store.products_per_page_home %}
+	{% set featured_products = products("order:featured limit:#{products_per_page_home}") %}
+	{% if products_per_page_home %}
 
-		{% for product in products("order:featured limit:#{products_per_page_home}") %}
+		<div class="row products">
 
-			<div class="span3">
-				{{ generic_macros.product_list(product) }}
-			</div>
+			{% for product in featured_products %}
 
-		{% else %}
+				<div class="span3">
+					{{ generic_macros.product_list(product) }}
+				</div>
 
-			<div class="span9 product">
-				<h5>Não existem produtos.</h5>
-			</div>
+			{% endfor %}
 
-		{% endfor %}
-
-	</div>
+		</div>
+	{% else %}
+		<div class="span9 product">
+			<h5>{{ 'lang.storefront.product_list.no_products'|t }}.</h5>
+		</div>
+	{% endif %}
 
 {% endblock %}

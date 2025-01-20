@@ -17,13 +17,13 @@ Description: Blog post Page
 
 			<p class="breadcrumbs">
 				<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
-				<a href="{{ site_url('blog') }}">Blog</a> ›
+				<a href="{{ site_url('blog') }}">{{ 'lang.storefront.blog.title'|t }}</a> ›
 				{{ blog_post.title }}
 			</p>
 			<br>
 
 			<h1>{{ blog_post.title }}</h1>
-			<p><small class="muted"><em>Escrito em <strong>{{ blog_post.date|date("d \\d\\e F \\d\\e Y") }}</strong></em></small></p>
+			<p><small class="muted"><em>{{ 'lang.storefront.blog.post_date'|t([blog_post.date|format_datetime('long','none')]) }}</strong></em></small></p>
 
 			<hr>
 
