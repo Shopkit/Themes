@@ -233,7 +233,8 @@
                                                                         <tr>
                                                                             <td width="100%" align="left" valign="top" style="line-height:18px;font-size:14px;">
                                                                                 <div style="margin:20px;">
-                                                                                    <p style="color:#666;font-size:14px;">O produto <strong>{product_title_with_option}</strong> encontra-se novamente em stock.</p>
+                                                                                    {% set product_title_with_option = '{product_title_with_option}' %}
+                                                                                    <p style="color:#666;font-size:14px;">{{ 'lang.email.stock_alert.text'|t([product_title_with_option]) }}</p>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -260,7 +261,7 @@
                                                                             <td width="100%" align="left" valign="top">
                                                                                 <div style="margin:30px 20px;">
                                                                                     <p style="text-align:center">
-                                                                                        <a href="{product_url}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Ver produto</a>
+                                                                                        <a href="{product_url}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.email.stock_alert.button'|t }}</a>
                                                                                     </p>
                                                                                 </div>
                                                                             </td>

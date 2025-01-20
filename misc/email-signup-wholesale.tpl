@@ -212,11 +212,11 @@
 																<td width="100%" align="left" valign="top" style="line-height:18px;font-size:14px;">
 																	<div style="margin:20px;">
 																		<p style="color:#666;font-size:14px;">
-																			Olá {{ email_data.name|first_word }},<br><br>
-																			O seu registo como revendedor foi aprovado.<br>
-																			Agora já pode comprar na loja <strong>{{ store.name }}</strong> com preços de revenda.
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},<br><br>
+																			{{ 'lang.email.signup.wholesale.approved.text'|t }}<br>
+																			{{ 'lang.email.signup.wholesale.approved.second_text'|t([store.name]) }}
 																		</p>
-																		<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Visitar Loja Online</a></p>
+																		<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.email.signup.store_link'|t }}</a></p>
 																	</div>
 																</td>
 															</tr>

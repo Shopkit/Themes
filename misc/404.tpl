@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ store.page_title }}</title>
+	{% if store.favicon %}
+		<link rel="shortcut icon" href="{{ store.favicon }}">
+	{% endif %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <style type="text/css">
 		.jumbotron {
@@ -66,7 +69,7 @@
 
   	<div class="jumbotron">
   		<div class="container">
-  			<h4>Ooops!</h4>
+  			<h4>{{ 'lang.storefront.page_not_found.ops.title'|t }}</h4>
   		</div>
   	</div>
 
@@ -77,9 +80,9 @@
 			{% else %}
 				<h1 class="logo"><a href="{{ site_url() }}">{{ store.name }}</a></h1>
 			{% endif %}
-	  		<h2>Página não encontrada.</h2>
-	  		<p>Pedimos desculpa mas o conteúdo que tentou aceder não se encontra disponível.</p>
-	  		<a href="{{ site_url() }}" class="btn btn-lg btn-default">Voltar ao início</a>
+	  		<h2>{{ 'lang.storefront.page_not_found.title'|t }}</h2>
+	  		<p>{{ 'lang.storefront.page_not_found.text'|t }}</p>
+	  		<a href="{{ site_url() }}" class="btn btn-lg btn-default">{{ 'lang.storefront.page_not_found.button'|t }}</a>
 	  	</div>
   	</div>
 

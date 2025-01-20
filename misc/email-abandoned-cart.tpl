@@ -212,7 +212,7 @@
 																<td width="100%" align="left" valign="top" style="line-height:18px;font-size:14px;">
 																	<div style="margin:20px;">
 																		<p style="color:#666;font-size:14px;">
-																			Olá {{ cart.client_name }},<br><br>
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ cart.client_name }},<br><br>
 																			{{ email_lead }}
 																		</p>
 																	</div>
@@ -228,20 +228,56 @@
 																{% for product in cart.items %}
 																	{% set last_product = loop.last %}
 																	<tr>
-																		<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{% if last_product %}padding-bottom:30px;{% endif %}"><img src="{{ product.image }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
-																		<td class="product-vt-margin" width="20" style="padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">&nbsp;</td>
-																		<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">
-																			<strong style="color:#666;">{{ product.product_title }}</strong>
-																			{% if product.options %}
-																				<br />{{ product.options }}&nbsp;
-																			{% endif %}
-																		</td>
-																		<td class="product-vt-margin" width="20" style="padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">&nbsp;</td>
-																		<td class="td-product-price" align="right" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;padding-right:20px;{% if last_product %}padding-bottom:30px;{% endif %}">
-																			<span style="color:#ccc; white-space:nowrap;">{{ product.qty }}x {{ product.price|money_with_sign(store.currency) }}</span><br />
+																		<td style="{% if last_product and product.extras %}padding-bottom:30px;{% endif %}">
+																			<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="{% if not product.extras %}border-bottom:1px solid #eee;{% endif %}width:100% !important;">
+																				<tr>
+																					{% set product_td_padding_bottom = product.extras ? '' : 'padding-bottom:30px;' %}
 
-																			{% set product_subtotal = product.price * product.qty %}
-																			<span style="color:#666; white-space:nowrap;">{{ product_subtotal|money_with_sign(store.currency) }}</span>
+																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
+																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
+																					<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{{ product_td_padding_bottom }}">
+																						<strong style="color:#666;">{{ product.product_title }}</strong>
+																						{% if product.options %}
+																							<br />{{ product.options }}&nbsp;
+																						{% endif %}
+																					</td>
+																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
+																					<td class="td-product-price" align="right" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;padding-right:20px;{{ product_td_padding_bottom }}">
+																						<span style="color:#ccc; white-space:nowrap;">{{ product.qty }}x {{ product.price|money_with_sign(store.currency) }}</span><br />
+
+																						{% set product_subtotal = (product.price * product.qty) + product.subtotal_extras %}
+																						<span style="color:#666; white-space:nowrap;">{{ product_subtotal|money_with_sign(store.currency) }}</span>
+																					</td>
+																				</tr>
+																			</table>
+
+																			{% if product.extras %}
+																				<table bgcolor="#ffffff" align="right" width="480" border="0" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #eee;width:470px !important;margin-top:10px;margin-right:20px;margin-left:10px;border-top-left-radius:5px;border-top-right-radius:5px;">
+																					<thead bgcolor="#eeeeee" style="border-top-left-radius: 5px;border-top-right-radius:5px;">
+																						<tr style="border-top-left-radius: 5px;border-top-right-radius:5px;">
+																							{% set extra_qtd = product.extras|length %}
+																							{% set option_text = extra_qtd == 1 ? 'lang.storefront.product.extra_options.singular.label'|t : 'lang.storefront.product.extra_options.plural.label'|t %}
+																							<th align="left" colspan="2" style="padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:10px;border-top-left-radius: 5px;color:#888888;">{{ extra_qtd }} {{ option_text }}</th>
+																							<th align="right" colspan="2" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:0px;border-top-right-radius:5px;color:#888888;">{{ product.subtotal_extras|money_with_sign(store.currency) }}</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						{% for extra in product.extras %}
+																							<tr style="border-bottom: 1px solid #eee;">
+																								<td align="left" style="width:1px;height: 100%;background: #eee;" width="1"></td>
+																								<td align="left" valign="top" style="padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:10px;">
+																									<strong style="color:#888888;font-size:12px;">{{ extra.title }}</strong><br>
+																									<span style="color:#666666;font-size:12px;"><span style="color:#999999;">{{ extra.qty }}x</span> {{ extra.value }}</span>
+																								</td>
+																								<td align="right" valign="top" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:0px;">
+																									<div style="font-size:12px;color:#999999">{{ (extra.price|money_with_sign(store.currency) ) }}</div>
+																								</td>
+																								<td align="right" style="width:1px;height: 100%;background: #eee;" width="1"></td>
+																							</tr>
+																						{% endfor %}
+																					</tbody>
+																				</table>
+																			{% endif %}
 																		</td>
 																	</tr>
 																{% endfor %}
@@ -255,10 +291,10 @@
 															<tr>
 																<td width="100%" align="left" valign="top">
 																	<div style="margin:30px 20px;">
-																		<p style="text-align:center"><a href="{{ cart.recover_url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Finalizar Compra</a></p>
+																		<p style="text-align:center"><a href="{{ cart.recover_url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.storefront.layout.button.checkout'|t }}</a></p>
 
 																		{% if cart.recover_coupon %}
-																			<p style="margin-top:30px; font-size: 14px; text-align: center; color: #999">Use o cupão <strong style="border: 1px dashed #ccc; padding:3px; background-color: #f9f9f9; color:#666;">{{ cart.recover_coupon.code }}</strong> para obter {{ cart.recover_coupon.description }}.</p>
+																			<p style="margin-top:30px; font-size: 14px; text-align: center; color: #999">{{ 'lang.email.abandoned_cart.coupon.text'|t([cart.recover_coupon.code, cart.recover_coupon.description]) }}</p>
 																		{% endif %}
 																	</div>
 																</td>
@@ -274,7 +310,7 @@
 										</tr>
 										<tr>
 											<td align="center" style="font-size:12px;line-height:24px;color:#999999">
-												Não deseja receber notificações sobre o carrinho? <a href="{{ cart.unsubscribe_url }}" style="color: #666; text-decoration: underline;">Anular a subscrição</a>.
+												{{ 'lang.email.abandoned_cart.unsubscribe.text'|t }} <a href="{{ cart.unsubscribe_url }}" style="color: #666; text-decoration: underline;">{{ 'lang.email.abandoned_cart.unsubscribe.button'|t }}</a>.
 											</td>
 										</tr>
 										<tr>

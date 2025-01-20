@@ -178,6 +178,7 @@
 		</style>
 	</head>
 	<body class="{{ css_class }}">
+
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" id="backgroundTable" style="background-color: #f5f5f5;font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;font-size:14px; color:#999;">
 			<tr>
 				<td align="center" valign="top" bgcolor="#f5f5f5" style="background-color: #f5f5f5">
@@ -211,33 +212,79 @@
 															<tr>
 																<td width="100%" align="left" valign="top" style="line-height:18px;font-size:14px;">
 																	<div style="margin:20px;">
-
 																		<p style="color:#666;font-size:14px;">
-																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},<br><br>
+																			{{ 'lang.email.digital_files.main_text'|t }} <a href="{{ email_data.order.permalink }}" target="_blank">#{{ email_data.order.id }}</a>.
 																		</p>
-
-																		<p style="color:#666;font-size:14px;">
-																			{{ 'lang.email.order_payment_fail.order_id.text'|t([email_data.order.id]) }}
-																		</p>
-
-																		{% if email_data.gateway_message %}
-																			<p>
-																				<code style="display:block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;">{{ email_data.gateway_message }}</code>
-																			</p>
-																		{% endif %}
-
-																		<p style="color:#666;font-size:14px;">{{ 'lang.email.order_payment_fail.change_payment'|t([email_data.change_payment_url]) }}</p>
 																	</div>
 																</td>
 															</tr>
 														</table>
 													</div>
+													{# <div style="background-color:#ffffff;line-height: 140%;"> #}
+													<div style="background-color:red;line-height: 140%;">
 
+														{% if email_data.order.products %}
+															<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #eee;width:100% !important;">
+
+																{% for product in email_data.order.products|filter(p => p.is_product and p.type == 'digital') %}
+																	{% set last_product = loop.last %}
+																	<tr>
+																		<td style="padding-bottom:30px;border-bottom:1px solid #eee;">
+																			<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="{% if not product.files %}border-bottom:1px solid #eee;{% endif %}width:100% !important;">
+																				<tr>
+																					{% set product_td_padding_bottom = product.files ? '' : 'padding-bottom:30px;' %}
+
+																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
+																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
+																					<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{{ product_td_padding_bottom }}">
+																						<strong style="color:#333333;">{{ product.title|replace({(' - ' ~ product.option): ''}) }}</strong>
+																						{% if product.option %}
+																							&nbsp;<span style="color:#bbbbbb;">({{ product.option }})&nbsp;</span>
+																						{% endif %}
+																						{% if product.files_settings %}
+																							{% set days = product.files_settings.allowed_days ? 'now'|date_modify('+'~ product.files_settings.allowed_days ~' days')|format_datetime('long','none') : 'lang.storefront.account.orders.order.files.not_expire'|t %}
+																							{% set downloads = product.files_settings.allowed_downloads ? product.files_settings.allowed_downloads : 'lang.email.digital_files.unlimited.label'|t %}
+																							<br /><span style="font-size:13px;color:#666666;">{{ 'lang.email.digital_files.files.expire'|t }}: {{ downloads }}. {{ 'lang.storefront.account.orders.order.files.expire'|t }}: {{ days }}</span>
+																						{% endif %}
+																					</td>
+																				</tr>
+																			</table>
+
+																			{% if product.files %}
+																				<table bgcolor="#ffffff" align="left" width="430" border="0" cellpadding="0" cellspacing="0" class="extra-options" style="border-bottom:1px solid #eee;width:430px;margin-top:10px;margin-left:90px;border-top-left-radius:5px;border-top-right-radius:5px;">
+																					<thead bgcolor="#eeeeee" style="border-top-left-radius: 5px;border-top-right-radius:5px;">
+																						<tr style="border-top-left-radius: 5px;border-top-right-radius:5px;">
+																							<th align="left" colspan="4" style="padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:10px;border-top-left-radius: 5px;border-top-right-radius: 5px;color:#888888;">{{ 'lang.storefront.account.orders.order.files.title'|t }}</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						{% for file in product.files %}
+																							{% set button_label = file.size ? 'lang.storefront.account.orders.order.files.download'|t : 'lang.storefront.account.orders.order.files.open'|t %}
+																							{% set file_size_info = file.size ? '&nbsp;<span style="font-size:12px;color:#999999;">('~file.size~')</span>' : '' %}
+																							{% set file_ext_info = file.ext ? '<span style="font-size:11px;padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;border-top-left-radius:2.5px;border-top-right-radius:2.5px;border-bottom-left-radius:2.5px;border-bottom-right-radius:2.5px;background-color:#777777;color:#ffffff;font-weight: bold;">'~ file.ext ~'</span>&nbsp;' : '' %}
+																							<tr style="border-bottom: 1px solid #eee;">
+																								<td align="left" style="width:1px;height: 100%;background: #eee;" width="1"></td>
+																								<td align="left" valign="top" style="padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:10px;">{{ file_ext_info ~ file.title ~ file_size_info }}</td>
+																								<td align="right" valign="top" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:0px;"><a href="{{ file.url }}" target="_blank" style="text-decoration: underline;color: #333;border: 1px solid #eee;padding: 5px 10px;border-radius: 3px;text-decoration: none;font-weight: bold;font-size:12px;">{{ button_label }}</a></td>
+																								<td align="right" style="width:1px;height: 100%;background: #eee;" width="1"></td>
+																							</tr>
+																						{% endfor %}
+																					</tbody>
+																				</table>
+																			{% endif %}
+																		</td>
+																	</tr>
+																{% endfor %}
+
+															</table>
+														{% endif %}
+
+													</div>
 
 												</div>
 											</td>
 										</tr>
-
 										<tr>
 											<td height="30">&nbsp;</td>
 										</tr>
@@ -260,7 +307,7 @@
 											<tr>
 												<td align="center">
 													<div style="display:inline-block; border-top: 1px solid #ddd; padding-left:30px; padding-right:30px; padding-top:30px;">
-														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order-Payment-Fail" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit e-commerce" height="25" style="border:0;" border="0" alt="Powered by Shopkit e-commerce" /></a>
+														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Abandoned-Cart" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit e-commerce" height="25" style="border:0;" border="0" alt="Powered by Shopkit e-commerce" /></a>
 													</div>
 												</td>
 											</tr>

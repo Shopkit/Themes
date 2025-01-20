@@ -7,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Encomenda {{ order.status_description|lower }} #{{ order.id }}</title>
+		<title>{{ 'lang.email.order.subject'|t([order.status_description|lower, order.id]) }}</title>
 		<style type="text/css">
 			/* Based on The MailChimp Reset INLINE: Yes. */
 			/* Client-specific Styles */
@@ -23,7 +23,7 @@
 				 padding: 0;
 				 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 				 background-color: #f5f5f5;
-				 color:#999;
+				 color:#999999;
 			}
 			/* Forces Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
 			#backgroundTable {
@@ -195,6 +195,12 @@
 				table[class="remove-table-height"], table.remove-table-height {
 					height: 0 !important;
 				}
+
+				table[class="extra-options"], table.extra-options {
+					width: 300px !important;
+					margin-right: 20px !important;
+					margin-left: 20px !important;
+				}
             }
             @media screen and (min-width:481px) and (max-width:768px) {
             	table[class="column_table"], table.column_table {
@@ -210,9 +216,9 @@
 		{{ order_schema }}
 	</head>
 	<body class="{{ css_class }}" id="body">
-		<div style="display:none;">Encomenda #{{ order.id }} de {{ store.name }} {{ order.status_description|lower }}.</div>
+		<div style="display:none;">{{ 'lang.email.order.subject'|t([order.status_description|lower, order.id]) }}</div>
 
-		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" id="backgroundTable" style="background-color: #f5f5f5;font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;font-size:14px; color:#999;">
+		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" id="backgroundTable" style="background-color: #f5f5f5;font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif;font-size:14px; color:#999999;">
 			<tr>
 				<td align="center" valign="top" bgcolor="#f5f5f5" style="background-color: #f5f5f5">
 					<table width="620" border="0" cellpadding="0" cellspacing="0" align="center" class="table-width-wrapper">
@@ -238,7 +244,7 @@
 										</tr>
 										{% if is_email %}
 											<tr>
-												<td align="center" style="color:#ccc;font-size:12px;"><a href="{{ order.permalink }}" style="color:#ccc;font-size:12px;" target="_blank">Não consegue ver o e-mail?</a></td>
+												<td align="center" style="color:#ccc;font-size:12px;"><a href="{{ order.permalink }}" style="color:#ccc;font-size:12px;" target="_blank">{{ 'lang.email.order.email_link.text'|t }}</a></td>
 											</tr>
 										{% endif %}
 										<tr>
@@ -257,12 +263,12 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda paga</span></td>
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.paid.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Ver factura</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
 																		{% elseif order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -278,7 +284,7 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;padding-right:20px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda cancelada</span></td>
+																	<td style="padding-top:15px;padding-bottom:15px;padding-right:20px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.canceled.status'|t }}</span></td>
 																</tr>
 															</table>
 														</div>
@@ -292,10 +298,10 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda devolvida</span></td>
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.returned.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -311,10 +317,10 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda entregue</span></td>
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.delivered.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Ver factura</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -330,10 +336,10 @@
 																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
 																		<p>&nbsp;</p>
 																	</td>
-																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">Encomenda disponível para levantamento</span></td>
+																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.pickup_available.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -350,16 +356,22 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda enviada</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.sent.status'|t }}</span>
 																		{% if order.expected_arrival_from %}
-																			<br><span style="font-size:11px;color:#d3f7fb;">Entrega prevista {{ order.expected_arrival_until ? 'entre ' ~  order.expected_arrival_from|date("j/m/Y") ~ ' e ' ~  order.expected_arrival_until|date("j/m/Y") : ' a ' ~ order.expected_arrival_from|date("j \\d\\e F \\d\\e Y") }}</span>
+																			<br><span style="font-size:11px;color:#d3f7fb;">
+																				{% if order.expected_arrival_until %}
+																					{{ 'lang.email.order.sent.expected_arrival_until'|t([order.expected_arrival_from|format_datetime('long', 'none'), order.expected_arrival_until|format_datetime('long', 'none')]) }}
+																				{% else %}
+																					{{ 'lang.email.order.sent.expected_arrival_from'|t([order.expected_arrival_from|format_datetime('long', 'none')]) }}
+																				{% endif %}
+																				</span>
 																		{% endif %}
 																	</td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% elseif order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Ver factura</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -376,11 +388,11 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar expedição</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.waiting_shipment.status'|t }}</span>
 																	</td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">Seguir envio</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -397,7 +409,7 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda em processamento</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.processing.status'|t }}</span>
 																	</td>
 																</tr>
 															</table>
@@ -413,7 +425,7 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda pendente</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.pending.status'|t }}</span>
 																	</td>
 																</tr>
 															</table>
@@ -429,7 +441,7 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar stock</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.waiting_stock.status'|t }}</span>
 																	</td>
 																</tr>
 															</table>
@@ -445,7 +457,7 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar pagamento</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.waiting_payment.status'|t }}</span>
 																	</td>
 																</tr>
 															</table>
@@ -461,7 +473,7 @@
 																		<p>&nbsp;</p>
 																	</td>
 																	<td style="padding-top:15px;padding-bottom:15px;">
-																		<span style="color:#fff;font-size:20px;line-height:130%;">Encomenda a aguardar confirmação</span>
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.waiting_confirmation.status'|t }}</span>
 																	</td>
 																</tr>
 															</table>
@@ -484,7 +496,7 @@
 
 													<div class="remove-border-bottom-mobile" style="background-color:#ffffff;border-bottom: 1px solid #eee;{% if have_top_bar != true and have_client_note != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
 
-														<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="font-size:18px;color:#999;width:100% !important;{% if have_top_bar != true and have_client_note != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
+														<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="font-size:18px;color:#999999;width:100% !important;{% if have_top_bar != true and have_client_note != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
 															<tr>
 																<td class="fix-line-height-mobile" width="100%" align="left" valign="top" style="line-height:14px;font-size:18px;">
 																	<!--[if (gte mso 9)|(IE)]>
@@ -495,10 +507,10 @@
 																	<table bgcolor="#ffffff" width="290" align="left" border="0" cellpadding="0" cellspacing="0" class="column_table {% if have_top_bar != true and have_client_note != true %}border-top-right-radius-mobile{% endif %}" {% if have_top_bar != true and have_client_note != true %}style="border-top-left-radius: 5px;"{% endif %}>
 																		<tr>
 																			<td class="column-table-cell fix-padding-bottom padding-bottom-mobile-0" style="padding:30px 20px;">
-																				<p class="visible-mobile" style="margin:0 0 0 0;color:#999;display:none;font-size:14px;">
-																					<strong style="color:#666;">Encomenda</strong>
+																				<p class="visible-mobile" style="margin:0 0 0 0;color:#999999;display:none;font-size:14px;">
+																					<strong style="color:#666;">{{ 'lang.storefront.order.label'|t }}</strong>
 																				</p>
-																				<p class="order-id" style="margin:0 0 0 0;" class="no-link"><span class="hidden-mobile">Encomenda&nbsp;</span>#{{ order.id }}</p>
+																				<p class="order-id" style="margin:0 0 0 0;" class="no-link"><span class="hidden-mobile">{{ 'lang.storefront.order.label'|t }}&nbsp;</span>#{{ order.id }}</p>
 																			</td>
 																		</tr>
 																	</table>
@@ -509,10 +521,10 @@
 																	<table bgcolor="#ffffff" width="290" border="0" cellpadding="0" cellspacing="0" class="column_table" {% if have_top_bar != true and have_client_note != true %}style="border-top-right-radius: 5px;"{% endif %}>
 																		<tr>
 																			<td class="column-table-cell fix-padding-top padding-bottom-mobile-0" style="padding:30px 20px;">
-																				<p class="visible-mobile" style="margin:0 0 0 0;color:#999;display:none;font-size:14px;">
-																					<strong style="color:#666;">Data</strong>
+																				<p class="visible-mobile" style="margin:0 0 0 0;color:#999999;display:none;font-size:14px;">
+																					<strong style="color:#666;">{{ 'lang.storefront.order.date'|t }}</strong>
 																				</p>
-																				<p class="order-date" style="margin:0 0 0 0;text-align:right;"><span style="white-space:nowrap;">{{ order.updated_at|date("j \\d\\e F \\d\\e Y") }}</span></p>
+																				<p class="order-date" style="margin:0 0 0 0;text-align:right;"><span style="white-space:nowrap;">{{ order.updated_at|format_datetime('long', 'none') }}</span></p>
 																			</td>
 																		</tr>
 																	</table>
@@ -538,20 +550,20 @@
 																	<table bgcolor="#ffffff" width="290" align="left" border="0" cellpadding="0" cellspacing="0" class="column_table">
 																		<tr>
 																			<td class="column-table-cell column-order-status fix-padding-bottom padding-top-mobile-15" valign="top" style="padding:30px 20px;">
-																				<p style="margin:0 0 15px 0;color:#999;">
-																					<strong style="color:#666;">Estado</strong>
+																				<p style="margin:0 0 15px 0;color:#999999;">
+																					<strong style="color:#666;">{{ 'lang.storefront.order.status'|t }}</strong>
 																					<br /><span class="order-status-description">{{ order.status_description }}</span>
 																				</p>
 
-																				<p style="margin:0 0 15px 0;color:#999;">
-																					<strong style="color:#666;">Envio</strong>
+																				<p style="margin:0 0 15px 0;color:#999999;">
+																					<strong style="color:#666;">{{ 'lang.storefront.order.shipping.title'|t }}</strong>
 																					<br />{{ order.shipment_method ?: 'n/a' }}
 																				</p>
 
 																				{% if order.tracking_code or order.tracking_url %}
-																					<p class="tracking-code-block" style="margin:0 0 0 0;color:#999;">
-																						<strong style="color:#666;">Tracking</strong>
-																						<br /><span><a x-apple-data-detectors="true" href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" style="color:#333;text-decoration:underline;" target="_blank">{{ order.tracking_code ?: 'Seguir envio' }}</a></span>																					</p>
+																					<p class="tracking-code-block" style="margin:0 0 0 0;color:#999999;">
+																						<strong style="color:#666;">{{ 'lang.storefront.order.tracking'|t }}</strong>
+																						<br /><span><a x-apple-data-detectors="true" href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" style="color:#333333;text-decoration:underline;" target="_blank">{{ order.tracking_code ?: 'lang.storefront.order.tracking.button'|t }}</a></span>																					</p>
 																				{% endif %}
 																			</td>
 																		</tr>
@@ -565,45 +577,59 @@
 																			<td class="column-table-cell column-order-payment-detail fix-padding-top" valign="top" style="padding:30px 20px;">
 																				{% if order.payment.type == 'on_delivery' %}
 																					{% set payment_img = store.payments.on_delivery.image %}
-																					{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.on_delivery.message|nl2br ~ '</p>' %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.on_delivery.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'pick_up' %}
 																					{% set payment_img = store.payments.pick_up.image %}
-																					{% set pickup_address = order.payment.data ? '<p style="line-height:18px;margin:5px 0 10px 0;"><strong>Morada de levantamento</strong><br>' ~ order.payment.data.name ~ '<br>' ~ order.payment.data.address ~ ' ' ~ order.payment.data.address_extra ~ '<br>' ~ order.payment.data.zip_code ~ ' ' ~ order.payment.data.city ~ '<br>' ~ order.payment.data.country ~ '<br></p>' : '' %}
-																					{% set payment_data = pickup_address ~ '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.pick_up.message|nl2br ~ '</p>' %}
+																					{% set pickup_address = order.payment.data ? '<p style="line-height:18px;margin:5px 0 10px 0;"><strong>' ~ 'lang.storefront.order.pick_up_address'|t ~ '</strong><br>' ~ order.payment.data.name ~ '<br>' ~ order.payment.data.address ~ ' ' ~ order.payment.data.address_extra ~ '<br>' ~ order.payment.data.zip_code ~ ' ' ~ order.payment.data.city ~ '<br>' ~ order.payment.data.country ~ '<br></p>' : '' %}
+																					{% set payment_info = pickup_address ~ '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.pick_up.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'multibanco' %}
 																					{% set payment_img = store.payments.multibanco.image %}
 																					{% set multibanco_reference = order.payment.data.reference|split('', 3) %}
-																					{% set payment_data = '<p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">Entidade:</strong> ' ~ order.payment.data.entity ~ '</p><p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">Referência:</strong> <span style="padding: 0px 2px">' ~ multibanco_reference[0] ~ '</span><span style="padding: 0px 2px">' ~ multibanco_reference[1] ~ '</span><span style="padding: 0px 2px">' ~ multibanco_reference[2] ~ '</span></p><p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">Valor:</strong> ' ~ order.payment.data.value|money_with_sign(order.currency) ~ '</p>' %}
+																					{% set payment_data = '<p style="margin:0 0 0 0; line-height:20px;"><strong style="color:#666;">' ~ 'lang.storefront.order.payment.multibanco.entity'|t ~ ':</strong> ' ~ order.payment.data.entity ~ '</p><p style="margin:0 0 0 0; line-height:20px;"><strong style="color:#666;">' ~ 'lang.storefront.order.payment.multibanco.reference'|t ~ ':</strong> <span style="padding: 0px 2px">' ~ multibanco_reference[0] ~ '</span><span style="padding: 0px 2px">' ~ multibanco_reference[1] ~ '</span><span style="padding: 0px 2px">' ~ multibanco_reference[2] ~ '</span></p><p style="margin:0 0 0 0; line-height:20px;"><strong style="color:#666;">' ~ 'lang.storefront.order.payment.multibanco.value'|t ~ ':</strong> ' ~ order.payment.data.value|money_with_sign(order.currency) ~ '</p> <p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.multibanco.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'mbway' %}
 																					{% set payment_img = store.payments.mbway.image %}
-																					{% set payment_data = '<p style="margin:0 0 0 0; line-height:24px;">Telemóvel: <strong>' ~ order.payment.data.phone ~ '</strong></p>' %}
+																					{% set payment_info = order.payment.data.phone ? '<p style="margin:0 0 0 0; line-height:20px;">' ~ 'lang.storefront.form.cellphone.label'|t ~ ': <strong>' ~ order.payment.data.phone ~ '</strong></p>' : null %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.mbway.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'paypal' %}
 																					{% set payment_img = store.payments.paypal.image %}
-																					{% set payment_data = '<p style="margin:5px 0 5px 0;"><a href="' ~ order.payment.data.url ~ '" target="_blank" style="display: inline-block; padding:10px 20px; line-height:100%; color:#fff; border-radius:3px; text-decoration:none; font-size:14px; background-color: #009cde;">Pagar via Paypal</a></p>' %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.paypal.message|nl2br ~ '</p>' %}
+
 
 																				{% elseif order.payment.type == 'bank_transfer' %}
 																					{% set payment_img = store.payments.bank_transfer.image %}
-																					{% set bank_transfer_iban = order.payment.data ? '<p style="line-height:24px;margin:5px 0 10px 0;word-break: break-all;"><strong>IBAN</strong>: ' ~ order.payment.data ~ '</p>' : '' %}
-																					{% set payment_data = bank_transfer_iban ~ '<p style="color:#999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.bank_transfer.message|nl2br ~ '</p>' %}
+																					{% set bank_transfer_iban = order.payment.data ? '<p style="line-height:20px;margin:5px 0 10px 0;word-break: break-all;"><strong>' ~ 'lang.storefront.order.payment.bank_transfer.label'|t ~ '</strong>: ' ~ order.payment.data ~ '</p>' : '' %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.bank_transfer.message|nl2br ~ '</p>' %}
+																					{% set payment_info = bank_transfer_iban %}
 
 																				{% elseif order.payment.type == 'credit_card' %}
 																					{% set payment_img = store.payments.credit_card.image|replace({'credit_card': slug(order.payment.data.brand)}) %}
-																					{% set payment_data = '<p style="line-height:24px;margin:5px 0 5px 0">Cartão <strong>' ~ order.payment.data.brand ~ '</strong> terminado em <strong>'~ order.payment.data.last4 ~ '</strong><br>Expira em '~ order.payment.data.exp_month ~'/' ~ order.payment.data.exp_year ~ '</p>' %}
+																					{% set payment_info = order.payment.data.last4 ? '<p style="line-height:20px;margin:5px 0 5px 0">' ~ 'lang.email.order.payments.credit_card.data'|t([order.payment.data.brand, order.payment.data.last4, order.payment.data.exp_month, order.payment.data.exp_year]) ~ '</p>' : null %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.credit_card.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'wallets' %}
 																					{% set payment_img = order.payment.data ? store.payments.wallets.image|replace({'wallets': order.payment.data.wallet}) : store.payments.wallets.image %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.wallets.message|nl2br ~ '</p>' %}
+
+																				{% elseif order.payment.type == 'klarna' %}
+																					{% set payment_img = store.payments.klarna.image %}
+																					{% set payment_info = order.payment.data.payment_method_category ? '<p style="line-height:20px;margin:5px 0 5px 0"><strong style="color:#666;">' ~ 'lang.email.order.payments.klarna.label'|t ~ ':</strong> ' ~ order.payment.data.payment_method_category ~ '</p>' : null %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.klarna.message|nl2br ~ '</p>' %}
+
+																				{% elseif order.payment.type == 'payshop' %}
+																					{% set payment_img = store.payments.payshop.image %}
+																					{% set payment_data = '<p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">' ~ 'lang.storefront.order.payment.multibanco.reference'|t ~ ':</strong> ' ~ order.payment.data.reference ~ '</p><p style="margin:0 0 0 0; line-height:24px;"><strong style="color:#666;">' ~ 'lang.storefront.order.payment.multibanco.value'|t ~ ':</strong> ' ~ order.payment.data.value|money_with_sign(order.currency) ~ '</p> <p style="color:#999999;line-height:18px;font-size:12px;margin:5px 0 5px 0">' ~ store.payments.payshop.message|nl2br ~ '</p>' %}
 
 																				{% elseif order.payment.type == 'custom' %}
-																					{% set payment_data = '<p style="color:#999;line-height:18px;font-size:12px;">' ~ store.payments.custom.message|nl2br ~ '</p>' %}
+																					{% set payment_data = '<p style="color:#999999;line-height:18px;font-size:12px;">' ~ store.payments.custom.message|nl2br ~ '</p>' %}
 
 																				{% endif %}
 
-																				<p class="visible-mobile" style="margin:0 0 10px 0;color:#999;display:none;">
-																					<strong style="color:#666;">Pagamento</strong>
+																				<p class="visible-mobile" style="margin:0 0 10px 0;color:#999999;display:none;">
+																					<strong style="color:#666;">{{ 'lang.storefront.order.payment.title'|t }}</strong>
 																				</p>
 
 																				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;">
@@ -628,16 +654,18 @@
 
 																							{% if order.paid == false and order.status_alias != 'canceled' %}
 																								{% if order.payment.type == 'multibanco' and not order.payment.data.reference %}
-																									<p><small>Ocorreu um erro a gerar a referência Multibanco. <a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">Tente novamente</a></small></p>
+																									<p><small>{{ 'lang.storefront.order.payment.multibanco.error_message'|t }} <a href="{{ store.url ~ 'order/payment/' ~ order.hash }}">{{ 'lang.email.order.payments.try_again'|t }}</a></small></p>
 																								{% else %}
 																									{{ payment_data }}
+																									{{ payment_info }}
 
 																									{% if order.payment.type != 'on_delivery' and order.payment.type != 'pick_up' %}
-																										<p><a x-apple-data-detectors="true" href="{{ store.url ~ 'order/payment/' ~ order.hash }}" style="color:#333;text-decoration:underline;">Alterar método de pagamento</a></p>
+																										<p><a x-apple-data-detectors="true" href="{{ store.url ~ 'order/payment/' ~ order.hash }}" style="display: inline-block; padding:10px 15px; line-height:18px; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">{{ 'lang.storefront.order.change_payment_method'|t }}</a></p>
 																									{% endif %}
 																								{% endif %}
 																							{% elseif order.paid == true %}
-																								<p style="color:#999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" width="16" height="16" alt="paid" border="0" class="img-payment-status" style="vertical-align: text-bottom; width: 16px; height: 16px;"/> <strong style="color: #5cb85c;">Encomenda paga</strong> em {{ order.paid_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i") }}</p>
+																								{{ payment_info }}
+																								<p style="color:#999999;line-height:20px;font-size:13px;"><img src="{{ assets_url('assets/store/img/check-green.png') }}" width="16" height="16" alt="paid" border="0" class="img-payment-status" style="vertical-align: text-bottom; width: 16px; height: 16px;"/> {{ 'lang.email.order.paid.date'|t([order.paid_at|format_datetime('long','long')]) }}</p>
 																							{% endif %}
 																						</td>
 																					</tr>
@@ -659,23 +687,58 @@
 														{% if order.products %}
 															<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #eee;width:100% !important;">
 
-																{% for product in order.products %}
+																{% for product in order.products|filter(p => p.is_product) %}
 																	{% set last_product = loop.last %}
 																	<tr>
-																		<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{% if last_product %}padding-bottom:30px;{% endif %}"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
-																		<td class="product-vt-margin" width="20" style="padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">&nbsp;</td>
-																		<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">
-																			<strong style="color:#666;">{{ product.title|replace({(' - ' ~ product.option): ''}) }}</strong>
-																			{% if product.option %}
-																				<br />{{ product.option }}&nbsp;
-																			{% endif %}
-																		</td>
-																		<td class="product-vt-margin" width="20" style="padding-top:30px;{% if last_product %}padding-bottom:30px;{% endif %}">&nbsp;</td>
-																		<td class="td-product-price" align="right" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;padding-right:20px;{% if last_product %}padding-bottom:30px;{% endif %}">
-																			<span style="color:#ccc; white-space:nowrap;">{{ product.quantity }}x {{ product.price|money_with_sign(order.currency) }}</span><br />
+																		<td style="{% if last_product and product.extras %}padding-bottom:30px;{% endif %}">
+																			<table bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0" style="{% if not product.extras %}border-bottom:1px solid #eee;{% endif %}width:100% !important;">
+																				<tr>
+																					{% set product_td_padding_bottom = product.extras ? '' : 'padding-bottom:30px;' %}
 
-																			{% set product_subtotal = product.price * product.quantity %}
-																			<span style="color:#666; white-space:nowrap;">{{ product_subtotal|money_with_sign(order.currency) }}</span>
+																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
+																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
+																					<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{{ product_td_padding_bottom }}">
+																						<strong style="color:#333333;">{{ product.title|replace({(' - ' ~ product.option): ''}) }}</strong>
+																						{% if product.option %}
+																							<br />{{ product.option }}&nbsp;
+																						{% endif %}
+																					</td>
+																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
+																					<td class="td-product-price" align="right" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;padding-right:20px;{{ product_td_padding_bottom }}">
+																						{% set product_subtotal = (product.price * product.quantity) + product.price_extras %}
+																						<span style="color:#333333; white-space:nowrap;"><strong>{{ product_subtotal|money_with_sign(order.currency) }}</strong></span><br />
+																						<span style="color:#bbbbbb; white-space:nowrap;">{{ product.quantity }}x {{ product.price|money_with_sign(order.currency) }}</span>
+																					</td>
+																				</tr>
+																			</table>
+
+																			{% if product.extras %}
+																				<table bgcolor="#ffffff" align="left" width="370" border="0" cellpadding="0" cellspacing="0" class="extra-options" style="border-bottom:1px solid #eee;width:370px;margin-top:10px;margin-left:90px;border-top-left-radius:5px;border-top-right-radius:5px;">
+																					<thead bgcolor="#eeeeee" style="border-top-left-radius: 5px;border-top-right-radius:5px;">
+																						<tr style="border-top-left-radius: 5px;border-top-right-radius:5px;">
+																							{% set extra_qtd = product.extras|length %}
+																							{% set option_text = extra_qtd == 1 ? 'lang.storefront.product.extra_options.singular.label'|t : 'lang.storefront.product.extra_options.plural.label'|t %}
+																							<th align="left" colspan="2" style="padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:10px;border-top-left-radius: 5px;color:#888888;">{{ extra_qtd }} {{ option_text }}</th>
+																							<th align="right" colspan="2" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:0px;border-top-right-radius:5px;color:#888888;">{{ product.price_extras|money_with_sign(order.currency) }}</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						{% for extra in product.extras %}
+																							<tr style="border-bottom: 1px solid #eee;">
+																								<td align="left" style="width:1px;height: 100%;background: #eee;" width="1"></td>
+																								<td align="left" valign="top" style="padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:10px;">
+																									<strong style="color:#888888;font-size:12px;">{{ extra.title }}</strong><br>
+																									<span style="color:#666666;font-size:12px;">{{ extra.value }}</span>
+																								</td>
+																								<td align="right" valign="top" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:0px;">
+																									<div style="font-size:12px;color:#999999"><span style="color:#999999;">{{ extra.quantity }}x</span> {{ (extra.price|money_with_sign(order.currency) ) }}</div>
+																								</td>
+																								<td align="right" style="width:1px;height: 100%;background: #eee;" width="1"></td>
+																							</tr>
+																						{% endfor %}
+																					</tbody>
+																				</table>
+																			{% endif %}
 																		</td>
 																	</tr>
 																{% endfor %}
@@ -688,33 +751,48 @@
 																<td height="20" colspan="2" align="left">&nbsp;</td>
 															</tr>
 															<tr>
-																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Subtotal</td>
-																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
+																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.storefront.layout.subtotal.title'|t }}</td>
+																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
 															</tr>
 
 															{% if order.coupon %}
 																<tr>
-																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Desconto</td>
-																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
+																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.storefront.order.discount'|t }} <small style="color:#bbb;">({{ order.coupon.code }})</small></td>
+																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
 																</tr>
 															{% endif %}
 
 															<tr>
-																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Envio / Transporte</td>
-																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'Grátis' : order.shipping.value|money_with_sign(order.currency) }}</span></td>
+																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.storefront.order.shipping.title'|t }}</td>
+																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : order.shipping.value|money_with_sign(order.currency) }}</span></td>
 															</tr>
+
+															{% if order.payment.value %}
 															<tr>
-																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-left:20px;">Imposto ({{ order.l10n.tax_name }})</td>
-																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#999999;padding-right:20px;"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
+																<td width="50%" height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <small style="color:#bbb;">({{ order.payment.title }})</small></td>
+																<td width="50%" height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.payment.value|money_with_sign(order.currency) }}</span></td>
 															</tr>
+															{% endif %}
+
+															{% if not order.tax_settings.included %}
 															<tr>
-																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#333333;padding-left:20px;"><strong style="color:#333;">Total</strong></td>
-																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#333333;padding-right:20px;"><strong style="color:#333;white-space:nowrap;">{{ order.total|money_with_sign(order.currency) }}</strong></td>
+																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.email.order.tax.label'|t([order.l10n.tax_name]) }}</td>
+																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
+															</tr>
+															{% endif %}
+
+															<tr>
+																<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#000000;padding-left:20px;"><strong style="color:#000000;">{{ 'lang.storefront.order.total'|t }}</strong></td>
+																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#000000;padding-right:20px;"><strong style="color:#000000;white-space:nowrap;">{{ order.total|money_with_sign(order.currency) }}</strong></td>
 															</tr>
 
 															{% if order.tax_exemption %}
 																<tr>
-																	<td colspan="2" height="20" align="left" valign="middle" style="font-size: 11px;line-height:16px;color:#bbb;padding-left:20px;">Foi aplicada uma isenção de imposto: {{ order.tax_exemption|upper }}</td>
+																	<td colspan="2" height="20" align="left" valign="middle" style="font-size: 11px;line-height:16px;color:#bbb;padding-left:20px;">{{ 'lang.email.order.tax.exemption'|t([order.tax_exemption|upper]) }}</td>
+																</tr>
+															{% elseif order.tax_settings.included %}
+																<tr>
+																	<td colspan="2" height="20" align="left" valign="middle" style="font-size: 11px;line-height:16px;color:#bbb;padding-left:20px;">{{ 'lang.storefront.cart.order_summary.taxes_included'|t([order.l10n.tax_name, order.total_tax|money_with_sign(order.currency)]) }}</td>
 																</tr>
 															{% endif %}
 
@@ -753,7 +831,7 @@
 																			<td class="column-table-cell fix-padding-top" style="padding:30px 20px;">
 																				<p style="margin: 0 0 0 0;font-size:14px;line-height:24px;color:#999999;">
 																					{% if store.settings.cart.field_company != 'hidden' %}
-																						<strong style="color: #666">Empresa:</strong> {{ order.client.company ?: 'n/a' }}<br>
+																						<strong style="color: #666">{{ 'lang.storefront.order.client.company'|t }}:</strong> {{ order.client.company ?: 'n/a' }}<br>
 																					{% endif %}
 																					{% if store.settings.cart.field_fiscal_id != 'hidden' %}
 																						<strong style="color: #666">{{ order.l10n.tax_id_abbr }}:</strong> {{ order.client.fiscal_id ?: 'n/a' }}
@@ -782,16 +860,16 @@
 																	<table bgcolor="#ffffff" width="290" align="left" border="0" cellpadding="0" cellspacing="0" class="column_table">
 																		<tr>
 																			<td class="column-table-cell fix-padding-bottom" valign="top" style="padding:30px 20px;">
-																				<p style="margin:0 0 0 0;color:#666"><strong>Morada de envio</strong></p>
+																				<p style="margin:0 0 0 0;color:#666"><strong>{{ 'lang.storefront.order.delivery.address'|t }}</strong></p>
 																				<p style="margin:0 0 0 0">{{ order.client.delivery.name }}</p>
 																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.delivery.address }} {{ order.client.delivery.address_extra }}</p>
 																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.delivery.zip_code }} {{ order.client.delivery.city }}</p>
 																				<p style="margin:0 0 0 0">{{ order.client.delivery.country }}</p>
 																				{% if store.settings.cart.field_delivery_phone != 'hidden' %}
-																					<p style="margin:0 0 0 0" class="no-link">Telefone: {{ order.client.delivery.phone ?: 'n/a' }}</p>
+																					<p style="margin:0 0 0 0" class="no-link">{{ 'lang.storefront.form.phone.label'|t }}: {{ order.client.delivery.phone ?: 'n/a' }}</p>
 																				{% endif %}
 																				{% if order.tracking_code or order.tracking_url %}
-																					<p><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Seguir envio</a></p>
+																					<p><a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">{{ 'lang.storefront.order.tracking.button'|t }}</a></p>
 																				{% endif %}
 																			</td>
 																		</tr>
@@ -803,16 +881,16 @@
 																	<table bgcolor="#ffffff" width="290" align="right" border="0" cellpadding="0" cellspacing="0" class="column_table remove-table-height" style="border-left:1px solid #eee;height:100%;">
 																		<tr>
 																			<td class="column-table-cell fix-padding-top" valign="top" style="padding:30px 20px;">
-																				<p style="margin:0 0 0 0;color:#666"><strong>Morada de facturação</strong></p>
+																				<p style="margin:0 0 0 0;color:#666"><strong>{{ 'lang.storefront.order.billing.address'|t }}</strong></p>
 																				<p style="margin:0 0 0 0">{{ order.client.billing.name }}</p>
 																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.billing.address }} {{ order.client.billing.address_extra }}</p>
 																				<p style="margin:0 0 0 0" class="no-link">{{ order.client.billing.zip_code }} {{ order.client.billing.city }}</p>
 																				<p style="margin:0 0 0 0">{{ order.client.billing.country }}</p>
 																				{% if store.settings.cart.field_billing_phone != 'hidden' %}
-																					<p style="margin:0 0 0 0" class="no-link">Telefone: {{ order.client.billing.phone ?: 'n/a' }}</p>
+																					<p style="margin:0 0 0 0" class="no-link">{{ 'lang.storefront.form.phone.label'|t }}: {{ order.client.billing.phone ?: 'n/a' }}</p>
 																				{% endif %}
 																				{% if order.invoice_permalink %}
-																					<p><a href="{{ order.invoice_permalink }}" target="_blank" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">Ver factura</a></p>
+																					<p><a href="{{ order.invoice_permalink }}" target="_blank" style="display: inline-block; padding:10px 15px; line-height:100%; color:#666; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #eee;text-align:center; background-color: #eee">{{ 'lang.storefront.order.invoice'|t }}</a></p>
 																				{% endif %}
 																			</td>
 																		</tr>
@@ -853,7 +931,7 @@
 															<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
 																<tr>
 																	<td style="padding:30px 20px;">
-																		<p style="margin: 0 0 10px 0;color:#666666;"><strong>Observações:</strong></p>
+																		<p style="margin: 0 0 10px 0;color:#666666;"><strong>{{ 'lang.storefront.order.observations'|t }}:</strong></p>
 																		<p style="margin: 0 0 0 0;">{{ order.observations }}</p>
 																	</td>
 																</tr>
@@ -881,7 +959,7 @@
 											<td height="30">&nbsp;</td>
 										</tr>
 										<tr>
-											<td align="center" style="color:#ccc;font-size:12px;">Encomenda efetuada em {{ order.created_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</td>
+											<td align="center" style="color:#ccc;font-size:12px;">{{ 'lang.email.order.date'|t([order.created_at|format_datetime('long','long')]) }}</td>
 										</tr>
 
 										{% if store.show_branding %}
@@ -891,7 +969,7 @@
 											<tr>
 												<td align="center">
 													<div style="display:inline-block; border-top: 1px solid #ddd; padding-left:30px; padding-right:30px; padding-top:30px;">
-														<span style="opacity: 0.25;margin-top: 30px;margin-bottom: 30px;text-align: center;color: #000;font-size: 9px;">Powered by</span>
+														<span style="opacity: 0.25;margin-top: 30px;margin-bottom: 30px;text-align: center;color: #000;font-size: 9px;">{{ 'lang.storefront.layout.footer.poweredby'|t }}</span>
 														<br>
 														<a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=email&amp;utm_campaign=Shopkit-Email-Order" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img class="logo-footer" src="{{ assets_url('assets/frontend/img/logo-shopkit-black-transparent.png') }}" title="Powered by Shopkit e-commerce" height="25" style="border:0;" border="0" alt="Powered by Shopkit e-commerce" /></a>
 													</div>

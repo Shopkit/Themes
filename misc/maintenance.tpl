@@ -129,8 +129,8 @@
 			{% else %}
 				<h1 class="logo"><a href="{{ site_url() }}">{{ store.name }}</a></h1>
 			{% endif %}
-			<h2>Estamos em manutenção</h2>
-			<p>Voltamos dentro de instantes</p>
+			<h2>{{ 'lang.storefront.maintenance.title'|t }}</h2>
+			<p>{{ 'lang.storefront.maintenance.text'|t }}</p>
 		</div>
 	</div>
 

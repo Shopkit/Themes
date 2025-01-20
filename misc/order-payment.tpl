@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Encomenda #{{ order.id }}</title>
+        <title>{{ 'lang.storefront.order.order_with_id'|t([order.id]) }}</title>
         {% if store.favicon %}
             <link rel="shortcut icon" href="{{ store.favicon }}">
         {% endif %}
@@ -55,7 +55,7 @@
                                                         <table class="font-size-lg">
                                                             <tr>
                                                                 <td class="text-left" style="width:50%;vertical-align:middle;">#{{ order.id }}</td>
-                                                                <td class="text-right" style="width:50%;vertical-align:middle;"><span class="text-nowrap">{{ order.updated_at|date("j \\d\\e F \\d\\e Y") }}</span></td>
+                                                                <td class="text-right" style="width:50%;vertical-align:middle;"><span class="text-nowrap">{{ order.updated_at|format_datetime('long','none') }}</span></td>
                                                             </tr>
                                                         </table>
                                                     </div>
@@ -94,32 +94,37 @@
                                                                 <td class="text-left" style="height:20px;" colspan="2">&nbsp;</td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-left">Subtotal</td>
-                                                                <td class="text-right"><span class="text-nowrap">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
+                                                                <td class="text-left">{{ 'lang.storefront.layout.subtotal.title'|t }}</td>
+                                                                <td class="text-right"><span class="text-nowrap subtotal">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
                                                             </tr>
 
                                                             {% if order.coupon %}
                                                                 <tr>
-                                                                    <td class="text-left">Desconto</td>
-                                                                    <td class="text-right"><span class="text-nowrap">{{ order.coupon.type == 'shipping' ? 'Envio gratuito' : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
+                                                                    <td class="text-left">{{ 'lang.storefront.order.discount'|t }}</td>
+                                                                    <td class="text-right"><span class="text-nowrap discount">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
                                                                 </tr>
                                                             {% endif %}
 
                                                             <tr>
-                                                                <td class="text-left">Envio / Transporte</td>
-                                                                <td class="text-right"><span class="text-nowrap">{{ order.coupon.type == 'shipping' ? 'Grátis' : order.shipping.value|money_with_sign(order.currency) }}</span></td>
+                                                                <td class="text-left">{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</td>
+                                                                <td class="text-right"><span class="text-nowrap shipping">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : order.shipping.value|money_with_sign(order.currency) }}</span></td>
+                                                            </tr>
+
+                                                            <tr class="{{ order.payment.value ? '' : 'hidden' }}">
+                                                                <td class="text-left">{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <small class="payment-title">({{ order.payment.title }})</small></td>
+                                                                <td class="text-right"><span class="text-nowrap payment">{{ order.payment.value|money_with_sign(order.currency) }}</span></td>
                                                             </tr>
 
                                                             {% if order.total_tax > 0 %}
                                                                 <tr>
                                                                     <td class="text-left">{{ order.l10n.tax_name }}</td>
-                                                                    <td class="text-right"><span class="text-nowrap">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
+                                                                    <td class="text-right"><span class="text-nowrap total_tax">{{ order.total_tax|money_with_sign(order.currency) }}</span></td>
                                                                 </tr>
                                                             {% endif %}
 
                                                             <tr>
-                                                                <td class="text-left text-dark"><strong>Total</strong></td>
-                                                                <td class="text-right text-dark"><strong class="text-nowrap">{{ order.total|money_with_sign(order.currency) }}</strong></td>
+                                                                <td class="text-left text-dark"><strong>{{ 'lang.storefront.order.total'|t }}</strong></td>
+                                                                <td class="text-right text-dark"><strong class="text-nowrap total">{{ order.total|money_with_sign(order.currency) }}</strong></td>
                                                             </tr>
                                                         </table>
 
@@ -128,11 +133,11 @@
                                                     <div class="block no-border">
                                                         {{ form_open( "order/post/payment/#{order.hash}", { 'class' : 'form', 'id' : 'form-payment' }) }}
 
-                                                        <h3 class="block-title margin-bottom margin-top-0">Pagamento</h3>
+                                                        <h3 class="block-title margin-bottom margin-top-0">{{ 'lang.storefront.order.payment.title'|t }}</h3>
 
                                                         {% if errors.form %}
                                                             <div class="callout callout-danger">
-                                                                <h4>Erro</h4>
+                                                                <h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
                                                                 {{ errors.form }}
                                                             </div>
                                                         {% endif %}
@@ -157,9 +162,16 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="clearfix visible-xs-block"></div>
-                                                                                    <div class="list-radio-logo">
+                                                                                    <div class="list-radio-logo-wrapper">
                                                                                         {% if payment.logo %}
-                                                                                            <img src="{{ payment.logo }}" alt="{{ payment.title }}" title="{{ payment.title }}" height="25">
+                                                                                            <div class="list-radio-logo">
+                                                                                                    <img src="{{ payment.logo }}" alt="{{ payment.title }}" title="{{ payment.title }}" height="25">
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                        {% if payment.value or payment.value_percent %}
+                                                                                            <div class="list-radio-payment-price {{ payment.logo ? 'margin-top-xs' }}">
+                                                                                                {{ 'lang.storefront.cart.payment.tax.label'|t }}: {{ payment.value ? payment.value | money_with_sign }}{{ payment.value and payment.value_percent ? ' + ' }}{{ payment.value_percent ? payment.value_percent ~ '%' }}
+                                                                                            </div>
                                                                                         {% endif %}
                                                                                     </div>
                                                                                 </div>
@@ -173,12 +185,12 @@
                                                                 {% endfor %}
                                                             </ul>
 
-                                                            <p><a href="#" class="show-all-payments hide">Mais métodos de pagamento</a></p>
+                                                            <p><a href="#" class="show-all-payments hide">{{ 'lang.storefront.order_payment.more_payment_methods'|t }}</a></p>
                                                         </div>
 
                                                         <div class="clearfix">
                                                             <div class="pull-right">
-                                                                <button class="btn btn-submit">Prosseguir <i class="fa fa-fw fa-arrow-right"></i></button>
+                                                                <button class="btn btn-submit">{{ 'lang.storefront.cart.data.proceed.button'|t }} <i class="fa fa-fw fa-arrow-right"></i></button>
                                                             </div>
                                                         </div>
 
@@ -199,13 +211,13 @@
                                                                 <i class="fa fa-check fa-4x text-light-gray"></i>
                                                             {% endif %}
 
-                                                            <h3 class="text-muted">Método de pagamento alterado com sucesso</h3>
+                                                            <h3 class="text-muted">{{ 'lang.storefront.order_payment.payment_changed.success'|t }}</h3>
                                                             <h3 class="light text-light-gray">#{{ order.id }}</h3>
                                                         </div>
 
                                                         {% if events.payment_status.message %}
                                                             <div class="callout callout-danger margin-left margin-right">
-                                                                <h4>Erro de pagamento</h4>
+                                                                <h4>{{ 'lang.storefront.order_payment.status.error'|t }}</h4>
                                                                 <p></p>
                                                                 <p>{{ events.payment_status.message }}</p>
                                                             </div>
@@ -214,51 +226,63 @@
                                                         <ul class="list-group margin-left margin-right">
                                                             <li class="list-group-item">
                                                                 <span class="badge">{{ order.id }}</span>
-                                                                Nr. de encomenda:
+                                                                {{ 'lang.storefront.cart.complete.order_number.label'|t }}:
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="badge price">{{ order.total | money_with_sign }}</span>
-                                                                Total:
+                                                                {{ 'lang.storefront.order.total'|t }}:
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="badge">{{ order.payment.title }}</span>
-                                                                Método de pagamento:
+                                                                {{ 'lang.storefront.cart.complete.order_payment.label'|t }}:
 
                                                                 <div>
 
                                                                     {% if order.payment.type == 'bank_transfer' and order.payment.data %}
                                                                         <div class="margin-top-sm">
-                                                                            <strong>IBAN:</strong> {{ order.payment.data }}
+                                                                            <strong>{{ 'lang.storefront.order.payment.bank_transfer.label'|t }}:</strong> {{ order.payment.data }}
                                                                         </div>
 
                                                                     {% elseif order.payment.type == 'multibanco' %}
                                                                         {% if order.payment.data and order.payment.data.reference %}
                                                                             <div class="margin-top-sm text-nowrap">
-                                                                                <strong>Entidade:</strong> <span>{{ order.payment.data.entity }}</span>
+                                                                                <strong>{{ 'lang.storefront.order.payment.multibanco.entity'|t }}:</strong> <span>{{ order.payment.data.entity }}</span>
                                                                                 <br>
-                                                                                <strong>Referência:</strong>
+                                                                                <strong>{{ 'lang.storefront.order.payment.multibanco.reference'|t }}:</strong>
                                                                                 <span style="padding: 0 2px">{{ order.payment.data.reference|slice(0, 3) }}</span>
                                                                                 <span style="padding: 0 2px">{{ order.payment.data.reference|slice(3, 3) }}</span>
                                                                                 <span style="padding: 0 2px">{{ order.payment.data.reference|slice(6, 3) }}</span>
                                                                                 <br>
-                                                                                <strong>Montante:</strong> <span class="text-muted price">{{ order.payment.data.value | money_with_sign }}</span>
+                                                                                <strong>{{ 'lang.storefront.order.payment.multibanco.value'|t }}:</strong> <span class="text-muted price">{{ order.payment.data.value | money_with_sign }}</span>
                                                                             </div>
-
                                                                         {% else %}
                                                                             <div class="margin-top-sm text-danger">
-                                                                                <strong>Erro:</strong> Ocorreu um erro ao gerar a referência Multibanco
+                                                                                <strong>{{ 'lang.storefront.layout.events.form.error'|t }}:</strong> {{ 'lang.storefront.order.payment.multibanco.error_message'|t }}
                                                                             </div>
                                                                         {% endif %}
 
                                                                     {% elseif order.payment.type == 'paypal' and order.payment.data.url %}
                                                                         <div class="paypal-data margin-top-sm">
-                                                                            <a href="{{ order.payment.data.url }}" target="_blank" class="btn btn-info btn-lg"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> Pagar via Paypal</a>
+                                                                            <a href="{{ order.payment.data.url }}" target="_blank" class="btn btn-info btn-lg"><i class="fa fa-fw fa-paypal" aria-hidden="true"></i> {{ 'lang.storefront.order.payment.paypal'|t }}</a>
                                                                         </div>
 
                                                                     {% elseif order.payment.type == 'wallets' %}
                                                                         <div class="wallets-data margin-top-sm">
                                                                             <div id="payment-request-button"></div>
                                                                         </div>
+
+                                                                    {% elseif order.payment.type == 'payshop' %}
+                                                                        {% if order.payment.data and order.payment.data.reference %}
+                                                                            <div class="margin-top-sm text-nowrap">
+                                                                                <strong>{{ 'lang.storefront.order.payment.multibanco.reference'|t }}:</strong> {{ order.payment.data.reference }}
+                                                                                <br>
+                                                                                <strong>{{ 'lang.storefront.order.payment.multibanco.value'|t }}:</strong> <span class="text-muted price">{{ order.payment.data.value | money_with_sign }}</span>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div class="margin-top-sm text-danger">
+                                                                                <strong>{{ 'lang.storefront.layout.events.form.error'|t }}:</strong> {{ 'lang.storefront.order.payment.payshop.error_message'|t }}
+                                                                            </div>
+                                                                        {% endif %}
 
                                                                     {% endif %}
                                                                 </div>
@@ -297,7 +321,7 @@
                                             <td style="height:30px;">&nbsp;</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center text-light-gray font-size-xs">Encomenda efetuada em {{ order.created_at|date("j \\d\\e F \\d\\e Y \\à\\s H:i:s") }}</td>
+                                            <td class="text-center text-light-gray font-size-xs">{{ 'lang.email.order.date'|t([order.created_at|format_datetime('long','long')]) }}</td>
                                         </tr>
 
                                         {% if store.show_branding %}

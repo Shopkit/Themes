@@ -213,13 +213,13 @@
 																	<div style="margin:20px;">
 
 																		<p style="color:#666;font-size:14px;">
-																			Olá {{ email_data.name|first_word }},
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},
 																		</p>
 																		<p style="color:#666;font-size:14px;">
-																			Para subscrever a newsletter da loja <strong>{{ store.name }}</strong>, confirme o seu registo.<br>
-																			Caso não tenha subscrito a newsletter, ignore este e-mail.
+																			{{ 'lang.email.newsletter.subscribe.text'|t([store.name]) }}<br>
+																			{{ 'lang.email.newsletter.ignore.text'|t }}
 																		</p>
-																		<p style="text-align:center;margin-top: 30px"><a href="{{ email_data.subscribe_url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Confirmar subscrição</a></p>
+																		<p style="text-align:center;margin-top: 30px"><a href="{{ email_data.subscribe_url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.storefront.cart.confirm.button'|t }}</a></p>
 																	</div>
 																</td>
 															</tr>

@@ -213,12 +213,11 @@
 																	<div style="margin:20px;">
 
 																		<p style="color:#666;font-size:14px;">
-																			Olá {{ email_data.name|first_word }},
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},
 																		</p>
 
 																		{% if email_data.step == 'purchase' %}
-																			<p style="color:#666;font-size:14px;">Obrigado(a) por comprar na nossa loja <strong>{{ store.name }}</strong>.<br><br>
-																			Avalie os seus produtos e partilhe a sua experiência ajudando outros clientes na altura de comprar:</p>
+																			<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.purchase.text'|t([store.name]) }}</p>
 																			<ul style="color:#666;font-size:14px;">
 																				{% for products in email_data.products %}
 																					<li><a href="{{ products.url }}">{{ products.title }}</a></li>
@@ -226,25 +225,25 @@
 																			</ul>
 
 																			{% if email_data.coupon %}
-																				<p style="color:#666;font-size:14px;">Em forma de agradecimento, temos uma oferta especial para si.</p>
+																				<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.purchase.coupon.text'|t }}</p>
 																			{% endif %}
 																		{% elseif email_data.step == 'thankyou' %}
-																			<p style="color:#666;font-size:14px;">Obrigado(a) por avaliar o produto <strong>{{ email_data.product.title }}</strong>.</p>
+																			<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.thankyou.text'|t([email_data.product.title]) }}</p>
 
 																			{% if email_data.coupon %}
-																				<p style="color:#666;font-size:14px;">Em forma de agradecimento, use este cupão de desconto numa próxima compra:</p>
+																				<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.thankyou.coupon.text'|t }}</p>
 																				<p style="color:#666;font-size:14px;text-align:center;margin-top:20px;"><code style="display:inline-block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;"><strong>{{ email_data.coupon }}</strong></code></p>
 																			{% endif %}
 																		{% elseif email_data.step == 'reply' %}
-																			<p style="color:#666;font-size:14px;">Em resposta à sua avaliação do nosso produto <a href="{{ email_data.product.url }}">{{ email_data.product.title }}</a>.</p>
+																			<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.reply.text'|t }} <a href="{{ email_data.product.url }}">{{ email_data.product.title }}</a>.</p>
 
 																			<p style="color:#666;font-size:14px;">
-																				<strong>A sua avaliação:</strong><br>
+																				<strong>{{ 'lang.email.product_reviews.reply.rate.text'|t }}</strong><br>
 																				<code style="display:block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;margin-top:5px;"><strong>{{ email_data.review.original.title }}</strong><br><em>{{ email_data.review.original.body }}</em></code>
 																			</p>
 
 																			<p style="color:#666;font-size:14px;margin-top:20px;">
-																				<strong>A nossa resposta:</strong><br>
+																				<strong>{{ 'lang.email.product_reviews.reply.response.text'|t }}</strong><br>
 																				<code style="display:block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;margin-top:5px;"><em>{{ email_data.review.reply }}</em></code>
 																			</p>
 																		{% endif %}

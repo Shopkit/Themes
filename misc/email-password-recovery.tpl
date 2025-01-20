@@ -213,19 +213,19 @@
 																	<div style="margin:20px;">
 
 																		<p style="color:#666;font-size:14px;">
-																			Olá {{ email_data.name|first_word }},
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},
 																		</p>
 
 																		{% if email_data.step == 'recover' %}
 																			<p style="color:#666;font-size:14px;">
-																				Recebemos um pedido de recuperação de password para a sua conta na loja <strong>{{ store.name }}</strong>.<br><br>
-																				Caso não tenha solicitado a recuperação de password da sua conta, ignore este e-mail.
+																				{{ 'lang.email.password_recovery.text'|t([store.name]) }}<br><br>
+																				{{ 'lang.email.password_recovery.ignore.text'|t }}
 																			</p>
-																			<p style="text-align:center;margin-top: 30px"><a href="{{ email_data.recovery_url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Gerar nova password</a></p>
+																			<p style="text-align:center;margin-top: 30px"><a href="{{ email_data.recovery_url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.email.password_recovery.password.button'|t }}</a></p>
 																		{% elseif email_data.step == 'reset' %}
-																			<p style="color:#666;font-size:14px;">Esta é a nova password da sua conta na loja <strong>{{ store.name }}</strong>:</p>
+																			<p style="color:#666;font-size:14px;">{{ 'lang.email.password_recovery.reset.text'|t([store.name]) }}</p>
 																			<p style="text-align:center;margin-top: 30px"><code style="display:inline-block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;">{{ email_data.password }}</code></p>
-																			<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}?login_modal" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Entrar na conta</a></p>
+																			<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}?login_modal" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.email.password_recovery.reset.button'|t }}</a></p>
 																		{% endif %}
 																	</div>
 																</td>
@@ -244,7 +244,7 @@
 											</tr>
 											<tr>
 												<td align="center" style="font-size:11px;line-height:18px;color:#999999">
-													Caso não consiga clicar no botão acima, aceda a este link: {{ email_data.recovery_url }}
+													{{ 'lang.email.password_recovery.email_link'|t([email_data.recovery_url]) }}
 												</td>
 											</tr>
 										{% endif %}

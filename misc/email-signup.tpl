@@ -212,15 +212,15 @@
 																<td width="100%" align="left" valign="top" style="line-height:18px;font-size:14px;">
 																	<div style="margin:20px;">
 																		<p style="color:#666;font-size:14px;">
-																			Olá {{ email_data.name|first_word }},<br><br>
-																			Obrigado(a) por se registar na nossa loja <strong>{{ store.name }}</strong>.<br>
-																			Os seus dados de acesso à nossa loja são:
+																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},<br><br>
+																			{{ 'lang.email.signup.text'|t([store.name]) }}<br>
+																			{{ 'lang.email.signup.data'|t }}
 																		</p>
 																		<p style="color:#666;font-size:14px;">
-																			E-mail: <strong>{{ email_data.email }}</strong><br>
-																			Password: <strong>{{ email_data.password }}</strong>
+																			{{ 'lang.storefront.form.email.label'|t }}: <strong>{{ email_data.email }}</strong><br>
+																			{{ 'lang.storefront.form.password.label'|t }}: <strong>{{ email_data.password }}</strong>
 																		</p>
-																		<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">Visitar Loja Online</a></p>
+																		<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.email.signup.store_link'|t }}</a></p>
 																	</div>
 																</td>
 															</tr>
