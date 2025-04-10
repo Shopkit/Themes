@@ -40,10 +40,10 @@ $(document).ready(function() {
 		'type': 'image',
 		onStart: function() {
 			$('.fancybox-bg').remove();
-			$('#fancybox-close').html('<i class="fa fa-times"></i>');
-			$('#fancybox-loading').html('<i class="fa fa-2x fa-spinner"></i>');
-			$('#fancybox-left > span').html('<i class="fa fa-chevron-left"></i>');
-			$('#fancybox-right > span').html('<i class="fa fa-chevron-right"></i>');
+			$('#fancybox-close').html(helper_icon_render('times'));
+			$('#fancybox-loading').html(helper_icon_render('sync', 'fa-2x'));
+			$('#fancybox-left > span').html(helper_icon_render('angle-left'));
+			$('#fancybox-right > span').html(helper_icon_render('angle-right'));
 		}
 	});
 
@@ -51,7 +51,7 @@ $(document).ready(function() {
 		var navigation = priorityNav.init({
 			mainNavWrapper: ".trigger-priority-nav",
 			mainNav: "ul.nav",
-			navDropdownLabel: "<i class='fa fa-bars fa-lg'></i>",
+			navDropdownLabel: helper_icon_render('bars', 'fa-lg'),
 			navDropdownClassName: "dropdown-menu",
 			turnOffPoint: 979,
 			offsetPixels: 20
@@ -432,13 +432,19 @@ function product_options(product, onload) {
 
 				if (response.wishlist) {
 					if (response.wishlist.status) {
-						wishlist_html = '<i class="fa fa-heart-o fa-fw"></i> ' + lang.storefront.product.wishlist.remove;
+						wishlist_html = helper_icon_render('heart') + ' ' + lang.storefront.product.wishlist.remove;
 						wishlist_url = response.wishlist.remove_url;
+						$('.wishlist').addClass('added');
 					} else {
-						wishlist_html = '<i class="fa fa-heart fa-fw"></i> ' + lang.storefront.product.wishlist.add;
+						wishlist_html = helper_icon_render('heart') + ' ' + lang.storefront.product.wishlist.add;
 						wishlist_url = response.wishlist.add_url;
+						$('.wishlist').removeClass('added');
 					}
 					$('.wishlist a').html(wishlist_html).attr('href', wishlist_url);
+
+					if ($('body').hasClass('feather')) {
+                        feather.replace();
+                    }
 				}
 
 				reference = response.reference;

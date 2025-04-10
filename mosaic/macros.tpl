@@ -43,12 +43,12 @@
 			</span>
 
 			<div>
-				{% if product.status == 1 and product.price_on_request == false and not product.option_groups %}
-					<a href="{{ product_url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}"><i class="fa fa-shopping-cart"></i><span>{{ 'lang.storefront.layout.button.buy'|t }}</span></a>
+				{% if product.status == 1 and product.price_on_request == false and not (product.option_groups or product.extra_options) and not (apps.upload_file and apps.upload_file.page == 'product' and apps.upload_file.required == true) %}
+					<a href="{{ product_url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('shopping-cart') }}<span>{{ 'lang.storefront.layout.button.buy'|t }}</span></a>
 				{% elseif product.option_groups %}
-					<a href="{{ product_url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}"><i class="fa fa-plus-square"></i><span>{{ 'lang.storefront.macros.product.options'|t }}</span></a>
+					<a href="{{ product_url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('plus-square') }}<span>{{ 'lang.storefront.macros.product.options'|t }}</span></a>
 				{% else %}
-					<a href="{{ product_url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}"><i class="fa fa-plus-square"></i><span>{{ 'lang.storefront.macros.product.info'|t }}</span></a>
+					<a href="{{ product_url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('plus-square') }}<span>{{ 'lang.storefront.macros.product.info'|t }}</span></a>
 				{% endif %}
 			</div>
 

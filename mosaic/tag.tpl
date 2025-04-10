@@ -15,7 +15,7 @@ Description: Product tag page
 	<h1 class="wide">{{ tag.title }}</h1>
 
 	<p class="breadcrumbs wide">
-		<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+		<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 		{{ tag.title }}
 	</p>
 

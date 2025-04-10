@@ -316,6 +316,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--body_text_color);
+
+  &.line-awesome, &.remixicon-line, &.remixicon-fill {
+    .fa-fw {
+        transform: scale(1.15);
+    }
+  }
 }
 
 [hidden] {
@@ -423,6 +429,9 @@ body.no-scroll {
 .slick-arrow {
     svg, i {
         color: var(--button_default_text_color);
+        font-size: 20px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -2915,6 +2924,9 @@ body.client-is-wholesale {
             svg {
                 fill: var(--basecolor);
             }
+            i.fa, svg.svg-inline--fa {
+                color: var(--basecolor);
+            }
         }
     }
 
@@ -2942,6 +2954,16 @@ body.client-is-wholesale {
             color: var(--body_text_color);
             font-size: 20px;
             vertical-align: middle;
+
+            &.feather {
+                vertical-align: bottom;
+                width: 17px;
+                height: 24px;
+            }
+        }
+
+        i.fa-fw {
+            transform: scale(1);
         }
     }
 
@@ -4078,6 +4100,9 @@ label[for="cupao"] {
     }
 }
 
+.gpsr-brand-content {
+    display: var(--show_section_gpsr);
+}
 
 // Tabs
 .nav {
@@ -4163,6 +4188,10 @@ label[for="cupao"] {
             a:not(.link-inherit) {
                 .text-link;
             }
+
+            .share a:not(.link-inherit) {
+                text-decoration: none;
+            }
         }
 
         .image-post {
@@ -4177,6 +4206,12 @@ label[for="cupao"] {
                 font-size: 24px;
                 width: 24px;
                 vertical-align: middle;
+
+                &.feather {
+                    vertical-align: bottom;
+                    width: 17px;
+                    height: 24px;
+                }
             }
         }
     }
@@ -5716,6 +5751,9 @@ label[for="cupao"] {
         background-color: var(--modal_background_color);
         color: var(--modal_text_color);
     }
+    svg.feather {
+        font-size: 4em;
+    }
 }
 
 .modal-backdrop {
@@ -6607,6 +6645,39 @@ a.label-outline:hover {
     }
 }
 
+body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
+    .fa-tiktok, i[data-feather="tiktok"] {
+        &::after {
+            -webkit-mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
+            mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
+            content: "";
+            background-color: var(--body_text_color);
+            display: inline-block;
+            height: 16px;
+            width: 14px;
+        }
+	}
+
+    .header-menu .menu-social {
+        .fa-tiktok, [data-feather="tiktok"] {
+            &::after {
+                height: 18px;
+                width: 18px;
+            }
+        }
+    }
+
+    .footer .footer-social {
+        .fa-tiktok, [data-feather="tiktok"] {
+            &::after {
+                background-color: var(--footer_text_color);
+                height: 19px;
+                width: 20px;
+            }
+        }
+    }
+}
+
 //Apps
 //Google Translate
 .skiptranslate {
@@ -6753,9 +6824,6 @@ a.link-inherit, button.link-inherit {
 
 .uppercase, .text-uppercase { text-transform: uppercase; }
 .text-underline { text-decoration: underline; }
-a.text-underline {
-    .text-link;
-}
 
 .text-link {
     color: var(--link_color);
@@ -7015,32 +7083,32 @@ select.form-control:focus {
 }
 
 // Sizing feather icons
-.feather-16 {
+.feather.feather-16 {
     width: 16px;
     height: 16px;
 }
 
-.feather-20 {
+.feather.feather-20 {
     width: 20px;
     height: 20px;
 }
 
-.feather-24 {
+.feather.feather-24 {
     width: 24px;
     height: 24px;
 }
 
-.feather-32 {
+.feather.feather-32 {
     width: 32px;
     height: 32px;
 }
 
-.feather-48 {
+.feather.feather-48 {
     width: 48px;
     height: 48px;
 }
 
-.feather-56 {
+.feather.feather-56 {
     width: 56px;
     height: 56px;
 }

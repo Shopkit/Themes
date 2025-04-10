@@ -22,9 +22,9 @@ Description: User account page
                             <td><a href="{{ site_url('account/orders?id=' ~ order.id)}}" style="text-decoration:underline" class="modal-order-detail"><strong>#{{ order.id }}</strong></a></td>
                             <td>{{ order.created_at|format_datetime('long', 'none') }}</td>
                             <td>{{ order.status_description }}</td>
-                            <td class="text-center">{{ order.paid ? '<i class="fa fa-fw fa-check text-success" aria-hidden="true"></i>' : '<i class="fa fa-fw fa-times" aria-hidden="true"></i>' }}</td>
+                            <td class="text-center">{{ order.paid ? icons('check', 'text-success') : icons('times') }}</td>
                             <td class="text-right nowrap">{{ order.total|money_with_sign(order.currency) }}</td>
-                            <td class="text-center">{% if order.tracking_url %}<a href="{{ order.tracking_url }}" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a>{% else %}-{% endif %}</td>
+                            <td class="text-center">{% if order.tracking_url %}<a href="{{ order.tracking_url }}" target="_blank">{{ icons('map-marker') }}</a>{% else %}-{% endif %}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

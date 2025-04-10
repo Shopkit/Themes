@@ -12,7 +12,7 @@ Description: Register page
             <h1>{{ 'lang.storefront.login.signup.title'|t }}</h1>
 
             <p class="breadcrumbs margin-bottom">
-                <a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+                <a href="{{ site_url() }}">{{ icons('home') }}</a> ›
                 {{ 'lang.storefront.login.signup.title'|t }}
             </p>
 

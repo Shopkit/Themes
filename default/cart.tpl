@@ -71,7 +71,7 @@ Description: Shopping cart page
 
                                 {% if item.extras %}
                                     <div class="items-extra-wrapper">
-                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i></a>
+                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                         <ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs well-default {{ store.theme_options.well_default_shadow }}" id="item-extra-{{ item.item_id }}">
                                             {% for key, extra in item.extras %}
@@ -89,7 +89,7 @@ Description: Shopping cart page
 							</td>
 							<td><div class="form-inline"><input class="input-micro" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}> <button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-small">{{ 'lang.storefront.cart.change.button'|t }}</button></div></td>
 							<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
-							<td class="text-center"><a href="{{ item.remove_link }}" class="btn btn-small cart-remove-product-url"><i class="fa fa-trash"></i>&nbsp;<span class="hidden-phone">{{ 'lang.storefront.layout.button.remove'|t }}</span></a></td>
+							<td class="text-center"><a href="{{ item.remove_link }}" class="btn btn-small cart-remove-product-url">{{ icons('trash') }}&nbsp;<span class="hidden-phone">{{ 'lang.storefront.layout.button.remove'|t }}</span></a></td>
 						</tr>
 					{% endfor %}
 
@@ -119,9 +119,9 @@ Description: Shopping cart page
 
 				<div class="coupon-code-label margin-top-xxs {{ cart.coupon ? cart.coupon.code : 'hidden' }}">
 					<span class="label label-light-bg h5">
-						<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+						{{ icons('tags') }}
 						<span class="coupon-code-text">{{ cart.coupon.code }}</span>
-						<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+						<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
 					</span>
 				</div>
 			</div>

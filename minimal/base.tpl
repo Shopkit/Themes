@@ -66,7 +66,7 @@ Version: 4.0
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="{{ fonts }}" rel="stylesheet">
 
-		<link href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}" rel="stylesheet">
+		{{ icon_library }}
 		<link id="theme-css" href="{{ store.assets.css }}" rel="stylesheet">
 
 		{% if store.custom_css %}
@@ -80,7 +80,7 @@ Version: 4.0
 
 	</head>
 
-	<body class="{{ css_class }} {{ store.theme_options.modal_mask_blur != '0' ? 'modal-backdrop-blur' }}">
+	<body class="{{ css_class }} {{ store.theme_options.modal_mask_blur != '0' ? 'modal-backdrop-blur' }} {{ store.theme_options.icon_library }}">
 
 		<header>
 
@@ -95,20 +95,20 @@ Version: 4.0
 					{% if store.settings.cart.users_registration != 'disabled' %}
 						{% if user.is_logged_in %}
 							<div class="user-loggedin">
-								<a href="{{ site_url('account') }}" class="link-account"><i class="fa fa-fw fa-user"></i> {{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</a>
+								<a href="{{ site_url('account') }}" class="link-account">{{ icons('user') }} {{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</a>
 								<ul class="dropdown-menu well-featured {{ store.theme_options.well_featured_shadow }}" role="menu">
-									<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
-									<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> {{ 'lang.storefront.layout.client.title'|t }}</a></li>
-									<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
-									<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
+									<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
+									<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>
+									<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">{{ icons('heart') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+									<li><a href="{{ site_url('account/logout')}}">{{ icons('sign-out') }} {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 								</ul>
 							</div>
 						{% else %}
-							<a href="{{ site_url('signin') }}" class="link-signin"><i class="fa fa-fw fa-sign-in"></i> {{ 'lang.storefront.login.signin.title'|t }}</a>
+							<a href="{{ site_url('signin') }}" class="link-signin">{{ icons('sign-in') }} {{ 'lang.storefront.login.signin.title'|t }}</a>
 						{% endif %}
 					{% endif %}
 
-					<a href="{{ site_url('cart') }}" class="link-cart"><i class="fa fa-fw fa-shopping-cart"></i> {{ cart.subtotal | money_with_sign }}</a>
+					<a href="{{ site_url('cart') }}" class="link-cart">{{ icons('shopping-cart') }} {{ cart.subtotal | money_with_sign }}</a>
 				</div>
 
 				{% if apps.google_translate %}
@@ -122,7 +122,7 @@ Version: 4.0
 								<input type="search" name="q" value="{{ search ? search.query }}" class="form-control input-sm" placeholder="{{ 'lang.storefront.layout.header.search'|t }}" required>
 							</div>
 						</div>
-						<button type="submit" class="btn-search btn btn-link"><i class="fa fa-fw fa-search"></i></button>
+						<button type="submit" class="btn-search btn btn-link">{{ icons('search') }}</button>
 					{{ form_close() }}
 				{% endif %}
 			</div>
@@ -143,7 +143,7 @@ Version: 4.0
 
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
 							<span class="sr-only">Toggle navigation</span>
-							<i class="fa fa-bars"></i>
+							{{ icons('bars') }}
 						</button>
 
 					</div>
@@ -350,10 +350,10 @@ Version: 4.0
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<div class="text-center">
 								{% if events.wishlist.added %}
-									<i class="fa fa-heart fa-4x text-muted"></i>
+									{{ icons('heart', 'fa-4x text-muted') }}
 									<h3 class="text-muted">{{ 'lang.storefront.layout.events.wishlist.added'|t }}</h3>
 								{% elseif events.wishlist.removed %}
-									<i class="fa fa-heart-o fa-4x text-muted"></i>
+									{{ icons('heart', 'fa-4x text-muted') }}
 									<h3 class="text-muted">{{ 'lang.storefront.layout.events.wishlist.removed'|t }}</h3>
 								{% endif %}
 							</div>
@@ -381,31 +381,31 @@ Version: 4.0
 								{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
 
 									{% if events.cart.stock_qty %}
-										<i class="fa fa-ban fa-4x text-muted"></i>
+										{{ icons('ban', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.not_enough_stock'|t }}</h3>
 									{% endif %}
 									{% if events.cart.stock_sold_single %}
-										<i class="fa fa-ban fa-4x text-muted"></i>
+										{{ icons('ban', 'fa-4x text-muted') }}
 										<h4 class="text-muted">{{ 'lang.storefront.layout.events.cart.stock_sold_single'|t }} <strong>{{ events.cart.stock_sold_single }}</strong></h4>
 									{% endif %}
 									{% if events.cart.no_stock %}
-										<i class="fa fa-ban fa-4x text-muted"></i>
+										{{ icons('ban', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.products_without_stock'|t }}</h3>
 									{% endif %}
 
 								{% else %}
 
 									{% if events.cart.added %}
-										<i class="fa fa-check fa-4x text-muted"></i>
+										{{ icons('check', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.added'|t }}</h3>
 									{% elseif events.cart.error %}
-										<i class="fa fa-times fa-4x text-muted"></i>
+										{{ icons('times', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.error'|t }}</h3>
 									{% elseif events.cart.updated %}
-										<i class="fa fa-refresh fa-4x text-muted"></i>
+										{{ icons('sync', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.updated'|t }}</h3>
 									{% elseif events.cart.session_updated_items or events.cart.session_not_updated_items or events.cart.session_updated %}
-										<i class="fa fa-refresh fa-4x text-muted"></i>
+										{{ icons('sync', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.updated'|t }}</h3>
 
 										{% if events.cart.session_updated_items %}
@@ -425,7 +425,7 @@ Version: 4.0
 											</ul>
 										{% endif %}
 									{% elseif events.cart.deleted %}
-										<i class="fa fa-trash-o fa-4x text-muted"></i>
+										{{ icons('trash', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.deleted'|t }}.</h3>
 									{% endif %}
 
@@ -463,7 +463,7 @@ Version: 4.0
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
 							<div class="text-center">
-								<i class="fa fa-envelope fa-4x text-muted"></i>
+								{{ icons('envelope', 'fa-4x text-muted') }}
 
 								<h3 class="text-muted">{{ 'lang.storefront.layout.events.unsubscribe_title'|t }}</h3>
 								<p>{{ 'lang.storefront.layout.events.unsubscribe_text'|t }}</p>
@@ -494,11 +494,11 @@ Version: 4.0
 
 							<div class="text-center">
 								{% if events.payment_status.success is same as (true) %}
-									<i class="fa fa-check fa-4x text-success"></i>
+									{{ icons('check', 'fa-4x text-muted') }}
 								{% elseif events.payment_status.success is same as (false) %}
-									<i class="fa fa-times fa-4x text-muted"></i>
+									{{ icons('times', 'fa-4x text-muted') }}
 								{% else %}
-									<i class="fa fa-check fa-4x text-muted"></i>
+									{{ icons('check', 'fa-4x text-muted') }}
 								{% endif %}
 
 								<h3 class="text-muted">{{ events.payment_status.message }}</h3>
@@ -530,13 +530,13 @@ Version: 4.0
 
 							<div class="text-center">
 								{% if events.contact_form_success %}
-									<i class="fa fa-envelope fa-4x text-muted"></i>
+									{{ icons('envelope', 'fa-4x text-muted') }}
 									<h3 class="text-muted">{{ 'lang.storefront.layout.events.contact_form_success.title'|t }}</h3>
 									<p>{{ 'lang.storefront.layout.events.contact_form_success.text'|t }}</p>
 								{% endif %}
 
 								{% if events.contact_form_errors %}
-									<i class="fa fa-envelope fa-4x text-muted"></i>
+									{{ icons('envelope', 'fa-4x text-muted') }}
 									<h3 class="text-muted">{{ 'lang.storefront.layout.events.contact_form_error'|t }}</h3>
 									<p>{{ events.contact_form_errors }}</p>
 								{% endif %}

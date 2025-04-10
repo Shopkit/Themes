@@ -42,12 +42,12 @@
                         </span>
                     {% endif %}
                 </a>
-                {% if product.status == 1 and product.price_on_request == false and not (product.option_groups or product.extra_options) %}
-                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product.add_cart_url }}"><i data-feather="shopping-cart" class="feather-16"></i>&nbsp;{{ 'lang.storefront.layout.button.buy'|t }}</a>
+                {% if product.status == 1 and product.price_on_request == false and not (product.option_groups or product.extra_options) and not (apps.upload_file and apps.upload_file.page == 'product' and apps.upload_file.required == true) %}
+                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product.add_cart_url }}">{{ icons('shopping-cart', 'feather-16') }}&nbsp;{{ 'lang.storefront.layout.button.buy'|t }}</a>
                 {% elseif product.option_groups or product.extra_options %}
-                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product_url }}"><i data-feather="plus-square" class="feather-16"></i>&nbsp;{{ 'lang.storefront.macros.product.options'|t }}</a>
+                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product_url }}">{{ icons('plus-square', 'feather-16') }}&nbsp;{{ 'lang.storefront.macros.product.options'|t }}</a>
                 {% else %}
-                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product_url }}"><i data-feather="plus-square" class="feather-16"></i>&nbsp;{{ 'lang.storefront.macros.product.info'|t }}</a>
+                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product_url }}">{{ icons('plus-square', 'feather-16') }}&nbsp;{{ 'lang.storefront.macros.product.info'|t }}</a>
                 {% endif %}
             </div>
             {% if product_category.active %}

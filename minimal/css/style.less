@@ -238,6 +238,44 @@ body {
 	font-family: var(--body_font_family), var(--body_font_category);
 	font-size: @font-size-h6;
 	color: var(--body_text_color);
+
+	&.line-awesome, &.remixicon-line, &.remixicon-fill {
+        .fa-fw {
+            transform: scale(1.15);
+        }
+    }
+
+	&.feather {
+		&.page-contact {
+			.feather-circle {
+				display: none;
+			}
+
+			i[class*="fa-pinterest"].fa-stack-1x {
+				text-align: left;
+				margin-left: 3px;
+			}
+		}
+	}
+
+	&.remixicon-fill {
+		.fa-inverse {
+			color: var(--body_background_color);
+		}
+	}
+}
+
+.fa-stack {
+	vertical-align: middle;
+}
+
+svg.feather {
+    width: 1.25em;
+    text-align: center;
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    vertical-align: -.125em;
 }
 
 a {
@@ -605,10 +643,6 @@ header {
 
 			&:hover {
 				.opacity(0.4);
-
-				.fa-tiktok::after {
-					background-color: var(--body_text_color);
-				}
 			}
 		}
 
@@ -2228,6 +2262,10 @@ footer {
 	}
 }
 
+.gpsr-brand-content {
+    display: var(--show_section_gpsr);
+}
+
 .modal-backdrop-blur {
     &.modal-open {
         header, section, footer, .store-notice {
@@ -2718,6 +2756,9 @@ a.label-outline:hover {
 		color: var(--modal_text_color);
 		text-shadow: none;
 		.opacity(0.5);
+	}
+	svg.feather {
+		font-size: 4em;
 	}
 }
 
@@ -3686,6 +3727,12 @@ form footer {
 	.products .product .product-info {
 		padding: 0 calc(calc(var(--card_padding) * 1px)/2);
 	}
+	header .navbar-nav .dropdown-menu > li > a,
+	header .navbar-nav .dropdown-menu > li > a:hover,
+	header .navbar-nav .dropdown-menu > li > a:focus,
+	.subdropdown .dropdown-submenu li a {
+		color: var(--header_text_color);
+	}
 }
 
 //sm
@@ -3826,6 +3873,15 @@ form footer {
 		}
 		.wishlist {
 			text-align: right;
+
+			&.added {
+				svg {
+					fill: var(--basecolor);
+				}
+				i.fa, svg.svg-inline--fa {
+					color: var(--basecolor);
+				}
+			}
 		}
 	}
 
@@ -4500,24 +4556,33 @@ body.has-google-translate {
 	top: inherit !important;
 }
 
-.fa-tiktok {
-	&::after {
-		-webkit-mask: url("https://cdn.shopk.it/assets/store/img/tiktok-icon.svg") no-repeat 50% 50%;
-		mask: url("https://cdn.shopk.it/assets/store/img/tiktok-icon.svg") no-repeat 50% 50%;
-		content: "";
-		background-color: fade(#000, 20%);
-		display: inline-block;
-		height: 16px;
-		width: inherit;
-		.transition(background-color 0.5s ease);
+body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
+    .fa-tiktok, i[data-feather="tiktok"] {
+        &::after {
+			-webkit-mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
+			mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
+			content: "";
+			background-color: var(--body_text_color);
+			display: inline-block;
+			height: 16px;
+			width: 14px;
+		}
+
+		&.fa-inverse::after {
+			background-color: #fff;
+		}
 	}
 
-	&.fa-lg::after {
-		height: 20px;
-	}
+	&.line-awesome {
+		.fa-inverse {
+			color: var(--body_text_color);
+		}
 
-	&.fa-inverse::after {
-		background-color: #ffffff;
+		.fa-tiktok, [data-feather="tiktok"] {
+			&.fa-inverse::after {
+				background-color: var(--body_text_color);
+			}
+		}
 	}
 }
 
@@ -4603,9 +4668,6 @@ a.link-inherit {
 .text-danger { color: @brand-danger; }
 
 .text-underline { text-decoration: underline; }
-a.text-underline {
-    .text-link;
-}
 
 .text-link {
     color: var(--link_color);

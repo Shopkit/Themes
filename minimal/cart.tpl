@@ -65,7 +65,7 @@ Description: Shopping cart page
 
 													{% if item.extras %}
 														<div class="items-extra-wrapper">
-															<a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i></a>
+															<a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
 															<ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs" id="item-extra-{{ item.item_id }}">
 																{% for key, extra in item.extras %}
@@ -89,9 +89,9 @@ Description: Shopping cart page
 														<label class="hidden-xs" for="qty-{{ item.item_id }}">{{ 'lang.storefront.cart.product.qty'|t }}&nbsp;</label><input class="form-control input-sm input-qtd" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="left" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %} id="qty-{{ item.item_id }}">
 													</div>
 
-													<span class="margin-left-xxs visible-xs-inline-block visible-sm-inline-block">&nbsp;<button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm"><i class="fa fa-refresh"></i></button></span>
+													<span class="margin-left-xxs visible-xs-inline-block visible-sm-inline-block">&nbsp;<button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm">{{ icons('sync') }}</button></span>
 
-													<a href="{{ item.remove_link }}" class="btn btn-link btn-sm text-default inline-block margin-left-xxs cart-remove-product-url"><i class="fa fa-trash"></i></a>
+													<a href="{{ item.remove_link }}" class="btn btn-link btn-sm text-default inline-block margin-left-xxs cart-remove-product-url">{{ icons('trash') }}</a>
 												</td>
 											</tr>
 										{% endfor %}
@@ -103,8 +103,8 @@ Description: Shopping cart page
 							</div>
 
 							<footer>
-								<button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }}"><i class="fa fa-fw fa-refresh"></i> {{ 'lang.storefront.cart.update.button'|t }}</button> &nbsp;
-								<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }}"><i class="fa fa-fw fa-shopping-cart"></i> {{ 'lang.storefront.layout.button.buy'|t }}</button>
+								<button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('sync') }} {{ 'lang.storefront.cart.update.button'|t }}</button> &nbsp;
+								<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('shopping-cart') }} {{ 'lang.storefront.layout.button.buy'|t }}</button>
 							</footer>
 						</div>
 
@@ -129,13 +129,13 @@ Description: Shopping cart page
 									<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</dd>
 								{% endif %}
 
-								{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '"><i class="fa fa-question-circle"></i></span>' %}
+								{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">'~ icons('question-circle') ~'</span>' %}
 								<dt>{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</dt>
 								<dd class="text-dark price total-shipping">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : cart.total_shipping | money_with_sign) : no_shipping_text) : cart.total_shipping | money_with_sign }}</dd>
 
 								{% if cart.total_payment %}
 									<div class="flex">
-										<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}"><i class="fa fa-question-circle"></i></span></dt>
+										<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}">{{ icons('question-circle') }}</span></dt>
 										<dd class="text-dark price">{{ cart.total_payment | money_with_sign }}</dd>
 									</div>
 								{% endif %}
@@ -175,14 +175,14 @@ Description: Shopping cart page
 
 								<div class="coupon-code-label margin-top-xxs {{ cart.coupon ? cart.coupon.code : 'hidden' }}">
 									<span class="label label-light-bg h5">
-										<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+										{{ icons('tags') }}
 										<span class="coupon-code-text">{{ cart.coupon.code }}</span>
-										<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+										<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
 									</span>
 								</div>
 							</div>
 
-							<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-block btn-primary {{ store.theme_options.button_primary_shadow }} btn-lg margin-top"><i class="fa fa-fw fa-shopping-cart"></i> {{ 'lang.storefront.layout.button.buy'|t }}</button>
+							<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-block btn-primary {{ store.theme_options.button_primary_shadow }} btn-lg margin-top">{{ icons('shopping-cart') }} {{ 'lang.storefront.layout.button.buy'|t }}</button>
 						</div>
 
 						<div id="payment-method-messaging-element"></div>

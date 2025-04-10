@@ -14,7 +14,7 @@ Description: Complete order page
 
         <div class="{{ layout_container }}">
             <div class="text-center margin-bottom">
-                <i class="fa fa-check fa-4x text-success"></i>
+                {{ icons('check', 'fa-4x text-success') }}
                 <h2 class="text-muted margin-top-sm margin-bottom-xs">{{ 'lang.storefront.cart.complete.order_successfull'|t }}</h2>
                 <h3 class="light text-light-gray">#{{ order.id }}</h3>
             </div>

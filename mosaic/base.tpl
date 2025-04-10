@@ -54,7 +54,7 @@ Description: This is the base layout. It's included in every page with this code
 	<link href="{{ fonts }}" rel="stylesheet">
 
 	<link id="theme-css" rel="stylesheet" href="{{ store.assets.css }}">
-	<link rel="stylesheet" href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}">
+	{{ icon_library }}
 
 	{% if store.custom_css %}
 		<style>{{ store.custom_css }}</style>
@@ -66,7 +66,7 @@ Description: This is the base layout. It's included in every page with this code
 	{{ head_content }}
 
 </head>
-<body class="template-mosaic {{ css_class }}">
+<body class="template-mosaic {{ css_class }} {{ store.theme_options.icon_library }}">
 
 	<section class="sidebar">
 
@@ -74,24 +74,24 @@ Description: This is the base layout. It's included in every page with this code
 
 			{% if store.settings.cart.users_registration != 'disabled' %}
 				{% if user.is_logged_in %}
-					<a href="{{ site_url('account') }}" class="link-account btn-slide" data-target=".account"><i class="fa fa-user"></i></a>
+					<a href="{{ site_url('account') }}" class="link-account btn-slide" data-target=".account">{{ icons('user') }}</a>
 				{% else %}
-					<a href="{{ site_url('signin') }}" class="link-signin"><i class="fa fa-sign-in"></i></a>
+					<a href="{{ site_url('signin') }}" class="link-signin">{{ icons('sign-in') }}</a>
 				{% endif %}
 			{% endif %}
 
 			<a href="{{ site_url('cart') }}" class="btn-cart btn-slide" data-target=".cart">
 				<span>{{ cart.item_count }}</span>
-				<i class="fa fa-shopping-cart"></i>
+				{{ icons('shopping-cart') }}
 			</a>
 
 			<a href="#" class="btn-navbar">
-				<i class="fa fa-bars"></i>
+				{{ icons('bars') }}
 			</a>
 
 			{% if apps.newsletter %}
 				<a href="#" class="btn-newsletter btn-slide" data-target=".newsletter">
-					<i class="fa fa-envelope"></i>
+					{{ icons('envelope') }}
 				</a>
 			{% endif %}
 
@@ -118,7 +118,7 @@ Description: This is the base layout. It's included in every page with this code
 
 					{% if store.theme_options.show_search %}
 						<form action="{{ site_url('search') }}" class="search-bar {{ show_search_suggestions }}">
-							<i class="fa fa-fw fa-search"></i>
+							{{ icons('search') }}
 							<input type="search" value="{{ search ? search.query }}" placeholder="{{ 'lang.storefront.layout.header.search'|t }}" name="q">
 						</form>
 					{% endif %}
@@ -138,15 +138,15 @@ Description: This is the base layout. It's included in every page with this code
 
 			<nav class="social-nav">
 				<ul class="unstyled">
-					{% if apps.newsletter %}<li><a href="#" class="btn-newsletter btn-slide" data-target=".newsletter"><i class="fa fa-envelope"></i></a></li>{% endif %}
-					{% if store.facebook %}<li><a target="_blank" href="{{ store.facebook }}"><i class="fa fa-facebook"></i></a></li>{% endif %}
-					{% if store.twitter %}<li><a target="_blank" href="{{ store.twitter }}"><i class="fa fa-twitter"></i></a></li>{% endif %}
-					{% if store.instagram %}<li><a target="_blank" href="{{ store.instagram }}"><i class="fa fa-instagram"></i></a></li>{% endif %}
-					{% if store.pinterest %}<li><a target="_blank" href="{{ store.pinterest }}"><i class="fa fa-pinterest"></i></a></li>{% endif %}
-					{% if store.youtube %}<li><a target="_blank" href="{{ store.youtube }}"><i class="fa fa-youtube-play"></i></a></li>{% endif %}
-					{% if store.linkedin %}<li><a target="_blank" href="{{ store.linkedin }}"><i class="fa fa-linkedin-square"></i></a></li>{% endif %}
-					{% if store.tiktok %}<li><a target="_blank" href="{{ store.tiktok }}"><i class="fa fa-tiktok"></i></a></li>{% endif %}
-					<li class="link-social-rss"><a href="{{ site_url('rss') }}"><i class="fa fa-rss"></i></a></li>
+					{% if apps.newsletter %}<li><a href="#" class="btn-newsletter btn-slide" data-target=".newsletter">{{ icons('envelope') }}</a></li>{% endif %}
+					{% if store.facebook %}<li><a target="_blank" href="{{ store.facebook }}">{{ icons('facebook-f') }}</a></li>{% endif %}
+					{% if store.twitter %}<li><a target="_blank" href="{{ store.twitter }}">{{ icons('twitter') }}</a></li>{% endif %}
+					{% if store.instagram %}<li><a target="_blank" href="{{ store.instagram }}">{{ icons('instagram') }}</a></li>{% endif %}
+					{% if store.pinterest %}<li><a target="_blank" href="{{ store.pinterest }}">{{ icons('pinterest') }}</a></li>{% endif %}
+					{% if store.youtube %}<li><a target="_blank" href="{{ store.youtube }}">{{ icons('youtube') }}</a></li>{% endif %}
+					{% if store.linkedin %}<li><a target="_blank" href="{{ store.linkedin }}">{{ icons('linkedin-square') }}</a></li>{% endif %}
+					{% if store.tiktok %}<li><a target="_blank" href="{{ store.tiktok }}">{{ icons('tiktok') }}</a></li>{% endif %}
+					<li class="link-social-rss"><a href="{{ site_url('rss') }}">{{ icons('rss') }}</a></li>
 					{% if apps.google_translate %}
 						{{ generic_macros.google_translate(apps.google_translate) }}
 					{% endif %}
@@ -203,7 +203,7 @@ Description: This is the base layout. It's included in every page with this code
                                 <span href="#item-extra-{{ item.item_id }}" class="inline-block small" data-toggle="tooltip" title="{{ item_extra_tip }}" data-html="true">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span></span>
                             </div>
                         {% endif %}
-						<p class="price"><strong>{{ item.subtotal | money_with_sign }}</strong>
+						<p class="price"><strong>{{ item.price | money_with_sign }}</strong>
 					</div>
 
 					<hr>
@@ -248,14 +248,14 @@ Description: This is the base layout. It's included in every page with this code
 					<li class="{{ (category.id == products_category.id) ? 'active' }} {{ 'menu-' ~ products_category.handle }}">
 
 						{% if products_category.children %}
-							<a href="{{ '#category_' ~ products_category.id }}" data-href="{{ products_category.url }}" data-toggle="collapse" target="{{ '#category_' ~ products_category.id }}">{{ products_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
+							<a href="{{ '#category_' ~ products_category.id }}" data-href="{{ products_category.url }}" data-toggle="collapse" target="{{ '#category_' ~ products_category.id }}">{{ products_category.title }} &nbsp; {{ icons('angle-down') }}</a>
 
 							<ul id="{{ 'category_' ~ products_category.id }}" class="sub-categories collapse {{ (category.parent == products_category.id or product.categories[0].parent == products_category.id or category.id == products_category.id or products_category.id == product.categories[0].id) ? 'in' }}">
 								{% for sub_category in products_category.children %}
 									<li class="{{ (category.id == sub_category.id or product.categories[0].id == sub_category.id) ? 'active' }} {{ 'menu-' ~ sub_category.handle }}">
 
 										{% if sub_category.children %}
-											<a href="{{ '#sub_category_' ~ sub_category.id }}" data-href="{{ sub_category.url }}" data-toggle="collapse" target="{{ '#sub_category_' ~ sub_category.id }}">{{ sub_category.title }} &nbsp; <i class="fa fa-chevron-circle-down"></i></a>
+											<a href="{{ '#sub_category_' ~ sub_category.id }}" data-href="{{ sub_category.url }}" data-toggle="collapse" target="{{ '#sub_category_' ~ sub_category.id }}">{{ sub_category.title }} &nbsp; {{ icons('angle-down') }}</a>
 
 											<ul id="{{ 'sub_category_' ~ sub_category.id }}" class="collapse sub-subcategories {{ (category.parent == sub_category.id or product.categories[0].parent == sub_category.id or category.id == sub_category.id or sub_category.id == product.categories[0].id) ? 'in' }}">
 												{% for children in sub_category.children %}
@@ -495,7 +495,7 @@ Description: This is the base layout. It's included in every page with this code
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ button_label }}</a>
 				{% if events.cart.added %}
-					<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ 'lang.storefront.layout.button.see_cart'|t }}</a>
+					<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}">{{ icons('shopping-cart') }} {{ 'lang.storefront.layout.button.see_cart'|t }}</a>
 				{% endif %}
 			</div>
 		</div>
@@ -509,7 +509,7 @@ Description: This is the base layout. It's included in every page with this code
 			</div>
 			<div class="modal-body">
 				<div class="text-center">
-					<i class="fa fa-envelope fa-3x text-light-gray"></i>
+					{{ icons('envelope', 'fa-3x text-light-gray') }}
 					<h5 class="text-normal">{{ 'lang.storefront.layout.events.unsubscribe_text'|t }}</h5>
 				</div>
 			</div>
@@ -528,11 +528,11 @@ Description: This is the base layout. It's included in every page with this code
 			<div class="modal-body">
 				<div class="text-center">
 					{% if events.payment_status.success is same as (true) %}
-						<i class="fa fa-check fa-3x text-success"></i>
+						{{ icons('check', 'fa-3x text-success') }}
 					{% elseif events.payment_status.success is same as (false) %}
-						<i class="fa fa-times fa-3x text-light-gray"></i>
+						{{ icons('times', 'fa-3x text-light-gray') }}
 					{% else %}
-						<i class="fa fa-check fa-3x text-light-gray"></i>
+						{{ icons('check', 'fa-3x text-light-gray') }}
 					{% endif %}
 
 					<h5 class="text-normal">{{ events.payment_status.message }}</h5>

@@ -22,9 +22,9 @@ Description: User account page
 							<td><a href="{{ site_url('account/orders?id=' ~ order.id)}}" style="text-decoration:underline" class="modal-order-detail"><strong>#{{ order.id }}</strong></a></td>
 							<td>{{ order.created_at|format_datetime('long', 'none') }}</td>
 							<td>{{ order.status_description }}</td>
-							<td class="text-center">{{ order.paid ? '<i class="fa fa-fw fa-check text-success" aria-hidden="true"></i>' : '<i class="fa fa-fw fa-times" aria-hidden="true"></i>' }}</td>
+							<td class="text-center">{{ order.paid ? icons('check', 'text-success') : icons('times') }}</td>
 							<td class="text-right">{{ order.total|money_with_sign(order.currency) }}</td>
-							<td class="text-center">{% if order.tracking_url %}<a href="{{ order.tracking_url }}" class="" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i></a>{% else %}-{% endif %}</td>
+							<td class="text-center">{% if order.tracking_url %}<a href="{{ order.tracking_url }}" class="" target="_blank">{{ icons('map-marker') }}</a>{% else %}-{% endif %}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -44,10 +44,10 @@ Description: User account page
 {% macro account_navigation() %}
 	<ul class="nav">
 		<li class="account-heading"><h4><a href="{{ site_url('account') }}" class="link-inherit">{{ 'lang.storefront.account.my_account'|t }}</a></h4></li>
-		<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}"><i class="fa fa-fw fa-shopping-bag" aria-hidden="true"></i> {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
-		<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> {{ 'lang.storefront.layout.client.title'|t }}</a></li>
-		<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
-		<li><a href="{{ site_url('account/logout')}}"><i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
+		<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
+		<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>
+		<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">{{ icons('heart') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+		<li><a href="{{ site_url('account/logout')}}">{{ icons('sign-out') }} {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 	</ul>
 {% endmacro %}
 
@@ -63,7 +63,7 @@ Description: User account page
 			<div class="span12">
 
 				<p class="breadcrumbs">
-					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+					<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 					{{ 'lang.storefront.account.my_account'|t }}
 				</p><br>
 

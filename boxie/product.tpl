@@ -6,11 +6,11 @@ Description: Product Page
     {% if store.settings.cart.users_registration != 'disabled' %}
         {% if not product.wishlist.status %}
             <a href="{{ product.wishlist.add_url }}" class="card-favorite">
-                <i data-feather="heart"></i>
+                {{ icons('heart') }}
             </a>
         {% else %}
             <a href="{{ product.wishlist.remove_url }}" class="card-favorite added">
-                <i data-feather="heart"></i>
+                {{ icons('heart') }}
             </a>
         {% endif %}
     {% endif %}
@@ -166,7 +166,7 @@ Description: Product Page
                                         {% set field_checked = extra_option.required ? 'checked' : '' %}
                                         {% set field_hidden = extra_option.required ? '' : 'hidden' %}
                                         {% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="255"' %}
-                                        {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'"><i class="fa fa-question-circle"></i></span>' : ''  %}
+                                        {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'">' ~ icons('question-circle') ~ '</span>' : ''  %}
                                         {% set field_description = extra_option.description ? extra_option.description : 'lang.storefront.product.extra_options.type_value'|t %}
 
                                         <div class="extra-option margin-top-xs  well-default {{ store.theme_options.well_default_shadow }} well-sm" data-id="{{ extra_option.alias }}">
@@ -245,11 +245,11 @@ Description: Product Page
                                 <div class="card-control data-product-info">
                                     <div class="card-counter counter">
                                         <button class="counter-btn counter-btn_minus" type="button">
-                                            <i data-feather="chevron-left"></i>
+                                            {{ icons('angle-left') }}
                                         </button>
                                         <input class="counter-input" type="text" name="qtd" value="1" size="3" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
                                         <button class="counter-btn counter-btn_plus" type="button">
-                                            <i data-feather="chevron-right"></i>
+                                            {{ icons('angle-right') }}
                                         </button>
                                     </div>
 
@@ -260,7 +260,7 @@ Description: Product Page
                                 </div>
 
                                 <div class="card-control data-product-on-request">
-                                    <a href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}" class="card-btn btn btn-primary {{ store.theme_options.button_primary_shadow }} price-on-request"><i data-feather="mail"></i>&nbsp;{{ 'lang.storefront.product.contact.button'|t }}</a>
+                                    <a href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}" class="card-btn btn btn-primary {{ store.theme_options.button_primary_shadow }} price-on-request">{{ icons('envelope') }}&nbsp;{{ 'lang.storefront.product.contact.button'|t }}</a>
                                     {{ product_macros.wishlist_block(product, store) }}
                                 </div>
                             {% elseif product.status == 3 %}
@@ -283,7 +283,7 @@ Description: Product Page
                                     {% if product.brand %}
                                         <tr class="product-brand">
                                             <th>{{ 'lang.storefront.product.brand.label'|t }}</th>
-                                            <td><a href="{{ product.brand.url }}" class="text-underline">{{ product.brand.title }}</a></td>
+                                            <td><a href="{{ product.brand.url }}" class="text-underline text-link">{{ product.brand.title }}</a></td>
                                         </tr>
                                     {% endif %}
 
@@ -309,7 +309,7 @@ Description: Product Page
                                         <tr class="download">
                                             <th>{{ 'lang.storefront.product.download_file.label'|t }}</th>
                                             <td>
-                                                <a target="_blank" href="{{ product.file }}"><i data-feather="download" class="feather-16"></i> {{ 'lang.storefront.product.download_file.button'|t }}</a>
+                                                <a target="_blank" href="{{ product.file }}">{{ icons('download', 'feather-16') }} {{ 'lang.storefront.product.download_file.button'|t }}</a>
                                             </td>
                                         </tr>
                                     {% endif %}
@@ -318,11 +318,11 @@ Description: Product Page
                                         <th>{{ 'lang.storefront.product.share.label'|t }}</th>
                                         <td>
                                             <div class="share">
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product_url }}" class="text-muted"><i data-feather="facebook" class="feather-20"></i></a> &nbsp;
-                                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ product_url }}&redirect_uri={{ product_url }}" class="text-muted"><i class="fab fa-facebook-messenger"></i></a> &nbsp;
-                                                <a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product_url}"|url_encode }}" class="text-muted"><i class="fab fa-whatsapp"></i></a> &nbsp;
-                                                <a target="_blank" href="https://twitter.com/share?url={{ product_url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i data-feather="twitter" class="feather-20"></i></a> &nbsp;
-                                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product_url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fab fa-pinterest-p"></i></a>
+                                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product_url }}" class="text-muted">{{ icons('facebook', 'feather-20') }}</a> &nbsp;
+                                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ product_url }}&redirect_uri={{ product_url }}" class="text-muted">{{ icons('facebook-messenger') }}</a> &nbsp;
+                                                <a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product_url}"|url_encode }}" class="text-muted">{{ icons('whatsapp') }}</a> &nbsp;
+                                                <a target="_blank" href="https://twitter.com/share?url={{ product_url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter', 'feather-20') }}</a> &nbsp;
+                                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product_url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest-p') }}</a>
                                             </div>
                                         </td>
                                     </tr>

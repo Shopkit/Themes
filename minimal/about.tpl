@@ -36,34 +36,34 @@ Description: About page
 
 				<ul class="social">
 					{% if store.facebook %}
-						<li><a href="{{ store.facebook }}" target="_blank" title="{{ 'lang.storefront.layout.social.facebook'|t }}"><i class="fa fa-facebook fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.facebook }}" target="_blank" title="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook-f', 'fa-lg') }}</a></li>
 					{% endif %}
 
 					{% if store.twitter %}
-						<li><a href="{{ store.twitter }}" target="_blank" title="{{ 'lang.storefront.layout.social.twitter'|t }}"><i class="fa fa-twitter fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.twitter }}" target="_blank" title="{{ 'lang.storefront.layout.social.twitter'|t }}">{{ icons('twitter', 'fa-lg') }}</a></li>
 					{% endif %}
 
 					{% if store.instagram %}
-						<li><a href="{{ store.instagram }}" target="_blank" title="{{ 'lang.storefront.layout.social.instagram'|t }}"><i class="fa fa-instagram fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.instagram }}" target="_blank" title="{{ 'lang.storefront.layout.social.instagram'|t }}">{{ icons('instagram', 'fa-lg') }}</a></li>
 					{% endif %}
 
 					{% if store.pinterest %}
-						<li><a href="{{ store.pinterest }}" target="_blank" title="{{ 'lang.storefront.layout.social.pinterest'|t }}"><i class="fa fa-pinterest fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.pinterest }}" target="_blank" title="{{ 'lang.storefront.layout.social.pinterest'|t }}">{{ icons('pinterest', 'fa-lg') }}</a></li>
 					{% endif %}
 
 					{% if store.youtube %}
-						<li><a href="{{ store.youtube }}" target="_blank" title="{{ 'lang.storefront.layout.social.youtube'|t }}"><i class="fa fa-youtube-play fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.youtube }}" target="_blank" title="{{ 'lang.storefront.layout.social.youtube'|t }}">{{ icons('youtube', 'fa-lg') }}</a></li>
 					{% endif %}
 
 					{% if store.linkedin %}
-						<li><a href="{{ store.linkedin }}" target="_blank" title="{{ 'lang.storefront.layout.social.linkedin'|t }}"><i class="fa fa-linkedin-square fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.linkedin }}" target="_blank" title="{{ 'lang.storefront.layout.social.linkedin'|t }}">{{ icons('linkedin-square', 'fa-lg') }}</a></li>
 					{% endif %}
 
 					{% if store.tiktok %}
-						<li><a href="{{ store.tiktok }}" target="_blank" title="{{ 'lang.storefront.layout.social.tiktok'|t }}"><i class="fa fa-tiktok fa-fw fa-lg"></i></a></li>
+						<li><a href="{{ store.tiktok }}" target="_blank" title="{{ 'lang.storefront.layout.social.tiktok'|t }}">{{ icons('tiktok', 'fa-lg') }}</a></li>
 					{% endif %}
 
-					<li class="link-social-rss"><a href="{{ site_url('rss') }}" target="_blank" title="{{ 'lang.storefront.layout.social.rss'|t }}"><i class="fa fa-rss fa-fw"></i></a></li>
+					<li class="link-social-rss"><a href="{{ site_url('rss') }}" target="_blank" title="{{ 'lang.storefront.layout.social.rss'|t }}">{{ icons('rss', 'fa-lg') }}</a></li>
 				</ul>
 
 			</div>

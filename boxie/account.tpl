@@ -22,9 +22,9 @@ Description: User account page
                             <td><a href="{{ site_url('account/orders?id=' ~ order.id)}}" style="text-decoration:underline" class="modal-order-detail link-inherit"><strong>#{{ order.id }}</strong></a></td>
                             <td>{{ order.created_at|format_datetime('long', 'none') }}</td>
                             <td>{{ order.status_description }}</td>
-                            <td class="text-center">{{ order.paid ? '<i data-feather="check" class="text-success"></i>' : '<i data-feather="x"></i>' }}</td>
+                            <td class="text-center">{{ order.paid ? icons('check', 'text-success') : icons('times') }}</td>
                             <td class="text-right text-nowrap">{{ order.total|money_with_sign(order.currency) }}</td>
-                            <td class="text-center">{% if order.tracking_url %}<a href="{{ order.tracking_url }}" class="link-inherit" target="_blank"><i data-feather="map-pin"></i></a>{% else %}-{% endif %}</td>
+                            <td class="text-center">{% if order.tracking_url %}<a href="{{ order.tracking_url }}" class="link-inherit" target="_blank">{{ icons('map-marker') }}</a>{% else %}-{% endif %}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -42,10 +42,10 @@ Description: User account page
 
 {% macro account_navigation() %}
     <div class="list-group account-menu well-featured {{ store.theme_options.well_featured_shadow }}">
-        <a href="{{ site_url('account/orders')}}" class="list-group-item {{ current_page == 'account-orders' ? 'active' }} link-inherit"><i data-feather="shopping-bag"></i> {{ 'lang.storefront.layout.orders.title'|t }}</a>
-        <a href="{{ site_url('account/profile')}}" class="list-group-item {{ current_page == 'account-profile' ? 'active' }} link-inherit"><i data-feather="user"></i> {{ 'lang.storefront.layout.client.title'|t }}</a>
-        <a href="{{ site_url('account/wishlist')}}" class="list-group-item {{ current_page == 'account-wishlist' ? 'active' }} link-inherit"><i data-feather="heart"></i> {{ 'lang.storefront.layout.wishlist.title'|t }}</a>
-        <a href="{{ site_url('account/logout')}}" class="list-group-item link-inherit"><i data-feather="log-out"></i> {{ 'lang.storefront.layout.logout.title'|t }}</a>
+        <a href="{{ site_url('account/orders')}}" class="list-group-item {{ current_page == 'account-orders' ? 'active' }} link-inherit">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a>
+        <a href="{{ site_url('account/profile')}}" class="list-group-item {{ current_page == 'account-profile' ? 'active' }} link-inherit">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a>
+        <a href="{{ site_url('account/wishlist')}}" class="list-group-item {{ current_page == 'account-wishlist' ? 'active' }} link-inherit">{{ icons('heart') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a>
+        <a href="{{ site_url('account/logout')}}" class="list-group-item link-inherit">{{ icons('log-out') }} {{ 'lang.storefront.layout.logout.title'|t }}</a>
     </div>
 {% endmacro %}
 

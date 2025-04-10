@@ -5,9 +5,9 @@ Description: Product Page
 {% macro wishlist_block(product, user) %}
 	{% if user.is_logged_in %}
 		{% if not product.wishlist.status %}
-			<p class="wishlist margin-top-sm margin-bottom-0"><a href="{{ product.wishlist.add_url }}" class="text-muted"><i class="fa fa-heart fa-fw"></i> {{ 'lang.storefront.product.wishlist.add'|t }}</a></p>
+			<p class="wishlist margin-top-sm margin-bottom-0"><a href="{{ product.wishlist.add_url }}" class="text-muted">{{ icons('heart') }} {{ 'lang.storefront.product.wishlist.add'|t }}</a></p>
 		{% else %}
-			<p class="wishlist margin-top-sm margin-bottom-0"><a href="{{ product.wishlist.remove_url }}" class="text-muted"><i class="fa fa-heart-o fa-fw"></i> {{ 'lang.storefront.product.wishlist.remove'|t }}</a></p>
+			<p class="wishlist margin-top-sm margin-bottom-0 added"><a href="{{ product.wishlist.remove_url }}" class="text-muted">{{ icons('heart') }} {{ 'lang.storefront.product.wishlist.remove'|t }}</a></p>
 		{% endif %}
 	{% endif %}
 {% endmacro %}
@@ -20,6 +20,7 @@ Description: Product Page
 {% block content %}
 
 	{% set product_is_vendible = product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
+	{% set product_title = product.title|e_attr %}
 
 	<div class="{{ layout_container }}">
 
@@ -27,7 +28,7 @@ Description: Product Page
 
 			<div class="big-image-holder">
 				<img />
-				<a class="btn-close" href="#"><i class="fa fa-times"></i></a>
+				<a class="btn-close" href="#">{{ icons('times') }}</a>
 			</div>
 
 			<div class="row">
@@ -35,9 +36,9 @@ Description: Product Page
 
 					<div class="slideshow slideshow-product">
 
-						<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+						<div class="loader">{{ icons('sync', 'fa-spin') }}</div>
 
-						<a href="#" class="btn-zoom"><i class="fa fa-search-plus"></i></a>
+						<a href="#" class="btn-zoom">{{ icons('search-plus') }}</a>
 
 						<div class="flexslider">
 							<ul class="slides">
@@ -74,7 +75,7 @@ Description: Product Page
 								<h1 class="product-title">{{ product.title }}</h1>
 							</div>
 							<div class="col-xs-2 text-right">
-								<a target="_blank" href="{{ product.file }}" class="text-muted file-download"><i class="fa fa-fw fa-download"></i></a>
+								<a target="_blank" href="{{ product.file }}" class="text-muted file-download">{{ icons('download') }}</a>
 							</div>
 						</div>
 					{% else %}
@@ -125,10 +126,10 @@ Description: Product Page
 						<div class="col-xs-6 col-md-5 col-lg-6">
 							<div class="text-center share pull-right">
 								<h6 class="text-muted text-uppercase">{{ 'lang.storefront.product.share.label'|t }}</h6>
-								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-facebook fa-fw"></i></a> &nbsp;
-								<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-whatsapp fa-fw"></i></a> &nbsp;
-								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-twitter fa-fw"></i></a> &nbsp;
-								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-pinterest fa-fw"></i></a>
+								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f') }}</a> &nbsp;
+								<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp') }}</a> &nbsp;
+								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter') }}</a> &nbsp;
+								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest') }}</a>
 							</div>
 						</div>
 					</div>
@@ -169,7 +170,7 @@ Description: Product Page
 										{% set field_checked = extra_option.required ? 'checked' : '' %}
 										{% set field_hidden = extra_option.required ? '' : 'hidden' %}
 										{% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="255"' %}
-										{% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'"><i class="fa fa-question-circle"></i></span>' : ''  %}
+										{% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'">'~ icons('question-circle') ~'</span>' : ''  %}
 										{% set field_description = extra_option.description ? extra_option.description : 'lang.storefront.product.extra_options.type_value'|t %}
 
 										<div class="extra-option margin-bottom-0 margin-top-xs well well-default {{ store.theme_options.well_default_shadow }} well-sm" data-id="{{ extra_option.alias }}">
@@ -248,7 +249,7 @@ Description: Product Page
 								<div class="row">
 									<div class="col-sm-7 col-md-12 col-lg-7">
 										<input type="number" class="form-control" value="1" min="1" name="qtd" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
-										<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} text-uppercase"><i class="fa fa-cart-plus fa-fw"></i> {{ 'lang.storefront.layout.button.buy'|t }}</button>
+										<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} text-uppercase">{{ icons('cart-plus') }} {{ 'lang.storefront.layout.button.buy'|t }}</button>
 									</div>
 									<div class="col-sm-5 col-md-12 col-lg-5">
 										{{ product_macros.wishlist_block(product, user) }}
@@ -259,7 +260,7 @@ Description: Product Page
 							<div class="data-product-on-request">
 								<div class="row">
 									<div class="col-sm-7 col-md-12 col-lg-7">
-										<a href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} text-uppercase price-on-request"><i class="fa fa-envelope fa-fw"></i> {{ 'lang.storefront.product.contact.button'|t }}</a>
+										<a href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} text-uppercase price-on-request">{{ icons('envelope') }} {{ 'lang.storefront.product.contact.button'|t }}</a>
 									</div>
 									<div class="col-sm-5 col-md-12 col-lg-5">
 										{{ product_macros.wishlist_block(product, user) }}

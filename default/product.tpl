@@ -9,6 +9,7 @@ Description: Product Page
 {% block content %}
 
 	{% set product_is_vendible = product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
+	{% set product_title = product.title|e_attr %}
 
 	<article>
 
@@ -133,7 +134,7 @@ Description: Product Page
                                     {% set field_checked = extra_option.required ? 'checked' : '' %}
                                     {% set field_hidden = extra_option.required ? '' : 'hidden' %}
                                     {% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="255"' %}
-                                    {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'"><i class="fa fa-question-circle"></i></span>' : ''  %}
+                                    {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'">'~ icons('question-circle') ~'</span>' : ''  %}
                                     {% set field_description = extra_option.description ? extra_option.description : 'lang.storefront.product.extra_options.type_value'|t %}
 
                                     <div class="extra-option margin-top-sm well well-default {{ store.theme_options.well_default_shadow }} well-sm" data-id="{{ extra_option.alias }}">
@@ -212,7 +213,7 @@ Description: Product Page
 							{{ 'lang.storefront.layout.product.quantity'|t }} &nbsp;
 							<input type="number" class="span1" name="qtd" value="1" min="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 							<button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" type="submit">
-								<i class="fa fa-shopping-cart fa-lg fa-fw"></i> {{ 'lang.storefront.layout.button.buy'|t }}
+								{{ icons('shopping-cart', 'fa-lg') }} {{ 'lang.storefront.layout.button.buy'|t }}
 							</button>
 
 							{% if product.stock.stock_show %}
@@ -224,7 +225,7 @@ Description: Product Page
 
 						<div class="data-product-on-request">
 							<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }} price-on-request" href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}">
-								<i class="fa fa-envelope-o fa-lg fa-fw"></i> {{ 'lang.storefront.product.contact.button'|t }}
+								{{ icons('envelope', 'fa-lg') }} {{ 'lang.storefront.product.contact.button'|t }}
 							</a>
 						</div>
 
@@ -239,9 +240,9 @@ Description: Product Page
 					{% if user.is_logged_in %}
 						<div class="wishlist margin-top-sm">
 							{% if not product.wishlist.status %}
-								<a href="{{ product.wishlist.add_url }}" class="text-muted"><i class="fa fa-heart fa-fw"></i> {{ 'lang.storefront.product.wishlist.add'|t }}</a>
+								<a href="{{ product.wishlist.add_url }}" class="text-muted">{{ icons('heart') }} {{ 'lang.storefront.product.wishlist.add'|t }}</a>
 							{% else %}
-								<a href="{{ product.wishlist.remove_url }}" class="text-muted"><i class="fa fa-heart-o fa-fw"></i> {{ 'lang.storefront.product.wishlist.remove'|t }}</a>
+								<a href="{{ product.wishlist.remove_url }}" class="text-muted added">{{ icons('heart') }} {{ 'lang.storefront.product.wishlist.remove'|t }}</a>
 							{% endif %}
 						</div>
 					{% endif %}
@@ -254,7 +255,7 @@ Description: Product Page
 
 			<div class="span9">
 				{% if product.description or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
-					<div class="tabbable margin-top"> <!-- Only required for left/right tabs -->
+					<div class="product-tabs tabbable margin-top"> <!-- Only required for left/right tabs -->
 						<ul class="nav nav-tabs">
 							{% if product.description %}
 								<li class="active">
@@ -323,7 +324,7 @@ Description: Product Page
 								{% if product.brand %}
 									<tr class="product-brand">
 										<th>{{ 'lang.storefront.product.brand.label'|t }}</th>
-										<td><a href="{{ product.brand.url }}" class="text-underline">{{ product.brand.title }}</a></td>
+										<td><a href="{{ product.brand.url }}" class="text-underline text-link">{{ product.brand.title }}</a></td>
 									</tr>
 								{% endif %}
 
@@ -353,16 +354,16 @@ Description: Product Page
 					{% if product.file %}
 						<div class="file inline-block">
 							<h6 style="margin-top:0">{{ 'lang.storefront.product.download_file.label'|t }}</h6>
-							<a class="btn file-download" href="{{ product.file }}" target="_blank"><i class="fa fa-download"></i> <strong>{{ 'lang.storefront.product.download_file.button'|t }}</strong></a>
+							<a class="btn file-download" href="{{ product.file }}" target="_blank">{{ icons('download') }} <strong>{{ 'lang.storefront.product.download_file.button'|t }}</strong></a>
 						</div>
 					{% endif %}
 
 					<div class="share {{ product.file ? 'pull-right' }}">
 						<h6 style="margin-top:0">{{ 'lang.storefront.product.share.label'|t }}</h6>
-						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-lg fa-facebook fa-fw"></i></a> &nbsp;
-						<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-lg fa-whatsapp fa-fw"></i></a> &nbsp;
-						<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
-						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-lg fa-pinterest fa-fw"></i></a>
+						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f', 'fa-lg') }}</a> &nbsp;
+						<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp', 'fa-lg') }}</a> &nbsp;
+						<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter', 'fa-lg') }}</a> &nbsp;
+						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest', 'fa-lg') }}</a>
 					</div>
 				</div>
 

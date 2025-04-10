@@ -45,7 +45,7 @@ Description: Product category page
 	</div>
 
 	<p class="breadcrumbs wide">
-		<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+		<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 		{% if main_parent and main_parent.id != category.id %}
 			<a href="{{ main_parent.url }}">{{ main_parent.title }}</a> ›
 		{% endif %}

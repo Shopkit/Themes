@@ -290,6 +290,9 @@ $(document).ready(function() {
                 if (data) {
                     _this.find('.related-products-placement').html(data);
                     _this.removeClass('hidden');
+					if ($('body').hasClass('feather')) {
+                        feather.replace();
+                    }
                     lazyLoadInstance.update();
                 }
             });
@@ -363,8 +366,8 @@ $(window).load(function() {
 		controlNav: true,
 		directionNav: true,
 		selector: ".slides > .slide",
-		prevText: "<i class='fa fa-angle-left'></i>",
-		nextText: "<i class='fa fa-angle-right'></i>",
+		prevText: helper_icon_render('angle-left'),
+		nextText: helper_icon_render('angle-right'),
 		smoothHeight: true,
 		start: function() {
 			$('.slideshow').addClass('loaded');
@@ -514,13 +517,19 @@ function product_options(product, onload) {
 
 				if (response.wishlist) {
 					if (response.wishlist.status) {
-						wishlist_html = '<i class="fa fa-heart-o fa-fw"></i> ' + lang.storefront.product.wishlist.remove;
+						wishlist_html = helper_icon_render('heart') + ' ' + lang.storefront.product.wishlist.remove;
 						wishlist_url = response.wishlist.remove_url;
+						$('.wishlist').addClass('added');
 					} else {
-						wishlist_html = '<i class="fa fa-heart fa-fw"></i> ' + lang.storefront.product.wishlist.add;
+						wishlist_html = helper_icon_render('heart') + ' ' + lang.storefront.product.wishlist.add;
 						wishlist_url = response.wishlist.add_url;
+						$('.wishlist').removeClass('added');
 					}
 					$('.wishlist a').html(wishlist_html).attr('href', wishlist_url);
+
+					if ($('body').hasClass('feather')) {
+                        feather.replace();
+                    }
 				}
 
 				reference = response.reference;

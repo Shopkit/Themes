@@ -44,11 +44,11 @@ Description: Blog post Page
                             {{ blog_post.text }}
 
                             <div class="share margin-top">
-                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ blog_post.url }}" class="text-muted"><i data-feather="facebook"></i></a> &nbsp;
-                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ blog_post.url }}&redirect_uri={{ blog_post.url }}" class="text-muted"><i class="fab fa-facebook-messenger"></i></a> &nbsp;
-                                <a target="_blank" href="https://wa.me/?text={{ "#{blog_post.title}: #{blog_post.url}"|url_encode }}" class="text-muted"><i class="fab fa-whatsapp"></i></a> &nbsp;
-                                <a target="_blank" href="https://twitter.com/share?url={{ blog_post.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i data-feather="twitter"></i></a> &nbsp;
-                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title|url_encode }}" class="text-muted"><i class="fab fa-pinterest-p"></i></a>
+                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ blog_post.url }}" class="text-muted">{{ icons('facebook') }}</a> &nbsp;
+                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ blog_post.url }}&redirect_uri={{ blog_post.url }}" class="text-muted">{{ icons('facebook-messenger') }}</a> &nbsp;
+                                <a target="_blank" href="https://wa.me/?text={{ "#{blog_post.title}: #{blog_post.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp') }}</a> &nbsp;
+                                <a target="_blank" href="https://twitter.com/share?url={{ blog_post.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter') }}</a> &nbsp;
+                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title|url_encode }}" class="text-muted">{{ icons('pinterest-p') }}</a>
                             </div>
                         </div>
                     </div>

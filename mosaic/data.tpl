@@ -13,7 +13,7 @@ Description: Order data form page
 		<section class="page">
 
 			<p class="breadcrumbs">
-				<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+				<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 				<a href="{{ site_url('cart') }}">{{ 'lang.storefront.cart.title'|t }}</a> ›
 				{{ 'lang.storefront.cart.data.title'|t }}
 			</p><br>
@@ -282,9 +282,9 @@ Description: Order data form page
 
 						<div class="coupon-code-label margin-top-xxs">
 							<span class="label label-light-bg h5">
-								<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+								{{ icons('tags') }}
 								<span class="coupon-code-text">{{ cart.coupon.code }}</span>
-								<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+								<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
 							</span>
 						</div>
 					</div>
@@ -293,7 +293,7 @@ Description: Order data form page
 				<hr>
 
 				<button type="submit" class="button btn-primary {{ store.theme_options.button_primary_shadow }}" style="width:200px">
-					<i class="fa fa-chevron-right"></i>
+					{{ icons('angle-right') }}
 					<span>{{ 'lang.storefront.layout.button.checkout'|t }}</span>
 				</button>
 

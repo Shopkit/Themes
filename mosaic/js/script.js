@@ -358,6 +358,9 @@ $(document).ready(function() {
 	                    _this.removeClass('hidden');
 						$container = $('.related-products .products');
 						set_layout();
+						if ($('body').hasClass('feather')) {
+							feather.replace();
+						}
 						lazyLoadInstance.update();
 						$container.imagesLoaded().done(function(instance) {
 							$container.isotope({
@@ -492,13 +495,19 @@ function product_options(product, onload) {
 
 				if (response.wishlist) {
 					if (response.wishlist.status) {
-						wishlist_html = '<i class="fa fa-heart-o fa-fw fa-lg"></i>';
+						wishlist_html = helper_icon_render('heart', 'fa-lg');
 						wishlist_url = response.wishlist.remove_url;
+						$('.wishlist').addClass('added');
 					} else {
-						wishlist_html = '<i class="fa fa-heart fa-fw fa-lg"></i>';
+						wishlist_html = helper_icon_render('heart', 'fa-lg');
 						wishlist_url = response.wishlist.add_url;
+						$('.wishlist').removeClass('added');
 					}
 					$('.wishlist a').html(wishlist_html).attr('href', wishlist_url);
+
+					if ($('body').hasClass('feather')) {
+                        feather.replace();
+                    }
 				}
 
 				reference = response.reference;

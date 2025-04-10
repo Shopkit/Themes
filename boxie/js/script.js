@@ -1,8 +1,4 @@
 (function () {
-    feather.replace();
-})();
-
-(function () {
   svg4everybody();
 })();
 
@@ -189,15 +185,17 @@ $(document).ready(function() {
     });
 
     // global variables
-    var prevArrow = '<button type="button" class="slick-prev"><i data-feather="chevron-left"></i></button>',
-        nextArrow = '<button type="button" class="slick-next"><i data-feather="chevron-right"></i></button>';
+    var prevArrow = '<button type="button" class="slick-prev">'+helper_icon_render('angle-left')+'</button>',
+        nextArrow = '<button type="button" class="slick-next">'+helper_icon_render('angle-right')+'</button>';
 
     var slides = $('.slideshow-gallery, .categories-slider, .card-slider, .slider-container .products-list, .blog .blog-list, .js-slider-review');
 
     slides.each(function(index, el) {
         $(el).on('init', function(event, slick, currentSlide, nextSlide) {
             $(el).find('.slide').addClass('slide-loaded');
-            feather.replace();
+            if ($('body').hasClass('feather')) {
+                feather.replace();
+            }
             lazyLoadInstance.update();
         });
     });
@@ -343,7 +341,9 @@ $(document).ready(function() {
 
     $(window).on('resize orientationchange', function () {
         $('.blog .blog-list').slick('resize');
-        feather.replace();
+        if ($('body').hasClass('feather')) {
+            feather.replace();
+        }
     });
 
     // zoom
@@ -655,7 +655,9 @@ $(document).ready(function() {
                             }
                         }]
                     });
-                    feather.replace();
+                    if ($('body').hasClass('feather')) {
+                        feather.replace();
+                    }
                     lazyLoadInstance.update();
                 }
             });
@@ -878,6 +880,10 @@ function product_options(product, onload) {
                     } else {
                         wishlist_url = response.wishlist.add_url;
                         $('a.card-favorite').attr('href', wishlist_url).removeClass('added');
+                    }
+
+                    if ($('body').hasClass('feather')) {
+                        feather.replace();
                     }
                 }
 

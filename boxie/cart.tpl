@@ -73,7 +73,7 @@ Description: Shopping cart page
 
                                                         {% if item.extras %}
                                                             <div class="items-extra-wrapper">
-                                                                <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i></a>
+                                                                <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                                                 <ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs" id="item-extra-{{ item.item_id }}">
                                                                     {% for key, extra in item.extras %}
@@ -97,18 +97,18 @@ Description: Shopping cart page
                                                     <div class="cart-control">
                                                         <div class="cart-counter counter js-counter">
                                                             <button class="counter-btn counter-btn_minus js-counter-minus" type="button">
-                                                                <i data-feather="chevron-left"></i>
+                                                                {{ icons('angle-left') }}
                                                             </button>
 
                                                             <input class="counter-input input-qtd js-counter-input" type="text" value="{{ item.qty }}" size="3" name="qtd[{{ item.item_id }}]" id="qty-{{ item.item_id }}" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 
                                                             <button class="counter-btn counter-btn_plus js-counter-plus" type="button">
-                                                                <i data-feather="chevron-right"></i>
+                                                                {{ icons('angle-right') }}
                                                             </button>
                                                         </div>
 
                                                         <a href="{{ item.remove_link }}" class="cart-remove cart-remove-product-url">
-                                                            <i data-feather="trash-2"></i>
+                                                            {{ icons('trash-alt') }}
                                                         </a>
                                                     </div>
                                                 </div>
@@ -137,14 +137,14 @@ Description: Shopping cart page
                                         {% endif %}
 
                                         <div class="cart-line">
-                                            {% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '"><i class="fa fa-question-circle"></i></span>' %}
+                                            {% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">' ~ icons('question-circle') ~ '</span>' %}
                                             <div class="cart-text">{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</div>
                                             <div class="cart-text total-shipping">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : cart.total_shipping | money_with_sign) : no_shipping_text) : cart.total_shipping | money_with_sign }}</div>
                                         </div>
 
                                         {% if cart.total_payment %}
                                             <div class="cart-line">
-                                                <div class="cart-text">{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}"><i class="fa fa-question-circle"></i></span></div>
+                                                <div class="cart-text">{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}">{{ icons('question-circle') }}</span></div>
                                                 <div class="cart-text">{{ cart.total_payment | money_with_sign }}</div>
                                             </div>
                                         {% endif %}
@@ -180,9 +180,9 @@ Description: Shopping cart page
 
                                             <div class="coupon-code-label margin-top-xxs {{ cart.coupon ? cart.coupon.code : 'hidden' }}">
                                                 <span class="badge badge-light-bg h5">
-                                                    <i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+                                                    {{ icons('tags') }}
                                                     <span class="coupon-code-text">{{ cart.coupon.code }}</span>
-                                                    <a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+                                                    <a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
                                                 </span>
                                             </div>
                                         </div>

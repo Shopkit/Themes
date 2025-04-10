@@ -74,7 +74,7 @@ Description: Confirm order page
 
                                                 {% if item.extras %}
                                                     <div class="items-extra-wrapper">
-                                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i></a>
+                                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                                         <ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs" id="item-extra-{{ item.item_id }}">
                                                             {% for key, extra in item.extras %}
@@ -190,7 +190,7 @@ Description: Confirm order page
 								{{ 'lang.storefront.cart.confirm.step_three'|t }}
 							</div>
 							<div class="pull-right">
-								<small class="text-muted-dark"><a href="{{ site_url('cart') }}">{{ 'lang.storefront.cart.data.cart_edit.button'|t }}</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}"><i class="fa fa-fw fa-check"></i> {{ 'lang.storefront.cart.confirm.confirm_order.button'|t }}</button>
+								<small class="text-muted-dark"><a href="{{ site_url('cart') }}">{{ 'lang.storefront.cart.data.cart_edit.button'|t }}</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('check') }} {{ 'lang.storefront.cart.confirm.confirm_order.button'|t }}</button>
 							</div>
 						</footer>
 
@@ -215,7 +215,7 @@ Description: Confirm order page
 
 								{% if cart.total_payment %}
 									<div class="flex">
-										<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}"><i class="fa fa-question-circle"></i></span></dt>
+										<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}">{{ icons('question-circle') }}</span></dt>
 										<dd class="text-dark price">{{ cart.total_payment | money_with_sign }}</dd>
 									</div>
 								{% endif %}
@@ -255,7 +255,7 @@ Description: Confirm order page
 								</div>
 							{% endif %}
 
-							<p class="margin-top margin-bottom-0 text-center"><button class="btn btn-lg btn-primary {{ store.theme_options.button_primary_shadow }} btn-block"><i class="fa fa-fw fa-check"></i> {{ 'lang.storefront.cart.confirm.button'|t }}</button></p>
+							<p class="margin-top margin-bottom-0 text-center"><button class="btn btn-lg btn-primary {{ store.theme_options.button_primary_shadow }} btn-block">{{ icons('check') }} {{ 'lang.storefront.cart.confirm.button'|t }}</button></p>
 
 						</div>
 

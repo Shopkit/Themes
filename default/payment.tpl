@@ -166,9 +166,9 @@ Description: Payment Page
 
 					<div class="coupon-code-label margin-top-xxs">
 						<span class="label label-light-bg h5">
-							<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+							{{ icons('tags') }}
 							<span class="coupon-code-text">{{ cart.coupon.code }}</span>
-							<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+							<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
 						</span>
 					</div>
 				</div>

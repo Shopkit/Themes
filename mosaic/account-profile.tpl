@@ -14,7 +14,7 @@ Description: Account profile page
 			<div class="span12">
 
 				<p class="breadcrumbs">
-					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+					<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 					<a href="{{ site_url('account') }}">{{ 'lang.storefront.account.my_account'|t }}</a> ›
 					{{ 'lang.storefront.layout.client.title'|t }}
 				</p><br>
@@ -267,7 +267,7 @@ Description: Account profile page
 
 					<footer class="clearfix">
 						<div class=" margin-top-xxs pull-left">
-							<a href="{{ site_url('account/delete') }}" class="text-error small" onclick="return confirm('{{ 'lang.storefront.account.profile.delete_account.confirm'|t }}')"><i class="fa fa-trash" aria-hidden="true"></i> {{ 'lang.storefront.account.profile.delete_account.text'|t }}</a>
+							<a href="{{ site_url('account/delete') }}" class="text-error small" onclick="return confirm('{{ 'lang.storefront.account.profile.delete_account.confirm'|t }}')">{{ icons('trash') }} {{ 'lang.storefront.account.profile.delete_account.text'|t }}</a>
 						</div>
 						<button class="button btn-primary {{ store.theme_options.button_primary_shadow }} pull-right">{{ 'lang.storefront.account.profile.save_data'|t }}</button>
 					</footer>

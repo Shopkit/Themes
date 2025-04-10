@@ -171,13 +171,13 @@ Description: Payment Page
 								{% endif %}
 
 								<div class="shipping">
-									{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '"><i class="fa fa-question-circle"></i></span>' %}
+									{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">'~ icons('question-circle') ~'</span>' %}
 									<dt>{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</dt>
 									<dd class="text-dark price shipping-value total-shipping">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : cart.total_shipping | money_with_sign) : no_shipping_text) : cart.total_shipping | money_with_sign }}</dd>
 								</div>
 
 								<div class="flex payment-tax {{ not cart.total_payment ? 'hidden' }}">
-									<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}"><i class="fa fa-question-circle"></i></span></dt>
+									<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}">{{ icons('question-circle') }}</span></dt>
 									<dd class="text-dark price payment-tax-value">{{ cart.total_payment | money_with_sign }}</dd>
 								</div>
 
@@ -209,15 +209,15 @@ Description: Payment Page
 									<label for="cupao">{{ 'lang.storefront.cart.order_summary.coupon_code.title'|t }}</label>
 									<div class="coupon-code-label margin-top-xxs">
 										<span class="label label-light-bg h5">
-											<i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+											{{ icons('tags') }}
 											<span class="coupon-code-text">{{ cart.coupon.code }}</span>
-											<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close"><i class="fa fa-times fa-fw" aria-hidden="true"></i></a>
+											<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
 										</span>
 									</div>
 								</div>
 							{% endif %}
 
-							<button class="btn btn-lg btn-primary {{ store.theme_options.button_primary_shadow }} btn-block margin-top hidden-xs hidden-sm">{{ 'lang.storefront.layout.button.checkout'|t }} <i class="fa fa-fw fa-arrow-right"></i></button>
+							<button class="btn btn-lg btn-primary {{ store.theme_options.button_primary_shadow }} btn-block margin-top hidden-xs hidden-sm">{{ 'lang.storefront.layout.button.checkout'|t }} {{ icons('arrow-right') }}</button>
 						</div>
 
 					</div>
@@ -231,7 +231,7 @@ Description: Payment Page
 								{{ 'lang.storefront.cart.payment.step_two'|t }}
 							</div>
 							<div class="pull-right">
-								<small class="text-muted-dark"><a href="{{ site_url('cart') }}">{{ 'lang.storefront.cart.data.cart_edit.button'|t }}</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.layout.button.checkout'|t }} <i class="fa fa-fw fa-arrow-right"></i></button>
+								<small class="text-muted-dark"><a href="{{ site_url('cart') }}">{{ 'lang.storefront.cart.data.cart_edit.button'|t }}</a> &nbsp; &bull; &nbsp; </small> <button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.layout.button.checkout'|t }} {{ icons('arrow-right') }}</button>
 							</div>
 						</footer>
 					</div>

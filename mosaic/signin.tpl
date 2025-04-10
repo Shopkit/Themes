@@ -12,7 +12,7 @@ Description: Login page
             <h1>{{ 'lang.storefront.login.signin.title'|t }}</h1>
 
             <p class="breadcrumbs margin-bottom">
-                <a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+                <a href="{{ site_url() }}">{{ icons('home') }}</a> ›
                 {{ 'lang.storefront.login.signin.title'|t }}
             </p>
 
@@ -90,9 +90,9 @@ Description: Login page
                             <div class="login-register-title">
                                 <h2 class="title margin-bottom-lg text-center">{{ 'lang.storefront.signin.no_account.text'|t }}<br>{{ 'lang.storefront.signin.no_account.signup'|t }}</h2>
                                 <ul class="margin-bottom list-unstyled text-left">
-                                    <li class="d-inline-flex margin-bottom-sm"><i class="fa fa-check text-primary text-h4 margin-right-xs"></i>{{ 'lang.storefront.signin.no_account.orders.text'|t }}</li>
-                                    <li class="d-inline-flex margin-bottom-sm"><i class="fa fa-check text-primary text-h4 margin-right-xs"></i>{{ 'lang.storefront.signin.no_account.wishlist.text'|t }}</li>
-                                    <li class="d-inline-flex"><i class="fa fa-check text-primary text-h4 margin-right-xs"></i>{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
+                                    <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.orders.text'|t }}</li>
+                                    <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.wishlist.text'|t }}</li>
+                                    <li class="d-inline-flex">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
                                 </ul>
                                 <div class="text-center">
                                     <a href="{{ site_url('signup') }}" class="button btn-default {{ store.theme_options.button_default_shadow }}">{{ 'lang.storefront.login.signup.create_account.button'|t }}</a>

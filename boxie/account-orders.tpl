@@ -26,14 +26,14 @@ Description: Orders account page
 
                         <h3 class="margin-bottom-sm margin-top-0 text-gray light">{{ 'lang.storefront.order.label'|t }} #{{ user.order_detail.id }}</h3>
 
-                        {% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm"><i data-feather="map-pin"></i> {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
-                        {% if user.order_detail.invoice_url %}<a href="{{ user.order_detail.invoice_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm"><i data-feather="file-text"></i> {{ 'lang.storefront.order.invoice'|t }}</a>{% endif %}
+                        {% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
+                        {% if user.order_detail.invoice_url %}<a href="{{ user.order_detail.invoice_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm">{{ icons('file-text') }} {{ 'lang.storefront.order.invoice'|t }}</a>{% endif %}
 
                         <div class="list-group list-group-horizontal margin-top margin-bottom-0 order-status order-status-{{ user.order_detail.status_alias }} {{ user.order_detail.paid ? 'order-paid' : 'order-not-paid' }}">
                             <div class="row">
                                 <div class="col-sm-2 list-group-item">
                                     <h4>{{ 'lang.storefront.order.paid'|t }}</h4>
-                                    <span class="order-status-payment">{{ user.order_detail.paid ? '<i data-feather="check" class="text-success"></i>' : '<i data-feather="x"></i>' }}</span>
+                                    <span class="order-status-payment">{{ user.order_detail.paid ? icons('check', 'text-success') : icons('times') }}</span>
                                 </div>
                                 <div class="col-sm-4 list-group-item">
                                     <h4>{{ 'lang.storefront.order.status'|t }}</h4>
@@ -153,7 +153,7 @@ Description: Orders account page
                                                         {% if product.extras %}
                                                             {% set extras_slug = (product.option ~ '-' ~ product.extras|column('value')|join(','))|slug %}
                                                             <div class="items-extra-wrapper">
-                                                                <a href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}">{{ product.extras|length }} {{ product.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ product.subtotal_extras > 0 ? product.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i></a>
+                                                                <a href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}">{{ product.extras|length }} {{ product.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ product.subtotal_extras > 0 ? product.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                                                 <ul class="list-group extra-options collapse in margin-bottom-0 margin-top-xs" id="item-extra-{{ product.id ~ '-' ~ extras_slug }}">
                                                                     {% for key, extra in product.extras %}

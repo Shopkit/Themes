@@ -100,7 +100,7 @@ Description: Contact Page
 
 				<button type="submit" class="button btn-primary {{ store.theme_options.button_primary_shadow }}" style="width:175px">
 					<span>{{ 'lang.storefront.form.message.button'|t }}</span>
-					<i class="fa fa-envelope"></i>
+					{{ icons('envelope') }}
 				</button>
 
 			{{ form_close() }}

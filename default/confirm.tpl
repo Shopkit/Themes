@@ -70,7 +70,7 @@ Description: Confirm order page
 
                                 {% if item.extras %}
                                     <div class="items-extra-wrapper">
-                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i></a>
+                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                         <ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs well-default {{ store.theme_options.well_default_shadow }}" id="item-extra-{{ item.item_id }}">
                                             {% for key, extra in item.extras %}
@@ -110,7 +110,7 @@ Description: Confirm order page
 
 					{% if cart.total_payment %}
 						<tr>
-							<td>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}"><i class="fa fa-question-circle"></i></span></td>
+							<td>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}">{{ icons('question-circle') }}</span></td>
 							<td align="right" class=" text-right" colspan="2" style="border-left: 0;">{{ cart.total_payment | money_with_sign }}</td>
 						</tr>
 					{% endif %}

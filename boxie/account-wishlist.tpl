@@ -44,8 +44,8 @@ Description: Wishlist account page
                                                         <span class="text-muted">{{ 'lang.storefront.account.wishlist.add_date'|t([product.created_at|format_datetime('long','none')]) }}</span>
                                                     </div>
                                                     <div class="item-control">
-                                                        <a href="{{ product.remove_wishlist_url }}" class="small item-add" title="{{ 'lang.storefront.layout.button.remove'|t }}"><i data-feather="trash-2"></i></a> &nbsp;
-                                                        <a href="{{ product.add_cart_url }}" class="small item-remove" title="{{ 'lang.storefront.layout.button.add_to_cart'|t }}"><i data-feather="shopping-bag"></i></a>
+                                                        <a href="{{ product.remove_wishlist_url }}" class="small item-add" title="{{ 'lang.storefront.layout.button.remove'|t }}">{{ icons('trash-alt') }}</a> &nbsp;
+                                                        <a href="{{ product.add_cart_url }}" class="small item-remove" title="{{ 'lang.storefront.layout.button.add_to_cart'|t }}">{{ icons('shopping-bag') }}</a>
 
                                                     </div>
                                                 </div>

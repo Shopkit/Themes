@@ -4,13 +4,15 @@ Description: Product Page
 
 {% macro wishlist_block(product, user) %}
 	{% if user.is_logged_in %}
-		<div class="wishlist">
-			{% if not product.wishlist.status %}
-				<a href="{{ product.wishlist.add_url }}"><i class="fa fa-heart fa-fw fa-lg"></i></a>
-			{% else %}
-				<a href="{{ product.wishlist.remove_url }}"><i class="fa fa-heart-o fa-fw fa-lg"></i></a>
-			{% endif %}
-		</div>
+		{% if not product.wishlist.status %}
+			<div class="wishlist">
+				<a href="{{ product.wishlist.add_url }}">{{ icons('heart', 'fa-lg') }}</a>
+			</div>
+		{% else %}
+			<div class="wishlist added">
+				<a href="{{ product.wishlist.remove_url }}">{{ icons('heart', 'fa-lg') }}</a>
+			</div>
+		{% endif %}
 	{% endif %}
 {% endmacro %}
 
@@ -21,6 +23,7 @@ Description: Product Page
 {% block content %}
 
 	{% set product_is_vendible = product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
+	{% set product_title = product.title|e_attr %}
 
 	<div class="bg-img" style="background-image: url({{ product.image.full }});"></div>
 	<div class="bg-mask"></div>
@@ -74,7 +77,7 @@ Description: Product Page
 
 				<div class="span8">
 					<p class="breadcrumbs">
-						<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+						<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 						{{ product.title }}
 					</p>
 				</div>
@@ -133,7 +136,7 @@ Description: Product Page
                                     {% set field_checked = extra_option.required ? 'checked' : '' %}
                                     {% set field_hidden = extra_option.required ? '' : 'hidden' %}
                                     {% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="255"' %}
-                                    {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'"><i class="fa fa-question-circle"></i></span>' : ''  %}
+                                    {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'">'~ icons('question-circle') ~'</span>' : ''  %}
                                     {% set field_description = extra_option.description ? extra_option.description : 'lang.storefront.product.extra_options.type_value'|t %}
 
                                     <div class="extra-option margin-top-sm well well-default {{ store.theme_options.well_default_shadow }} well-sm" data-id="{{ extra_option.alias }}">
@@ -215,7 +218,7 @@ Description: Product Page
 						</div>
 
 						<div class="data-product-on-request">
-							<a class="btn btn-link pull-right price-on-request" href="{{ site_url('contact') }}?p={{ product.title|url_encode }}">{{ 'lang.storefront.product.contact.button'|t }}</a>
+							<a class="btn btn-link pull-right price-on-request" href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}">{{ 'lang.storefront.product.contact.button'|t }}</a>
 						</div>
 
 					</div>
@@ -309,7 +312,7 @@ Description: Product Page
 							{% if product.brand %}
 								<tr class="product-brand">
 									<th>{{ 'lang.storefront.product.brand.label'|t }}</th>
-									<td><a href="{{ product.brand.url }}" class="text-underline">{{ product.brand.title }}</a></td>
+									<td><a href="{{ product.brand.url }}" class="text-underline text-link">{{ product.brand.title }}</a></td>
 								</tr>
 							{% endif %}
 
@@ -338,17 +341,17 @@ Description: Product Page
 			<div class="row-fluid">
 
 				<div class="share">
-					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted"><i class="fa fa-lg fa-facebook fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted"><i class="fa fa-lg fa-whatsapp fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted"><i class="fa fa-lg fa-twitter fa-fw"></i></a> &nbsp;
-					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted"><i class="fa fa-lg fa-pinterest fa-fw"></i></a>
+					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f', 'fa-lg') }}</a> &nbsp;
+					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp', 'fa-lg') }}</a> &nbsp;
+					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter', 'fa-lg') }}</a> &nbsp;
+					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest', 'fa-lg') }}</a>
 				</div>
 
 			</div>
 
 			{% if product.file %}
 				<hr>
-				<a target="_blank" href="{{ product.file }}" class="colorless book"><i class="fa fa-download"></i> {{ 'lang.storefront.product.download_file.button'|t }}</a>
+				<a target="_blank" href="{{ product.file }}" class="colorless book">{{ icons('download') }} {{ 'lang.storefront.product.download_file.button'|t }}</a>
 			{% endif %}
 
 			{% if product.video_embed_url %}

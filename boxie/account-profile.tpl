@@ -266,7 +266,7 @@ Description: Account profile page
 
                         <footer class="margin-top clearfix account-profile-footer">
                             <div>
-                                <a href="{{ site_url('account/delete') }}" class="text-danger small" onclick="return confirm('{{ 'lang.storefront.account.profile.delete_account.confirm'|t }}')"><i data-feather="trash-2"></i> {{ 'lang.storefront.account.profile.delete_account.text'|t }}</a>
+                                <a href="{{ site_url('account/delete') }}" class="text-danger small" onclick="return confirm('{{ 'lang.storefront.account.profile.delete_account.confirm'|t }}')">{{ icons('trash-alt') }} {{ 'lang.storefront.account.profile.delete_account.text'|t }}</a>
                             </div>
                             <button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.account.profile.save_data'|t }}</button>
                         </footer>

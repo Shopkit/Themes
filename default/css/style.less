@@ -182,6 +182,21 @@ body {
     font-family: var(--body_font_family), var(--body_font_category);
     font-size: @font-size-h6;
     color: var(--body_text_color);
+
+	&.line-awesome, &.remixicon-line, &.remixicon-fill {
+        .fa-fw {
+            transform: scale(1.15);
+        }
+    }
+}
+
+svg.feather {
+    width: 1.25em;
+    text-align: center;
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    vertical-align: -.125em;
 }
 
 // body > .container {
@@ -540,9 +555,7 @@ textarea.form-control, textarea {
 
 .text-normal, .text-normal td { font-weight: normal !important; }
 
-a.text-underline {
-    .text-link;
-}
+.text-underline { text-decoration: underline; }
 
 .text-link {
     color: var(--link_color);
@@ -765,6 +778,8 @@ header {
 
 	position: relative;
 	overflow: hidden;
+	margin: @padding/2 0;
+	margin-top: @padding;
 	padding-bottom: @padding;
 	min-height: @padding*3;
 	-webkit-box-sizing: content-box;
@@ -1137,33 +1152,45 @@ header {
 	margin-right: @padding/6;
 }
 
-.col-left .social li.facebook .fa {
-	color: #3b5998
+.col-left .social li.facebook {
+	i, svg {
+		color: #3b5998;
+	}
 }
 
-.col-left .social li.twitter .fa {
-	color: #00aced
+.col-left .social li.twitter {
+	i, svg {
+		color: #00aced;
+	}
 }
 
-.col-left .social li.instagram .fa {
-	color: #517fa4
+.col-left .social li.instagram {
+	i, svg {
+		color: #517fa4;
+	}
 }
 
-.col-left .social li.pinterest .fa {
-	color: #cb2027
+.col-left .social li.pinterest {
+	i, svg {
+		color: #cb2027;
+	}
 }
 
-.col-left .social li.youtube .fa {
-	color: #FF0000;
+.col-left .social li.youtube {
+	i, svg {
+		color: #FF0000;
+	}
 }
 
-.col-left .social li.linkedin .fa {
-	color: #0a66c2;
+.col-left .social li.linkedin {
+	i, svg {
+		color: #0a66c2;
+	}
 }
 
 .col-left .social li.rss {
 	display: var(--social_rss);
-	.fa {
+	i, svg {
 		color: #FF6600
 	}
 }
@@ -1541,10 +1568,23 @@ footer a {
 	}
 }
 
+.add-cart .wishlist.added {
+	svg {
+		fill: var(--basecolor);
+	}
+	i.fa, svg.svg-inline--fa {
+		color: var(--basecolor);
+	}
+}
+
 #tab-description {
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	-ms-word-wrap: break-word;
+}
+
+.product-tabs .nav-tabs>li>a {
+	color: var(--link_color);
 }
 
 .data-product-on-request { display: none; }
@@ -1651,6 +1691,10 @@ footer a {
 	p {
 		margin-bottom: 0;
 	}
+}
+
+.gpsr-brand-content {
+    display: var(--show_section_gpsr);
 }
 
 //Tabs
@@ -2074,8 +2118,14 @@ footer a {
 }
 
 .page-page, .page-about, .page-contact, .page-post {
-	.span9.col-right a {
-		.text-link;
+	.span9.col-right {
+		a {
+			.text-link;
+		}
+
+		.breadcrumb a {
+			color: inherit;
+		}
 	}
 }
 
@@ -2120,16 +2170,18 @@ footer a {
 .text-center { text-align: center !important; }
 .text-left { text-align: left !important; }
 
-.fa-tiktok {
-	&::after {
-		-webkit-mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
-		mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
-		content: "";
-		background-color: #000;
-		display: inline-block;
-		height: 16px;
-		width: 14px;
-	}
+body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
+    .fa-tiktok, i[data-feather="tiktok"] {
+        &::after {
+            -webkit-mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
+            mask: url(https://cdn.shopk.it/assets/store/img/tiktok-icon.svg) no-repeat 50% 50%;
+            content: "";
+            background-color: var(--body_text_color);
+            display: inline-block;
+            height: 16px;
+            width: 14px;
+        }
+    }
 }
 
 .list-group {

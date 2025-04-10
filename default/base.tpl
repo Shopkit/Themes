@@ -48,7 +48,7 @@ Github: https://github.com/Shopkit/Default
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="{{ fonts }}" rel="stylesheet">
 
-	<link rel="stylesheet" href="{{ assets_url('assets/common/vendor/fontawesome/4.7/css/font-awesome.min.css') }}">
+	{{ icon_library }}
 	<link id="theme-css" rel="stylesheet" href="{{ store.assets.css }}">
 
 	{% if store.custom_css %}
@@ -61,7 +61,7 @@ Github: https://github.com/Shopkit/Default
 	{{ head_content }}
 
 </head>
-<body class="{{ css_class }} {{ store.theme_options.header_position }}">
+<body class="{{ css_class }} {{ store.theme_options.header_position }} {{ store.theme_options.icon_library }}">
 
 	<header>
 		<div class="container">
@@ -80,7 +80,7 @@ Github: https://github.com/Shopkit/Default
 					<!-- CART -->
 					<aside class="pull-right cart-header">
 						<div class="btn-group">
-							<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart fa-lg fa-fw"></i> {{ 'lang.storefront.cart.title'|t }} ({{ cart.item_count }})</a>
+							<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}">{{ icons('shopping-cart', 'fa-lg') }} {{ 'lang.storefront.cart.title'|t }} ({{ cart.item_count }})</a>
 							<button data-toggle="dropdown" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} dropdown-toggle"><span class="caret"></span></button>
 							<ul class="dropdown-menu well-default {{ store.theme_options.well_default_shadow }}">
 								{% if cart.items %}
@@ -97,7 +97,7 @@ Github: https://github.com/Shopkit/Default
 														<span href="#item-extra-{{ item.item_id }}" class="inline-block small" data-toggle="tooltip" title="{{ item_extra_tip }}" data-html="true">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span></span>
 													</div>
 												{% endif %}
-												<strong class="price">{{ item.subtotal | money_with_sign }}</strong>
+												<strong class="price">{{ item.price | money_with_sign }}</strong>
 											</a>
 										</li>
 									{% endfor %}
@@ -111,9 +111,9 @@ Github: https://github.com/Shopkit/Default
 							{% if store.settings.cart.users_registration != 'disabled' %}
 								<span class="pull-left">
 									{% if user.is_logged_in %}
-										<a href="{{ site_url('account') }}" class="link-account"><i class="fa fa-fw fa-user"></i> {{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong></a>
+										<a href="{{ site_url('account') }}" class="link-account">{{ icons('user') }} {{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong></a>
 									{% else %}
-										<a href="{{ site_url('signin') }}" class="link-signin"><i class="fa fa-fw fa-sign-in"></i> {{ 'lang.storefront.login.signin.title'|t }}</a>
+										<a href="{{ site_url('signin') }}" class="link-signin">{{ icons('sign-in') }} {{ 'lang.storefront.login.signin.title'|t }}</a>
 									{% endif %}
 								</span>
 							{% endif %}
@@ -132,7 +132,7 @@ Github: https://github.com/Shopkit/Default
 								{{ generic_macros.google_translate(apps.google_translate, 'hidden-desktop') }}
 							{% endif %}
 							<a class="btn btn-default btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-								<i class="fa fa-bars fa-lg"></i>
+								{{ icons('bars', 'fa-lg') }}
 							</a>
 							<div class="nav-collapse trigger-priority-nav">
 								<ul class="nav">
@@ -185,7 +185,7 @@ Github: https://github.com/Shopkit/Default
 								{% endif %}
 
 								<div class="shipping">
-									{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '"><i class="fa fa-question-circle"></i></span>' %}
+									{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">'~ icons('question-circle') ~'</span>' %}
 									<div class="cart-line">
 										<dt>{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</dt>
 										<dd class="bold shipping-value">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : cart.total_shipping | money_with_sign) : no_shipping_text) : cart.total_shipping | money_with_sign }}</dd>
@@ -193,7 +193,7 @@ Github: https://github.com/Shopkit/Default
 								</div>
 
 								<div class="cart-line payment-tax {{ not cart.total_payment ? 'hidden' }}">
-									<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}"><i class="fa fa-question-circle"></i></span></dt>
+									<dt>{{ 'lang.storefront.cart.order_summary.total_payment'|t }} <span data-toggle="tooltip" data-placement="top" title="{{ user.payment_method.title }}">{{ icons('question-circle') }}</span></dt>
 									<dd class="bold payment-tax-value">{{ cart.total_payment | money_with_sign }}</dd>
 								</div>
 
@@ -231,10 +231,10 @@ Github: https://github.com/Shopkit/Default
 
 							<nav class="normal">
 								<ul>
-									<li><a href="{{ site_url('account/orders')}}" class="list-group-item {{ current_page == 'account-orders' ? 'active' }}"><i class="text-muted fa fa-fw fa-shopping-bag" aria-hidden="true"></i> {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
-									<li><a href="{{ site_url('account/profile')}}" class="list-group-item {{ current_page == 'account-profile' ? 'active' }}"><i class="text-muted fa fa-fw fa-user" aria-hidden="true"></i> {{ 'lang.storefront.layout.client.title'|t }}</a></li>
-									<li><a href="{{ site_url('account/wishlist')}}" class="list-group-item {{ current_page == 'account-wishlist' ? 'active' }}"><i class="text-muted fa fa-fw fa-heart" aria-hidden="true"></i> {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
-									<li><a href="{{ site_url('account/logout')}}" class="list-group-item"><i class="text-muted fa fa-fw fa-sign-out" aria-hidden="true"></i> {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
+									<li><a href="{{ site_url('account/orders')}}" class="list-group-item {{ current_page == 'account-orders' ? 'active' }}">{{ icons('shopping-bag', 'text-muted') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
+									<li><a href="{{ site_url('account/profile')}}" class="list-group-item {{ current_page == 'account-profile' ? 'active' }}">{{ icons('user', 'text-muted') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>
+									<li><a href="{{ site_url('account/wishlist')}}" class="list-group-item {{ current_page == 'account-wishlist' ? 'active' }}">{{ icons('heart', 'text-muted') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+									<li><a href="{{ site_url('account/logout')}}" class="list-group-item">{{ icons('sign-out', 'text-muted') }} {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 								</ul>
 							</nav>
 						</section>
@@ -257,7 +257,7 @@ Github: https://github.com/Shopkit/Default
 
 									{% if products_category.children %}
 										<h4 data-toggle="collapse" data-target="{{ '#category_' ~ products_category.id }}">
-											<a href="#" data-href="{{ products_category.url }}">{{ products_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+											<a href="#" data-href="{{ products_category.url }}">{{ products_category.title }} {{ icons('angle-down') }}</a>
 										</h4>
 
 										<ul id="{{ 'category_' ~ products_category.id }}" class="sub-categories collapse {{ (category.parent == products_category.id or category.id == products_category.id) ? 'in' }}">
@@ -266,7 +266,7 @@ Github: https://github.com/Shopkit/Default
 
 													{% if sub_category.children %}
 														<h5 data-toggle="collapse" data-target="{{ '#sub_category_' ~ sub_category.id }}">
-															<a href="#" data-href="{{ sub_category.url }}">{{ sub_category.title }} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+															<a href="#" data-href="{{ sub_category.url }}">{{ sub_category.title }} {{ icons('angle-down') }}</a>
 														</h5>
 
 														<ul id="sub_category_{{ sub_category.id }}" class="sub-subcategories collapse {{ (category.parent == sub_category.id or category.id == sub_category.id) ? 'in' }}">
@@ -314,27 +314,27 @@ Github: https://github.com/Shopkit/Default
 						<nav class="normal social">
 							<ul>
 								{% if store.facebook %}
-									<li class="facebook"><a target="_blank" href="{{ store.facebook }}"><i class="fa fa-facebook fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.facebook'|t }}</a></li>
+									<li class="facebook"><a target="_blank" href="{{ store.facebook }}">{{ icons('facebook-f', 'fa-lg') }}{{ 'lang.storefront.layout.social.facebook'|t }}</a></li>
 								{% endif %}
 								{% if store.twitter %}
-									<li class="twitter"><a target="_blank" href="{{ store.twitter }}"><i class="fa fa-twitter fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.twitter'|t }}</a></li>
+									<li class="twitter"><a target="_blank" href="{{ store.twitter }}">{{ icons('twitter', 'fa-lg') }}{{ 'lang.storefront.layout.social.twitter'|t }}</a></li>
 								{% endif %}
 								{% if store.instagram %}
-									<li class="instagram"><a target="_blank" href="{{ store.instagram }}"><i class="fa fa-instagram fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.instagram'|t }}</a></li>
+									<li class="instagram"><a target="_blank" href="{{ store.instagram }}">{{ icons('instagram', 'fa-lg') }}{{ 'lang.storefront.layout.social.instagram'|t }}</a></li>
 								{% endif %}
 								{% if store.pinterest %}
-									<li class="pinterest"><a target="_blank" href="{{ store.pinterest }}"><i class="fa fa-pinterest fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.pinterest'|t }}</a></li>
+									<li class="pinterest"><a target="_blank" href="{{ store.pinterest }}">{{ icons('pinterest', 'fa-lg') }}{{ 'lang.storefront.layout.social.pinterest'|t }}</a></li>
 								{% endif %}
 								{% if store.youtube %}
-									<li class="youtube"><a target="_blank" href="{{ store.youtube }}"><i class="fa fa-youtube-play fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.youtube'|t }}</a></li>
+									<li class="youtube"><a target="_blank" href="{{ store.youtube }}">{{ icons('youtube', 'fa-lg') }}{{ 'lang.storefront.layout.social.youtube'|t }}</a></li>
 								{% endif %}
 								{% if store.linkedin %}
-									<li class="linkedin"><a target="_blank" href="{{ store.linkedin }}"><i class="fa fa-linkedin-square fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.linkedin'|t }}</a></li>
+									<li class="linkedin"><a target="_blank" href="{{ store.linkedin }}">{{ icons('linkedin-square', 'fa-lg') }}{{ 'lang.storefront.layout.social.linkedin'|t }}</a></li>
 								{% endif %}
 								{% if store.tiktok %}
-									<li class="tiktok"><a target="_blank" href="{{ store.tiktok }}"><i class="fa fa-tiktok fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.tiktok'|t }}</a></li>
+									<li class="tiktok"><a target="_blank" href="{{ store.tiktok }}">{{ icons('tiktok', 'fa-lg') }}{{ 'lang.storefront.layout.social.tiktok'|t }}</a></li>
 								{% endif %}
-								<li class="rss"><a href="{{ site_url('rss') }}"><i class="fa fa-rss fa-lg fa-fw"></i>{{ 'lang.storefront.layout.social.rss'|t }}</a></li>
+								<li class="rss"><a href="{{ site_url('rss') }}">{{ icons('rss', 'fa-lg') }}{{ 'lang.storefront.layout.social.rss'|t }}</a></li>
 							</ul>
 						</nav>
 					</section>
@@ -604,7 +604,7 @@ Github: https://github.com/Shopkit/Default
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ button_label }}</a>
 				{% if events.cart.added %}
-					<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}"><i class="fa fa-shopping-cart"></i> {{ 'lang.storefront.layout.button.see_cart'|t }}</a>
+					<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}">{{ icons('shopping-cart') }} {{ 'lang.storefront.layout.button.see_cart'|t }}</a>
 				{% endif %}
 			</div>
 		</div>
@@ -618,7 +618,7 @@ Github: https://github.com/Shopkit/Default
 			</div>
 			<div class="modal-body">
 				<div class="text-center">
-					<i class="fa fa-envelope fa-3x text-light-gray"></i>
+					{{ icons('envelope', 'fa-3x text-light-gray') }}
 					<h5 class="text-normal">{{ 'lang.storefront.layout.events.unsubscribe_text'|t }}</h5>
 				</div>
 			</div>
@@ -637,11 +637,11 @@ Github: https://github.com/Shopkit/Default
 			<div class="modal-body">
 				<div class="text-center">
 					{% if events.payment_status.success is same as (true) %}
-						<i class="fa fa-check fa-3x text-success"></i>
+						{{ icons('check', 'fa-3x text-success') }}
 					{% elseif events.payment_status.success is same as (false) %}
-						<i class="fa fa-times fa-3x text-light-gray"></i>
+						{{ icons('times', 'fa-3x text-light-gray') }}
 					{% else %}
-						<i class="fa fa-check fa-3x text-light-gray"></i>
+						{{ icons('check', 'fa-3x text-light-gray') }}
 					{% endif %}
 
 					<h5 class="text-normal">{{ events.payment_status.message }}</h5>

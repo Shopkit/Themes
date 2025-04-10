@@ -13,7 +13,7 @@ Description: Complete order page
 		{{ generic_macros.cart_notice() }}
 
 		<div class="text-center margin-bottom">
-			<i class="fa fa-check fa-5x text-success"></i>
+			{{ icons('check', 'fa-5x text-success') }}
 			<h2 class="text-muted">{{ 'lang.storefront.cart.complete.order_successfull'|t }}</h2>
 			<h3 class="light text-muted">#{{ order.id }}</h3>
 		</div>

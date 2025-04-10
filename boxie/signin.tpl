@@ -88,9 +88,9 @@ Description: Login page
                         <div class="login-register-title">
                             <h2 class="title margin-bottom-lg margin-top-sm text-center">{{ 'lang.storefront.signin.no_account.text'|t }}<br>{{ 'lang.storefront.signin.no_account.signup'|t }}</h2>
                             <ul class="margin-bottom-lg list-unstyled text-left">
-                                <li class="d-inline-flex margin-bottom-sm"><i class="fas fa-check text-primary text-h4 margin-right-xs"></i>{{ 'lang.storefront.signin.no_account.orders.text'|t }}</li>
-                                <li class="d-inline-flex margin-bottom-sm"><i class="fas fa-check text-primary text-h4 margin-right-xs"></i>{{ 'lang.storefront.signin.no_account.wishlist.text'|t }}</li>
-                                <li class="d-inline-flex"><i class="fas fa-check text-primary text-h4 margin-right-xs"></i>{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
+                                <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.orders.text'|t }}</li>
+                                <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.wishlist.text'|t }}</li>
+                                <li class="d-inline-flex">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
                             </ul>
                             <div class="text-center">
                                 <a href="{{ site_url('signup') }}" class="btn btn-rounded btn-secondary btn-lg">{{ 'lang.storefront.login.signup.create_account.button'|t }}</a>

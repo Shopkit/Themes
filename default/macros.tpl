@@ -125,7 +125,7 @@
 {% macro gallery() %}
     {% if store.gallery and (current_page in store.theme_options.gallery_location or 'all' in store.theme_options.gallery_location) %}
 		<section class="slideshow slideshow-home">
-			<div class="loader"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+			<div class="loader">{{ icons('sync', 'fa-spin') }}</div>
 			<div class="flexslider">
 				<ul class="slides">
 					{% for gallery in store.gallery %}

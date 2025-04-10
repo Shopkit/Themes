@@ -17,7 +17,31 @@ Description: Product brand page
 	</ul>
 
 	<h1>{{ brand.title }}</h1>
-	<p>{{ brand.description }}</p>
+	<p>{{ brand.description|nl2br }}</p>
+
+	{% if brand.brand_url %}
+        <div class="margin-top-sm"><a href="{{ brand.brand_url }}" target="_blank">{{ brand.brand_url }}</a></div>
+    {% endif %}
+
+    {% if brand.manufacturer or brand.responsible or brand.importer %}
+        <div class="gpsr-brand-content well well-default {{ store.theme_options.well_default_shadow }} margin-top">
+            <div class="margin-bottom">{{ 'lang.storefront.product.tab.gpsr.title'|t }}</div>
+
+            {% if brand.manufacturer %}
+                <div>{{ brand.manufacturer|nl2br }}</div>
+            {% endif %}
+
+            {% if brand.responsible %}
+				<hr>
+                <div>{{ brand.responsible|nl2br }}</div>
+            {% endif %}
+
+            {% if brand.importer %}
+				<hr>
+                <div>{{ brand.importer|nl2br }}</div>
+            {% endif %}
+        </div>
+    {% endif %}
 	<hr>
 
 	{% set category_default_order = store.category_default_order|default('position') %}

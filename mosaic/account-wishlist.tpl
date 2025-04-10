@@ -15,7 +15,7 @@ Description: Wishlist account page
 			<div class="span12">
 
 				<p class="breadcrumbs">
-					<a href="{{ site_url() }}"><i class="fa fa-home"></i></a> ›
+					<a href="{{ site_url() }}">{{ icons('home') }}</a> ›
 					<a href="{{ site_url('account') }}">{{ 'lang.storefront.account.my_account'|t }}</a> ›
 					{{ 'lang.storefront.layout.wishlist.title'|t }}
 				</p><br>
@@ -43,8 +43,8 @@ Description: Wishlist account page
 											 <small class="text-muted">{{ 'lang.storefront.account.wishlist.add_date'|t([product.created_at|format_datetime('long','none')]) }}</small>
 										</td>
 										<td class="text-right nowrap">
-		                                    <a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="{{ 'lang.storefront.layout.button.remove'|t }}"><i class="fa fa-fw fa-trash fa-lg"></i></a> &nbsp;
-		                                    <a href="{{ product.add_cart_url }}" class="text-muted small" title="{{ 'lang.storefront.layout.button.add_to_cart'|t }}"><i class="fa fa-fw fa-cart-plus fa-lg"></i></a>
+		                                    <a href="{{ product.remove_wishlist_url }}" class="text-muted small" title="{{ 'lang.storefront.layout.button.remove'|t }}">{{ icons('trash', 'fa-lg') }}</a> &nbsp;
+		                                    <a href="{{ product.add_cart_url }}" class="text-muted small" title="{{ 'lang.storefront.layout.button.add_to_cart'|t }}">{{ icons('cart-plus', 'fa-lg') }}</a>
 		                                </td>
 									</tr>
 								{% endfor %}

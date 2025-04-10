@@ -80,8 +80,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.facebook }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('facebook-f', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.facebook'|t }}
 						</a>
@@ -92,8 +92,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.twitter }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('twitter', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.twitter'|t }}
 						</a>
@@ -104,8 +104,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.instagram }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('instagram', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.instagram'|t }}
 						</a>
@@ -116,8 +116,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.pinterest }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('pinterest', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.pinterest'|t }}
 						</a>
@@ -128,8 +128,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.youtube }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('youtube', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.youtube'|t }}
 						</a>
@@ -140,8 +140,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.linkedin }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-linkedin-square fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('linkedin-square', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.linkedin'|t }}
 						</a>
@@ -152,8 +152,8 @@ Description: Contact Page
 					<p>
 						<a href="{{ store.tiktok }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-tiktok fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('tiktok', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.tiktok'|t }}
 						</a>
@@ -163,8 +163,8 @@ Description: Contact Page
 					<p class="link-social-rss">
 						<a href="{{ site_url('rss') }}" class="link-neutral" target="_blank">
 							<span class="fa-stack fa-lg">
-								<i class="fa fa-circle fa-stack-2x"></i>
-								<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+								{{ icons('circle', 'fa-stack-2x') }}
+								{{ icons('rss', 'fa-stack-1x fa-inverse') }}
 							</span>
 							{{ 'lang.storefront.layout.social.rss'|t }}
 						</a>
