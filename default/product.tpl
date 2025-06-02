@@ -45,14 +45,14 @@ Description: Product Page
 					<h4 class="price margin-bottom-0">
 
 						{% if product.price_on_request == true %}
-							<span class="data-product-price">{{ 'lang.storefront.macros.product.price_on_request'|t }}</span> &nbsp;
+							<span class="data-product-price margin-right-sm">{{ 'lang.storefront.macros.product.price_on_request'|t }}</span>
 							<del></del>
 						{% else %}
 							{% if product.promo == true %}
-								<span class="data-product-price">{{ product.price_promo | money_with_sign }}</span> &nbsp;
-								<del>{{ product.price | money_with_sign }}</del>
+								<span class="data-product-price margin-right-sm">{{ product.price_promo | money_with_sign }}</span>
+								<del class="margin-right-sm">{{ product.price | money_with_sign }}</del>
 							{% else %}
-								<span class="data-product-price">{{ product.price | money_with_sign }}</span> &nbsp;
+								<span class="data-product-price margin-right-sm">{{ product.price | money_with_sign }}</span>
 								<del></del>
 							{% endif %}
 						{% endif %}

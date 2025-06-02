@@ -83,19 +83,19 @@ Description: Product Page
 					{% endif %}
 
 					<div class="row block-price">
-						<div class="col-xs-6 col-md-7 col-lg-6">
+						<div class="col-xs-6 col-md-8 col-lg-7">
 
 							<div>
 
 								{% if product.price_on_request == true %}
-									<span class="data-product-price price">{{ 'lang.storefront.macros.product.price_on_request'|t }}</span> &nbsp;
+									<span class="data-product-price price margin-right-xs">{{ 'lang.storefront.macros.product.price_on_request'|t }}</span>
 									<del class="promo-price"></del>
 								{% else %}
 									{% if product.promo == true %}
-										<span class="data-product-price price">{{ product.price_promo | money_with_sign }}</span> &nbsp;
-										<del class="promo-price">{{ product.price | money_with_sign }}</del>
+										<span class="data-product-price price margin-right-xs">{{ product.price_promo | money_with_sign }}</span>
+										<del class="promo-price margin-right-xs">{{ product.price | money_with_sign }}</del>
 									{% else %}
-										<span class="data-product-price price">{{ product.price | money_with_sign }}</span>  &nbsp;
+										<span class="data-product-price price margin-right-xs">{{ product.price | money_with_sign }}</span>
 										<del class="promo-price"></del>
 									{% endif %}
 								{% endif %}
@@ -123,7 +123,7 @@ Description: Product Page
 
 						</div>
 
-						<div class="col-xs-6 col-md-5 col-lg-6">
+						<div class="col-xs-6 col-md-4 col-lg-5">
 							<div class="text-center share pull-right">
 								<h6 class="text-muted text-uppercase">{{ 'lang.storefront.product.share.label'|t }}</h6>
 								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f') }}</a> &nbsp;
