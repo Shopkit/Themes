@@ -210,59 +210,119 @@
 														<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;">
 															<tr>
 																<td width="100%" align="left" valign="top" style="line-height:18px;font-size:14px;">
-																	<div style="margin:20px;">
+																	<div style="margin:20px;color:#666666;font-size:14px;">
 
 																		<p style="color:#666;font-size:14px;">
 																			{{ 'lang.storefront.layout.greetings'|t }} {{ email_data.name|first_word }},
 																		</p>
 
-																		{% if email_data.step == 'purchase' %}
-
-																			{% if store.settings.rewards.reviews and store.settings.rewards.message_reviews %}
-																				<p style="color:#666;font-size:14px;">{{ store.settings.rewards.message_reviews|rewards_message(store.settings.rewards.reviews_ratio) }}</p>
-																			{% endif %}
-
-																			<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.purchase.text'|t([store.name]) }}</p>
-																			<ul style="color:#666;font-size:14px;">
-																				{% for products in email_data.products %}
-																					<li><a href="{{ products.url }}">{{ products.title }}</a></li>
-																				{% endfor %}
-																			</ul>
-
-																			{% if email_data.coupon %}
-																				<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.purchase.coupon.text'|t }}</p>
-																			{% endif %}
-																		{% elseif email_data.step == 'thankyou' %}
-																			<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.thankyou.text'|t([email_data.product.title]) }}</p>
-
-																			{% if email_data.coupon %}
-																				<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.thankyou.coupon.text'|t }}</p>
-																				<p style="color:#666;font-size:14px;text-align:center;margin-top:20px;"><code style="display:inline-block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;"><strong>{{ email_data.coupon }}</strong></code></p>
-																			{% endif %}
-																		{% elseif email_data.step == 'reply' %}
-																			<p style="color:#666;font-size:14px;">{{ 'lang.email.product_reviews.reply.text'|t }} <a href="{{ email_data.product.url }}">{{ email_data.product.title }}</a>.</p>
-
-																			<p style="color:#666;font-size:14px;">
-																				<strong>{{ 'lang.email.product_reviews.reply.rate.text'|t }}</strong><br>
-																				<code style="display:block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;margin-top:5px;"><strong>{{ email_data.review.original.title }}</strong><br><em>{{ email_data.review.original.body }}</em></code>
-																			</p>
-
-																			<p style="color:#666;font-size:14px;margin-top:20px;">
-																				<strong>{{ 'lang.email.product_reviews.reply.response.text'|t }}</strong><br>
-																				<code style="display:block; padding: 15px; background-color: #eee; color:#333; border-radius: 3px; border: 1px solid #ddd;margin-top:5px;"><em>{{ email_data.review.reply }}</em></code>
+																		{% if email_data.step != 'expiring' %}
+																			<p>
+																				<h3 style="margin: 0;">{{ 'lang.email.rewards.lead'|t([email_data.client.rewards|rewards_label]) }}</h3>
 																			</p>
 																		{% endif %}
+
+																		<p>
+																			{% if email_data.step == 'order' %}
+																				{{ 'lang.email.rewards.order.text'|t([email_data.points|rewards_label,email_data.order_id]) }}
+																			{% endif %}
+
+																			{% if email_data.step == 'signup' %}
+																				{{ 'lang.email.rewards.signup.text'|t([email_data.points|rewards_label]) }}
+																			{% endif %}
+
+																			{% if email_data.step == 'newsletter' %}
+																				{{ 'lang.email.rewards.newsletter.text'|t([email_data.points|rewards_label]) }}
+																			{% endif %}
+
+																			{% if email_data.step == 'birthday' %}
+																				{{ 'lang.email.rewards.birthday.text'|t([email_data.points|rewards_label]) }}
+																			{% endif %}
+
+																			{% if email_data.step == 'reviews' %}
+																				{{ 'lang.email.rewards.reviews.text'|t([email_data.points|rewards_label,email_data.product_title]) }}
+																			{% endif %}
+
+																			{% if email_data.step == 'expiring' %}
+																				{{ 'lang.email.rewards.expiring.text'|t([email_data.points|rewards_label,email_data.points_expire_date|format_datetime('long', 'none')]) }}
+																			{% endif %}
+
+																			{% if email_data.step != 'expiring' and email_data.points_expire_date %}
+																				<br>{{ 'lang.email.rewards.expire'|t([email_data.points_label|capitalize,email_data.points_expire_date|format_datetime('long', 'none'),email_data.points_label]) }}
+																			{% endif %}
+																		</p>
+
+																		{% if email_data.step != 'expiring' %}
+																			<table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; background-color: #ffffff; padding: 20px;">
+																				<tr>
+																					<td style="font-size: 16px; font-weight: bold; padding-bottom: 10px;">
+																					{{ 'lang.email.rewards.label.other'|t([email_data.points_label]) }}
+																					</td>
+																				</tr>
+																				<tr>
+																					<td bgcolor="#f5f5f5" style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+																						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 15px;">
+																							<tr>
+																								<td style="font-size: 14px;">
+																									<strong>{{ 'lang.email.rewards.label.order'|t }}</strong><br>
+																									<span style="color: #999999;">{{ 'lang.email.rewards.label.order.text'|t([store.settings.rewards.order_ratio|rewards_label,1|money_with_sign(store.currency)]) }}</span>
+																								</td>
+																							</tr>
+																						</table>
+
+																						{% set rewards = [] %}
+																						{% if store.settings.rewards.signup %}
+																							{% set rewards = rewards|merge(['signup']) %}
+																						{% endif %}
+																						{% if store.settings.rewards.newsletter %}
+																							{% set rewards = rewards|merge(['newsletter']) %}
+																						{% endif %}
+																						{% if store.settings.rewards.birthday %}
+																							{% set rewards = rewards|merge(['birthday']) %}
+																						{% endif %}
+																						{% if store.settings.rewards.reviews %}
+																							{% set rewards = rewards|merge(['reviews']) %}
+																						{% endif %}
+
+																						{% for type in rewards %}
+																							<table cellpadding="0" cellspacing="0" border="0" width="100%" style="{% if not loop.last %}margin-bottom: 15px;{% endif %}">
+																								<tr>
+																									<td style="font-size: 14px;">
+																										<strong>{{ ('lang.email.rewards.label.' ~ type)|t }}</strong><br>
+																										<span style="color: #999999;">{{ store.settings.rewards[type ~ '_ratio']|rewards_label }}</span>
+																									</td>
+																								</tr>
+																							</table>
+																						{% endfor %}
+																					</td>
+																				</tr>
+																			</table>
+																		{% endif %}
+
+																		{% if email_data.page %}
+																			<p>
+																				{{ 'lang.email.rewards.page.text'|t|replace({'{{ email_data.points_label }}': email_data.points_label}) }} <a href="{{ email_data.page.url }}" style="color: #666; text-decoration: underline;">{{ 'lang.email.rewards.page.link'|t|replace({'{{ email_data.page.title }}': email_data.page.title}) }}</a>.
+																			</p>
+																		{% endif %}
+
+																		<p style="text-align:center;margin-top: 30px"><a href="{{ store.url }}" target="_blank" class="link-white" style="display: inline-block; padding:15px 30px; line-height:100%; color:{{ get_contrast_color(store.basecolor) }}; border-radius:3px; text-decoration:none; font-size:16px; border:0;text-align:center; background-color: {{ store.basecolor }}; font-weight: bold;">{{ 'lang.email.signup.store_link'|t }}</a></p>
 																	</div>
 																</td>
 															</tr>
 														</table>
 													</div>
 
-
 												</div>
 											</td>
 										</tr>
-
+										<tr>
+											<td height="30">&nbsp;</td>
+										</tr>
+										<tr>
+											<td align="center" style="font-size:12px;line-height:24px;color:#999999">
+												{{ 'lang.email.rewards.unsubscribe.text'|t|replace({'{{ email_data.points_label }}': email_data.points_label}) }} <a href="{{ email_data.unsubscribe_url }}" style="color: #666; text-decoration: underline;">{{ 'lang.email.rewards.unsubscribe.button'|t }}</a>.
+											</td>
+										</tr>
 										<tr>
 											<td height="30">&nbsp;</td>
 										</tr>

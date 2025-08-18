@@ -45,6 +45,7 @@ Description: User account page
 		<a href="{{ site_url('account/orders')}}" class="list-group-item {{ current_page == 'account-orders' ? 'active' }}">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a>
 		<a href="{{ site_url('account/profile')}}" class="list-group-item {{ current_page == 'account-profile' ? 'active' }}">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a>
 		<a href="{{ site_url('account/wishlist')}}" class="list-group-item {{ current_page == 'account-wishlist' ? 'active' }}">{{ icons('heart') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a>
+		{% if store.settings.rewards.active %}<a href="{{ site_url('account/rewards')}}" class="list-group-item {{ current_page == 'account-rewards' ? 'active' }}">{{ icons('trophy') }} {{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</a>{% endif %}
 		<a href="{{ site_url('account/logout')}}" class="list-group-item">{{ icons('sign-out') }} {{ 'lang.storefront.layout.logout.title'|t }}</a>
 	</div>
 {% endmacro %}
@@ -71,6 +72,14 @@ Description: User account page
 
 			<div class="col-sm-8 col-sm-offset-1">
 				<h1 class="margin-top-0 margin-bottom">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+
+				{% if store.settings.rewards.active and store.settings.rewards.message_account and user.rewards %}
+					<div class="callout callout-info">
+						<h4><i>{{ icons('trophy') }}</i> {{ rewards_label }}</h4>
+						{{ store.settings.rewards.message_account|rewards_message(user.rewards) }}
+						{{ store.settings.rewards.message_saved_account and user.rewards_savings > 0 ? '<br><br>' ~ store.settings.rewards.message_saved_account|rewards_message(user.rewards, user.rewards_savings) : '' }}
+					</div>
+				{% endif %}
 
 				<h3 class="margin-bottom-xs margin-top-0 text-muted-dark light">{{ 'lang.storefront.account.latest_orders'|t }}</h3>
 				{{ account_macros.order_table_list(user.orders[:5]) }}

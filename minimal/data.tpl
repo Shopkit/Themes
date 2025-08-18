@@ -18,29 +18,6 @@ Description: Order data form page
 			<li class="active">{{ 'lang.storefront.cart.data.title'|t }}</li>
 		</ol>
 
-		{% if errors.form %}
-			<div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
-				<h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
-				{{ errors.form }}
-			</div>
-		{% endif %}
-
-		{% if warnings.form %}
-			<div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
-				<h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
-				{{ warnings.form }}
-			</div>
-		{% endif %}
-
-		{% if success.form %}
-			<div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
-				<h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
-				{{ success.form }}
-			</div>
-		{% endif %}
-
-		{{ generic_macros.cart_notice() }}
-
 		{{ form_open('cart/post/payment', {'role': 'form'}) }}
 
 			<input type="hidden" name="user-auth-data" value="true">
@@ -48,15 +25,45 @@ Description: Order data form page
 			<div class="row">
 				<div class="col-md-8 col-lg-8">
 
+					{% if errors.form %}
+						<div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
+							<h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
+							{{ errors.form }}
+						</div>
+					{% endif %}
+
+					{% if warnings.form %}
+						<div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
+							<h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
+							{{ warnings.form }}
+						</div>
+					{% endif %}
+
+					{% if success.form %}
+						<div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
+							<h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
+							{{ success.form }}
+						</div>
+					{% endif %}
+
+					{{ generic_macros.cart_notice() }}
+
 					{% if not user.is_logged_in %}
-						{% if store.settings.cart.users_registration == 'optional' %}
-							<div class="well well-default {{ store.theme_options.well_default_shadow }}">
-								{{ 'lang.storefront.cart.data.users_registration.optional'|t([site_url('signin')]) }}
-							</div>
-						{% elseif store.settings.cart.users_registration == 'required' %}
+						{% if store.settings.cart.users_registration == 'required' %}
 							<div class="well well-default {{ store.theme_options.well_default_shadow }}">
 								{{ 'lang.storefront.cart.data.users_registration.required'|t([site_url('signin')]) }}
 							</div>
+						{% else %}
+							{% if store.settings.rewards.signup and store.settings.rewards.message_login and cart.total_rewards_to_earn %}
+								<div class="callout callout-info">
+									<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+									{{ store.settings.rewards.message_login|rewards_message(store.settings.rewards.signup_ratio) }} {{ 'lang.storefront.cart.data.users_registration.optional'|t([site_url('signin')]) }}
+								</div>
+							{% elseif store.settings.cart.users_registration == 'optional' %}
+								<div class="well well-default {{ store.theme_options.well_default_shadow }}">
+									{{ 'lang.storefront.cart.data.users_registration.optional'|t([site_url('signin')]) }}
+								</div>
+							{% endif %}
 						{% endif %}
 					{% endif %}
 
@@ -109,6 +116,27 @@ Description: Order data form page
 									<a href="{{ site_url('account/profile') }}">{{ 'lang.storefront.order.edit'|t }}</a>
 								</div>
 							</div>
+
+							<div class="row">
+								<div class="col-sm-12">
+									{% if apps.newsletter and not user.subscribe_newsletter %}
+										<div class="form-group margin-top">
+											{% if store.settings.rewards.newsletter and store.settings.rewards.message_newsletter and not user.subscribe_newsletter %}
+												<div class="callout callout-info margin-bottom-sm">
+													<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+													{{ store.settings.rewards.message_newsletter|rewards_message(store.settings.rewards.newsletter_ratio) }}
+												</div>
+											{% endif %}
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}>
+													{{ apps.newsletter.label }}
+												</label>
+											</div>
+										</div>
+									{% endif %}
+								</div>
+							</div>
 						{% else %}
 
 							<h3 class="margin-bottom text-muted-dark light">{{ 'lang.storefront.cart.checkout.client.title'|t }}</h3>
@@ -119,6 +147,17 @@ Description: Order data form page
 										<label for="email">{{ 'lang.storefront.form.email.label'|t }} <small class="text-muted normal">(*)</small></label>
 										<input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required>
 									</div>
+
+									{% if store.settings.cart.users_registration != 'disabled' %}
+										<div class="form-group">
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="create_user" id="create_user" value="1">
+													{{ 'lang.storefront.form.create_user.label'|t }}
+												</label>
+											</div>
+										</div>
+									{% endif %}
 
 									{% if apps.newsletter %}
 										<div class="form-group">
@@ -310,9 +349,20 @@ Description: Order data form page
 							<dt class="bold">{{ 'lang.storefront.layout.subtotal.title'|t }}:</dt>
 							<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
 
-							{% if cart.coupon %}
-								<dt>{{ 'lang.storefront.order.discount'|t }}</dt>
-								<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</dd>
+							{% if cart.discount %}
+								<dt><a class="link-inherit" data-toggle="collapse" href="#discount-detail" role="button" aria-expanded="true" aria-controls="discount-detail">{{ 'lang.storefront.order.discount'|t }} {{ icons('angle-down') }}</a></dt>
+								<dd class="text-dark price">{{ '- ' ~ cart.discount | money_with_sign }}</dd>
+
+								<div class="collapse in text-muted" id="discount-detail">
+									{% if cart.coupon %}
+										<dt class="margin-left-xs normal">{{ 'lang.storefront.order.discount.coupon'|t }}</dt>
+										<dd>{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.coupon.discount | money_with_sign }}</dd>
+									{% endif %}
+									{% if cart.rewards %}
+										<dt class="margin-left-xs normal">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</dt>
+										<dd>{{ '- ' ~ cart.rewards.discount | money_with_sign }}</dd>
+									{% endif %}
+								</div>
 							{% endif %}
 
 							{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">'~ icons('question-circle') ~'</span>' %}
@@ -355,6 +405,22 @@ Description: Order data form page
 										{{ icons('tags') }}
 										<span class="coupon-code-text">{{ cart.coupon.code }}</span>
 										<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
+									</span>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if cart.rewards %}
+							<hr>
+
+							<div class="cart-rewards">
+								<label for="rewards">{{ rewards_label }}</label>
+
+								<div class="cart-rewards-label margin-top-xxs">
+									<span class="label label-light-bg h5">
+										{{ icons('trophy') }}
+										<span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+										<a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
 									</span>
 								</div>
 							</div>

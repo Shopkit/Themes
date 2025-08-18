@@ -47,6 +47,7 @@ Description: User account page
 		<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
 		<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>
 		<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">{{ icons('heart') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+		{% if store.settings.rewards.active %}<li class="{{ current_page == 'account-rewards' ? 'active' }}"><a href="{{ site_url('account/rewards')}}">{{ icons('trophy') }} {{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</a></li>{% endif %}
 		<li><a href="{{ site_url('account/logout')}}">{{ icons('sign-out') }} {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 	</ul>
 {% endmacro %}
@@ -68,6 +69,14 @@ Description: User account page
 				</p><br>
 
 				<h1>{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+
+				{% if store.settings.rewards.active and store.settings.rewards.message_account and user.rewards %}
+					<div class="alert alert-info">
+						<h5><i>{{ icons('trophy') }}</i> {{ rewards_label }}</h5>
+						{{ store.settings.rewards.message_account|rewards_message(user.rewards) }}
+						{{ store.settings.rewards.message_saved_account and user.rewards_savings > 0 ? '<br>' ~ store.settings.rewards.message_saved_account|rewards_message(user.rewards, user.rewards_savings) : '' }}
+					</div>
+				{% endif %}
 
 				<h3>{{ 'lang.storefront.account.latest_orders'|t }}</h3>
 				{{ account_macros.order_table_list(user.orders[:5]) }}

@@ -179,6 +179,22 @@ Description: Shopping cart page
 					</div>
 				{% endif %}
 
+				{% if cart.rewards %}
+					<hr>
+
+					<div class="cart-rewards">
+						<h4>{{ rewards_label }}</h4>
+
+						<div class="cart-rewards-label margin-top-xxs {{ cart.rewards ? '' : 'hidden' }}">
+							<span class="label label-light-bg h5">
+								{{ icons('trophy') }}
+								<span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+								<a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
+							</span>
+						</div>
+					</div>
+				{% endif %}
+
 				<hr>
 
 				<button type="submit" class="button btn-primary {{ store.theme_options.button_primary_shadow }}" style="width:200px">

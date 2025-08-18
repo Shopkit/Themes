@@ -209,7 +209,10 @@ Description: This is the base layout. It's included in every page with this code
 					<hr>
 				{% endfor %}
 
-				<h3><a href="{{ site_url('cart') }}">{{ 'lang.storefront.layout.button.see_cart'|t }}</a></h3>
+				<div class="cart-buttons">
+					<a href="{{ site_url('cart') }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} margin-bottom-sm">{{ 'lang.storefront.layout.button.see_cart'|t }}</a>
+                    <a href="{{ site_url('cart/data') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ 'lang.storefront.layout.button.checkout'|t }}</a>
+				</div>
 
 			{% else %}
 				<p>{{ 'lang.storefront.cart.no_products'|t }}</p>
@@ -293,6 +296,7 @@ Description: This is the base layout. It's included in every page with this code
 					<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">{{ 'lang.storefront.layout.orders.title'|t }}</a></li>
 					<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">{{ 'lang.storefront.layout.client.title'|t }}</a></li>
 					<li class="{{ current_page == 'account-wishlist' ? 'active' }}"><a href="{{ site_url('account/wishlist')}}">{{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+					{% if store.settings.rewards.active %}<li class="{{ current_page == 'account-rewards' ? 'active' }}"><a href="{{ site_url('account/rewards')}}">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }} ({{ user.rewards }})</a></li>{% endif %}
 					<li><a href="{{ site_url('account/logout')}}">{{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 				</ul>
 				<div class="text-center"><a class="close" href="#" data-target=".account">&times;</a></div>

@@ -92,7 +92,10 @@ Description: Login page
                                 <ul class="margin-bottom list-unstyled text-left">
                                     <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.orders.text'|t }}</li>
                                     <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.wishlist.text'|t }}</li>
-                                    <li class="d-inline-flex">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
+                                    <li class="d-inline-flex {{ store.settings.rewards.signup ? 'margin-bottom-sm' : '' }}">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
+                                    {% if store.settings.rewards. signup %}
+                                        <li class="d-inline-flex">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.rewards.text'|t([store.settings.rewards.signup_ratio, store.settings.rewards.plural_label]) }}</li>
+                                    {% endif %}
                                 </ul>
                                 <div class="text-center">
                                     <a href="{{ site_url('signup') }}" class="button btn-default {{ store.theme_options.button_default_shadow }}">{{ 'lang.storefront.login.signup.create_account.button'|t }}</a>

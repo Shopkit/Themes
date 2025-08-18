@@ -48,14 +48,21 @@ Description: Order data form page
 		<input type="hidden" name="user-auth-data" value="true">
 
 		{% if not user.is_logged_in %}
-			{% if store.settings.cart.users_registration == 'optional' %}
-				<div class="well well-default {{ store.theme_options.well_default_shadow }}">
-					{{ 'lang.storefront.cart.data.users_registration.optional'|t([site_url('signin')]) }}
-				</div>
-			{% elseif store.settings.cart.users_registration == 'required' %}
+			{% if store.settings.cart.users_registration == 'required' %}
 				<div class="well well-default {{ store.theme_options.well_default_shadow }}">
 					{{ 'lang.storefront.cart.data.users_registration.required'|t([site_url('signin')]) }}
 				</div>
+			{% else %}
+				{% if store.settings.rewards.signup and store.settings.rewards.message_login and cart.total_rewards_to_earn %}
+					<div class="alert alert-info">
+						<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+						{{ store.settings.rewards.message_login|rewards_message(store.settings.rewards.signup_ratio) }} {{ 'lang.storefront.cart.data.users_registration.optional'|t([site_url('signin')]) }}
+					</div>
+				{% elseif store.settings.cart.users_registration == 'optional' %}
+					<div class="well well-default {{ store.theme_options.well_default_shadow }}">
+						{{ 'lang.storefront.cart.data.users_registration.optional'|t([site_url('signin')]) }}
+					</div>
+				{% endif %}
 			{% endif %}
 		{% endif %}
 
@@ -109,6 +116,24 @@ Description: Order data form page
 						<a href="{{ site_url('account/profile') }}">{{ 'lang.storefront.order.edit'|t }}</a>
 					</div>
 				</div>
+				<div class="row">
+					<div class="span9">
+						{% if apps.newsletter and not user.subscribe_newsletter %}
+							{% if store.settings.rewards.newsletter and store.settings.rewards.message_newsletter and not user.subscribe_newsletter %}
+								<br>
+								<div class="alert alert-info no-margin">
+									<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+									{{ store.settings.rewards.message_newsletter|rewards_message(store.settings.rewards.newsletter_ratio) }}
+								</div>
+							{% endif %}
+							<br>
+							<label>
+								<input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}>
+								{{ apps.newsletter.label }}
+							</label>
+						{% endif %}
+					</div>
+				</div>
 				<br>
 			{% else %}
 				<h4 class="margin-bottom">{{ 'lang.storefront.cart.checkout.client.title'|t }}</h4>
@@ -118,8 +143,16 @@ Description: Order data form page
 						<label for="email">{{ 'lang.storefront.form.email.label'|t }} <small class="muted">(*)</small></label>
 						<input type="email" name="email" id="email" class="input-block-level" value="{{ user.email }}" required>
 
-						{% if apps.newsletter %}
+						{% if store.settings.cart.users_registration != 'disabled' %}
 							<br>
+							<label>
+								<input type="checkbox" name="create_user" id="create_user" value="1">
+								{{ 'lang.storefront.form.create_user.label'|t }}
+							</label>
+						{% endif %}
+
+						{% if apps.newsletter %}
+							{{ store.settings.cart.users_registration != 'disabled' ? '' : '<br>' }}
 							<label class="checkbox"><input type="checkbox" name="subscribe_newsletter" id="subscribe_newsletter" value="1" {% if user.subscribe_newsletter %} checked {% endif %}> {{ apps.newsletter.label }}</label>
 						{% endif %}
 					</div>
@@ -281,6 +314,22 @@ Description: Order data form page
 						{{ icons('tags') }}
 						<span class="coupon-code-text">{{ cart.coupon.code }}</span>
 						<a href="{{ site_url('cart/coupon/remove') }}" class="btn-close">{{ icons('times') }}</a>
+					</span>
+				</div>
+			</div>
+		{% endif %}
+
+		{% if cart.rewards %}
+			<hr>
+
+			<div class="cart-rewards">
+				<h4>{{ rewards_label }}</h4>
+
+				<div class="cart-rewards-label margin-top-xxs">
+					<span class="label label-light-bg h5">
+						{{ icons('trophy') }}
+						<span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+						<a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
 					</span>
 				</div>
 			</div>

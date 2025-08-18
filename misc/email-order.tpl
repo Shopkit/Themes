@@ -755,10 +755,25 @@
 																<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
 															</tr>
 
-															{% if order.coupon %}
+															{% if order.discount %}
 																<tr>
-																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.storefront.order.discount'|t }} <small style="color:#bbb;">({{ order.coupon.code }})</small></td>
-																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;"><span style="white-space:nowrap;">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
+																	<td height="30" align="left" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-left:20px;">{{ 'lang.storefront.order.discount'|t }}
+																		{% if order.coupon %}
+																			<br><span style="color:#bbb;margin-left:20px;">{{ 'lang.storefront.order.discount.coupon'|t }} <small style="color:#bbb;">({{ order.coupon.code }})</small></span>
+																		{% endif %}
+																		{% if order.rewards.redeemed %}
+																			<br><span style="color:#bbb;margin-left:20px;">{{ store.settings.rewards.plural_label }} <small style="color:#bbb;">(-{{ order.rewards.total_redeemed|rewards_label }})</small></span>
+																		{% endif %}
+																	</td>
+																	<td height="30" align="right" valign="middle" style="font-size: 14px;line-height:24px;color:#666666;padding-right:20px;">
+																		<span style="white-space:nowrap;">{{ '- ' ~ order.discount|money_with_sign(order.currency) }}</span>
+																		{% if order.coupon %}
+																			<br><span style="white-space:nowrap;color:#bbb;">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ order.coupon.discount|money_with_sign(order.currency) }}</span>
+																		{% endif %}
+																		{% if order.rewards.redeemed %}
+																			<br><span style="white-space:nowrap;color:#bbb;">{{ '- ' ~ order.rewards.discount|money_with_sign(order.currency) }}</span>
+																		{% endif %}
+																	</td>
 																</tr>
 															{% endif %}
 
@@ -910,7 +925,7 @@
 															<table bgcolor="#ffffff" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;{% if order.observations %}border-bottom:1px solid #eee;border-bottom-left-radius: 0px;border-bottom-right-radius: 0px{% endif %}">
 																<tr>
 																	<td style="padding:30px 20px;">
-																		{% for custom_field in order.custom_field|json_decode %}
+																		{% for custom_field in order.custom_field %}
 																			<p style="margin: 0 0 5px 0;color:#666666;"><strong>{{ custom_field.title }}</strong></p>
 																			{% if custom_field.data %}
 																				{% for data in custom_field.data %}

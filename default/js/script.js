@@ -78,6 +78,7 @@ $(document).ready(function() {
 	}
 
 	var headerHeight = $('header .navbar').offset().top;
+	document.documentElement.style.setProperty('--header-height', ($('header').outerHeight() - $('.slideshow').outerHeight()));
 	$(window).on('scroll', function () {
 		if ($(window).scrollTop() > headerHeight) {
 			$('.navbar.fixed-header').addClass('fixed');
@@ -279,6 +280,12 @@ $(document).ready(function() {
             }
         ]
     });
+
+	var media_query = window.matchMedia('(max-width: 767px)');
+	media_query.addEventListener('change', function(e) {
+		handle_breakpoint_change(e, theme_options);
+	});
+	handle_breakpoint_change(media_query, theme_options);
 });
 
 $(window).load(function() {
@@ -304,17 +311,6 @@ $(window).load(function() {
 			validate_phone_intl_input(_this, true);
 			_this.blur();
 		}, 1500);
-	});
-
-	$('.slideshow-home').flexslider({
-		slideshowSpeed: parseInt(theme_options.slideshow_slide_speed * 1000),
-		animationSpeed: 1500,
-		controlNav: true,
-		directionNav: false,
-		selector: ".slides > .slide",
-		start: function() {
-			$('.slideshow').addClass('loaded');
-		}
 	});
 });
 
@@ -412,6 +408,13 @@ function product_options(product, onload) {
 							price_txt = response.price_formatted;
 							$('.promo-percentage').addClass('hidden')
 							$('.data-promo-percentage').text('');
+						}
+
+						if (response.rewards) {
+							$('#message-points').text(response.rewards);
+							$('#message-points').parents('.alert').removeClass('hidden');
+						} else {
+							$('#message-points').parents('.alert').addClass('hidden');
 						}
 
 						$('.extra-options').removeClass('hidden').find('input, select, textarea').prop('disabled', false);
@@ -587,6 +590,58 @@ function product_default_option(product) {
 		1: product.options[option].id_variant_2,
 		2: product.options[option].id_variant_3
 	};
+}
+
+function handle_breakpoint_change(e, theme_options) {
+    var gallery_type = e.matches ? 'mobile' : 'desktop';
+
+    destroy_slideshow();
+
+    if (gallery_type === 'mobile') {
+        load_slideshow('mobile', (theme_options.gallery_type === 'products' ? theme_options.gallery : theme_options.mobile_gallery), theme_options);
+    } else {
+        load_slideshow('desktop', theme_options.gallery, theme_options);
+    }
+}
+
+function load_slideshow(type, gallery, theme_options) {
+    if (type == 'mobile') {
+        $('.slideshow').addClass('slideshow-mobile');
+    } else {
+        $('.slideshow').addClass('slideshow-home');
+    }
+
+    if (gallery && gallery.length) {
+        for (var i = 0; i < gallery.length; i++) {
+            var has_slide_content = (gallery[i].title || gallery[i].button || gallery[i].description) ? 'has-slide-content' : '';
+            var slideshow_content = has_slide_content ? ('<div class="slide-content">' + (gallery[i].title ? (gallery[i].link ? '<h4 class="slide-title"><a href="'+gallery[i].link+'">'+gallery[i].title+'</a></h4>' : '<h4 class="slide-title">'+gallery[i].title+'</h4>') : '') + (gallery[i].description ? '<div class="slide-description">'+gallery[i].description+'</div>' : '') + (gallery[i].button ? '<div class="slide-button"><a href="'+gallery[i].button_link+'" '+(gallery[i].target_blank == '1' ? 'target="_blank"' : '' )+ 'class="btn">'+gallery[i].button+'</a></div>' : '') + '</div>') : '';
+            var slideshow_slide = '<li class="slide '+has_slide_content+'" style="background-image:url('+gallery[i].image.full+')">' + slideshow_content + '</li>';
+            $('.slideshow .slides').append(slideshow_slide);
+        }
+
+		$('.slideshow-home, .slideshow-mobile').flexslider({
+			slideshowSpeed: parseInt(theme_options.slideshow_slide_speed * 1000),
+			animationSpeed: 1500,
+			controlNav: true,
+			directionNav: false,
+			selector: ".slides > .slide",
+			start: function() {
+				$('.slideshow').addClass('loaded');
+			}
+		});
+
+		$('.slideshow').removeClass('hidden');
+    }
+}
+
+function destroy_slideshow() {
+    var slideshow = $('.slideshow');
+    if (slideshow.data('flexslider')) {
+        slideshow.removeData('flexslider');
+        slideshow.off('.flexslider');
+        slideshow.html('<div class="flexslider"><ul class="slides"></ul></div>');
+    }
+    slideshow.removeClass('slideshow-mobile slideshow-home loaded').addClass('hidden');
 }
 
 (function($) {

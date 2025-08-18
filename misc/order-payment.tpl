@@ -98,12 +98,27 @@
                                                                 <td class="text-right"><span class="text-nowrap subtotal">{{ order.subtotal|money_with_sign(order.currency) }}</span></td>
                                                             </tr>
 
-                                                            {% if order.coupon %}
-                                                                <tr>
-                                                                    <td class="text-left">{{ 'lang.storefront.order.discount'|t }}</td>
-                                                                    <td class="text-right"><span class="text-nowrap discount">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ order.discount|money_with_sign(order.currency) }}</span></td>
-                                                                </tr>
-                                                            {% endif %}
+                                                            {% if order.discount %}
+																<tr>
+																	<td class="text-left">{{ 'lang.storefront.order.discount'|t }}
+																		{% if order.coupon %}
+																			<br><span class="text-light-gray">{{ 'lang.storefront.order.discount.coupon'|t }} <small>({{ order.coupon.code }})</small></span>
+																		{% endif %}
+																		{% if order.rewards.redeemed %}
+																			<br><span class="text-light-gray">{{ store.settings.rewards.plural_label }} <small>(-{{ order.rewards.total_redeemed|rewards_label }})</small></span>
+																		{% endif %}
+																	</td>
+																	<td class="text-right">
+																		<span class="no-wrap">{{ '- ' ~ order.discount|money_with_sign(order.currency) }}</span>
+																		{% if order.coupon %}
+																			<br><span class="no-wrap text-light-gray">{{ order.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ order.coupon.discount|money_with_sign(order.currency) }}</span>
+																		{% endif %}
+																		{% if order.rewards.redeemed %}
+																			<br><span class="no-wrap text-light-gray">{{ '- ' ~ order.rewards.discount|money_with_sign(order.currency) }}</span>
+																		{% endif %}
+																	</td>
+																</tr>
+															{% endif %}
 
                                                             <tr>
                                                                 <td class="text-left">{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</td>

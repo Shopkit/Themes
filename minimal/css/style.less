@@ -670,6 +670,7 @@ header {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
+	border-radius: @border-radius;
 
 	.loader {
 		position: absolute;
@@ -710,13 +711,58 @@ header {
 	}
 
 	&.slideshow-home {
+		.slide, .slides {
+			height: calc(var(--slideshow_height) * 1px);
+		}
+
+		&.slideshow-full-height {
+			overflow: unset;
+			padding-bottom: 0;
+			margin-bottom: @padding*2;
+			height: calc(100vh - calc(var(--header-height) * 1px));
+
+			.slide, .slides {
+				height: calc(100vh - calc(var(--header-height) * 1px));
+			}
+
+			.flex-control-nav {
+				position: relative;
+				bottom: 0;
+				margin-top: @padding/3;
+			}
+		}
+	}
+
+	&.slideshow-mobile {
+		.slide, .slides {
+			height: calc(var(--slideshow_mobile_height) * 1px);
+		}
+
+		&.slideshow-mobile-full-height {
+			overflow: unset;
+			padding-bottom: 0;
+			margin-bottom: @padding*2;
+			height: calc(100vh - calc(var(--header-height) * 1px));
+
+			.slide, .slides {
+				height: calc(100vh - calc(var(--header-height) * 1px));
+			}
+
+			.flex-control-nav {
+				position: relative;
+				bottom: 0;
+				margin-top: @padding/3;
+			}
+		}
+	}
+
+	&.slideshow-home, &.slideshow-mobile {
 		.loader {
 			top: 50%;
 			margin-top: -@padding;
 		}
 
 		.slide, .slides {
-			height: calc(var(--slideshow_height) * 1px);
 			overflow: hidden;
 		}
 
@@ -731,6 +777,10 @@ header {
 
 	.slide, .slides {
 		.list-reset;
+
+		img {
+			border-radius: @border-radius;
+		}
 	}
 
 	.slide {
@@ -895,6 +945,7 @@ header {
 	width: 0;
 	height: 0;
 	z-index: 9;
+	border-radius: @border-radius;
 
 	&.shown {
 		width: 100%;
@@ -910,6 +961,7 @@ header {
 		.transition(opacity 1s ease);
 		width: 0;
 		opacity: 0;
+		border-radius: @border-radius;
 
 		&.shown {
 			opacity: 1;
@@ -2005,7 +2057,8 @@ body.client-is-wholesale {
 	}
 }
 
-.coupon-code-label > span {
+.coupon-code-label > span,
+.cart-rewards-label > span {
 	display: -webkit-inline-flex;
 	display: inline-flex;
 	-webkit-flex-direction: row;
@@ -2022,7 +2075,8 @@ body.client-is-wholesale {
 		align-self: center;
 	}
 
-	.coupon-code-text {
+	.coupon-code-text,
+	.cart-rewards-text {
 		word-break: break-word;
 		white-space: normal;
 		padding: 3px 10px;
@@ -3508,6 +3562,11 @@ form footer {
 	.well-featured;
 	border: none;
 	border-left: max(5px, calc(var(--well_featured_border_thickness) * 1px)) solid;
+
+	a {
+		.link-inherit;
+		text-decoration: underline;
+	}
 }
 
 .callout h4 {
@@ -3704,9 +3763,6 @@ form footer {
 	.g-recaptcha {
 		transform: scale(0.85);
 		transform-origin: 0 0;
-	}
-	.slideshow-home {
-		display: var(--show_gallery_mobile);
 	}
 	.banner-theme-options {
 		.row-fluid {
@@ -4610,7 +4666,7 @@ a.link-neutral {
 	}
 }
 
-a.link-inherit {
+.link-inherit, a.link-inherit {
 	color: inherit;
 }
 

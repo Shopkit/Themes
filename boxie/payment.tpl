@@ -22,35 +22,6 @@ Description: Payment Page
         </div>
     </div>
 
-    {% if errors.form %}
-        <div class="{{ layout_container }}">
-            <div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
-                <h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
-                {{ errors.form }}
-            </div>
-        </div>
-    {% endif %}
-
-    {% if warnings.form %}
-        <div class="{{ layout_container }}">
-            <div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
-                <h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
-                {{ warnings.form }}
-            </div>
-        </div>
-    {% endif %}
-
-    {% if success.form %}
-        <div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
-            <h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
-            {{ success.form }}
-        </div>
-    {% endif %}
-
-    <div class="{{ layout_container }}">
-        {{ generic_macros.cart_notice() }}
-    </div>
-
     {% if cart.items %}
 
         {{ form_open('cart/post/confirm', { 'class' : 'form', 'id' : 'form-payment' }) }}
@@ -66,6 +37,35 @@ Description: Payment Page
                                 <div class="checkout-step active" data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.checkout.client.title'|t }}"><a href="{{ site_url('cart/data') }}">1</a></div>
                                 <div class="checkout-step active" data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.payment.title'|t }}"><a href="{{ site_url('cart/payment') }}">2</a></div>
                                 <div class="checkout-step" data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.confirm.title'|t }}">3</div>
+                            </div>
+
+                            {% if errors.form %}
+                                <div class="{{ layout_container }}">
+                                    <div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
+                                        <h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
+                                        {{ errors.form }}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if warnings.form %}
+                                <div class="{{ layout_container }}">
+                                    <div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
+                                        <h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
+                                        {{ warnings.form }}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if success.form %}
+                                <div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
+                                    <h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
+                                    {{ success.form }}
+                                </div>
+                            {% endif %}
+
+                            <div class="{{ layout_container }}">
+                                {{ generic_macros.cart_notice() }}
                             </div>
 
                             <div class="checkout-container well-featured {{ store.theme_options.well_featured_shadow }}">
@@ -184,14 +184,28 @@ Description: Payment Page
                                         <div class="basket-text">{{ cart.subtotal | money_with_sign }}</div>
                                     </div>
 
-                                    {% if cart.coupon %}
-                                        <div class="basket-total">
-                                            <div class="basket-text">{{ 'lang.storefront.order.discount'|t }}</div>
-                                            <div class="basket-text">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</div>
+                                    {% if cart.discount %}
+                                        <div class="basket-total margin-bottom-xs">
+                                            <div class="basket-text"><a class="link-inherit" data-toggle="collapse" href="#discount-detail" role="button" aria-expanded="true" aria-controls="discount-detail">{{ 'lang.storefront.order.discount'|t }} {{ icons('angle-down') }}</a></div>
+                                            <div class="basket-text">{{ '- ' ~ cart.discount | money_with_sign }}</div>
+                                        </div>
+                                        <div class="collapse show text-muted" id="discount-detail">
+                                            {% if cart.coupon %}
+                                                <div class="basket-total {{ cart.rewards ? 'margin-bottom-xxs' }}">
+                                                    <div class="basket-text margin-left-xs normal">{{ 'lang.storefront.order.discount.coupon'|t }}</div>
+                                                    <div class="basket-text normal">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.coupon.discount | money_with_sign }}</div>
+                                                </div>
+                                            {% endif %}
+                                            {% if cart.rewards %}
+                                                <div class="basket-total">
+                                                    <div class="basket-text margin-left-xs normal">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</div>
+                                                    <div class="basket-text normal">{{ '- ' ~ cart.rewards.discount | money_with_sign }}</div>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% endif %}
 
-                                    <div class="basket-total shipping">
+                                    <div class="basket-total shipping margin-top-sm">
                                         {% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">' ~ icons('question-circle') ~ '</span>' %}
                                         <div class="basket-text">{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</div>
                                         <div class="basket-text shipping-value total-shipping">{{ cart.shipping_methods ? (user.shipping_method ? (cart.coupon.type == 'shipping' or cart.total_shipping == 0 ? 'lang.storefront.cart.order_summary.shipping_total.free'|t : cart.total_shipping | money_with_sign) : no_shipping_text) : cart.total_shipping | money_with_sign }}</div>
@@ -236,6 +250,22 @@ Description: Payment Page
                                             </div>
                                         </div>
 
+                                    {% endif %}
+
+                                    {% if cart.rewards %}
+                                        <hr>
+
+                                        <div class="cart-rewards margin-top margin-bottom">
+                                            <label for="rewards">{{ rewards_label }}</label>
+
+                                            <div class="cart-rewards-label margin-top-xxs">
+                                                <span class="badge badge-light-bg h5">
+                                                    {{ icons('trophy') }}
+                                                    <span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+                                                    <a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
+                                                </span>
+                                            </div>
+                                        </div>
                                     {% endif %}
 
                                     <hr>

@@ -96,10 +96,24 @@ Description: Confirm order page
 						<td align="right" class=" bold text-right" colspan="2" style="border-left: 0;">{{ cart.subtotal | money_with_sign }}</td>
 					</tr>
 
-					{% if cart.coupon %}
+					{% if cart.discount %}
 						<tr>
-							<td class="discount">{{ 'lang.storefront.order.discount'|t }}</td>
-							<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</td>
+							<td class="discount">{{ 'lang.storefront.order.discount'|t }}
+								{% if cart.coupon %}
+									<br><span class="text-muted margin-left-xs">{{ 'lang.storefront.order.discount.coupon'|t }}</span>
+								{% endif %}
+								{% if cart.rewards %}
+									<br><span class="text-muted margin-left-xs">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</span>
+								{% endif %}
+							</td>
+							<td align="right" class="discount text-right" colspan="2" style="border-left: 0;">{{ '- ' ~ cart.discount | money_with_sign }}
+								{% if cart.coupon %}
+									<br><span class="text-muted">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.coupon.discount | money_with_sign }}</span>
+								{% endif %}
+								{% if cart.rewards %}
+									<br><span class="text-muted">{{ '- ' ~ cart.rewards.discount | money_with_sign }}</span>
+								{% endif %}
+							</td>
 						</tr>
 					{% endif %}
 

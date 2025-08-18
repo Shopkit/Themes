@@ -106,6 +106,13 @@ Description: Product Page
 
 					<div class="form-inline">
 
+						{% if store.settings.rewards.active and store.settings.rewards.message_product %}
+							<div class="alert alert-info {{ product.rewards == 0 ? 'hidden' }}">
+								<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+								{{ store.settings.rewards.message_product|rewards_message(product.rewards) }}
+							</div>
+						{% endif %}
+
 						<div class="data-product-info">
 							<input type="number" class="span1" name="qtd" value="1" min="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 
@@ -135,7 +142,7 @@ Description: Product Page
                                     {% set field_required = extra_option.required ? 'required' : '' %}
                                     {% set field_checked = extra_option.required ? 'checked' : '' %}
                                     {% set field_hidden = extra_option.required ? '' : 'hidden' %}
-                                    {% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="255"' %}
+                                    {% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="'~ (extra_option.type == 'textarea' ? '512' : '255') ~'"' %}
                                     {% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'">'~ icons('question-circle') ~'</span>' : ''  %}
                                     {% set field_description = extra_option.description ? extra_option.description : 'lang.storefront.product.extra_options.type_value'|t %}
 

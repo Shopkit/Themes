@@ -174,6 +174,22 @@ Description: Payment Page
 				</div>
 			{% endif %}
 
+			{% if cart.rewards %}
+				<hr>
+
+				<div class="cart-rewards">
+					<h4>{{ rewards_label }}</h4>
+
+					<div class="cart-rewards-label margin-top-xxs">
+						<span class="label label-light-bg h5">
+							{{ icons('trophy') }}
+							<span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+							<a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
+						</span>
+					</div>
+				</div>
+			{% endif %}
+
 			<hr>
 
 			<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} btn-large">{{ 'lang.storefront.layout.button.checkout'|t }} ›</button>

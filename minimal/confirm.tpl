@@ -20,33 +20,33 @@ Description: Confirm order page
 			<li class="active">{{ 'lang.storefront.cart.confirm.title'|t }}</li>
 		</ol>
 
-		{% if errors.form %}
-			<div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
-				<h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
-				{{ errors.form }}
-			</div>
-		{% endif %}
-
-		{% if warnings.form %}
-			<div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
-				<h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
-				{{ warnings.form }}
-			</div>
-		{% endif %}
-
-		{% if success.form %}
-			<div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
-				<h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
-				{{ success.form }}
-			</div>
-		{% endif %}
-
-		{{ generic_macros.cart_notice() }}
-
 		{% if cart.items %}
 			{{ form_open('cart/complete', { 'role' : 'form' }) }}
 				<div class="row">
 					<div class="col-md-8 col-lg-8">
+
+						{% if errors.form %}
+							<div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
+								<h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
+								{{ errors.form }}
+							</div>
+						{% endif %}
+
+						{% if warnings.form %}
+							<div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
+								<h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
+								{{ warnings.form }}
+							</div>
+						{% endif %}
+
+						{% if success.form %}
+							<div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
+								<h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
+								{{ success.form }}
+							</div>
+						{% endif %}
+
+						{{ generic_macros.cart_notice() }}
 
 						<h3 class="margin-top-0">{{ 'lang.storefront.macros.products.title'|t }}</h3>
 
@@ -205,9 +205,20 @@ Description: Confirm order page
 								<dt class="bold">{{ 'lang.storefront.layout.subtotal.title'|t }}:</dt>
 								<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
 
-								{% if cart.coupon %}
-									<dt>{{ 'lang.storefront.order.discount'|t }}</dt>
-									<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</dd>
+								{% if cart.discount %}
+									<dt><a class="link-inherit" data-toggle="collapse" href="#discount-detail" role="button" aria-expanded="true" aria-controls="discount-detail">{{ 'lang.storefront.order.discount'|t }} {{ icons('angle-down') }}</a></dt>
+									<dd class="text-dark price">{{ '- ' ~ cart.discount | money_with_sign }}</dd>
+
+									<div class="collapse in text-muted" id="discount-detail">
+										{% if cart.coupon %}
+											<dt class="margin-left-xs normal">{{ 'lang.storefront.order.discount.coupon'|t }}</dt>
+											<dd>{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.coupon.discount | money_with_sign }}</dd>
+										{% endif %}
+										{% if cart.rewards %}
+											<dt class="margin-left-xs normal">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</dt>
+											<dd>{{ '- ' ~ cart.rewards.discount | money_with_sign }}</dd>
+										{% endif %}
+									</div>
 								{% endif %}
 
 								<dt>{{ 'lang.storefront.cart.order_summary.shipping.title'|t }}</dt>

@@ -241,6 +241,11 @@
 	}
 }
 
+*, *::after, *::before {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
 //Forms
 .form-control, input, select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
 	background-color: var(--input_background_color);
@@ -848,6 +853,20 @@ header {
 				margin: 0 2px 10px 2px;
 			}
 		}
+
+		.cart-buttons {
+			margin: @padding/2;
+
+			.btn {
+				display: block;
+				width: 100%;
+
+				&[href*="cart/data"] {
+					display: var(--show_cart_data_button);
+					justify-content: center;
+				}
+			}
+		}
 	}
 }
 
@@ -1358,7 +1377,22 @@ header {
 	}
 }
 
-.flexslider {
+.slideshow {
+	position: relative;
+
+	&:hover .flex-direction-nav li a {
+		opacity: 1;
+
+		&.flex-next {
+			right: 0;
+		}
+		&.flex-prev {
+			left: 0;
+		}
+	}
+}
+
+.flexslider, .slideshow {
 	&:hover .flex-direction-nav li a {
 		&.flex-next {
 			right: 0;
@@ -2269,8 +2303,8 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 	display: var(--show_coupon_input);
 }
 
-.coupon-code {
-	.coupon-code-label .label {
+.coupon-code, .cart-rewards {
+	.coupon-code-label .label, .cart-rewards-label .label {
 		font-size: @font-size-h6;
 		text-shadow: none;
 		display: -webkit-inline-flex;
@@ -2289,7 +2323,7 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 			align-self: center;
 		}
 
-		.coupon-code-text {
+		.coupon-code-text, .cart-rewards-text {
 			word-break: break-word;
 			white-space: normal;
 			padding: 3px 10px;
@@ -2302,7 +2336,7 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 		}
 	}
 
-	.coupon-code-input {
+	.coupon-code-input, .cart-rewards-input {
 		.input-append .btn {
 			box-shadow: none;
 			border: calc(var(--input_border_thickness)* 1px) solid;
@@ -3539,6 +3573,11 @@ body.client-is-wholesale {
 //Warnings
 .alert {
 	.well-featured;
+
+	a {
+		.link-inherit;
+		text-decoration: underline;
+	}
 }
 
 .alert-error {
@@ -3764,6 +3803,13 @@ body.has-google-translate {
     }
 }
 
+.link-inherit, a.link-inherit {
+    color: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    text-decoration: inherit;
+}
+
 @padding: 30px;
 
 .no-margin { margin: 0 !important; }
@@ -3871,9 +3917,6 @@ body.has-google-translate {
 			left: 0;
 			right: 0;
 		}
-	}
-	.flexslider, .flexslider + hr {
-		display: var(--show_gallery_mobile);
 	}
 }
 

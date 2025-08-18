@@ -817,6 +817,60 @@ header {
 	}
 
 	&.slideshow-home {
+		.slide, .slides {
+			height: calc(var(--slideshow_height) * 1px);
+		}
+
+		&.slideshow-full-height {
+            overflow: unset;
+            padding-bottom: 0;
+            margin-bottom: @padding*2;
+            height: calc(100vh - calc(var(--header-height) * 1px));
+
+            .slide, .slides {
+                height: calc(100vh - calc(var(--header-height) * 1px));
+            }
+
+            .flex-control-nav {
+                position: relative;
+                bottom: 0;
+                margin-top: @padding/3;
+            }
+        }
+
+		.store-description {
+			clip-path: inset(calc(200px - var(--slideshow_height) * 1px) 0px 0px 0);
+		}
+	}
+
+	&.slideshow-mobile {
+		.slide, .slides {
+			height: calc(var(--slideshow_mobile_height) * 1px);
+		}
+
+		&.slideshow-mobile-full-height {
+            overflow: unset;
+            padding-bottom: 0;
+            margin-bottom: @padding*2;
+            height: calc(100vh - calc(var(--header-height) * 1px));
+
+            .slide, .slides {
+                height: calc(100vh - calc(var(--header-height) * 1px));
+            }
+
+            .flex-control-nav {
+                position: relative;
+                bottom: 0;
+                margin-top: @padding/3;
+            }
+        }
+
+		.store-description {
+			clip-path: inset(calc(200px - var(--slideshow_mobile_height) * 1px) 0px 0px 0);
+		}
+	}
+
+	&.slideshow-home, &.slideshow-mobile {
 		//display: none;
 
 		.loader {
@@ -825,7 +879,6 @@ header {
 		}
 
 		.slide, .slides {
-			height: calc(var(--slideshow_height) * 1px);
 			overflow: hidden;
 		}
 
@@ -852,7 +905,6 @@ header {
 			opacity: 0;
 			border-bottom-left-radius: @border-radius-base;
 			border-bottom-right-radius: @border-radius-base;
-			clip-path: inset(calc(200px - var(--slideshow_height) * 1px) 0px 0px 0);
 		}
 	}
 
@@ -1232,6 +1284,11 @@ header {
 	&.fb_iframe_widget, &.fb_iframe_widget span, &.fb_iframe_widget span iframe[style] {
 		width: 100% !important;
 	}
+}
+
+.fb_iframe_widget {
+	overflow: hidden;
+	max-width: 100%;
 }
 
 footer {
@@ -1705,6 +1762,10 @@ footer a {
 		&.active {
 			font-weight: @bold;
 		}
+
+		a {
+			word-break: break-all;
+		}
 	}
 
 	.tab-content, .panel-body {
@@ -1715,6 +1776,10 @@ footer a {
 		p:last-of-type {
 			margin-bottom: 0;
 		}
+	}
+
+	.tab-content {
+		overflow: hidden;
 	}
 
 	.panel {
@@ -1958,7 +2023,8 @@ footer a {
 
 /* Tables */
 
-.coupon-code {
+.coupon-code,
+.cart-rewards {
 	display: var(--show_coupon_input);
 
 	&+hr {
@@ -1975,7 +2041,8 @@ footer a {
 		min-height: 29px;
 	}
 
-	.coupon-code-label .label {
+	.coupon-code-label .label,
+	.cart-rewards-label .label {
 		font-size: @font-size-h5;
 		text-shadow: none;
 		display: -webkit-inline-flex;
@@ -1994,7 +2061,8 @@ footer a {
 			align-self: center;
 		}
 
-		.coupon-code-text {
+		.coupon-code-text,
+		.cart-rewards-text {
 			word-break: break-word;
 			white-space: normal;
 			padding: 3px 10px;
@@ -2791,6 +2859,11 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 //Warnings
 .alert {
 	.well-featured;
+
+	a {
+        color: inherit;
+        text-decoration: underline;
+    }
 }
 
 .alert-error {
@@ -3581,7 +3654,7 @@ a.label-outline:hover {
 		margin-bottom: 0;
 	}
 	.slideshow {
-		&.slideshow-home {
+		&.slideshow-home, &.slideshow-mobile {
 			.slide, .slides {
 				overflow: hidden;
 			}
@@ -3759,10 +3832,6 @@ a.label-outline:hover {
 		text-align: center;
 	}
 
-	.slideshow.slideshow-home {
-		display: var(--show_gallery_mobile);
-	}
-
 	.modal.fade.in {
 		top:25%;
 	}
@@ -3843,6 +3912,10 @@ a.label-outline:hover {
             }
         }
     }
+
+	.product-tabs > ul > li {
+		max-width: 40%;
+	}
 }
 
 @media (min-width: 480px) and (max-width: 767px) {
@@ -3858,6 +3931,15 @@ a.label-outline:hover {
 		&[data-type="slide"].bottom-right {
 			left: 10px;
 			right: 10px;
+		}
+	}
+
+	.pagination {
+		height: auto;
+		margin: 0;
+
+		ul {
+			margin: 0;
 		}
 	}
 }
@@ -3898,7 +3980,7 @@ a.label-outline:hover {
 	.languages-dropdown.hidden-desktop {
 		margin-top: 7px;
 	}
-	.g-recaptcha {
+	.g-recaptcha, .fb_iframe_widget {
 		transform: scale(0.75);
 		transform-origin: 0 0;
 	}

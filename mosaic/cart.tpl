@@ -48,6 +48,13 @@ Description: Shopping cart page
 
 				{{ generic_macros.cart_notice() }}
 
+				{% if store.settings.rewards.active and cart.total_rewards_to_earn and store.settings.rewards.message_checkout %}
+					<div class="alert alert-info">
+						<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+						{{ store.settings.rewards.message_checkout|rewards_message(cart.total_rewards_to_earn) }}
+					</div>
+				{% endif %}
+
 				{{ form_open('cart/post/data') }}
 
 					<div class="table-responsive">
@@ -126,6 +133,30 @@ Description: Shopping cart page
 							</span>
 						</div>
 					</div>
+
+					{% if user.is_logged_in and store.settings.rewards.active and user.rewards %}
+						<hr>
+
+						<div class="cart-rewards">
+							<h4>{{ rewards_label }}</h4>
+							<p class="{{ not cart.rewards ? '' : 'hidden' }}">{{ store.settings.rewards.message_redeem_checkout|rewards_message(user.rewards) }}</p>
+
+							<div class="cart-rewards-input {{ not cart.rewards ? '' : 'hidden' }}">
+								<div class="input-append">
+									<input type="number" value="" class="form-control margin-bottom-0" id="rewards" name="rewards" placeholder="{{ 'lang.storefront.cart.order_summary.cart_rewards.placeholder'|t([rewards_label|lower]) }}" min="0" max="{{ user.rewards }}">
+									<button type="submit" formaction="{{ site_url('cart/rewards/add') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ 'lang.storefront.cart.order_summary.cart_rewards.button'|t }}</button>
+								</div>
+							</div>
+
+							<div class="cart-rewards-label margin-top-xxs {{ cart.rewards ? '' : 'hidden' }}">
+								<span class="label label-light-bg h5">
+									{{ icons('trophy') }}
+									<span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+									<a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
+								</span>
+							</div>
+						</div>
+					{% endif %}
 
 					<hr>
 

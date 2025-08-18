@@ -134,6 +134,13 @@ Description: Product Page
 						</div>
 					</div>
 
+					{% if store.settings.rewards.active and store.settings.rewards.message_product %}
+						<div class="callout callout-info {{ product.rewards == 0 ? 'hidden' }}">
+							<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+							{{ store.settings.rewards.message_product|rewards_message(product.rewards) }}
+						</div>
+					{% endif %}
+
 					{% if product.status == 1 or (product.status == 3 and product.stock.stock_backorder) %}
 
 						{{ form_open_cart(product.id, { 'class' : 'add-cart' }) }}
@@ -169,7 +176,7 @@ Description: Product Page
 										{% set field_required = extra_option.required ? 'required' : '' %}
 										{% set field_checked = extra_option.required ? 'checked' : '' %}
 										{% set field_hidden = extra_option.required ? '' : 'hidden' %}
-										{% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="255"' %}
+										{% set field_size = extra_option.size ? 'maxlength="'~ extra_option.size ~'"' : 'maxlength="'~ (extra_option.type == 'textarea' ? '512' : '255') ~'"' %}
 										{% set field_tip = extra_option.description ? '<span data-toggle="tooltip" data-placement="top" title="'~ extra_option.description ~'">'~ icons('question-circle') ~'</span>' : ''  %}
 										{% set field_description = extra_option.description ? extra_option.description : 'lang.storefront.product.extra_options.type_value'|t %}
 
@@ -289,7 +296,7 @@ Description: Product Page
 						<div id="payment-method-messaging-element"></div>
 
 					{% elseif product.status == 3 %}
-						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
+						<div class="well well-default {{ store.theme_options.well_default_shadow }} data-product-out_of_stock">
 							{{ 'lang.storefront.product.status.out_of_stock'|t }}
 						</div>
 						{{ product_macros.wishlist_block(product, user) }}

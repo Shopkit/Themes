@@ -177,12 +177,23 @@ Github: https://github.com/Shopkit/Default
 									<dd class="bold">{{ cart.subtotal | money_with_sign }}</dd>
 								</div>
 
-								{% if cart.coupon %}
+								{% if cart.discount %}
 									<div class="cart-line">
-										<dt>{{ 'lang.storefront.order.discount'|t }}</dt>
-										<dd class="bold">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</dd>
+										<dt><a class="link-inherit" data-toggle="collapse" href="#discount-detail" role="button" aria-expanded="true" aria-controls="discount-detail">{{ 'lang.storefront.order.discount'|t }} {{ icons('angle-down') }}</a></dt>
+										<dd class="text-dark price">{{ '- ' ~ cart.discount | money_with_sign }}</dd>
 									</div>
-								{% endif %}
+
+									<div class="collapse in text-muted" id="discount-detail">
+										{% if cart.coupon %}
+											<dt class="margin-left-xs normal">{{ 'lang.storefront.order.discount.coupon'|t }}</dt>
+											<dd class="text-dark price normal">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.coupon.discount | money_with_sign }}</dd>
+										{% endif %}
+										{% if cart.rewards %}
+											<dt class="margin-left-xs normal">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</dt>
+											<dd class="text-dark price normal">{{ '- ' ~ cart.rewards.discount | money_with_sign }}</dd>
+										{% endif %}
+									</div>
+                                {% endif %}
 
 								<div class="shipping">
 									{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">'~ icons('question-circle') ~'</span>' %}
@@ -234,6 +245,7 @@ Github: https://github.com/Shopkit/Default
 									<li><a href="{{ site_url('account/orders')}}" class="list-group-item {{ current_page == 'account-orders' ? 'active' }}">{{ icons('shopping-bag', 'text-muted') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
 									<li><a href="{{ site_url('account/profile')}}" class="list-group-item {{ current_page == 'account-profile' ? 'active' }}">{{ icons('user', 'text-muted') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>
 									<li><a href="{{ site_url('account/wishlist')}}" class="list-group-item {{ current_page == 'account-wishlist' ? 'active' }}">{{ icons('heart', 'text-muted') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+									{% if store.settings.rewards.active %}<li><a href="{{ site_url('account/rewards')}}" class="list-group-item {{ current_page == 'account-rewards' ? 'active' }}">{{ icons('trophy', 'text-muted') }} {{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</a></li>{% endif %}
 									<li><a href="{{ site_url('account/logout')}}" class="list-group-item">{{ icons('sign-out', 'text-muted') }} {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
 								</ul>
 							</nav>

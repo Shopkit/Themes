@@ -74,7 +74,7 @@
                 </div>
             </div>
             {% if product_category.active and products_per_row >= 4 %}
-                <div class="product-category text-truncate {{ category_badges[product_category.id|last] }} d-none d-md-block margin-top-xs" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
+                <div class="product-category text-truncate {{ category_badges[product_category.id|last] }} margin-top-xs" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
             {% endif %}
         </div>
     </div>
@@ -211,40 +211,13 @@
 {% endmacro %}
 
 {% macro gallery() %}
-    {% if store.gallery and (current_page in store.theme_options.gallery_location or 'all' in store.theme_options.gallery_location) %}
+    {% if (store.gallery or store.theme_options.mobile_gallery) and (current_page in store.theme_options.gallery_location or 'all' in store.theme_options.gallery_location) %}
         {% set layout_container = store.theme_options.layout_container == 'fluid' ? 'container-fluid' : 'container' %}
 
-        <div class="home-slideshow section">
+        <div class="home-slideshow section {{ store.theme_options.slideshow_full_height }} {{ store.theme_options.slideshow_mobile_full_height }}">
             <div class="{{ layout_container }}">
                 <div class="slideshow-container">
-
-                    <div class="slideshow-gallery">
-                        {% for gallery in store.gallery %}
-
-                            {% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
-
-                            <div class="slide {{ has_slide_content }}" style="background-image:url({{ gallery.image.full }});background-size: cover;background-position: center center;background-repeat: no-repeat;">
-                                {% if has_slide_content %}
-                                    <div class="slideshow-overlay"></div>
-                                    <div class="slideshow-details">
-                                        {% if gallery.title %}
-                                            {% if gallery.link %}
-                                                <h1 class="slideshow-title title"><a href="{{ gallery.link }}" class="link-inherit">{{ gallery.title }}</a></h1>
-                                            {% else %}
-                                                <h1 class="slideshow-title title">{{ gallery.title }}</h1>
-                                            {% endif %}
-                                        {% endif %}
-                                        {% if gallery.description %}
-                                            <div class="slideshow-description">{{ gallery.description }}</div>
-                                        {% endif %}
-                                        {% if gallery.button %}
-                                            <a class="slideshow-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ gallery.button_link }}" {{ gallery.target_blank == '1' ? 'target="_blank"' }} role="button">{{ gallery.button }}</a>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    <div class="slideshow"></div>
                 </div>
             </div>
         </div>

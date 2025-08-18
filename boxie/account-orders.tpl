@@ -24,6 +24,13 @@ Description: Orders account page
                     {% if user.order_detail %}
                         {# Template for order detail #}
 
+                        {% if store.settings.rewards.reviews and store.settings.rewards.message_reviews %}
+                            <div class="callout callout-info">
+                                <i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+                                {{ store.settings.rewards.message_reviews|rewards_message(store.settings.rewards.reviews_ratio) }}
+                            </div>
+                        {% endif %}
+
                         <h3 class="margin-bottom-sm margin-top-0 text-gray light">{{ 'lang.storefront.order.label'|t }} #{{ user.order_detail.id }}</h3>
 
                         {% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
@@ -223,10 +230,24 @@ Description: Orders account page
                                                     </div>
                                                 {% endif %}
 
-                                                {% if user.order_detail.coupon_code %}
+                                                {% if user.order_detail.discount %}
                                                     <div class="order-cart-line">
-                                                        <div class="order-cart-text">{{ 'lang.storefront.order.discount'|t }} <small class="text-muted">({{user.order_detail.coupon_code}})</small>:</div>
-                                                        <div class="order-cart-text">- {{ user.order_detail.discount|money_with_sign(user.order_detail.currency) }}</div>
+                                                        <div class="order-cart-text">{{ 'lang.storefront.order.discount'|t }}:
+                                                            {% if user.order_detail.coupon %}
+                                                                <br><span>{{ 'lang.storefront.order.discount.coupon'|t }} <small class="text-muted">({{ user.order_detail.coupon.code }})</small>:</span>
+                                                            {% endif %}
+                                                            {% if user.order_detail.rewards.redeemed %}
+                                                                <br><span>{{ store.settings.rewards.plural_label }} <small class="text-muted">(-{{ user.order_detail.rewards.total_redeemed|rewards_label }})</small>:</span>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="order-cart-text">- {{ user.order_detail.discount|money_with_sign(user.order_detail.currency) }}
+                                                            {% if user.order_detail.coupon %}
+                                                                <br><span>{{ '- ' ~ user.order_detail.coupon.discount|money_with_sign(order.currency) }}</span>
+                                                            {% endif %}
+                                                            {% if user.order_detail.rewards.redeemed %}
+                                                                <br><span>{{ '- ' ~ user.order_detail.rewards.discount|money_with_sign(order.currency) }}</span>
+                                                            {% endif %}
+                                                        </div>
                                                     </div>
                                                 {% endif %}
 
@@ -243,7 +264,7 @@ Description: Orders account page
 
                         {% if user.order_detail.custom_field %}
                             <div class="well well-default {{ store.theme_options.well_default_shadow }}">
-                                {% for custom_field in user.order_detail.custom_field|json_decode %}
+                                {% for custom_field in user.order_detail.custom_field %}
                                     <h4 class="margin-bottom-xxs">{{ custom_field.title }}</h4>
                                     {% if custom_field.data %}
                                         {% for data in custom_field.data %}

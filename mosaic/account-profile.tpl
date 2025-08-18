@@ -35,6 +35,15 @@ Description: Account profile page
 					</div>
 				{% endif %}
 
+				{% if store.settings.rewards.newsletter and not user.subscribe_newsletter %}
+					{% if store.settings.rewards.message_newsletter %}
+						<div class="alert alert-info">
+							<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+							{{ store.settings.rewards.message_newsletter|rewards_message(store.settings.rewards.newsletter_ratio) }}
+						</div>
+					{% endif %}
+				{% endif %}
+
 				{{ form_open('account/save-profile', {'role': 'form'}) }}
 
 					<h3>{{ 'lang.storefront.layout.client.title'|t }}</h3>
@@ -102,7 +111,7 @@ Description: Account profile page
 						<div class="span6">
 							<div class="form-group">
 								<label for="birthday">{{ 'lang.storefront.form.birthday.label'|t }}</label>
-								<input type="date" name="birthday" id="birthday" class="form-control span12" value="{{ user.birthday }}">
+								<input type="date" name="birthday" id="birthday" class="form-control span12" value="{{ user.birthday }}" {{ store.settings.rewards.anniversary and user.birthday ? 'disabled' : '' }}>
 							</div>
 						</div>
 						<div class="span6">

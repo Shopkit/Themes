@@ -14,36 +14,11 @@ Description: About page
 
 			<hr>
 
-			{% if store.gallery %}
-
-				<div class="flexslider">
-					<ul class="slides">
-						{% for gallery in store.gallery %}
-							{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
-							<li class="slide {{ has_slide_content }}">
-								<img src="{{ gallery.image.full }}">
-								{% if has_slide_content %}
-								<div class="slide-content">
-									{% if gallery.title %}
-										{% if gallery.link %}
-											<h4 class="slide-title"><a href="{{ gallery.link }}">{{ gallery.title }}</a></h4>
-										{% else %}
-											<h4 class="slide-title">{{ gallery.title }}</h4>
-										{% endif %}
-									{% endif %}
-									{% if gallery.description %}
-										<div class="slide-description">{{ gallery.description }}</div>
-									{% endif %}
-									{% if gallery.button %}
-										<div class="slide-button">
-											<a href="{{ gallery.button_link }}" class="button">{{ gallery.button }}</a>
-										</div>
-									{% endif %}
-								</div>
-							{% endif %}
-							</li>
-						{% endfor %}
-					</ul>
+			{% if store.gallery or store.theme_options.mobile_gallery %}
+				<div class="slideshow">
+					<div class="flexslider">
+						<ul class="slides"></ul>
+					</div>
 				</div>
 
 				<hr>

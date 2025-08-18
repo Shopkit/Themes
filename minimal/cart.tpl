@@ -19,32 +19,39 @@ Description: Shopping cart page
 
 		{% if cart.items %}
 
-			{% if errors.form %}
-				<div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
-					<h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
-					{{ errors.form }}
-				</div>
-			{% endif %}
-
-			{% if warnings.form %}
-				<div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
-					<h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
-					{{ warnings.form }}
-				</div>
-			{% endif %}
-
-			{% if success.form %}
-				<div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
-					<h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
-					{{ success.form }}
-				</div>
-			{% endif %}
-
-			{{ generic_macros.cart_notice() }}
-
 			{{ form_open('cart/post/data', {'class' : 'form'}) }}
 				<div class="row">
 					<div class="col-md-8 col-lg-8">
+
+						{% if errors.form %}
+							<div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">
+								<h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
+								{{ errors.form }}
+							</div>
+						{% endif %}
+
+						{% if warnings.form %}
+							<div class="callout callout-warning {{ store.theme_options.well_warning_shadow }}">
+								<h4>{{ 'lang.storefront.layout.events.form.warning'|t }}</h4>
+								{{ warnings.form }}
+							</div>
+						{% endif %}
+
+						{% if success.form %}
+							<div class="callout callout-success {{ store.theme_options.well_success_shadow }}">
+								<h4>{{ 'lang.storefront.layout.events.form.success'|t }}</h4>
+								{{ success.form }}
+							</div>
+						{% endif %}
+
+						{{ generic_macros.cart_notice() }}
+
+						{% if store.settings.rewards.active and cart.total_rewards_to_earn and store.settings.rewards.message_checkout %}
+							<div class="callout callout-info">
+								<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+								{{ store.settings.rewards.message_checkout|rewards_message(cart.total_rewards_to_earn) }}
+							</div>
+                        {% endif %}
 
 						<div class="table-cart-products well-featured {{ store.theme_options.well_featured_shadow }} margin-bottom">
 							<div class="table-responsive table-cart-responsive form-inline">
@@ -124,9 +131,20 @@ Description: Shopping cart page
 								<dt class="bold">{{ 'lang.storefront.layout.subtotal.title'|t }}:</dt>
 								<dd class="text-dark price">{{ cart.subtotal | money_with_sign }}</dd>
 
-								{% if cart.coupon %}
-									<dt>{{ 'lang.storefront.order.discount'|t }}</dt>
-									<dd class="text-dark price">{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.discount | money_with_sign }}</dd>
+								{% if cart.discount %}
+									<dt><a class="link-inherit" data-toggle="collapse" href="#discount-detail" role="button" aria-expanded="true" aria-controls="discount-detail">{{ 'lang.storefront.order.discount'|t }} {{ icons('angle-down') }}</a></dt>
+									<dd class="text-dark price">{{ '- ' ~ cart.discount | money_with_sign }}</dd>
+
+									<div class="collapse in text-muted" id="discount-detail">
+										{% if cart.coupon %}
+											<dt class="margin-left-xs normal">{{ 'lang.storefront.order.discount.coupon'|t }}</dt>
+											<dd>{{ cart.coupon.type == 'shipping' ? 'lang.storefront.cart.order_summary.free_shipping'|t : '- ' ~ cart.coupon.discount | money_with_sign }}</dd>
+										{% endif %}
+										{% if cart.rewards %}
+											<dt class="margin-left-xs normal">{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}</dt>
+											<dd>{{ '- ' ~ cart.rewards.discount | money_with_sign }}</dd>
+										{% endif %}
+									</div>
 								{% endif %}
 
 								{% set no_shipping_text = 'lang.storefront.cart.order_summary.shipping.calculating.text'|t ~ ' <span data-toggle="tooltip" data-placement="top" title="' ~ 'lang.storefront.cart.order_summary.shipping.calculating.tooltip'|t ~ '">'~ icons('question-circle') ~'</span>' %}
@@ -181,6 +199,31 @@ Description: Shopping cart page
 									</span>
 								</div>
 							</div>
+
+							<hr>
+
+							{% if user.is_logged_in and store.settings.rewards.active and user.rewards %}
+								<div class="cart-rewards">
+									<label for="rewards">{{ rewards_label }}</label>
+									<p class="{{ not cart.rewards ? '' : 'hidden' }}">{{ store.settings.rewards.message_redeem_checkout|rewards_message(user.rewards) }}</p>
+									<div class="cart-rewards-input {{ not cart.rewards ? '' : 'hidden' }}">
+										<div class="input-group">
+											<input type="number" value="" class="form-control" id="rewards" name="rewards" placeholder="{{ 'lang.storefront.cart.order_summary.cart_rewards.placeholder'|t([rewards_label|lower]) }}" min="0" max="{{ user.rewards }}">
+											<span class="input-group-btn">
+												<button type="submit" formaction="{{ site_url('cart/rewards/add') }}" class="btn btn-default btn-no-shadow">{{ 'lang.storefront.cart.order_summary.cart_rewards.button'|t }}</button>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="cart-rewards-label margin-top-xxs {{ cart.rewards ? '' : 'hidden' }}">
+									<span class="label label-light-bg h5">
+										{{ icons('trophy') }}
+										<span class="cart-rewards-text">{{ cart.rewards.rewards|rewards_label }}</span>
+										<a href="{{ site_url('cart/rewards/remove') }}" class="btn-close">{{ icons('times') }}</a>
+									</span>
+								</div>
+							{% endif %}
 
 							<button type="submit" formaction="{{ site_url('cart/post/data') }}" class="btn btn-block btn-primary {{ store.theme_options.button_primary_shadow }} btn-lg margin-top">{{ icons('shopping-cart') }} {{ 'lang.storefront.layout.button.buy'|t }}</button>
 						</div>

@@ -24,6 +24,13 @@ Description: Orders account page
 				{% if user.order_detail %}
 					{# Template for order detail #}
 
+					{% if store.settings.rewards.reviews and store.settings.rewards.message_reviews %}
+						<div class="alert alert-info">
+							<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+							{{ store.settings.rewards.message_reviews|rewards_message(store.settings.rewards.reviews_ratio) }}
+						</div>
+					{% endif %}
+
 					<h3>{{ 'lang.storefront.order.label'|t }} #{{ user.order_detail.id }}</h3>
 
 					{% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
@@ -217,10 +224,25 @@ Description: Orders account page
 										</tr>
 									{% endif %}
 
-									{% if user.order_detail.coupon_code %}
+									{% if user.order_detail.discount %}
 										<tr>
-											<td colspan="2">{{ 'lang.storefront.order.discount'|t }} <small class="text-muted">({{user.order_detail.coupon_code}})</small></td>
-											<td class="text-right">- {{ user.order_detail.discount|money_with_sign(user.order_detail.currency) }}</td>
+											<td colspan="2">{{ 'lang.storefront.order.discount'|t }}
+												{% if user.order_detail.coupon %}
+													<br><span class="text-muted margin-left-xs">{{ 'lang.storefront.order.discount.coupon'|t }} <small>({{ user.order_detail.coupon.code }})</small></span>
+												{% endif %}
+												{% if user.order_detail.rewards.redeemed %}
+													<br><span class="text-muted margin-left-xs">{{ store.settings.rewards.plural_label }} <small>(-{{ user.order_detail.rewards.total_redeemed|rewards_label }})</small></span>
+												{% endif %}
+											</td>
+											<td class="text-right">
+												<span class="no-wrap">{{ '- ' ~ user.order_detail.discount|money_with_sign(order.currency) }}</span>
+												{% if user.order_detail.coupon %}
+													<br><span class="no-wrap text-muted">{{ '- ' ~ user.order_detail.coupon.discount|money_with_sign(order.currency) }}</span>
+												{% endif %}
+												{% if user.order_detail.rewards.redeemed %}
+													<br><span class="no-wrap text-muted">{{ '- ' ~ user.order_detail.rewards.discount|money_with_sign(order.currency) }}</span>
+												{% endif %}
+											</td>
 										</tr>
 									{% endif %}
 
@@ -235,7 +257,7 @@ Description: Orders account page
 
 					{% if user.order_detail.custom_field %}
 						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
-							{% for custom_field in user.order_detail.custom_field|json_decode %}
+							{% for custom_field in user.order_detail.custom_field %}
 								<h4 class="margin-bottom-xxs">{{ custom_field.title }}</h4>
 								{% if custom_field.data %}
 									{% for data in custom_field.data %}

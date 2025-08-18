@@ -20,6 +20,13 @@ Description: Complete order page
 
 	<h3>{{ 'lang.storefront.order.label'|t }} <strong>#{{ order.id }}</strong></h3>
 
+	{% if store.settings.rewards.active and store.settings.rewards.message_confirm and (user.is_logged_in or user.create_user) and order.rewards.earned %}
+		<div class="alert alert-success">
+			<i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+			{{ store.settings.rewards.message_confirm|rewards_message(order.rewards.total_earned) }}
+		</div>
+	{% endif %}
+
 	<ul class="list-group well-featured {{ store.theme_options.well_featured_shadow }}">
 		<li class="list-group-item">
 			<span class="badge text-h6">{{ order.id }}</span>

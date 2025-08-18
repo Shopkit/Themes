@@ -203,6 +203,7 @@ Version: 1.0
                                     <li class="{{ current_page == 'account-orders' ? 'active' }} dropdown-item"><a href="{{ site_url('account/orders')}}" class="link-inherit">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
                                     <li class="{{ current_page == 'account-profile' ? 'active' }} dropdown-item"><a href="{{ site_url('account/profile')}}" class="link-inherit">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>
                                     <li class="{{ current_page == 'account-wishlist' ? 'active' }} dropdown-item"><a href="{{ site_url('account/wishlist')}}" class="link-inherit">{{ icons('heart') }} {{ 'lang.storefront.layout.wishlist.title'|t }}</a></li>
+                                    {% if store.settings.rewards.active %}<li class="{{ current_page == 'account-rewards' ? 'active' }} dropdown-item"><a href="{{ site_url('account/rewards')}}" class="link-inherit">{{ icons('trophy') }} {{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }} ({{ user.rewards }})</a></li>{% endif %}
                                     <li class="dropdown-item"><a href="{{ site_url('account/logout')}}" class="link-inherit">{{ icons('log-out') }} {{ 'lang.storefront.layout.logout.title'|t }}</a></li>
                                 </div>
                             </div>

@@ -123,36 +123,11 @@
 {% endmacro %}
 
 {% macro gallery() %}
-    {% if store.gallery and (current_page in store.theme_options.gallery_location or 'all' in store.theme_options.gallery_location) %}
-		<section class="slideshow slideshow-home">
+    {% if (store.gallery or store.theme_options.mobile_gallery) and (current_page in store.theme_options.gallery_location or 'all' in store.theme_options.gallery_location) %}
+		<section class="slideshow slideshow-home {{ store.theme_options.slideshow_full_height }} {{ store.theme_options.slideshow_mobile_full_height }}">
 			<div class="loader">{{ icons('sync', 'fa-spin') }}</div>
 			<div class="flexslider">
-				<ul class="slides">
-					{% for gallery in store.gallery %}
-						{% set has_slide_content = gallery.title or gallery.button or gallery.description ? 'has-slide-content' %}
-						<li class="slide {{ has_slide_content }}" style="background-image:url({{ gallery.image.full }})">
-							{% if has_slide_content %}
-							<div class="slide-content">
-								{% if gallery.title %}
-									{% if gallery.link %}
-										<h4 class="slide-title"><a href="{{ gallery.link }}">{{ gallery.title }}</a></h4>
-									{% else %}
-										<h4 class="slide-title">{{ gallery.title }}</h4>
-									{% endif %}
-								{% endif %}
-								{% if gallery.description %}
-									<div class="slide-description">{{ gallery.description }}</div>
-								{% endif %}
-								{% if gallery.button %}
-									<div class="slide-button">
-										<a href="{{ gallery.button_link }}" {{ gallery.target_blank == '1' ? 'target="_blank"' }} class="btn">{{ gallery.button }}</a>
-									</div>
-								{% endif %}
-							</div>
-						{% endif %}
-						</li>
-					{% endfor %}
-				</ul>
+				<ul class="slides"></ul>
 			</div>
 
 			{% if store.description %}

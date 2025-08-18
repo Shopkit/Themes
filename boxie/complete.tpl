@@ -22,6 +22,13 @@ Description: Complete order page
             <div class="row">
                 <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 
+                    {% if store.settings.rewards.active and store.settings.rewards.message_confirm and (user.is_logged_in or user.create_user) and order.rewards.earned %}
+                        <div class="callout callout-success">
+                            <i class="icon margin-right-xxs">{{ icons('trophy') }}</i>
+                            {{ store.settings.rewards.message_confirm|rewards_message(order.rewards.total_earned) }}
+                        </div>
+                    {% endif %}
+
                     <ul class="list-group well-featured {{ store.theme_options.well_featured_shadow }}">
                         <li class="list-group-item list-radio-block text-h5">
                             <span class="badge badge-pill badge-secondary badge-outline text-h6 float-right">{{ order.id }}</span>

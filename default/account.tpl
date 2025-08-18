@@ -55,6 +55,14 @@ Description: User account page
 
     <br>
 
+    {% if store.settings.rewards.active and store.settings.rewards.message_account and user.rewards %}
+        <div class="alert alert-info">
+            <h4><i>{{ icons('trophy') }}</i> {{ rewards_label }}</h4>
+            {{ store.settings.rewards.message_account|rewards_message(user.rewards) }}
+            {{ store.settings.rewards.message_saved_account and user.rewards_savings > 0 ? '<br>' ~ store.settings.rewards.message_saved_account|rewards_message(user.rewards, user.rewards_savings) : '' }}
+        </div>
+    {% endif %}
+
     <h3>{{ 'lang.storefront.account.latest_orders'|t }}</h3>
     {{ account_macros.order_table_list(user.orders[:5]) }}
 
