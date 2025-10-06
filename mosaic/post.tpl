@@ -22,8 +22,26 @@ Description: Blog post Page
 			</p>
 			<br>
 
-			<h1>{{ blog_post.title }}</h1>
-			<p><small class="muted"><em>{{ 'lang.storefront.blog.post_date'|t([blog_post.date|format_datetime('long','none')]) }}</strong></em></small></p>
+			<h1 class="margin-bottom-sm">{{ blog_post.title }}</h1>
+
+			{% if blog_post.author.name or blog_post.date or blog_post.tags %}
+                <div class="post-details small text-muted">
+                    {% if blog_post.author.name %}
+                        <span>{{ 'lang.storefront.blog.post_author'|t([icons('user', 'margin-right-xxs'), site_url('blog?id_author=' ~ blog_post.author.id), blog_post.author.name]) }}</span>
+                    {% endif %}
+                    {% if blog_post.date %}
+                        <span>{{ icons('calendar', 'margin-right-xxs') }}{{ 'lang.storefront.blog.post_date_simple'|t([blog_post.date|format_datetime('long','none')]) }}</span>
+                    {% endif %}
+                    {% if blog_post.tags %}
+                        <span>
+                            {{ icons('tags', 'margin-right-xxs') }}
+                            {% for tag in blog_post.tags %}
+                                <a href="{{ site_url('blog?tag=' ~ tag.handle) }}" class="link-inherit" rel="tag">{{ tag.title }}</a>{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+            {% endif %}
 
 			<hr>
 
@@ -32,7 +50,9 @@ Description: Blog post Page
 				<br><br>
 			{% endif %}
 
-			{{ blog_post.text }}
+			<div class="post-content">
+				{{ blog_post.text }}
+			</div>
 
 			<br>
 

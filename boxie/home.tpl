@@ -82,7 +82,7 @@ Description: Home Page
         {{ generic_macros.reviews_block(reviews) }}
     {% endif %}
 
-    {% set blog = blog_posts() %}
+    {% set blog = blog_posts("limit:#{posts_per_page}") %}
 
     {% if blog %}
         <div class="blog section">

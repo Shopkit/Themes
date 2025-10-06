@@ -1691,11 +1691,9 @@ header {
         flex-direction: column;
     }
 
-    .shopkit-auth-btn-facebook {
-        background-color: #3b5998;
+	.shopkit-auth-btn-facebook {
         text-decoration: none;
         display: inline-block;
-        color: #fff;
         line-height: 100%;
         padding: 10px 15px;
         font-size: @font-size-h6;
@@ -1704,14 +1702,22 @@ header {
         -ms-grid-row-align: center;
         align-self: center;
 		text-align: center;
-        i.fa-facebook, .fa-facebook-square, svg.fa-facebook-f {
-            margin-right: 10px;
-        }
+
         &.disabled {
             cursor: not-allowed;
             .opacity(0.5);
         }
     }
+
+    .shopkit-auth-btn-facebook {
+        background-color: #3b5998;
+        color: #fff;
+
+        i.fa-facebook, .fa-facebook-square, svg.fa-facebook-f {
+            margin-right: 10px;
+        }
+    }
+
     .shopkit-auth-or {
         display: block;
         font-size: @font-size-h6;
@@ -2783,6 +2789,21 @@ a.label-outline:hover {
 
 .gpsr-brand-content {
     display: var(--show_section_gpsr);
+}
+
+.post-details {
+    span {
+        margin-right: @padding/2;
+    }
+
+    a.link-inherit {
+        text-decoration: underline;
+        opacity: 1;
+    }
+}
+
+.blog-text {
+	word-break: break-word;
 }
 
 /* Large desktop */

@@ -15,8 +15,26 @@ Description: Blog post Page
 
 				<a href="{{ site_url('blog') }}" class="text-muted">{{ icons('angle-left') }} &nbsp; {{ 'lang.storefront.blog.title'|t }}</a>
 
-				<h1 class="margin-top-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
-				<p class="small">{{ 'lang.storefront.blog.post_date'|t([blog_post.date|format_datetime('long','none')]) }}</p>
+				<h1 class="margin-top-sm margin-bottom-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
+
+				{% if blog_post.author.name or blog_post.date or blog_post.tags %}
+                    <div class="post-details small text-muted">
+                        {% if blog_post.author.name %}
+                            <span>{{ 'lang.storefront.blog.post_author'|t([icons('user', 'margin-right-xxs'), site_url('blog?id_author=' ~ blog_post.author.id), blog_post.author.name]) }}</span>
+                        {% endif %}
+                        {% if blog_post.date %}
+                            <span>{{ icons('calendar', 'margin-right-xxs') }}{{ 'lang.storefront.blog.post_date_simple'|t([blog_post.date|format_datetime('long','none')]) }}</span>
+                        {% endif %}
+                        {% if blog_post.tags %}
+                            <span>
+                                {{ icons('tags', 'margin-right-xxs') }}
+                                {% for tag in blog_post.tags %}
+                                    <a href="{{ site_url('blog?tag=' ~ tag.handle) }}" class="link-inherit" rel="tag">{{ tag.title }}</a>{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
 				<article class="margin-top">
 
@@ -26,7 +44,7 @@ Description: Blog post Page
 						</div>
 					{% endif %}
 
-					<div>
+					<div class="post-content">
 						{{ blog_post.text }}
 					</div>
 
