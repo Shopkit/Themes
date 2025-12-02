@@ -294,7 +294,14 @@ $(document).ready(function() {
 			smoothHeight: true,
 			prevText: "",
 			nextText: "",
-			start: function() {
+			start: function(slider) {
+				// Play video in first slide if it exists
+				var $firstSlide = $(slider.slides[0]);
+				var $video = $firstSlide.find('.slide-video-element');
+				if ($video.length) {
+					$video[0].play();
+				}
+
 				//Trigger first set of options
 				var default_option = 'false';
 				if (typeof product !== 'undefined' && product.option_groups.length > 0) {
@@ -306,7 +313,7 @@ $(document).ready(function() {
 				}
 
 				if($('body').hasClass('page-product')){
-					var image_height = $('.flex-active-slide img').height();
+					var image_height = $('.flex-active-slide img, .flex-active-slide video').height();
 					$('.flexslider').css('min-height',image_height);
 				}
 
@@ -316,9 +323,22 @@ $(document).ready(function() {
 				}
 
 			},
+			before: function(slider){
+				// Pause all videos
+				$('.slide-video-element').each(function() {
+					this.pause();
+				});
+			},
 			after: function(slider){
+				// Play video in current slide if it exists
+				var $currentSlide = $(slider.slides[slider.currentSlide]);
+				var $video = $currentSlide.find('.slide-video-element');
+				if ($video.length) {
+					$video[0].play();
+				}
+
 				if($('body').hasClass('page-product')){
-					var image_height = $('.flex-active-slide img').height();
+					var image_height = $('.flex-active-slide img, .flex-active-slide video').height();
 					$('.flexslider').css('min-height',image_height);
 
 					if(product.option_groups.length > 0 && theme_options.trigger_thumbnail_option == 'show'){
@@ -398,6 +418,29 @@ $(document).ready(function() {
 				return false;
 			}
 		});
+
+		// Video hover effect for product listings
+		$(document).on({
+			mouseenter: function() {
+				var $this = $(this);
+				var $video = $this.find('.product-hover-video');
+				var $thumb = $this.find('.product-thumb');
+
+				$thumb.css('visibility', 'hidden');
+				$video.css('visibility', 'visible')[0].play();
+			},
+			mouseleave: function() {
+				var $this = $(this);
+				var $video = $this.find('.product-hover-video');
+				var $thumb = $this.find('.product-thumb');
+				var video = $video[0];
+
+				video.pause();
+				video.currentTime = 0;
+				$video.css('visibility', 'hidden');
+				$thumb.css('visibility', 'visible');
+			}
+		}, '.product-list.has-video');
 	});
 
 	$(document).on('change', '.extra-options [data-target]', function(event) {
@@ -656,7 +699,34 @@ function load_slideshow(type, gallery, theme_options) {
         for (var i = 0; i < gallery.length; i++) {
             var has_slide_content = (gallery[i].title || gallery[i].button || gallery[i].description) ? 'has-slide-content' : '';
             var slideshow_content = has_slide_content ? ('<div class="slide-content">' + (gallery[i].title ? (gallery[i].link ? '<h4 class="slide-title"><a href="'+gallery[i].link+'">'+gallery[i].title+'</a></h4>' : '<h4 class="slide-title">'+gallery[i].title+'</h4>') : '') + (gallery[i].description ? '<div class="slide-description">'+gallery[i].description+'</div>' : '') + (gallery[i].button ? '<div class="slide-button"><a href="'+gallery[i].button_link+'" '+(gallery[i].target_blank == '1' ? 'target="_blank"' : '' )+ 'class="button">'+gallery[i].button+'</a></div>' : '') + '</div>') : '';
-            var slideshow_slide = '<li class="slide '+has_slide_content+'"><img src="'+gallery[i].image.full+'">' + slideshow_content + '</li>';
+            var slideshow_slide;
+
+			if (gallery[i].is_video === true || gallery[i].is_video === 'true' || gallery[i].is_video === '1' || gallery[i].is_video === 1 || (gallery[i].video_url && gallery[i].video_url !== '' && gallery[i].video_url !== 'undefined')) {
+                // Create video slide with video element instead of background image
+                var video_url = gallery[i].video_url || gallery[i].url;
+                // Get poster URL - handle both URL strings and IDs
+                var poster_url;
+                if (gallery[i].poster_url) {
+                    // Use poster_url if available (full URL)
+                    poster_url = gallery[i].poster_url;
+                } else if (gallery[i].poster && !isNaN(gallery[i].poster)) {
+                    // If poster is numeric (ID), skip it and use fallbacks
+                    poster_url = gallery[i].thumbnail || gallery[i].image.full;
+                } else {
+                    // Use poster if it's a string URL, or fallback to thumbnail/image
+                    poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
+                }
+                slideshow_slide = '<li class="slide slide-video '+has_slide_content+'">' +
+                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'">' +
+                    '<source src="'+video_url+'" type="video/mp4">' +
+                    'Your browser does not support the video tag.' +
+                    '</video>' +
+                    slideshow_content +
+                    '</li>';
+            } else {
+				slideshow_slide = '<li class="slide '+has_slide_content+'"><img src="'+gallery[i].image.full+'">' + slideshow_content + '</li>';
+			}
+
             $('.slideshow .slides').append(slideshow_slide);
         }
 
@@ -666,7 +736,39 @@ function load_slideshow(type, gallery, theme_options) {
 			controlNav: true,
 			directionNav: true,
 			prevText: "",
-			nextText: ""
+			nextText: "",
+			start: function(slider){
+				// Play video in first slide if it exists
+				var $firstSlide = $(slider.slides[0]);
+				var $video = $firstSlide.find('.slide-video-element');
+				if ($video.length) {
+					$video[0].play();
+
+                    slider.pause();
+                    $video.on('ended', function() {
+                        slider.play();
+                    });
+				}
+			},
+			before: function(slider){
+				// Pause all videos
+				$('.slide-video-element').each(function() {
+					this.pause();
+				});
+			},
+			after: function(slider){
+				// Play video in current slide if it exists
+				var $currentSlide = $(slider.slides[slider.currentSlide]);
+				var $video = $currentSlide.find('.slide-video-element');
+				if ($video.length) {
+					$video[0].play();
+
+                    slider.pause();
+                    $video.on('ended', function() {
+                        slider.play();
+                    });
+				}
+			}
 		});
 
 		$('.slideshow').removeClass('hidden');
@@ -676,6 +778,11 @@ function load_slideshow(type, gallery, theme_options) {
 function destroy_slideshow() {
     var slideshow = $('.slideshow');
     if (slideshow.data('flexslider')) {
+        // Pause and remove all videos before destroying
+        $('.slide-video-element').each(function() {
+            this.pause();
+            this.src = '';
+        });
         slideshow.removeData('flexslider');
         slideshow.off('.flexslider');
         slideshow.html('<div class="flexslider"><ul class="slides"></ul></div>');

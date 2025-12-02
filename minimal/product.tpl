@@ -44,13 +44,29 @@ Description: Product Page
 							<ul class="slides">
 
 								<li class="slide">
-									<a href="{{ product.image.full }}" data-image="{{ product.image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
+									{% if product.image.video_url %}
+										{# Display video with controls #}
+										<video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600">
+											<source src="{{ product.image.video_url }}" type="video/mp4">
+											Your browser does not support the video tag.
+										</video>
+									{% else %}
+										<a href="{{ product.image.full }}" data-image="{{ product.image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
+									{% endif %}
 								</li>
 
 								{% if product.images %}
 									{% for image in product.images %}
 										<li class="slide">
-											<a href="{{ image.full }}" data-image="{{ image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
+											{% if image.video_url %}
+												{# Display video with controls #}
+												<video controls muted autoplay loop poster="{{ image.full }}" class="img-responsive" width="600">
+													<source src="{{ image.video_url }}" type="video/mp4">
+													Your browser does not support the video tag.
+												</video>
+											{% else %}
+												<a href="{{ image.full }}" data-image="{{ image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
+											{% endif %}
 										</li>
 									{% endfor %}
 								{% endif %}
@@ -133,6 +149,10 @@ Description: Product Page
 							</div>
 						</div>
 					</div>
+
+					{% if product.campaign and product.campaign.campaign_layout != 'minimal_layout' %}
+                        {{ generic_macros.product_campaign_block(product.campaign, product.price_vendible) }}
+                    {% endif %}
 
 					{% if store.settings.rewards.active and store.settings.rewards.message_product %}
 						<div class="callout callout-info {{ product.rewards == 0 ? 'hidden' }}">
@@ -311,13 +331,18 @@ Description: Product Page
 
 					{% if product.tabs %}
 						<div class="panel-group product-tabs margin-top" id="product-tabs" role="tablist" aria-multiselectable="true">
-							{% if product.description %}
+							{% if product.description or product.campaign %}
 								<div class="panel panel-default well-featured {{ store.theme_options.well_featured_shadow }}">
 									<div class="panel-heading" role="tab" id="tab_description">
 										<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#product-tabs" href="#panel_description" aria-expanded="true" aria-controls="panel_description">{{ 'lang.storefront.product.description.label'|t }}</a></h4>
 									</div>
 									<div id="panel_description" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab_description">
-										<div class="panel-body">{{ product.description }}</div>
+										<div class="panel-body">
+											{% if product.campaign and product.campaign.campaign_layout == 'minimal_layout' %}
+                                                {{ generic_macros.product_campaign_simple(product.campaign) }}
+                                            {% endif %}
+											{{ product.description }}
+										</div>
 									</div>
 								</div>
 							{% endif %}
@@ -335,6 +360,9 @@ Description: Product Page
 						</div>
 					{% else %}
 						<div class="description">
+							{% if product.campaign and product.campaign.campaign_layout == 'minimal_layout' %}
+                                {{ generic_macros.product_campaign_simple(product.campaign) }}
+                            {% endif %}
 							{{ product.description }}
 						</div>
 					{% endif %}

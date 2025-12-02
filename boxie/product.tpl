@@ -52,14 +52,16 @@ Description: Product Page
                         <div class="card-container" id="gallery">
                             <div class="card-slider">
                                 <div class="card-slide">
-                                    <a class="card-preview" data-image="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" href="#">
+                                    <a class="card-preview" data-image="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" {% if product.image.video_url %}data-video-url="{{ product.image.video_url }}"{% endif %} href="#">
                                         <img class="card-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title|e_attr }}">
+                                        {% if product.image.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
                                     </a>
                                 </div>
                                 {% for image in product.images %}
                                     <div class="card-slide">
-                                        <a class="card-preview" data-image="{{ image.full }}" data-zoom-image="{{ image.full }}" href="#">
+                                        <a class="card-preview" data-image="{{ image.full }}" data-zoom-image="{{ image.full }}" {% if image.video_url %}data-video-url="{{ image.video_url }}"{% endif %} href="#">
                                             <img class="card-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.square }}" alt="{{ product_title|e_attr }}">
+                                            {% if image.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
                                         </a>
                                     </div>
                                 {% endfor %}
@@ -72,7 +74,15 @@ Description: Product Page
                                 <div class="card-status card-status_sale promo-percentage">-<span class="data-promo-percentage">{{ product.price_promo_percentage }}</span>%</div>
                             {% endif %}
                             <div class="card-preview">
-                                <img class="card-pic js-zoom lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" alt="{{ product_title|e_attr }}">
+                                {% if product.image.video_url %}
+                                    {# Display video with controls #}
+                                    <video controls muted autoplay loop poster="{{ product.image.full }}" class="card-pic js-zoom img-responsive" width="600">
+                                        <source src="{{ product.image.video_url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                {% else %}
+                                    <img class="card-pic js-zoom lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" alt="{{ product_title|e_attr }}">
+                                {% endif %}
                             </div>
                             <div class="card-icon">
                                 <svg role="img" viewBox="0 0 22 22" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -129,7 +139,7 @@ Description: Product Page
                         {% set product_barcode = product.barcode and store.theme_options.show_product_barcode == 'show' %}
                         {% if product.stock.stock_show or product_reference or product_barcode %}
                             {% if product.stock.stock_show %}
-                                <div class="card-stock">Stock:<span class="stock"><span class="data-product-stock_qty stock-number">{{ product.stock.stock_qty }}</span> unidades<span></div>
+                                <div class="card-stock">Stock:<span class="stock"><span class="data-product-stock_qty stock-number">{{ 'lang.storefront.account.wishlist.stock_units'|t([product.stock.stock_qty]) }}</span> </div>
                             {% endif %}
                             {% if product_reference %}
                                 <div class="card-code">{{ 'lang.storefront.product.sku.label'|t }}<span class="card-number sku">{{ product.reference }}</span></div>
@@ -137,6 +147,10 @@ Description: Product Page
                             {% if product_barcode %}
                                 <div class="card-code">{{ 'lang.storefront.product.ean.label'|t }}<span class="card-number ean">{{ product.barcode }}</span></div>
                             {% endif %}
+                        {% endif %}
+
+                        {% if product.campaign and product.campaign.campaign_layout != 'minimal_layout' %}
+                            {{ generic_macros.product_campaign_block(product.campaign, product.price_vendible) }}
                         {% endif %}
 
                         {% if store.settings.rewards.active and store.settings.rewards.message_product %}
@@ -342,13 +356,13 @@ Description: Product Page
         </div>
     </div>
 
-    {% if product.description or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
+    {% if product.description or product.campaign or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
         <div class="details section">
             <div class="{{ layout_container }}">
                 <div class="row">
                     <div class="col-xl-6">
                         <ul class="nav" role="tablist">
-                            {% if product.description %}
+                            {% if product.description or product.campaign %}
                                 <li class="nav-item" role="presentation"><a class="nav-link active" href="#tab-details" role="tab" data-toggle="tab"><h1 class="details-title title">{{ 'lang.storefront.product.description.label'|t }}</h1></a></li>
                             {% endif %}
                             {% if product.tabs %}
@@ -367,9 +381,14 @@ Description: Product Page
                     <div class="col-xl-6">
                         <div class="details-list">
                             <div class="tab-content details-item">
-                                {% if product.description %}
+                                {% if product.description or product.campaign %}
                                     <div role="tabpanel" class="tab-pane active details-text" id="tab-details">
-                                        {{ product.description  }}
+                                        {% if product.campaign and product.campaign.campaign_layout == 'minimal_layout' %}
+                                            {{ generic_macros.product_campaign_simple(product.campaign) }}
+                                        {% endif %}
+                                        {% if product.description %}
+                                            {{ product.description }}
+                                        {% endif %}
                                     </div>
                                 {% endif %}
 

@@ -49,7 +49,7 @@ Description: Home Page
 
                     {% if products_count > products_per_page_home %}
                         <div class="products-btns">
-                            <a class="products-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('catalog') }}">Ver Todos</a>
+                            <a class="products-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('catalog') }}">{{ 'lang.storefront.home.random_product.load_more.button'|t }}</a>
                         </div>
                     {% endif %}
                 </div>

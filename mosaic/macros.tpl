@@ -1,11 +1,22 @@
 {# Macros #}
+
+{# Video wrapper macro for product listings - DRY principle #}
+{% macro video_wrapper(product, product_title, css_class = '') %}
+    <div class="product-media-wrapper {{ css_class }}" data-has-video="true">
+        <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400" class="lazy primary-img product-thumb">
+        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}">
+            <source src="{{ product.image.video_url }}" type="video/mp4">
+        </video>
+    </div>
+{% endmacro %}
+
 {% macro product_list(product) %}
 	{% import _self as generic_macros %}
 
 	{% set product_title = product.title|e_attr %}
 	{% set product_url = product.url %}
 
-	<li class="product-id-{{ product.id }} {{ product.status_alias }}" data-id="{{ product.id }}">
+	<li class="product-id-{{ product.id }} product-list {{ product.status_alias }} {{ product.image.video_url ? 'has-video' : '' }}" data-id="{{ product.id }}">
 		<span class="product-badges" data-position="{{ store.theme_options.badges_position }}">
 			{% if product.status_alias == 'out_of_stock' %}
 				<span class="badge out_of_stock">{{ 'lang.storefront.macros.product.badge.out_of_stock'|t }}</span>
@@ -21,7 +32,12 @@
 			{% endif %}
 		</span>
 
-		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
+		{% if product.image.video_url %}
+            {# Use shared video wrapper macro #}
+            {{ _self.video_wrapper(product, product_title) }}
+        {% else %}
+			<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
+		{% endif %}
 
 		<div class="description">
 			<h3><a href="{{ product_url }}">{{ product.title }}</a></h3>
@@ -173,4 +189,28 @@
                 </div>
         </div>
     {% endif %}
+{% endmacro %}
+
+{% macro product_campaign_block(campaign, price_vendible) %}
+    {% if campaign.campaign_layout == 'callout_layout' or campaign.campaign_layout == 'show_countdown' %}
+        {% set price_original = price_vendible / (1 - (campaign.value / 100)) %}
+        {% set discount_value = price_original - price_vendible %}
+        {% set campaign_start_date = campaign.start_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.start_date|date("H:i") %}
+        {% set campaign_end_date = campaign.end_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.end_date|date("H:i") %}
+
+        <div class="alert alert-warning callout-campaign {{ store.theme_options.well_warning_shadow }}">
+            <h4>{{ icons('bullhorn') }} {{ campaign.title }}</h4>
+            <p>{{ 'lang.storefront.product.campaign.full_description'|t([discount_value|money_with_sign, (campaign.value ~ '%'), campaign_start_date, campaign_end_date]) }}</p>
+
+            {% if campaign.campaign_layout == 'show_countdown' %}
+                <div class="campaign-countdown simply-countdown hidden {{ store.theme_options.well_default_shadow }}" data-start-date="{{ campaign.start_date }}" data-end-date="{{ campaign.end_date }}"></div>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro product_campaign_simple(campaign) %}
+    {% set campaign_start_date = campaign.start_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.start_date|date("H:i") %}
+    {% set campaign_end_date = campaign.end_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.end_date|date("H:i") %}
+    <p>{{ campaign.title }}. {{ 'lang.storefront.product.campaign.description'|t([campaign_start_date, campaign_end_date]) }}.</p><hr>
 {% endmacro %}

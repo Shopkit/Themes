@@ -22,14 +22,34 @@ Description: Product Page
 
 			<div class="span4">
 
-				<a href="{{ product.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="product-image lazy"></a>
+				{% if product.image.video_url %}
+					<div class="product-video-wrapper box-medium well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}">
+                        {# Display video with controls #}
+                        <video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600">
+                            <source src="{{ product.image.video_url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+					</div>
+                {% else %}
+					<a href="{{ product.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="product-image lazy"></a>
+				{% endif %}
 
 				{% if product.images %}
 
 					<div class="row thumbs hidden-phone">
-						<div class="span1"><a href="{{ product.image.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" class="lazy"></a></div>
+						<div class="span1">
+							<a href="{{ product.image.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}" {% if product.image.video_url %}data-video-url="{{ product.image.video_url }}"{% endif %}>
+								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" class="lazy">
+								{% if product.image.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
+							</a>
+						</div>
 						{% for thumb in product.images %}
-							<div class="span1"><a href="{{ thumb.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ thumb.square }}" alt="{{ product.title|e_attr }}" class="lazy"></a></div>
+							<div class="span1">
+								<a href="{{ thumb.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}" {% if thumb.video_url %}data-video-url="{{ thumb.video_url }}"{% endif %}>
+									<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ thumb.square }}" alt="{{ product.title|e_attr }}" class="lazy">
+									{% if thumb.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
+								</a>
+							</div>
 						{% endfor %}
 					</div>
 
@@ -81,6 +101,10 @@ Description: Product Page
 				</div>
 
 				<br>
+
+				{% if product.campaign and product.campaign.campaign_layout != 'minimal_layout' %}
+                    {{ generic_macros.product_campaign_block(product.campaign, product.price_vendible) }}
+                {% endif %}
 
 				{% if store.settings.rewards.active and store.settings.rewards.message_product %}
 					<div class="alert alert-info no-margin {{ product.rewards == 0 ? 'hidden' }}">
@@ -263,10 +287,10 @@ Description: Product Page
 			</div>
 
 			<div class="span9">
-				{% if product.description or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
+				{% if product.description or product.campaign or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
 					<div class="product-tabs tabbable margin-top"> <!-- Only required for left/right tabs -->
 						<ul class="nav nav-tabs">
-							{% if product.description %}
+							{% if product.description or product.campaign %}
 								<li class="active">
 									<a href="#tab-description" data-toggle="tab">{{ 'lang.storefront.product.description.label'|t }}</a>
 								</li>
@@ -291,11 +315,12 @@ Description: Product Page
 						</ul>
 
 						<div class="tab-content">
-							{% if product.description %}
+							{% if product.description or product.campaign %}
 								<div class="tab-pane active" id="tab-description">
+									{% if product.campaign and product.campaign.campaign_layout == 'minimal_layout' %}
+                                        {{ generic_macros.product_campaign_simple(product.campaign) }}
+                                    {% endif %}
 									{{ product.description }}
-
-
 								</div>
 							{% endif %}
 							{% if product.tabs %}

@@ -340,7 +340,7 @@ $(document).ready(function() {
     });
 
     // zoom
-    $(".js-zoom").ezPlus({
+    var ezOptions = {
         gallery: "gallery",
         galleryActiveClass: "active",
         zoomWindowWidth: "auto",
@@ -359,14 +359,55 @@ $(document).ready(function() {
             enabled: false,
             showLens: false
         }]
-    });
+    };
+
+    function init_js_zoom() {
+        var img = $(".card-wrap .card-preview img.js-zoom");
+        if (img.length && img.attr('data-zoom-image')) {
+            img.ezPlus(ezOptions);
+        }
+    }
+
+    init_js_zoom();
 
     $(".card-slide a").click(function(e, update_select = true) {
-        if (typeof product !== 'undefined' && product.option_groups.length > 0 && theme_options.trigger_thumbnail_option == 'show') {
+        if (typeof product !== 'undefined') {
             var _this = $(this);
             var image = _this.attr('data-image');
-            if (Modernizr.mq('(min-width: 768px)') && update_select == true){
-                update_product_select(image);
+            var video = _this.attr('data-video-url');
+            var zoom  = _this.data('zoom-image') || image;
+            var image_container = $('.card-wrap .card-preview');
+
+            $("#gallery .card-preview").removeClass("active");
+            _this.addClass("active");
+
+            if (product.option_groups.length > 0 && theme_options.trigger_thumbnail_option == 'show') {
+                var current_image = image_container.find("img.js-zoom");
+                if (current_image.length && current_image.data("ezPlus")) {
+                    try { current_image.data("ezPlus").destroy(); } catch (err) {}
+                }
+            }
+
+            if (video) {
+                image_container.html(
+                    '<video controls muted autoplay loop poster="' + (image || "") + '" class="card-pic" width="600">' +
+                    '<source src="' + video + '" type="video/mp4">' +
+                    "Your browser does not support the video tag." +
+                    "</video>"
+                );
+                image_container.siblings('.card-icon').addClass('hidden');
+            } else {
+                image_container.html(
+                    '<img class="card-pic js-zoom" src="' + image + '" data-zoom-image="' + zoom + '" alt="">'
+                );
+                image_container.siblings('.card-icon').removeClass('hidden');
+                init_js_zoom();
+            }
+
+            if (product.option_groups.length > 0 && theme_options.trigger_thumbnail_option == 'show') {
+                if (Modernizr.mq('(min-width: 768px)') && update_select == true){
+                    update_product_select(image);
+                }
             }
         }
         set_container_height();
@@ -689,6 +730,29 @@ $(document).ready(function() {
 
     var limit_birthday_date = new Date().toISOString().split('T')[0];
     $('.page-account-profile #birthday').attr('max', limit_birthday_date);
+
+    // Video hover effect for product listings
+    $(document).on({
+        mouseenter: function() {
+            var $this = $(this);
+            var $video = $this.find('.product-hover-video');
+            var $thumb = $this.find('.product-thumb');
+
+            $thumb.css('visibility', 'hidden');
+            $video.css('visibility', 'visible')[0].play();
+        },
+        mouseleave: function() {
+            var $this = $(this);
+            var $video = $this.find('.product-hover-video');
+            var $thumb = $this.find('.product-thumb');
+            var video = $video[0];
+
+            video.pause();
+            video.currentTime = 0;
+            $video.css('visibility', 'hidden');
+            $thumb.css('visibility', 'visible');
+        }
+    }, '.product.has-video');
 });
 
 $(window).load(function() {
@@ -1137,9 +1201,64 @@ function load_slideshow(type, gallery, theme_options) {
         for (var i = 0; i < gallery.length; i++) {
             var has_slide_content = (gallery[i].title || gallery[i].button || gallery[i].description) ? 'has-slide-content' : '';
             var slideshow_content = has_slide_content ? ('<div class="slideshow-overlay"></div><div class="slideshow-details">' + (gallery[i].title ? (gallery[i].link ? '<h1 class="slideshow-title title"><a href="'+gallery[i].link+'" class="link-inherit">'+gallery[i].title+'</a></h1>' : '<h1 class="slideshow-title title">'+gallery[i].title+'</h1>') : '') + (gallery[i].description ? '<div class="slideshow-description">'+gallery[i].description+'</div>' : '') + (gallery[i].button ? '<a class="slideshow-btn btn btn-primary" href="'+gallery[i].button_link+'" '+(gallery[i].target_blank == '1' ? 'target="_blank"' : '' )+ '>'+gallery[i].button+'</a>' : '') + '</div>') : '';
-            var slideshow_slide = '<div class="slide '+has_slide_content+'" style="background-image:url('+gallery[i].image.full+'); background-repeat: no-repeat;">' + slideshow_content + '</div>';
+            var slideshow_slide;
+
+            if (gallery[i].is_video === true || gallery[i].is_video === 'true' || gallery[i].is_video === '1' || gallery[i].is_video === 1 || (gallery[i].video_url && gallery[i].video_url !== '' && gallery[i].video_url !== 'undefined')) {
+                // Create video slide with video element instead of background image
+                var video_url = gallery[i].video_url || gallery[i].url;
+                // Get poster URL - handle both URL strings and IDs
+                var poster_url;
+                if (gallery[i].poster_url) {
+                    // Use poster_url if available (full URL)
+                    poster_url = gallery[i].poster_url;
+                } else if (gallery[i].poster && !isNaN(gallery[i].poster)) {
+                    // If poster is numeric (ID), skip it and use fallbacks
+                    poster_url = gallery[i].thumbnail || gallery[i].image.full;
+                } else {
+                    // Use poster if it's a string URL, or fallback to thumbnail/image
+                    poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
+                }
+                slideshow_slide = '<div class="slide slide-video '+has_slide_content+'">' +
+                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'">' +
+                    '<source src="'+video_url+'" type="video/mp4">' +
+                    'Your browser does not support the video tag.' +
+                    '</video>' +
+                    slideshow_content +
+                    '</div>';
+            } else {
+                slideshow_slide = '<div class="slide '+has_slide_content+'" style="background-image:url('+gallery[i].image.full+'); background-repeat: no-repeat;">' + slideshow_content + '</div>';
+            }
+
             $('.slideshow').append(slideshow_slide);
         }
+
+        function pause_slideshow($el){
+            if ($el && $el.length && $el.hasClass('slick-initialized')) {
+                $el.slick('slickPause');
+            }
+        }
+
+        function play_slideshow($el){
+            if ($el && $el.length && $el.hasClass('slick-initialized')) {
+                $el.slick('slickPlay');
+            }
+        }
+
+        $('.slideshow-gallery, .slideshow-gallery-mobile').on('init', function(event, slick){
+            var _slider = $(slick && slick.$slider ? slick.$slider : this);
+            var current_slide = $(this).find('.slick-current');
+            if (current_slide.hasClass('slide-video')) {
+                var video = current_slide.find('.slide-video-element').get(0);
+                if (video) {
+                    video.play();
+
+                    pause_slideshow(_slider);
+                    $(video).off('ended._slickVideoOnce').one('ended._slickVideoOnce', function () {
+                        play_slideshow(_slider);
+                    });
+                }
+            }
+        });
 
         $('.slideshow-gallery, .slideshow-gallery-mobile').removeClass('hidden').slick({
             autoplay: true,
@@ -1153,12 +1272,41 @@ function load_slideshow(type, gallery, theme_options) {
             pauseOnFocus: true,
             pauseOnHover: true
         });
+
+        $('.slideshow-gallery, .slideshow-gallery-mobile').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            // Pause all videos
+            $('.slide-video-element').each(function() {
+                this.pause();
+            });
+        });
+
+        $('.slideshow-gallery, .slideshow-gallery-mobile').on('afterChange', function(event, slick, currentSlide, nextSlide){
+            // Play current slide video
+            var _slider = $(slick && slick.$slider ? slick.$slider : this);
+            var current_slide = $(this).find('.slick-current');
+            if (current_slide.hasClass('slide-video')) {
+                var video = current_slide.find('.slide-video-element').get(0);
+                if (video) {
+                    video.play();
+
+                    pause_slideshow(_slider);
+                    $(video).off('ended._slickVideoOnce').one('ended._slickVideoOnce', function () {
+                        play_slideshow(_slider);
+                    });
+                }
+            }
+        });
     }
 }
 
 function destroy_slideshow() {
     var slideshow = $('.slideshow');
     if (slideshow.hasClass('slick-initialized')) {
+        // Pause and remove all videos before destroying
+        $('.slide-video-element').each(function() {
+            this.pause();
+            this.src = '';
+        });
         slideshow.slick('unslick');
     }
     slideshow.empty().removeClass('slideshow-gallery-mobile slideshow-gallery loaded').addClass('hidden');

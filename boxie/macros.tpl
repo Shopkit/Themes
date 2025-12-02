@@ -1,4 +1,15 @@
 {# Macros #}
+
+{# Video wrapper macro for product listings - DRY principle #}
+{% macro video_wrapper(product, card_thumbnail_type, product_title, css_class = '') %}
+    <div class="product-media-wrapper {{ css_class }}" data-has-video="true">
+        <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400" class="lazy primary-img product-thumb">
+        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}">
+            <source src="{{ product.image.video_url }}" type="video/mp4">
+        </video>
+    </div>
+{% endmacro %}
+
 {% macro product_list(product, category_badges) %}
     {% import _self as generic_macros %}
 
@@ -12,7 +23,7 @@
     {% set card_hover_effect = store.theme_options.card_hover_effect != 'none' ? store.theme_options.card_hover_effect : '' %}
     {% set products_per_row = current_page == 'home' ? (store.theme_options.home_products_per_row is not null ? store.theme_options.home_products_per_row : '4') : (store.theme_options.products_per_row is not null ? store.theme_options.products_per_row : '4') %}
 
-    <div class="product product-id-{{ product.id }} {{ product.status_alias }} {{ card_hover_effect }} {{ show_product_second_image }}" data-id="{{ product.id }}">
+    <div class="product product-id-{{ product.id }} {{ product.status_alias }} {{ card_hover_effect }} {{ show_product_second_image }} {{ product.image.video_url ? 'has-video' : '' }}" data-id="{{ product.id }}">
         <div class="{{ store.theme_options.card_shadow }}">
             <div class="product-view">
                 <span class="product-badges" data-position="{{ store.theme_options.badges_position }}">
@@ -35,7 +46,12 @@
                 </span>
 
                 <a class="product-preview" href="{{ product_url }}" data-thumbnail-type="{{ card_thumbnail_type }}">
-                    <img class="product-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="" />
+                    {% if product.image.video_url %}
+                        {# Use shared video wrapper macro #}
+                        {{ _self.video_wrapper(product, card_thumbnail_type, product_title) }}
+                    {% else %}
+                        <img class="product-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="" />
+                    {% endif %}
                     {% if show_product_second_image %}
                         <span class="secondary-img">
                             <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ second_image }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
@@ -302,4 +318,28 @@
             <a href="{{ popup.interaction_button_button_link }}" class="btn btn-lg" data-unique_id="{{ popup.unique_id }}" {{ popup.interaction_button_button_target_blank ? 'target="_blank"' }} style="background-color:{{ popup.text_color }};color:{{ popup.background_color }};">{{ popup.interaction_button_button_text }}</a>
         </div>
     {% endif %}
+{% endmacro %}
+
+{% macro product_campaign_block(campaign, price_vendible) %}
+    {% if campaign.campaign_layout == 'callout_layout' or campaign.campaign_layout == 'show_countdown' %}
+        {% set price_original = price_vendible / (1 - (campaign.value / 100)) %}
+        {% set discount_value = price_original - price_vendible %}
+        {% set campaign_start_date = campaign.start_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.start_date|date("H:i") %}
+        {% set campaign_end_date = campaign.end_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.end_date|date("H:i") %}
+
+        <div class="callout callout-warning callout-campaign {{ store.theme_options.well_warning_shadow }}">
+            <h4>{{ icons('bullhorn') }} {{ campaign.title }}</h4>
+            <p>{{ 'lang.storefront.product.campaign.full_description'|t([discount_value|money_with_sign, (campaign.value ~ '%'), campaign_start_date, campaign_end_date]) }}</p>
+
+            {% if campaign.campaign_layout == 'show_countdown' %}
+                <div class="campaign-countdown simply-countdown hidden {{ store.theme_options.well_default_shadow }}" data-start-date="{{ campaign.start_date }}" data-end-date="{{ campaign.end_date }}"></div>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro product_campaign_simple(campaign) %}
+    {% set campaign_start_date = campaign.start_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.start_date|date("H:i") %}
+    {% set campaign_end_date = campaign.end_date|format_datetime('long','none') ~ 'lang.storefront.helper.date_separation'|t ~ campaign.end_date|date("H:i") %}
+    <p>{{ campaign.title }}. {{ 'lang.storefront.product.campaign.description'|t([campaign_start_date, campaign_end_date]) }}.</p><hr>
 {% endmacro %}
