@@ -235,7 +235,7 @@
 																				<tr>
 																					{% set product_td_padding_bottom = product.files ? '' : 'padding-bottom:30px;' %}
 
-																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
+																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
 																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
 																					<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{{ product_td_padding_bottom }}">
 																						<strong style="color:#333333;">{{ product.title|replace({(' - ' ~ product.option): ''}) }}</strong>

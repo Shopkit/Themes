@@ -33,8 +33,11 @@ Description: Orders account page
 
 					<h3>{{ 'lang.storefront.order.label'|t }} #{{ user.order_detail.id }}</h3>
 
-					{% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
-					{% if user.order_detail.invoice_url %}<a href="{{ user.order_detail.invoice_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('file-text') }} {{ 'lang.storefront.order.invoice'|t }}</a>{% endif %}
+					<div class="order-action-buttons">
+						{% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
+						{% if user.order_detail.invoice_url %}<a href="{{ user.order_detail.invoice_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('file-text') }} {{ 'lang.storefront.order.invoice'|t }}</a>{% endif %}
+						{% if not user.order_detail.return_request and store.settings.order_return_active and user.order_detail.status == 8 and user.order_detail.delivered_at %}<button type="button" data-toggle="modal" data-target="#return-modal" class="btn btn-default {{ store.theme_options.button_default_shadow }}" target="_blank">{{ icons('undo') }} {{ 'lang.storefront.account.orders.order_detail.return.button'|t }}</button> &nbsp; {% endif %}
+					</div>
 
 					<div class="list-group list-group-horizontal margin-top margin-bottom-0 order-status order-status-{{ user.order_detail.status_alias }} {{ user.order_detail.paid ? 'order-paid' : 'order-not-paid' }}">
 						<div class="row-fluid">
@@ -57,6 +60,79 @@ Description: Orders account page
 						</div>
 					</div>
 					<p class="margin-bottom margin-top-xxs"><a href="{{ site_url('contact?p=') ~ 'lang.storefront.order.order_with_id'|t([user.order_detail.id])|url_encode }}" class="text-underline" target="_blank"><small>{{ 'lang.storefront.account.orders.order_detail.contact'|t }}</small></a></p>
+
+					{% if user.order_detail.return_request %}
+						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
+
+							{% set label_class = 'label-warning' %}
+							{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.pending'|t %}
+
+							{% if  user.order_detail.return_url %}
+								{% set label_class = 'label-default' %}
+								{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.processed'|t %}
+							{% endif %}
+
+							{% if  user.order_detail.status == '9' %}
+								{% set label_class = 'label-success' %}
+								{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.concluded'|t %}
+							{% endif %}
+
+							<h4><i class="fa fa-fw fa-undo"></i> {{ 'lang.storefront.account.orders.order_detail.return.title'|t }} <span class="label {{ label_class }}">{{ label_text }}</span></h4>
+
+							<p>{{ 'lang.storefront.account.orders.order_detail.return.request_date'|t([user.order_detail.return_request|format_datetime('long', 'none')]) }}.</p>
+
+							{% set return_custom_field = null %}
+							{% for field in user.order_detail.custom_field %}
+								{% if return_custom_field is null and field.internal is defined and field.internal.name == 'return_custom_field' %}
+									{% set return_custom_field = field %}
+								{% endif %}
+							{% endfor %}
+
+							<ul class="ul-content">
+								<li><strong>{{ 'lang.storefront.account.orders.order_detail.return.products'|t }}</strong>
+									<ul>
+										{% if return_custom_field.internal.products is defined and return_custom_field.internal.products|length > 0 %}
+											{% for cf_product in return_custom_field.internal.products %}
+												{% if cf_product.title is defined and cf_product.quantity is defined %}
+													<li><span class="label label-outline">{{ cf_product.quantity }}x</span> {{ cf_product.title }}</li>
+												{% else %}
+													{% for sub_product in cf_product %}
+														{% if sub_product.title is defined and sub_product.quantity is defined %}
+															<li><span class="label label-outline">{{ sub_product.quantity }}x</span> {{ sub_product.title }}</li>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</ul>
+								</li>
+
+								{% if return_custom_field.data is defined and return_custom_field.data|length > 0 %}
+									{% for data in return_custom_field.data %}
+										<li class="margin-bottom-0"><strong>{{ data.key }}</strong>: {{ data.value }}</li>
+									{% endfor %}
+								{% endif %}
+							</ul>
+
+							{% if user.order_detail.return_url %}
+								<hr>
+
+								{% if user.order_detail.return_url %}
+									<p>{{ 'lang.storefront.account.orders.order_detail.return.tracking_sub_title'|t }}</p>
+									<ul>
+										<li><strong>{{ 'lang.storefront.account.orders.order_detail.return.tracking_label'|t }}</strong> <a href="{{ user.order_detail.return_tracking_url }}" class="link-inherit text-underline" target="_blank">{{ user.order_detail.return_tracking_code }} {{ icons('external-link') }}</a></li>
+									</ul>
+								{% endif %}
+
+								<a href="{{ site_url('download-return-file/' ~ user.order_detail.hash) }}" target="_blank" class="btn btn-default margin-top-xs">{{ icons('file-text') }} {{ 'lang.storefront.account.orders.order_detail.return.download_guide'|t }}</a>
+							{% else %}
+								{% if user.order_detail.status != '9' %}
+									<hr>
+									<a href="{{ site_url('cancel-return-request/' ~ user.order_detail.hash) }}" class="btn btn-default">{{ icons('trash') }} {{ 'lang.storefront.account.orders.order_detail.return.remove_return'|t }}</a>
+								{% endif %}
+							{% endif %}
+						</div>
+					{% endif %}
 
 					{% if user.order_detail.client_note %}
 						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
@@ -149,7 +225,7 @@ Description: Orders account page
 									{% for product in user.order_detail.products|filter(product => product.is_product) %}
 										<tr>
 											<td width="40">
-												<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="40" class="lazy"></a>
+												<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}" title="{{ product.title|e_attr }}" width="40" class="lazy"></a>
 											</td>
 											<td>
 												<a href="{{ product.url }}">{{ product.title }}</a><br>
@@ -255,9 +331,10 @@ Description: Orders account page
 						</div>
 					{% endif %}
 
-					{% if user.order_detail.custom_field %}
+					{% set filtered_custom_fields = user.order_detail.custom_field|filter(cf => cf.internal.name is not defined or cf.internal.name != 'return_custom_field') %}
+                	{% if filtered_custom_fields|length > 0 %}
 						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
-							{% for custom_field in user.order_detail.custom_field %}
+							{% for custom_field in filtered_custom_fields %}
 								<h4 class="margin-bottom-xxs">{{ custom_field.title }}</h4>
 								{% if custom_field.data %}
 									{% for data in custom_field.data %}

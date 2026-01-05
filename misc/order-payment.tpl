@@ -67,7 +67,7 @@
 
                                                                 {% for product in order.products %}
                                                                     <tr>
-                                                                        <td class="td-product-img"><img src="{{ product.image.square }}" alt="{{ product.title }}" class="order-product-img" /></td>
+                                                                        <td class="td-product-img"><img src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product.title }}" class="order-product-img" /></td>
                                                                         <td style="width:20px;">&nbsp;</td>
                                                                         <td>
                                                                             <strong class="text-dark-gray">{{ product.title }}</strong>

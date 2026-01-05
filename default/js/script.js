@@ -38,6 +38,7 @@ $(document).ready(function() {
 	$('a.fancy').each(function() {
 		var _this = $(this);
 		var is_video = _this.data('video-url');
+		var video_alt = _this.data('video-alt');
 		var base_width = 960
 		var base_height = 540;
 		var max_width = Math.floor($(window).width() * 0.90);
@@ -50,9 +51,9 @@ $(document).ready(function() {
 			'overlayColor': '#fff',
 			'type': is_video ? 'html' : 'image',
 			'content': is_video ? `
-									<video controls autoplay playsinline preload="metadata" style="width:100%;height:auto">
+									<video controls autoplay playsinline preload="metadata" style="width:100%;height:auto" aria-label="${video_alt}">
 										<source src="${_this.data('video-url')}">
-										Your browser does not support the video tag.
+										${video_alt}
 									</video>` : null,
 			width: video_width,
 			height: video_height,
@@ -682,9 +683,9 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<li class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'">' +
+                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
-                    'Your browser does not support the video tag.' +
+                    (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +
                     slideshow_content +
                     '</li>';

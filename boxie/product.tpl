@@ -52,14 +52,14 @@ Description: Product Page
                         <div class="card-container" id="gallery">
                             <div class="card-slider">
                                 <div class="card-slide">
-                                    <a class="card-preview" data-image="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" {% if product.image.video_url %}data-video-url="{{ product.image.video_url }}"{% endif %} href="#">
+                                    <a class="card-preview" data-image="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" {% if product.image.video_url %}data-video-url="{{ product.image.video_url }}" data-video-alt="{{ product.image.alt ? product.image.alt : product_title|e_attr }}"{% endif %} href="#">
                                         <img class="card-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title|e_attr }}">
                                         {% if product.image.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
                                     </a>
                                 </div>
                                 {% for image in product.images %}
                                     <div class="card-slide">
-                                        <a class="card-preview" data-image="{{ image.full }}" data-zoom-image="{{ image.full }}" {% if image.video_url %}data-video-url="{{ image.video_url }}"{% endif %} href="#">
+                                        <a class="card-preview" data-image="{{ image.full }}" data-zoom-image="{{ image.full }}" {% if image.video_url %}data-video-url="{{ image.video_url }}" data-video-alt="{{ image.alt ? image.alt : product_title|e_attr }}"{% endif %} href="#">
                                             <img class="card-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.square }}" alt="{{ product_title|e_attr }}">
                                             {% if image.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
                                         </a>
@@ -76,12 +76,12 @@ Description: Product Page
                             <div class="card-preview">
                                 {% if product.image.video_url %}
                                     {# Display video with controls #}
-                                    <video controls muted autoplay loop poster="{{ product.image.full }}" class="card-pic js-zoom img-responsive" width="600">
+                                    <video controls muted autoplay loop poster="{{ product.image.full }}" class="card-pic js-zoom img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title|e_attr }}">
                                         <source src="{{ product.image.video_url }}" type="video/mp4">
-                                        Your browser does not support the video tag.
+                                        {{ product.image.alt ? product.image.alt : product_title|e_attr }}
                                     </video>
                                 {% else %}
-                                    <img class="card-pic js-zoom lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" alt="{{ product_title|e_attr }}">
+                                    <img class="card-pic js-zoom lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" data-zoom-image="{{ product.image.full }}" alt="{{ product.image.alt ? product.image.alt : product_title|e_attr }}">
                                 {% endif %}
                             </div>
                             <div class="card-icon">

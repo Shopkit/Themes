@@ -120,7 +120,7 @@ Description: Home Page
                 <h2 class="brands-title title title_mb-lg">{{ 'lang.storefront.home.block.brands.title'|t }}</h2>
                 <div class="brands-list">
                     {% for brand in brands %}
-                        <a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.title }}" title="{{ brand.title }}"></a>
+                        <a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
                     {% endfor %}
                 </div>
                 <p class="small margin-top"><a href="{{ site_url('brands') }}" class="text-muted text-underline">{{ 'lang.storefront.brands.title'|t }}</a></p>

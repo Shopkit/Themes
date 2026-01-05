@@ -293,8 +293,9 @@ Version: 4.0
                                             {% if popup.image.full %}
                                                 <div class="popup-image-wrapper">
 													{% if popup.image.video_url %}
-                                                        <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                                        <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                             <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                         </video>
                                                     {% else %}
                                                     	<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -326,8 +327,9 @@ Version: 4.0
                                     {% if popup.image.full and popup.type == 'slide' %}
                                         <div class="popup-image-wrapper">
 											{% if popup.image.video_url %}
-                                                <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                                <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                     <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                 </video>
                                             {% else %}
                                             	<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -570,6 +572,72 @@ Version: 4.0
 				});
 			</script>
 		{% endif %}
+
+		{% if events.return_form_success %}
+            <div class="modal fade" id="return-events-modal" tabindex="-1" role="dialog" aria-labelledby="return-events-modalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                            <div class="text-center">
+                                {% if events.return_form_success %}
+                                    {{ icons('envelope', 'fa-4x text-muted') }}
+                                    <h3 class="text-muted">{{ 'lang.storefront.layout.events.return_form_success.title'|t }}</h3>
+                                    <p>{{ 'lang.storefront.layout.events.return_form_success.text'|t }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function(){
+                    $('#return-events-modal').modal('show');
+                });
+            </script>
+        {% endif %}
+
+        {% if events.return_cancel_success or events.return_cancel_errors %}
+            <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                            <div class="text-center">
+                                {% if events.return_cancel_success %}
+                                    {{ icons('envelope', 'fa-4x text-muted') }}
+                                    <h3 class="text-muted">{{ 'lang.storefront.layout.events.return_cancel_success'|t }}</h3>
+                                {% elseif events.return_cancel_errors %}
+                                    {{ icons('envelope', 'fa-4x text-muted') }}
+                                    <h3 class="text-muted">{{ 'lang.storefront.layout.events.return_cancel_errors'|t }}</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function(){
+                    $('#contact-modal').modal('show');
+                });
+            </script>
+        {% endif %}
 
 		<div class="modal fade" id="user-geolocation-modal" tabindex="-1" role="dialog" aria-labelledby="user-geolocation-modalLabel">
 			<div class="modal-dialog" role="document">

@@ -30,7 +30,7 @@ Description: Blog page
 
 							{% if post.image %}
 								<div class="image-post">
-									<a href="{{ post.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.full }}" alt="{{ post.title|e_attr }}" title="{{ post.title|e_attr }}" class="lazy"></a>
+									<a href="{{ post.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.full }}" alt="{{ post.image.alt ? post.image.alt : post.title|e_attr }}" title="{{ post.title|e_attr }}" class="lazy"></a>
 								</div>
 							{% endif %}
 

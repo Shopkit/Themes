@@ -152,7 +152,7 @@ Version: 1.0
                                 {% for item in cart.items %}
                                     <div class="cart-item" data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
                                         <div class="item-image">
-                                            <a href="{{ item.product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.title|e_attr }}" title="{{ item.title|e_attr }}" class="lazy"></a>
+                                            <a href="{{ item.product_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.image.alt ? item.image.alt : item.title|e_attr }}" title="{{ item.title|e_attr }}" class="lazy"></a>
                                         </div>
 
                                         <div class="details">
@@ -522,8 +522,9 @@ Version: 1.0
                                         {% if popup.image.full %}
                                             <div class="popup-image-wrapper">
                                                 {% if popup.image.video_url %}
-                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                         <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                     </video>
                                                 {% else %}
                                                     <div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -555,8 +556,9 @@ Version: 1.0
                                 {% if popup.image.full and popup.type == 'slide' %}
                                     <div class="popup-image-wrapper">
                                         {% if popup.image.video_url %}
-                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                 <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                             </video>
                                         {% else %}
                                             <div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -837,6 +839,71 @@ Version: 1.0
         <script>
             $(document).ready(function(){
                 $('#contact-modal').modal('show');
+            });
+        </script>
+    {% endif %}
+
+    {% if events.return_form_success %}
+        <div class="modal" id="return-events-modal" tabindex="-1" role="dialog" aria-labelledby="return-events-modalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body padding">
+                        <div class="text-center">
+                            {% if events.return_form_success %}
+                                {{ icons('envelope', 'feather-48') }}
+                                <h2 class="margin-top">{{ 'lang.storefront.layout.events.return_form_success.title'|t }}</h2>
+                                <p>{{ 'lang.storefront.layout.events.return_form_success.text'|t }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }} link-inherit" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function(){
+                $('#return-events-modal').modal('show');
+            });
+        </script>
+    {% endif %}
+
+    {% if events.return_cancel_success or events.return_cancel_errors %}
+        <div class="modal" id="return-form-errors-modal" tabindex="-1" role="dialog" aria-labelledby="return-form-errors-modalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body padding">
+                        <div class="text-center">
+                            {% if events.contact_form_success %}
+                                {{ icons('envelope', 'feather-48') }}
+                                <h2 class="margin-top">{{ 'lang.storefront.layout.events.return_cancel_success'|t }}</h2>
+                            {% endif %}
+
+                            {% if events.contact_form_errors %}
+                                {{ icons('envelope', 'feather-48') }}
+                                <h2 class="margin-top">{{ 'lang.storefront.layout.events.return_cancel_errors'|t }}</h2>
+                                <p>{{ events.contact_form_errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }} link-inherit" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function(){
+                $('#return-form-errors-modal').modal('show');
             });
         </script>
     {% endif %}

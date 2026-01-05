@@ -46,12 +46,12 @@ Description: Product Page
 								<li class="slide">
 									{% if product.image.video_url %}
 										{# Display video with controls #}
-										<video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600">
+										<video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
 											<source src="{{ product.image.video_url }}" type="video/mp4">
-											Your browser does not support the video tag.
+											{{ product.image.alt ? product.image.alt : product_title }}
 										</video>
 									{% else %}
-										<a href="{{ product.image.full }}" data-image="{{ product.image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
+										<a href="{{ product.image.full }}" data-image="{{ product.image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.image.alt ? product.image.alt : product_title }}" title="{{ product_title }}" width="600" class="lazy"></a>
 									{% endif %}
 								</li>
 
@@ -60,12 +60,12 @@ Description: Product Page
 										<li class="slide">
 											{% if image.video_url %}
 												{# Display video with controls #}
-												<video controls muted autoplay loop poster="{{ image.full }}" class="img-responsive" width="600">
+												<video controls muted autoplay loop poster="{{ image.full }}" class="img-responsive" width="600" aria-label="{{ image.alt ? image.alt : product_title }}">
 													<source src="{{ image.video_url }}" type="video/mp4">
-													Your browser does not support the video tag.
+													{{ image.alt ? image.alt : product_title }}
 												</video>
 											{% else %}
-												<a href="{{ image.full }}" data-image="{{ image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" width="600" class="lazy"></a>
+												<a href="{{ image.full }}" data-image="{{ image.full }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ image.alt ? image.alt : product_title }}" title="{{ product_title }}" width="600" class="lazy"></a>
 											{% endif %}
 										</li>
 									{% endfor %}

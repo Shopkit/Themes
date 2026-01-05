@@ -46,7 +46,7 @@ Description: Blog post Page
 			<hr>
 
 			{% if blog_post.image %}
-				<img class="img-stretched lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.full }}" alt="{{ blog_post.title|e_attr }}">
+				<img class="img-stretched lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.full }}" alt="{{ blog_post.image.alt ? blog_post.image.alt : blog_post.title|e_attr }}">
 				<br><br>
 			{% endif %}
 

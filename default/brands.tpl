@@ -25,7 +25,7 @@ Description: Brands list page
 		{% for brand in brands %}
 			<div class="span3 brand brand-id-{{ brand.id }} {{ card_hover_effect }}">
 				<div class="{{ store.theme_options.card_shadow }}">
-					<a href="{{ brand.url }}"><img src="{{ brand.image[card_thumbnail_type] }}" alt="{{ brand.title }}" title="{{ brand.title }}"></a>
+					<a href="{{ brand.url }}"><img src="{{ brand.image[card_thumbnail_type] }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
 					<div class="box">
 						<h3><a href="{{ brand.url }}">{{ brand.title }}</a></h3>
 					</div>

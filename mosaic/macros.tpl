@@ -4,8 +4,9 @@
 {% macro video_wrapper(product, product_title, css_class = '') %}
     <div class="product-media-wrapper {{ css_class }}" data-has-video="true">
         <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400" class="lazy primary-img product-thumb">
-        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}">
+        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
             <source src="{{ product.image.video_url }}" type="video/mp4">
+            {{ product.image.alt ? product.image.alt : product_title }}
         </video>
     </div>
 {% endmacro %}
@@ -36,7 +37,7 @@
             {# Use shared video wrapper macro #}
             {{ _self.video_wrapper(product, product_title) }}
         {% else %}
-			<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
+			<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product_title }}" title="{{ product_title }}" class="lazy">
 		{% endif %}
 
 		<div class="description">
@@ -82,7 +83,7 @@
 	{% set category_url = category.url %}
 
 	<li class="category-id-{{ category.id }}">
-		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.square }}" alt="{{ category_title }}" title="{{ category_title }}" class="lazy">
+		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.square }}" alt="{{ category.image.alt ? category.image.alt : category_title }}" title="{{ category_title }}" class="lazy">
 		<div class="description">
 			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
 			{% if not category.parent == 0 and category.children and show_number_products %}

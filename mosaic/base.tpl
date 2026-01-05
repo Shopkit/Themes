@@ -368,8 +368,9 @@ Description: This is the base layout. It's included in every page with this code
 										{% if popup.image.full %}
 											<div class="popup-image-wrapper">
 												{% if popup.image.video_url %}
-                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                         <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                 	</video>
                                                 {% else %}
 													<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -403,8 +404,9 @@ Description: This is the base layout. It's included in every page with this code
 								{% if popup.image.full and popup.type == 'slide' %}
 									<div class="popup-image-wrapper">
 										{% if popup.image.video_url %}
-                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                 <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                         	</video>
                                         {% else %}
 											<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -429,6 +431,150 @@ Description: This is the base layout. It's included in every page with this code
 				{% endif %}
 			{% endif %}
 		{% endfor %}
+	{% endif %}
+
+	{% if current_page == 'account-orders' %}
+		{% if store.settings.order_return_active and user.order_detail.status == 8 and user.order_detail.delivered_at %}
+			<div class="modal hide fade" id="return-modal" tabindex="-1" role="dialog" aria-labelledby="return-modalLabel">
+				{{ form_open(site_url('return_form/' ~ user.order_detail.id), { 'method' : 'post' }) }}
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
+						<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
+					</div>
+					<div class="modal-body">
+
+						<div class="alert alert-danger hidden">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<h5>{{ 'lang.storefront.layout.events.form.error'|t }}</h5>
+							<div class="errors"></div>
+						</div>
+
+						{% set return_date = store.settings.order_return_time ? user.order_detail.delivered_at|date_modify('+' ~ store.settings.order_return_time ~ ' days') : '' %}
+
+						{% if return_date and return_date < date('now') %}
+							<p>{{ 'lang.storefront.account.orders.order_detail.return.expired'|t(return_date|format_datetime('long', 'none')) }}</p>
+						{% else %}
+							{% if store.settings.order_return_time %}
+								<div class="alert alert-info">
+									<button type="button" class="close" data-dismiss="alert">×</button>
+									<i class="icon margin-right-xxs">{{ icons('info-circle') }}</i>
+									{{ 'lang.storefront.account.orders.order_detail.return.expire'|t(return_date|format_datetime('long', 'none')) }}.
+								</div>
+							{% endif %}
+
+							{% if user.order_detail.products|filter(product => product.is_product) %}
+								<ul class="list-group list-return-products well-featured {{ store.theme_options.well_featured_shadow }}">
+									{% for product in user.order_detail.products|filter(product => product.is_product) %}
+										{% set product_subtotal = (product.price * product.quantity) + product.price_extras %}
+										<li class="list-group-item list-radio-block">
+											<label for="return_product_{{ product.id }}">
+												<div class="list-radio-content">
+													<div class="list-radio-input">
+														<input type="checkbox" name="return[{{ product.id }}][{{ product.id_option ?: '' }}]" id="return-{{ product.id ~ ( product.id_option ? '-' ~ product.id_option : '') }}" value="1" class="return-checkbox no-margin">
+													</div>
+													<div class="list-radio-image padding-right-xs">
+														<img src="{{ product.image.square }}" class="media-object img-thumbnail" width="60" height="60">
+													</div>
+													<div class="list-radio-description">
+														<div class="shipping-method">
+															<h4>{{ product.title|replace({(' - ' ~ product.option): ''}) }}</h4>
+															<p>{{ product.quantity }}x {{ product.price|money_with_sign(user.order_detail.currency) }}{% if product.option %} &mdash; <span>{{ product.option }}</span>{% endif %}</p>
+														</div>
+													</div>
+													<div class="list-radio-qtd">
+														<label for="qtd-{{ product.id ~ ( product.id_option ? '-' ~ product.id_option : '') }}" class="small">{{ 'lang.storefront.account.orders.order_detail.return.quantity'|t }}</label>
+														<input type="number" name="qtd[{{ product.id }}][{{ product.id_option ?: '' }}]" id="qtd-{{ product.id ~ ( product.id_option ? '-' ~ product.id_option : '') }}" class="form-control input-sm return-qtd pull-right no-margin" style="width: 70px;" value="1" min="1" max="{{ product.quantity }}" disabled>
+													</div>
+												</div>
+											</label>
+										</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+
+							<div class="form-group">
+								<label for="reason">{{ 'lang.storefront.account.orders.order_detail.return.reason.label'|t }}</label>
+								<select name="reason" id="reason" class="form-control input-block-level" required>
+									<option value="" selected disabled></option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option1'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option1'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option2'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option2'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option3'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option3'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option4'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option4'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option5'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option5'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option6'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option6'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option7'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option7'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option8'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option8'|t }}</option>
+									<option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option9'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option9'|t }}</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label for="observations">{{ 'lang.storefront.account.orders.order_detail.return.observations.label'|t }}</label>
+								<textarea cols="80" rows="4" class="form-control input-block-level" id="observations" name="observations" placeholder="{{ 'lang.storefront.account.orders.order_detail.return.observations.placeholder'|t }}"></textarea>
+							</div>
+
+							<div class="return-methods form-group">
+								<label for="return_method">{{ 'lang.storefront.account.orders.order_detail.return.method.title'|t }}</label>
+
+								<ul class="list-group well-featured">
+									<li class="list-group-item list-radio-block">
+										<label for="return_method_0">
+											<div class="list-radio-content">
+												<div class="list-radio-input">
+													<input type="radio" name="return_method" id="return_method_0" value="self" required>
+												</div>
+												<div class="list-radio-description">
+													<div class="return-method">
+														{{ 'lang.storefront.account.orders.order_detail.return.method.self'|t }}
+													</div>
+												</div>
+												<div class="list-radio-price">
+												</div>
+											</div>
+										</label>
+									</li>
+									{% if store.settings.order_return_request %}
+										<li class="list-group-item list-radio-block">
+											<label for="return_method_1">
+												<div class="list-radio-content">
+													<div class="list-radio-input">
+														<input type="radio" name="return_method" id="return_method_1" value="pickup" required>
+													</div>
+													<div class="list-radio-description">
+														<div class="return-method">
+															{{ 'lang.storefront.account.orders.order_detail.return.method.pickup'|t }}
+														</div>
+													</div>
+													<div class="list-radio-price">
+													</div>
+												</div>
+											</label>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+
+							{% if store.settings.order_return_page %}
+								<div class="accept_terms form-group">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="accept_terms" id="accept_terms" value="1" required>
+											{{ 'lang.storefront.return.terms'|t([store.settings.order_return_page.url]) }}
+										</label>
+									</div>
+								</div>
+							{% endif %}
+						{% endif %}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
+						{% if not return_date or return_date > date('now') %}
+							<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.account.orders.order_detail.return.submit'|t }}</button>
+						{% endif %}
+					</div>
+				{{ form_close() }}
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{# Events #}
@@ -574,6 +720,45 @@ Description: This is the base layout. It's included in every page with this code
 				{% if events.contact_form_errors %}
 					<h5>{{ 'lang.storefront.layout.events.contact_form_error'|t }}</h5>
 					<p>{{ events.contact_form_errors }}</p>
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if events.return_form_success %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
+			</div>
+			<div class="modal-body">
+				{% if events.return_form_success %}
+					<h5>{{ 'lang.storefront.layout.events.return_form_success.title'|t }}</h5>
+					<p>{{ 'lang.storefront.layout.events.return_form_success.text'|t }}</p>
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if events.contact_form_success or events.contact_form_errors %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
+			</div>
+			<div class="modal-body">
+				{% if events.return_cancel_success %}
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.return_cancel_success'|t }}</h5>
+				{% endif %}
+
+				{% if events.return_cancel_errors %}
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.return_cancel_errors'|t }}</h5>
 				{% endif %}
 			</div>
 			<div class="modal-footer">

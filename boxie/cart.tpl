@@ -72,7 +72,7 @@ Description: Shopping cart page
                                     {% for item in cart.items %}
                                         <div class="cart-item well-featured {{ store.theme_options.well_featured_shadow }}" data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
                                             <a class="cart-preview" href="{{ item.product_url }}">
-                                                <img class="cart-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.title|e }}" title="{{ item.title|e }}">
+                                                <img class="cart-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.image.alt ? item.image.alt : item.title|e }}" title="{{ item.title|e }}">
                                             </a>
                                             <div class="cart-details">
                                                 <div class="row">

@@ -717,9 +717,9 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<li class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'">' +
+                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
-                    'Your browser does not support the video tag.' +
+                    (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +
                     slideshow_content +
                     '</li>';

@@ -31,7 +31,7 @@ Description: Wishlist account page
                                         {% for product in user.wishlist %}
                                             <div class="wishlist-item well-featured {{ store.theme_options.well_featured_shadow }}">
                                                 <a class="item-preview" href="{{ product.url }}">
-                                                    <img class="item-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image }}" alt="{{ product.title|e }}" title="{{ product.title|e }}">
+                                                    <img class="item-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image }}" alt="{{ product.image.alt ? product.image.alt : product.title|e }}" title="{{ product.title|e }}">
                                                 </a>
                                                 <div class="item-details">
                                                     <a class="item-product" href="{{ product.url }}">{{ product.title }}</a>

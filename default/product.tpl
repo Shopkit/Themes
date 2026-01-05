@@ -25,28 +25,28 @@ Description: Product Page
 				{% if product.image.video_url %}
 					<div class="product-video-wrapper box-medium well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}">
                         {# Display video with controls #}
-                        <video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600">
+                        <video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
                             <source src="{{ product.image.video_url }}" type="video/mp4">
-                            Your browser does not support the video tag.
+                            {{ product.image.alt ? product.image.alt : product_title }}
                         </video>
 					</div>
                 {% else %}
-					<a href="{{ product.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="product-image lazy"></a>
+					<a href="{{ product.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy" rel="{{ product.id }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}" class="product-image lazy"></a>
 				{% endif %}
 
 				{% if product.images %}
 
 					<div class="row thumbs hidden-phone">
 						<div class="span1">
-							<a href="{{ product.image.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}" {% if product.image.video_url %}data-video-url="{{ product.image.video_url }}"{% endif %}>
-								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" class="lazy">
+							<a href="{{ product.image.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}" {% if product.image.video_url %}data-video-url="{{ product.image.video_url }}" data-video-alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}"{% endif %}>
+								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}" class="lazy">
 								{% if product.image.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
 							</a>
 						</div>
 						{% for thumb in product.images %}
 							<div class="span1">
-								<a href="{{ thumb.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}" {% if thumb.video_url %}data-video-url="{{ thumb.video_url }}"{% endif %}>
-									<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ thumb.square }}" alt="{{ product.title|e_attr }}" class="lazy">
+								<a href="{{ thumb.full }}" class="fancy well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}" {% if thumb.video_url %}data-video-url="{{ thumb.video_url }}" data-video-alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}"{% endif %}>
+									<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ thumb.square }}" alt="{{ thumb.alt ? thumb.alt : product.title|e_attr }}" class="lazy">
 									{% if thumb.video_url %}<span class="video-indicator-thumb">{{ icons('play-circle') }}</span>{% endif %}
 								</a>
 							</div>

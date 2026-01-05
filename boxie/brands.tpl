@@ -35,7 +35,7 @@ Description: Brands list page
                                         <div class="{{ store.theme_options.card_shadow }}">
                                             <div class="brand-view">
                                                 <a class="brand-preview" href="{{ brand.url }}">
-                                                    <img class="brand-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ brand.image[card_thumbnail_type] }}" alt="{{ brand.title }}" title="{{ brand.title }}" />
+                                                    <img class="brand-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ brand.image[card_thumbnail_type] }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}" />
                                                 </a>
                                                 <a class="brand-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ brand.url }}">{{ 'lang.storefront.macros.button.explore'|t }}</a>
                                             </div>

@@ -375,6 +375,7 @@ $(document).ready(function() {
             var _this = $(this);
             var image = _this.attr('data-image');
             var video = _this.attr('data-video-url');
+            var alt = _this.attr('data-video-alt');
             var zoom  = _this.data('zoom-image') || image;
             var image_container = $('.card-wrap .card-preview');
 
@@ -390,9 +391,9 @@ $(document).ready(function() {
 
             if (video) {
                 image_container.html(
-                    '<video controls muted autoplay loop poster="' + (image || "") + '" class="card-pic" width="600">' +
+                    '<video controls muted autoplay loop poster="' + (image || "") + '" class="card-pic" width="600" aria-label="' + alt + '">' +
                     '<source src="' + video + '" type="video/mp4">' +
-                    "Your browser does not support the video tag." +
+                    alt +
                     "</video>"
                 );
                 image_container.siblings('.card-icon').addClass('hidden');
@@ -1219,9 +1220,9 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<div class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'">' +
+                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
-                    'Your browser does not support the video tag.' +
+                    (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +
                     slideshow_content +
                     '</div>';

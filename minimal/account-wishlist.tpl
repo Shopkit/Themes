@@ -33,7 +33,7 @@ Description: Wishlist account page
 								{% for product in user.wishlist %}
 									<tr>
 										<td class="cart-img">
-											<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius lazy"></a>
+											<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image }}" alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius lazy"></a>
 										</td>
 										<td>
 											<h4 class="normal margin-top-0 margin-bottom-xxs"><a href="{{ product.url }}">{{ product.title }}</a></h4>

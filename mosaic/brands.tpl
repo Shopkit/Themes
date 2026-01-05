@@ -18,7 +18,7 @@ Description: Brands list page
 
 			{% for brand in brands %}
 				<li class="brand-id-{{ brand.id }}">
-					<img src="{{ brand.image.square }}" alt="{{ brand.title }}" title="{{ brand.title }}">
+					<img src="{{ brand.image.square }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}">
 					<div class="description">
 						<h3><a href="{{ brand.url }}">{{ brand.title }}</a></h3>
 

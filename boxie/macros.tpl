@@ -4,8 +4,9 @@
 {% macro video_wrapper(product, card_thumbnail_type, product_title, css_class = '') %}
     <div class="product-media-wrapper {{ css_class }}" data-has-video="true">
         <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400" class="lazy primary-img product-thumb">
-        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}">
+        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
             <source src="{{ product.image.video_url }}" type="video/mp4">
+            {{ product.image.alt ? product.image.alt : product_title }}
         </video>
     </div>
 {% endmacro %}
@@ -50,11 +51,11 @@
                         {# Use shared video wrapper macro #}
                         {{ _self.video_wrapper(product, card_thumbnail_type, product_title) }}
                     {% else %}
-                        <img class="product-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="" />
+                        <img class="product-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="{{ product.image.alt ? product.image.alt : product_title }}" />
                     {% endif %}
                     {% if show_product_second_image %}
                         <span class="secondary-img">
-                            <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ second_image }}" alt="{{ product_title }}" title="{{ product_title }}" class="lazy">
+                            <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ second_image }}" alt="{{ product.images[0].alt ? product.images[0].alt : product_title }}" title="{{ product_title }}" class="lazy">
                         </span>
                     {% endif %}
                 </a>
@@ -101,7 +102,7 @@
     {% set card_thumbnail_type = store.theme_options.catalog_thumbail_type == 'square' ? 'square' : 'thumb' %}
 
     <div class="media">
-        <a class="media-left media-top" href="{{ product.permalink }}"><img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="{{ product_title }}" title="{{ product_title }}" width="50"></a>
+        <a class="media-left media-top" href="{{ product.permalink }}"><img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image[card_thumbnail_type] }}" alt="{{ product.image.alt ? product.image.alt : product_title }}" title="{{ product_title }}" width="50"></a>
         <div class="media-body">
             <h5 class="media-heading bold text-dark"><a href="{{ product.permalink }}" class="link-inherit">{{ product_title }}</a></h5>
             {% if product.price_on_request == true %}
@@ -131,7 +132,7 @@
         <div class="{{ store.theme_options.card_shadow }}">
             <div class="category-view">
                 <a class="category-preview" href="{{ category_url }}">
-                    <img class="category-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image[card_thumbnail_type] }}" alt="{{ category_title }}" title="{{ category_title }}" />
+                    <img class="category-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image[card_thumbnail_type] }}" alt="{{ category.image.alt ? category.image.alt : category_title }}" title="{{ category_title }}" />
                 </a>
                 <a class="category-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ category_url }}">{{ 'lang.storefront.macros.button.explore'|t }}</a>
             </div>

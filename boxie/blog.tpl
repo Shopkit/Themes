@@ -40,7 +40,7 @@ Description: Blog page
                                 {% if post.image %}
                                     <div class="col-lg-3">
                                         <div class="blog-image">
-                                            <a href="{{ post.url }}"><img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.square }}" alt="{{ post.title|e_attr }}" title="{{ post.title|e_attr }}"></a>
+                                            <a href="{{ post.url }}"><img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.square }}" alt="{{ post.image.alt ? post.image.alt : post.title|e_attr }}" title="{{ post.title|e_attr }}"></a>
                                         </div>
                                     </div>
                                 {% endif %}

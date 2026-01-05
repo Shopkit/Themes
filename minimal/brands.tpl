@@ -28,7 +28,7 @@ Description: Brands list page
 								<article class="brand brand-id-{{ brand.id }} {{ card_hover_effect }}">
 
 									<div class="{{ store.theme_options.card_shadow }}">
-										<a href="{{ brand.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ brand.image[card_thumbnail_type] }}" class="img-responsive lazy" alt="{{ brand.title }}" title="{{ brand.title }}" width="400" height="400"></a>
+										<a href="{{ brand.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ brand.image[card_thumbnail_type] }}" class="img-responsive lazy" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}" width="400" height="400"></a>
 
 										<div class="brand-info">
 											<a class="brand-details" href="{{ brand.url }}">

@@ -413,7 +413,7 @@ Github: https://github.com/Shopkit/Default
 							<div class="brands-list">
 								{% for brand in brands %}
 									<div class="offset1 span1 col-brand">
-										<a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.title }}" title="{{ brand.title }}"></a>
+										<a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
 									</div>
 								{% endfor %}
 							</div>
@@ -484,8 +484,9 @@ Github: https://github.com/Shopkit/Default
 										{% if popup.image.full %}
 											<div class="popup-image-wrapper">
 												{% if popup.image.video_url %}
-                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                         <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                     </video>
                                                 {% else %}
 													<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -519,8 +520,9 @@ Github: https://github.com/Shopkit/Default
 								{% if popup.image.full and popup.type == 'slide' %}
 									<div class="popup-image-wrapper">
 										{% if popup.image.video_url %}
-                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}">
+                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
                                                 <source src="{{ popup.image.video_url }}" type="video/mp4">
+                                                            {{ popup.image.alt ? popup.image.alt : popup.title }}
                                             </video>
                                         {% else %}
 											<div class="banner-image" data-size="{{ popup.image_background_size }}" style="background-image:url({{ popup.image.full }});background-size:{{ popup.image_background_size ? popup.image_background_size }};background-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}"></div>
@@ -691,6 +693,45 @@ Github: https://github.com/Shopkit/Default
 				{% if events.contact_form_errors %}
 					<h5 class="text-normal">{{ 'lang.storefront.layout.events.contact_form_error'|t }}</h5>
 					<p>{{ events.contact_form_errors }}</p>
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if events.return_form_success %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
+			</div>
+			<div class="modal-body">
+				{% if events.return_form_success %}
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.return_form_success.title'|t }}</h5>
+					<p>{{ 'lang.storefront.layout.events.return_form_success.text'|t }}</p>
+				{% endif %}
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</a>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if events.return_cancel_success or events.return_cancel_errors %}
+		<div class="modal hide fade modal-alert">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
+			</div>
+			<div class="modal-body">
+				{% if events.return_cancel_success %}
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.return_cancel_success'|t }}</h5>
+				{% endif %}
+
+				{% if events.return_cancel_errors %}
+					<h5 class="text-normal">{{ 'lang.storefront.layout.events.return_cancel_errors'|t }}</h5>
 				{% endif %}
 			</div>
 			<div class="modal-footer">

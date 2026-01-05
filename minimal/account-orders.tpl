@@ -36,8 +36,11 @@ Description: Orders account page
 
 					<h3 class="margin-bottom-sm margin-top-0 text-muted-dark light">{{ 'lang.storefront.order.label'|t }} #{{ user.order_detail.id }}</h3>
 
-					{% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
-					{% if user.order_detail.invoice_url %}<a href="{{ user.order_detail.invoice_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('file-text') }} {{ 'lang.storefront.order.invoice'|t }}</a>{% endif %}
+					<div class="order-action-buttons">
+						{% if user.order_detail.tracking_url %}<a href="{{ user.order_detail.tracking_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('map-marker') }} {{ 'lang.storefront.order.tracking.button'|t }}</a> &nbsp; {% endif %}
+						{% if user.order_detail.invoice_url %}<a href="{{ user.order_detail.invoice_url }}" target="_blank" class="btn btn-default {{ store.theme_options.button_default_shadow }}">{{ icons('file-text') }} {{ 'lang.storefront.order.invoice'|t }}</a>{% endif %}
+						{% if not user.order_detail.return_request and store.settings.order_return_active and user.order_detail.status == 8 and user.order_detail.delivered_at %}<button type="button" data-toggle="modal" data-target="#return-modal" class="btn btn-default" target="_blank">{{ icons('undo') }} {{ 'lang.storefront.account.orders.order_detail.return.button'|t }}</button> &nbsp; {% endif %}
+					</div>
 
 					<div class="list-group list-group-horizontal margin-top margin-bottom-0 order-status order-status-{{ user.order_detail.status_alias }} {{ user.order_detail.paid ? 'order-paid' : 'order-not-paid' }}">
 						<div class="row">
@@ -60,6 +63,81 @@ Description: Orders account page
 						</div>
 					</div>
 					<p class="margin-bottom margin-top-xxs"><a href="{{ site_url('contact?p=') ~ 'lang.storefront.order.order_with_id'|t([user.order_detail.id])|url_encode }}" class="text-underline" target="_blank"><small>{{ 'lang.storefront.account.orders.order_detail.contact'|t }}</small></a></p>
+
+					{% if user.order_detail.return_request %}
+
+						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
+
+							{% set label_class = 'label-warning' %}
+							{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.pending'|t %}
+
+							{% if  user.order_detail.return_url %}
+								{% set label_class = 'label-default' %}
+								{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.processed'|t %}
+							{% endif %}
+
+							{% if  user.order_detail.status == '9' %}
+								{% set label_class = 'label-success' %}
+								{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.concluded'|t %}
+							{% endif %}
+
+							<h4><i class="fa fa-fw fa-undo"></i> {{ 'lang.storefront.account.orders.order_detail.return.title'|t }} <span class="label {{ label_class }}">{{ label_text }}</span></h4>
+
+							<p>{{ 'lang.storefront.account.orders.order_detail.return.request_date'|t([user.order_detail.return_request|format_datetime('long', 'none')]) }}.</p>
+
+							{% set return_custom_field = null %}
+							{% for field in user.order_detail.custom_field %}
+								{% if return_custom_field is null and field.internal is defined and field.internal.name == 'return_custom_field' %}
+									{% set return_custom_field = field %}
+								{% endif %}
+							{% endfor %}
+
+							<ul class="ul-content">
+								<li><strong>{{ 'lang.storefront.account.orders.order_detail.return.products'|t }}</strong>
+									<ul>
+										{% if return_custom_field.internal.products is defined and return_custom_field.internal.products|length > 0 %}
+											{% for cf_product in return_custom_field.internal.products %}
+												{% if cf_product.title is defined and cf_product.quantity is defined %}
+													<li><span class="label label-outline">{{ cf_product.quantity }}x</span> {{ cf_product.title }}</li>
+												{% else %}
+													{% for sub_product in cf_product %}
+														{% if sub_product.title is defined and sub_product.quantity is defined %}
+															<li><span class="label label-outline">{{ sub_product.quantity }}x</span> {{ sub_product.title }}</li>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</ul>
+								</li>
+
+								{% if return_custom_field.data is defined and return_custom_field.data|length > 0 %}
+									{% for data in return_custom_field.data %}
+										<li class="margin-bottom-0"><strong>{{ data.key }}</strong>: {{ data.value }}</li>
+									{% endfor %}
+								{% endif %}
+							</ul>
+
+							{% if user.order_detail.return_url %}
+								<hr>
+
+								{% if user.order_detail.return_url %}
+									<p>{{ 'lang.storefront.account.orders.order_detail.return.tracking_sub_title'|t }}</p>
+									<ul>
+										<li><strong>{{ 'lang.storefront.account.orders.order_detail.return.tracking_label'|t }}</strong> <a href="{{ user.order_detail.return_tracking_url }}" class="link-inherit text-underline" target="_blank">{{ user.order_detail.return_tracking_code }} {{ icons('external-link') }}</a></li>
+									</ul>
+								{% endif %}
+
+								<a href="{{ site_url('download-return-file/' ~ user.order_detail.hash) }}" target="_blank" class="btn btn-default margin-top-xs">{{ icons('file-text') }} {{ 'lang.storefront.account.orders.order_detail.return.download_guide'|t }}</a>
+							{% else %}
+								{% if user.order_detail.status != '9' %}
+									<hr>
+									<a href="{{ site_url('cancel-return-request/' ~ user.order_detail.hash) }}" class="btn btn-default">{{ icons('trash') }} {{ 'lang.storefront.account.orders.order_detail.return.remove_return'|t }}</a>
+								{% endif %}
+							{% endif %}
+						</div>
+
+					{% endif %}
 
 					{% if user.order_detail.client_note %}
 						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
@@ -153,7 +231,7 @@ Description: Orders account page
 									{% for product in user.order_detail.products|filter(product => product.is_product) %}
 										<tr>
 											<td class="cart-img">
-												<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius lazy"></a>
+												<a href="{{ product.url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product.title|e_attr }}" title="{{ product.title|e_attr }}" class="border-radius lazy"></a>
 											</td>
 											<td>
 												<h4 class="normal margin-top-0 margin-bottom-xs"><a href="{{ product.url }}">{{ product.title }}</a></h4>
@@ -259,9 +337,10 @@ Description: Orders account page
 						</div>
 					{% endif %}
 
-					{% if user.order_detail.custom_field %}
+					{% set filtered_custom_fields = user.order_detail.custom_field|filter(cf => cf.internal.name is not defined or cf.internal.name != 'return_custom_field') %}
+					{% if filtered_custom_fields|length > 0 %}
 						<div class="well well-default {{ store.theme_options.well_default_shadow }}">
-							{% for custom_field in user.order_detail.custom_field %}
+							{% for custom_field in filtered_custom_fields %}
 								<h4 class="margin-bottom-xxs">{{ custom_field.title }}</h4>
 								{% if custom_field.data %}
 									{% for data in custom_field.data %}
@@ -274,6 +353,151 @@ Description: Orders account page
 							{% endfor %}
 						</div>
 					{% endif %}
+
+					{% if store.settings.order_return_active and user.order_detail.status == 8 and user.order_detail.delivered_at %}
+                        <div class="modal fade" id="return-modal" tabindex="-1" role="dialog" aria-labelledby="return-modalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    {{ form_open(site_url('return_form/' ~ user.order_detail.id), { 'method' : 'post' }) }}
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
+                                            <h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="callout callout-danger hidden">
+                                                <h4>Erro</h4>
+                                                <div class="errors"></div>
+                                            </div>
+
+                                            {% set return_date = store.settings.order_return_time ? user.order_detail.delivered_at|date_modify('+' ~ store.settings.order_return_time ~ ' days') : '' %}
+
+                                            {% if return_date and return_date < date('now') %}
+                                                <p>{{ 'lang.storefront.account.orders.order_detail.return.expired'|t(return_date|format_datetime('long', 'none')) }}</p>
+                                            {% else %}
+                                                {% if store.settings.order_return_time %}
+                                                    <div class="callout callout-info">
+                                                        <i class="icon margin-right-xxs">{{ icons('info-circle') }}</i>
+                                                        {{ 'lang.storefront.account.orders.order_detail.return.expire'|t(return_date|format_datetime('long', 'none')) }}.
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if user.order_detail.products|filter(product => product.is_product) %}
+                                                    <ul class="list-group list-return-products well-featured">
+                                                        {% for product in user.order_detail.products|filter(product => product.is_product) %}
+                                                            {% set product_subtotal = (product.price * product.quantity) + product.price_extras %}
+                                                            <li class="list-group-item list-radio-block">
+                                                                <label for="return_product_{{ product.id }}">
+                                                                    <div class="list-radio-content">
+                                                                        <div class="list-radio-input">
+                                                                            <input type="checkbox" name="return[{{ product.id }}][{{ product.id_option ?: '' }}]" id="return-{{ product.id ~ ( product.id_option ? '-' ~ product.id_option : '') }}" value="1" class="return-checkbox">
+                                                                        </div>
+                                                                        <div class="list-radio-image padding-right-xs">
+                                                                            <img src="{{ product.image.square }}" class="media-object img-thumbnail" width="50" height="50">
+                                                                        </div>
+                                                                        <div class="list-radio-description">
+                                                                            <div class="shipping-method">
+                                                                                <h4>{{ product.title|replace({(' - ' ~ product.option): ''}) }}</h4>
+                                                                                <p>{{ product.quantity }}x {{ product.price|money_with_sign(user.order_detail.currency) }}{% if product.option %} &mdash; <span>{{ product.option }}</span>{% endif %}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="list-radio-qtd">
+                                                                            <label for="qtd-{{ product.id ~ ( product.id_option ? '-' ~ product.id_option : '') }}" class="small">{{ 'lang.storefront.account.orders.order_detail.return.quantity'|t }}</label><br>
+                                                                            <input type="number" name="qtd[{{ product.id }}][{{ product.id_option ?: '' }}]" id="qtd-{{ product.id ~ ( product.id_option ? '-' ~ product.id_option : '') }}" class="form-control input-sm return-qtd pull-right" style="width: 70px;" value="1" min="1" max="{{ product.quantity }}" disabled>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+
+                                                <div class="form-group">
+                                                    <label for="reason">{{ 'lang.storefront.account.orders.order_detail.return.reason.label'|t }}</label>
+                                                    <select name="reason" id="reason" class="form-control" required>
+                                                        <option value="" selected disabled></option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option1'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option1'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option2'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option2'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option3'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option3'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option4'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option4'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option5'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option5'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option6'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option6'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option7'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option7'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option8'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option8'|t }}</option>
+                                                        <option value="{{ 'lang.storefront.account.orders.order_detail.return.reason.option9'|t }}">{{ 'lang.storefront.account.orders.order_detail.return.reason.option9'|t }}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="observations">{{ 'lang.storefront.account.orders.order_detail.return.observations.label'|t }}</label>
+                                                    <textarea cols="80" rows="4" class="form-control" id="observations" name="observations" placeholder="{{ 'lang.storefront.account.orders.order_detail.return.observations.placeholder'|t }}"></textarea>
+                                                </div>
+
+                                                <div class="return-methods form-group">
+                                                    <label for="return_method">{{ 'lang.storefront.account.orders.order_detail.return.method.title'|t }}</label>
+
+                                                    <ul class="list-group well-featured">
+                                                        <li class="list-group-item list-radio-block">
+                                                            <label for="return_method_0">
+                                                                <div class="list-radio-content">
+                                                                    <div class="list-radio-input">
+                                                                        <input type="radio" name="return_method" id="return_method_0" value="self" required>
+                                                                    </div>
+                                                                    <div class="list-radio-description">
+                                                                        <div class="return-method">
+                                                                           {{ 'lang.storefront.account.orders.order_detail.return.method.self'|t }}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="list-radio-price">
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </li>
+                                                        {% if store.settings.order_return_request %}
+                                                            <li class="list-group-item list-radio-block">
+                                                                <label for="return_method_1">
+                                                                    <div class="list-radio-content">
+                                                                        <div class="list-radio-input">
+                                                                            <input type="radio" name="return_method" id="return_method_1" value="pickup" required>
+                                                                        </div>
+                                                                        <div class="list-radio-description">
+                                                                            <div class="return-method">
+                                                                                {{ 'lang.storefront.account.orders.order_detail.return.method.pickup'|t }}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="list-radio-price">
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </div>
+
+                                                {% if store.settings.order_return_page %}
+                                                    <div class="accept_terms form-group">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" name="accept_terms" id="accept_terms" value="1" required>
+                                                                {{ 'lang.storefront.return.terms'|t([store.settings.order_return_page.url]) }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default {{ store.theme_options.button_default_shadow }}" data-dismiss="modal">{{ 'lang.storefront.layout.button.close'|t }}</button>
+                                            {% if not return_date or return_date > date('now') %}
+                                                <button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.account.orders.order_detail.return.submit'|t }}</button>
+                                            {% endif %}
+                                        </div>
+                                    {{ form_close() }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
 
 				{% else %}
 					{# Template for order list #}

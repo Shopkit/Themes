@@ -54,7 +54,7 @@ Description: Blog page
 							</div>
 
 							{% if post.image %}
-								<p class="span3"><a href="{{ post.url }}"><img class="boxed lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" alt="{{ post.title|e_attr }}"></a></p>
+								<p class="span3"><a href="{{ post.url }}"><img class="boxed lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" alt="{{ post.image.alt ? post.image.alt : post.title|e_attr }}"></a></p>
 							{% endif %}
 
 						</div>

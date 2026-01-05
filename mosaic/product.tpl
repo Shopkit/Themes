@@ -281,12 +281,12 @@ Description: Product Page
 					<li>
 						{% if product.image.video_url %}
 							{# Display video with controls #}
-							<video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600">
+							<video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
 								<source src="{{ product.image.video_url }}" type="video/mp4">
-								Your browser does not support the video tag.
+								{{ product.image.alt ? product.image.alt : product_title }}
 							</video>
 						{% else %}
-							<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.title|e_attr }}" class="lazy">
+							<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.full }}" alt="{{ product.image.alt ? product.image.alt : product_title }}" class="lazy">
 						{% endif %}
 					</li>
 
@@ -294,12 +294,12 @@ Description: Product Page
 						<li>
 							{% if image.video_url %}
 								{# Display video with controls #}
-								<video controls muted autoplay loop poster="{{ image.full }}" class="img-responsive" width="600">
+								<video controls muted autoplay loop poster="{{ image.full }}" class="img-responsive" width="600" aria-label="{{ image.alt ? image.alt : product_title }}">
 									<source src="{{ image.video_url }}" type="video/mp4">
-									Your browser does not support the video tag.
+									{{ image.alt ? image.alt : product_title }}
 								</video>
 							{% else %}
-								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ product.title|e_attr }}" class="lazy">
+								<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ image.full }}" alt="{{ image.alt ? image.alt : product_title }}" class="lazy">
 							{% endif %}
 						</li>
 					{% endfor %}

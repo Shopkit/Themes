@@ -44,7 +44,7 @@ Description: Blog post Page
 		</div>
 
 		{% if blog_post.image %}
-			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.thumb }}" alt="{{ blog_post.title|e_attr }}" class="lazy"></a></p>
+			<p class="span3"><a href="{{ blog_post.image.full }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }} fancy"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ blog_post.image.thumb }}" alt="{{ blog_post.image.alt ? blog_post.image.alt : blog_post.title|e_attr }}" class="lazy"></a></p>
 		{% endif %}
 
 	</div>

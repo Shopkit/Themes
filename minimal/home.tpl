@@ -118,7 +118,7 @@ Description: Home Page
 				<div class="row">
 					{% for brand in brands %}
 						<div class="col-xs-2">
-							<a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.title }}" title="{{ brand.title }}"></a>
+							<a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
 						</div>
 					{% endfor %}
 				</div>

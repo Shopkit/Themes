@@ -362,6 +362,10 @@ textarea.form-control, textarea {
 	}
 }
 
+.well {
+	overflow-wrap: break-word;
+}
+
 .well > h4 {
 	margin-top: 0;
 }
@@ -2278,7 +2282,7 @@ footer a {
 		}
 	}
 
-	.col-right {
+	.col-right .order-status {
 		.list-group-item {
 			position: relative;
 			display: block;
@@ -2344,6 +2348,10 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 .order-status {
 	font-size: @font-size-h4;
 
+	.list-group-item {
+		position: relative;
+	}
+
 	.order-status-total {
 		font-weight: bold;
 		color: var(--price_color);
@@ -2360,7 +2368,7 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 			}
 		}
 
-		&.order-paid .list-group-item {
+		.list-group-item {
 			.alert-success;
 			border-color: var(--well_success_border_color);
 
@@ -2435,15 +2443,19 @@ body:not(.font-awesome-5):not(.remixicon-line):not(.remixicon-fill) {
 	}
 }
 
+.list-group:not(.list-group-horizontal) {
+	.list-group-item {
+		&:last-child {
+			border-bottom: 0;
+		}
+	}
+}
+
 .list-group-item {
 	border: inherit;
 	border-left: 0;
 	border-top: 0;
 	border-right: 0;
-
-	&:last-child {
-		border-bottom: 0;
-	}
 
 	span.price {
 		color: inherit;
@@ -3040,7 +3052,31 @@ body.client-is-wholesale {
 
 .label-default {
 	background-color: inherit;
-	box-shadow: inset 200px 200px rgba(0,0,0,0.5);
+	box-shadow: inset 200px 200px rgba(0,0,0,0.25);
+}
+
+.label-warning {
+	background-color: var(--well_warning_background_color);
+	color: var(--well_warning_text_color);
+	border: 1px solid var(--well_warning_border_color);
+}
+
+.label-info {
+	background-color: var(--well_info_background_color);
+	color: var(--well_info_text_color);
+	border: 1px solid var(--well_info_border_color);
+}
+
+.label-success {
+	background-color: var(--well_success_background_color);
+	color: var(--well_success_text_color);
+	border: 1px solid var(--well_success_border_color);
+}
+
+.label-danger {
+	background-color: var(--well_danger_background_color);
+	color: var(--well_danger_text_color);
+	border: 1px solid var(--well_danger_border_color);
 }
 
 a.label-outline, .label-outline {

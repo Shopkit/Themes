@@ -266,9 +266,9 @@
 																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.paid.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
 																		{% elseif order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -301,7 +301,7 @@
 																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.returned.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -320,7 +320,7 @@
 																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.delivered.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -339,7 +339,7 @@
 																	<td style="padding-top:15px;padding-bottom:15px;"><span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.pickup_available.status'|t }}</span></td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -369,9 +369,9 @@
 																	</td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% elseif order.invoice_permalink %}
-																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
+																			<a href="{{ order.invoice_permalink }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.invoice'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -392,7 +392,7 @@
 																	</td>
 																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
 																		{% if order.tracking_code or order.tracking_url %}
-																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; color:#ffffff; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
+																			<a href="{{ order.tracking_url ?: 'https://track.aftership.com/' ~ order.tracking_code }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.tracking.button'|t }}</a>
 																		{% endif %}
 																	</td>
 																</tr>
@@ -479,6 +479,43 @@
 															</table>
 														</div>
 
+													{% elseif order.status_alias == 'waiting_return' %}
+														{% set have_top_bar = true %}
+														<div style="background-color:#f0ad4e;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+															<table bgcolor="#f0ad4e" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100% !important;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+																<tr>
+																	<td width="40" class="td-img-order-status" style="padding-top:15px;padding-bottom:15px;padding-left:20px;"><img src="{{ assets_url('assets/store/img/waiting.png') }}" width="40" alt="waiting_return" border="0" class="img-order-status"/></td>
+																	<td width="20" style="padding-top:15px;padding-bottom:15px;">
+																		<p>&nbsp;</p>
+																	</td>
+																	<td style="padding-top:15px;padding-bottom:15px;">
+																		<span style="color:#fff;font-size:20px;line-height:130%;">{{ 'lang.email.order.waiting_return.status'|t }}</span>
+																	</td>
+																	<td align="right" style="padding-top:15px;padding-bottom:15px;padding-right:20px;">
+																		{% if order.return_url %}
+																			<a href="{{ store.url ~ 'download-return-file/' ~ order.hash }}" target="_blank" class="btn-header" style="display: inline-block; padding:10px 20px; line-height:100%; background-color:#ffffff; color:#000000; font-weight:700; border-radius:3px; text-decoration:none; font-size:14px; border:1px solid #ffffff; text-align:center; white-space: nowrap;">{{ 'lang.storefront.order.return_tracking.button'|t }}</a>
+																		{% endif %}
+																	</td>
+																</tr>
+															</table>
+															{% if order.return_url %}
+																<div style="background-color:#f0ad4e;border-top: 1px solid #ffffff40;">
+																	<table bgcolor="#f0ad4e" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;">
+																		<tr>
+																			{% set carrier_pickups = {
+																				'ctt': 'http://www.ctt.pt/feapl_2/app/open/stationSearch/stationSearch.jspx',
+																				'dpd': 'https://www.dpdgroup.com/pt/mydpd/parcel-shops/search',
+																				'dhl_parcel': 'https://www.dhl.com/pt-pt/home/as-nossas-divisoes/parcel/home/envios-particulares/dhl-servicepoints.html'
+																			} %}
+																			<td style="padding-top:15px;padding-bottom:15px;padding-left:20px;padding-right:20px;">
+																				<span style="color:#ffffff;font-size:14px;line-height:16px;">{{ 'lang.storefront.order.return.info.text'|t(('orders_carrier_'~ order.return_tracking_carrier)|t) }}.</br>
+																				 <a href="{{ carrier_pickups[order.return_tracking_carrier] }}" target="_blank" style="text-decoration:underline;color:#ffffff">Consulte os pontos de entrega aqui</a>.</span>
+																			</td>
+																		</tr>
+																	</table>
+																</div>
+															{% endif %}
+														</div>
 													{% endif %}
 
 													{% if order.client_note %}
@@ -487,7 +524,7 @@
 															<table bgcolor="#eeeeee" width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="width:100% !important;{% if have_top_bar != true %} border-top-left-radius: 5px;border-top-right-radius: 5px;{% endif %}">
 																<tr>
 																	<td style="padding-top:15px;padding-bottom:15px;padding-left:20px;padding-right:20px;">
-																		<span style="color:#999999;font-size:14px;">{{ order.client_note }}</span>
+																		<span style="color:#999999;font-size:14px;line-height:16px;">{{ order.client_note }}</span>
 																	</td>
 																</tr>
 															</table>
@@ -695,7 +732,7 @@
 																				<tr>
 																					{% set product_td_padding_bottom = product.extras ? '' : 'padding-bottom:30px;' %}
 
-																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image.square }}" alt="{{ product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
+																					<td class="td-product-image" valign="top" width="50" style="padding-top:30px;padding-left:20px;{{ product_td_padding_bottom }}"><img src="{{ product.image.square }}" alt="{{ product.image.alt ? product.image.alt : product.title }}" width="50" height="50" style="display:block;border-radius:5px;" border="0" /></td>
 																					<td class="product-vt-margin" width="20" style="padding-top:30px;{{ product_td_padding_bottom }}">&nbsp;</td>
 																					<td class="td-product-title" valign="top" style="font-size: 14px;line-height:24px;padding-top:30px;{{ product_td_padding_bottom }}">
 																						<strong style="color:#333333;">{{ product.title|replace({(' - ' ~ product.option): ''}) }}</strong>
