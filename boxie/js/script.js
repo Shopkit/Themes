@@ -611,7 +611,7 @@ $(document).ready(function() {
     $('.intl-validate').intlTelInput({
         initialCountry: 'pt',
         preferredCountries: ['pt','es','fr','ch','br','gb','de','lu','be','it','us'],
-        utilsScript: 'https://cdn.shopk.it/js/intl-tel-input-17.0.8/build/js/utils.js'
+        utilsScript: 'https://cdn-shopkit.com/js/intl-tel-input-17.0.8/build/js/utils.js'
     });
 
     $(document).on('keyup blur focus', '.intl-validate', function(event) {
@@ -1220,7 +1220,7 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<div class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
+                    '<video class="slide-video-element" ' + (i == 0 ? 'autoplay ' : '') + 'muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
                     (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +

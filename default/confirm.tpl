@@ -220,7 +220,7 @@ Description: Confirm order page
 			<hr>
 
 			{% if user.custom_field %}
-				{% for custom_fields in user.custom_field %}
+				{% for custom_fields_key, custom_fields in user.custom_field %}
 					{% set custom_field = custom_fields|json_decode %}
 					<h4>{{ custom_field.title }}</h4>
 					{% if custom_field.data %}

@@ -170,7 +170,7 @@ Description: Confirm order page
 						{% endif %}
 
 						{% if user.custom_field %}
-							{% for custom_fields in user.custom_field %}
+							{% for custom_fields_key, custom_fields in user.custom_field %}
 								<div class="well well-default {{ store.theme_options.well_default_shadow }}">
 									{% set custom_field = custom_fields|json_decode %}
 									<h3 class="margin-bottom-md">{{ custom_field.title }}</h3>

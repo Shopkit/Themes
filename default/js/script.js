@@ -187,7 +187,7 @@ $(document).ready(function() {
 	$('.intl-validate').intlTelInput({
 		initialCountry: 'pt',
 		preferredCountries: ['pt','es','fr','ch','br','gb','de','lu','be','it','us'],
-		utilsScript: 'https://cdn.shopk.it/js/intl-tel-input-17.0.8/build/js/utils.js'
+		utilsScript: 'https://cdn-shopkit.com/js/intl-tel-input-17.0.8/build/js/utils.js'
 	});
 
 	$(document).on('keyup blur focus', '.intl-validate', function(event) {
@@ -683,7 +683,7 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<li class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" autoplay muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
+                    '<video class="slide-video-element" ' + (i == 0 ? 'autoplay ' : '') + 'muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
                     (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +
@@ -706,16 +706,7 @@ function load_slideshow(type, gallery, theme_options) {
 				$('.slideshow').addClass('loaded');
 
 				// Play video in first slide if it exists
-				var $firstSlide = $(slider.slides[0]);
-				var $video = $firstSlide.find('.slide-video-element');
-				if ($video.length) {
-					$video[0].play();
-
-                    slider.pause();
-                    $video.on('ended', function() {
-                        slider.play();
-                    });
-				}
+				play_slideshow_video(slider);
 			},
 			before: function(slider){
 				// Pause all videos
@@ -725,18 +716,27 @@ function load_slideshow(type, gallery, theme_options) {
 			},
 			after: function(slider){
 				// Play video in current slide if it exists
-				var $currentSlide = $(slider.slides[slider.currentSlide]);
-				var $video = $currentSlide.find('.slide-video-element');
-				if ($video.length) {
-					$video[0].play();
-
-                    slider.pause();
-                    $video.on('ended', function() {
-                        slider.play();
-                    });
-				}
+				play_slideshow_video(slider);
 			}
 		});
+
+		function play_slideshow_video(slider) {
+            var $currentSlide = $(slider.slides[slider.currentSlide]);
+            var $video = $currentSlide.find('.slide-video-element');
+
+            if (!$video.length) {
+                return;
+            }
+
+            var vid = $video[0];
+            slider.pause();
+            vid.play();
+
+            $video.off('ended.flexVideo').one('ended.flexVideo', function() {
+                slider.flexAnimate(slider.getTarget("next"), true);
+                slider.play();
+            });
+        }
 
 		$('.slideshow').removeClass('hidden');
     }
