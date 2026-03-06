@@ -8,6 +8,8 @@ Description: Home Page
 
 {% block content %}
 
+    <h1 class="sr-only">{{ store_name }}</h1>
+
     {% if categories and store.theme_options.home_num_categories > 0 %}
         <div class="categories section">
             <div class="{{ layout_container }}">
@@ -118,9 +120,11 @@ Description: Home Page
         <section class="brands section brands-block">
             <div class="{{ layout_container }}">
                 <h2 class="brands-title title title_mb-lg">{{ 'lang.storefront.home.block.brands.title'|t }}</h2>
-                <div class="brands-list">
+                <div class="brands-list" role="list" aria-label="{{ 'lang.storefront.home.block.brands.title'|t }}">
                     {% for brand in brands %}
-                        <a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
+                        <div class="brands-item" role="listitem">
+                            <a href="{{ brand.url }}" class="img-frame"><img src="{{ brand.image.thumb }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
+                        </div>
                     {% endfor %}
                 </div>
                 <p class="small margin-top"><a href="{{ site_url('brands') }}" class="text-muted text-underline">{{ 'lang.storefront.brands.title'|t }}</a></p>

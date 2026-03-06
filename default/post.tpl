@@ -58,11 +58,4 @@ Description: Blog post Page
 		<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title|url_encode }}" class="text-muted">{{ icons('pinterest', 'fa-lg') }}</a>
 	</div>
 
-	{% if apps.facebook_comments.comments_blog %}
-		<div class="hidden-phone">
-			<hr>
-			<div class="fb-comments" data-href="{{ current_url() }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
-		</div>
-	{% endif %}
-
 {% endblock %}

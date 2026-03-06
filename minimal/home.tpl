@@ -8,6 +8,8 @@ Description: Home Page
 
 {% block content %}
 
+	<h1 class="sr-only">{{ store_name }}</h1>
+
 	<div class="{{ layout_container }}">
 
 		<ul class="social">
@@ -99,7 +101,7 @@ Description: Home Page
 						<div class="{{ loop.first ? 'col-sm-offset-' ~ (12 - 4 * store.featured_blocks|length) / 2 }} col-sm-4 col-featured-block">
 							<div class="featured-block">
 								<div style="-webkit-mask-image: url('{{ featured_block.icon }}');mask-image: url('{{ featured_block.icon }}');"></div>
-								<h4 class="bold">{{ featured_block.title }}</h4>
+								<h3 class="bold h4">{{ featured_block.title }}</h3>
 								<p>{{ featured_block.description }}</p>
 							</div>
 						</div>

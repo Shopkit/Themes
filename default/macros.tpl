@@ -51,7 +51,7 @@
 				{% endif %}
 			</a>
 			<div class="box">
-				<h3><a href="{{ product_url }}">{{ product.title }}</a></h3>
+				<h2><a href="{{ product_url }}">{{ product.title }}</a></h2>
 
 				<p>{{ product.description_short }}</p>
 
@@ -85,7 +85,7 @@
 		<div class="{{ store.theme_options.card_shadow }}">
 			<a href="{{ category_url }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image[card_thumbnail_type] }}" alt="{{ category.image.alt ? category.image.alt : category_title }}" title="{{ category_title }}" class="lazy"></a>
 			<div class="box">
-				<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
+				<h2><a href="{{ category_url }}">{{ category_title }}</a></h2>
 				{% if not category.parent == 0 and category.children and show_number_products %}
 					<span>{{ category.children|length }} {{ 'lang.storefront.layout.categories.title'|t }}</span>
 				{% elseif show_number_products %}
@@ -125,7 +125,7 @@
 	{% set default_lang = apps_google_translate.default_language %}
 
 	<div class="languages-dropdown {{ media_queries_class }} btn-group pull-left hidden">
-		<button type="button" class="btn btn-sm btn-default {{ store.theme_options.button_default_shadow }} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<button type="button" class="btn btn-sm btn-default {{ store.theme_options.button_default_shadow }} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
 			<span class="current-language"><span class="flag-icon"></span></span>
 		</button>
 		<ul class="dropdown-menu well-default {{ store.theme_options.well_default_shadow }}">

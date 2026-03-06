@@ -13,6 +13,8 @@ Description: Home Page
 
 	{% if products_per_page_home and products %}
 
+		<h1 class="sr-only">{{ store_name }}</h1>
+
 		<ul class="unstyled products">
 
 			{% for product in products %}

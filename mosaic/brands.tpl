@@ -20,7 +20,7 @@ Description: Brands list page
 				<li class="brand-id-{{ brand.id }}">
 					<img src="{{ brand.image.square }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}">
 					<div class="description">
-						<h3><a href="{{ brand.url }}">{{ brand.title }}</a></h3>
+						<h2><a href="{{ brand.url }}">{{ brand.title }}</a></h2>
 
 						<a href="{{ brand.url }}" class="button btn-primary {{ store.theme_options.button_primary_shadow }}"><span>{{ 'lang.storefront.macros.button.explore'|t }}</span></a>
 					</div>

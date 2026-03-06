@@ -5,11 +5,11 @@ Description: Product Page
 {% macro wishlist_block(product, store) %}
     {% if store.settings.cart.users_registration != 'disabled' %}
         {% if not product.wishlist.status %}
-            <a href="{{ product.wishlist.add_url }}" class="card-favorite">
+            <a href="{{ product.wishlist.add_url }}" class="card-favorite" aria-label="{{ 'lang.storefront.layout.wishlist.title'|t }}">
                 {{ icons('heart') }}
             </a>
         {% else %}
-            <a href="{{ product.wishlist.remove_url }}" class="card-favorite added">
+            <a href="{{ product.wishlist.remove_url }}" class="card-favorite added" aria-label="{{ 'lang.storefront.layout.wishlist.title'|t }}">
                 {{ icons('heart') }}
             </a>
         {% endif %}
@@ -85,9 +85,7 @@ Description: Product Page
                                 {% endif %}
                             </div>
                             <div class="card-icon">
-                                <svg role="img" viewBox="0 0 22 22" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm8-10C4.477 0 0 4.477 0 10s4.477 10 10 10a9.959 9.959 0 0 0 6.329-2.257l3.964 3.964a1 1 0 0 0 1.414-1.414l-3.964-3.964A9.958 9.958 0 0 0 20 9.999C20 4.478 15.523 0 10 0zm0 6a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2H7a1 1 0 1 1 0-2h2V7a1 1 0 0 1 1-1z"></path>
-                                </svg>
+                                {{ icons('zoom-in') }}
                             </div>
                         </div>
 
@@ -265,11 +263,11 @@ Description: Product Page
                             {% if product_is_vendible %}
                                 <div class="card-control data-product-info">
                                     <div class="card-counter counter">
-                                        <button class="counter-btn counter-btn_minus" type="button">
+                                        <button class="counter-btn counter-btn_minus" type="button" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}">
                                             {{ icons('angle-left') }}
                                         </button>
-                                        <input class="counter-input" type="text" name="qtd" value="1" size="3" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
-                                        <button class="counter-btn counter-btn_plus" type="button">
+                                        <input class="counter-input" type="text" name="qtd" value="1" size="3" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+                                        <button class="counter-btn counter-btn_plus" type="button" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}">
                                             {{ icons('angle-right') }}
                                         </button>
                                     </div>
@@ -339,14 +337,15 @@ Description: Product Page
                                         <th>{{ 'lang.storefront.product.share.label'|t }}</th>
                                         <td>
                                             <div class="share">
-                                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product_url }}" class="text-muted">{{ icons('facebook', 'feather-20') }}</a> &nbsp;
-                                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ product_url }}&redirect_uri={{ product_url }}" class="text-muted">{{ icons('facebook-messenger') }}</a> &nbsp;
-                                                <a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product_url}"|url_encode }}" class="text-muted">{{ icons('whatsapp') }}</a> &nbsp;
-                                                <a target="_blank" href="https://twitter.com/share?url={{ product_url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter', 'feather-20') }}</a> &nbsp;
-                                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product_url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest-p') }}</a>
+                                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product_url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook', 'feather-20') }}</a> &nbsp;
+                                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ product_url }}&redirect_uri={{ product_url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook-messenger') }}</a> &nbsp;
+                                                <a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product_url}"|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.whatsapp'|t }}">{{ icons('whatsapp') }}</a> &nbsp;
+                                                <a target="_blank" href="https://twitter.com/share?url={{ product_url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.twitter'|t }}">{{ icons('twitter', 'feather-20') }}</a> &nbsp;
+                                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product_url }}&description={{ product.title|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.pinterest'|t }}">{{ icons('pinterest-p') }}</a>
                                             </div>
                                         </td>
                                     </tr>
+                                    <caption class="sr-only">{{ 'lang.storefront.layout.product.characteristics'|t }}</caption>
                                 </table>
                             </div>
                         </div>
@@ -356,25 +355,22 @@ Description: Product Page
         </div>
     </div>
 
-    {% if product.description or product.campaign or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
+    {% if product.description or product.campaign or product.tabs or product.video_embed_url %}
         <div class="details section">
             <div class="{{ layout_container }}">
                 <div class="row">
                     <div class="col-xl-6">
                         <ul class="nav" role="tablist">
                             {% if product.description or product.campaign %}
-                                <li class="nav-item" role="presentation"><a class="nav-link active" href="#tab-details" role="tab" data-toggle="tab"><h1 class="details-title title">{{ 'lang.storefront.product.description.label'|t }}</h1></a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link active" href="#tab-details" role="tab" data-toggle="tab"><h2 class="details-title title">{{ 'lang.storefront.product.description.label'|t }}</h2></a></li>
                             {% endif %}
                             {% if product.tabs %}
                                 {% for tab in product.tabs %}
-                                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tab-{{ tab.slug }}" role="tab" data-toggle="tab"><h1 class="details-title title">{{ tab.title }}</h1></a></li>
+                                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tab-{{ tab.slug }}" role="tab" data-toggle="tab"><h2 class="details-title title">{{ tab.title }}</h2></a></li>
                                 {% endfor %}
                             {% endif %}
                             {% if product.video_embed_url %}
-                                <li class="nav-item" role="presentation"><a class="nav-link" href="#tab-video" role="tab" data-toggle="tab"><h1 class="details-title title">{{ 'lang.storefront.product.video.label'|t }}</h1></a></li>
-                            {% endif %}
-                            {% if apps.facebook_comments.comments_products %}
-                                <li class="nav-item" role="presentation"><a class="nav-link" href="#tab-comments" role="tab" data-toggle="tab"><h1 class="details-title title">{{ 'lang.storefront.product.comments.label'|t }}</h1></a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="#tab-video" role="tab" data-toggle="tab"><h2 class="details-title title">{{ 'lang.storefront.product.video.label'|t }}</h2></a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -404,16 +400,8 @@ Description: Product Page
                                     {% if product.video_embed_url %}
                                         <div class="product-video embed-responsive embed-responsive-16by9" data-service="{{ product.video_embed_url matches '/youtube/' ? 'youtube' : 'vimeo' }}" data-id="{{ product.video_embed_url|split('/')|last }}" data-ratio="16:9" data-autoscale>
                                             {% if not apps.cookies or (apps.cookies and not apps.cookies.consent_mode) %}
-                                                <iframe width="560" height="315" src="{{ product.video_embed_url }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                                <iframe width="560" height="315" src="{{ product.video_embed_url }}" allow="autoplay; encrypted-media" allowfullscreen title="{{ product_title }}"></iframe>
                                             {% endif %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-
-                                <div role="tabpanel" class="tab-pane details-text" id="tab-comments">
-                                    {% if apps.facebook_comments.comments_products %}
-                                        <div class="facebook-comments">
-                                            <div class="fb-comments" data-href="{{ product.permalink }}" data-numposts="5" data-width="100%"></div>
                                         </div>
                                     {% endif %}
                                 </div>

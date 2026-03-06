@@ -14,7 +14,7 @@ Description: Contact Page
 
 		{% if store.latitude and store.longitude %}
 			<div class="location-map margin-bottom">
-				<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
+				<iframe width="100%" title="map" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
 			</div>
 		{% endif %}
 
@@ -53,15 +53,15 @@ Description: Contact Page
 
 				{% if apps.newsletter %}
 					<div class="newsletter margin-bottom">
-						<h3 class="margin-bottom-md">{{ 'lang.storefront.form.newsletter.label'|t }}</h3>
+						<h2 class="margin-bottom-md h3">{{ 'lang.storefront.form.newsletter.label'|t }}</h2>
 
 						<div class="form-group">
-							<label for="newsletter_name">{{ 'lang.storefront.form.name.placeholder'|t }}</label>
-							<input type="text" name="nome_newsletter" class="form-control" id="name_newsletter" required>
+							<label for="name_newsletter">{{ 'lang.storefront.form.name.placeholder'|t }}</label>
+							<input type="text" name="name_newsletter" class="form-control" id="name_newsletter" required>
 						</div>
 
 						<div class="form-group">
-							<label for="newsletter_email">{{ 'lang.storefront.form.email.label'|t }}</label>
+							<label for="email_newsletter">{{ 'lang.storefront.form.email.label'|t }}</label>
 							<input type="email" name="email_newsletter" class="form-control" id="email_newsletter" required>
 						</div>
 
@@ -176,7 +176,7 @@ Description: Contact Page
 
 			<div class="col-sm-8 col-sm-offset-1">
 
-				<h3 class="margin-top-0 margin-bottom">{{ 'lang.storefront.contact.contact_form.title'|t }}</h3>
+				<h2 class="margin-top-0 margin-bottom h3">{{ 'lang.storefront.contact.contact_form.title'|t }}</h2>
 
 				{{ form_open('contact_form', { 'class' : 'contact-form', 'id' : 'contact-form' }) }}
 

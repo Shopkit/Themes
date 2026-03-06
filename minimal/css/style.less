@@ -558,7 +558,7 @@ header {
 
 		& > a {
 			color: var(--header_text_color);
-			.opacity(0.5);
+			.opacity(0.55);
 			font-family: var(--body_font_family), var(--body_font_category);
 			font-weight: var(--body_font_weight);
 			font-size: @font-size-h6;
@@ -882,6 +882,8 @@ header {
 				object-fit: var(--slideshow_background_size);
 				object-position: var(--slideshow_background_position_x) var(--slideshow_background_position_y);
 				z-index: 1;
+				background-color: var(--body_background_color);
+				color: var(--body_text_color);
 			}
 		}
 	}
@@ -1289,7 +1291,7 @@ header {
 		}
 	}
 
-	h4 {
+	h3 {
 		margin-top: @padding;
 		color: var(--homepage_blocks_text_color);
 		.opacity(0.9);
@@ -1391,10 +1393,10 @@ header {
 
 	.share {
 
-		h6 {
+		h2 {
 			font-size: @font-size-xxs;
 			font-weight: @light;
-			.opacity(0.25);
+			.opacity(0.7);
 			margin: 0px 0 5px 0;
 		}
 
@@ -1410,10 +1412,6 @@ header {
 	.product-video {
 		margin-top: @padding;
 	}
-
-	.facebook-comments {
-		margin-top: @padding;
-	}
 }
 
 .data-product-on-request {
@@ -1427,6 +1425,12 @@ header {
 	}
 	.data-product-info {
 		display: none;
+	}
+}
+
+.data-product-info {
+	.block.text-muted {
+		.opacity(0.7);
 	}
 }
 
@@ -1540,10 +1544,12 @@ h1 + .breadcrumb {
 
 	& > li > a {
 		color: var(--body_text_color);
-		.opacity(0.5);
+		.opacity(0.7);
 	}
 
 	& > .active {
+		color: var(--body_text_color);
+
 		a {
 			color: var(--body_text_color);
 			.opacity(0.25);
@@ -1567,6 +1573,7 @@ h1 + .breadcrumb {
 			border-left: 0;
 			border-right: 0;
 			border-bottom-width: 0;
+			.opacity(1);
 		}
 		& > .list-group:last-child .list-group-item:last-child {
 			border-bottom-right-radius: calc(var(--well_featured_border_radius) * 1px);
@@ -1746,7 +1753,7 @@ body.client-is-wholesale {
 		background-color: var(--card_background_color);
 		padding: calc(calc(var(--card_padding) * 1px)/2);
 
-		h4 {
+		h2 {
 			.transition(all 0.4s linear);
 			margin-top: 0;
 			color: var(--card_text_color);
@@ -1789,7 +1796,7 @@ body.client-is-wholesale {
 		}
 
 		.description {
-			h4 {
+			h2 {
 				height: auto;
 				overflow-y: inherit;
 			}
@@ -2245,7 +2252,7 @@ footer {
 	.copyright {
 		font-size: 13px;
 		color: var(--footer_text_color);
-		.opacity(0.25);
+		.opacity(0.6);
 	}
 
 	.payment-logos {
@@ -2281,7 +2288,7 @@ footer {
 	}
 
 	.powered-by {
-		.opacity(0.25);
+		.opacity(0.9);
 		margin-top: 60px;
 		text-align: center;
 		color: #000;

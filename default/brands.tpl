@@ -27,7 +27,7 @@ Description: Brands list page
 				<div class="{{ store.theme_options.card_shadow }}">
 					<a href="{{ brand.url }}"><img src="{{ brand.image[card_thumbnail_type] }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}"></a>
 					<div class="box">
-						<h3><a href="{{ brand.url }}">{{ brand.title }}</a></h3>
+						<h2><a href="{{ brand.url }}">{{ brand.title }}</a></h2>
 					</div>
 				</div>
 			</div>

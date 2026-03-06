@@ -38,7 +38,7 @@ Description: Blog post Page
 
                         <div class="content">
 
-                            <h2 class="blog-post-title title margin-bottom-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h2>
+                            <h1 class="blog-post-title title margin-bottom-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
 
                             {% if blog_post.author.name or blog_post.date or blog_post.tags %}
                                 <div class="post-details small text-muted margin-bottom">
@@ -64,22 +64,14 @@ Description: Blog post Page
                             </div>
 
                             <div class="share margin-top">
-                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ blog_post.url }}" class="text-muted">{{ icons('facebook') }}</a> &nbsp;
-                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ blog_post.url }}&redirect_uri={{ blog_post.url }}" class="text-muted">{{ icons('facebook-messenger') }}</a> &nbsp;
-                                <a target="_blank" href="https://wa.me/?text={{ "#{blog_post.title}: #{blog_post.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp') }}</a> &nbsp;
-                                <a target="_blank" href="https://twitter.com/share?url={{ blog_post.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter') }}</a> &nbsp;
-                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title|url_encode }}" class="text-muted">{{ icons('pinterest-p') }}</a>
+                                <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ blog_post.url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook') }}</a> &nbsp;
+                                <a target="_blank" href="http://www.facebook.com/dialog/send?app_id=229578494202981&link={{ blog_post.url }}&redirect_uri={{ blog_post.url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook-messenger') }}</a> &nbsp;
+                                <a target="_blank" href="https://wa.me/?text={{ "#{blog_post.title}: #{blog_post.url}"|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.whatsapp'|t }}">{{ icons('whatsapp') }}</a> &nbsp;
+                                <a target="_blank" href="https://twitter.com/share?url={{ blog_post.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.twitter'|t }}">{{ icons('twitter') }}</a> &nbsp;
+                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.pinterest'|t }}">{{ icons('pinterest-p') }}</a>
                             </div>
                         </div>
                     </div>
-
-                    {% if apps.facebook_comments.comments_blog %}
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8 margin-top-lg">
-                                <div class="fb-comments" data-href="{{ blog_post.url }}" data-numposts="5" data-width="100%"></div>
-                            </div>
-                        </div>
-                    {% endif %}
 
                 </div>
             </div>

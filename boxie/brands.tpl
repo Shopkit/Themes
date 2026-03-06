@@ -26,6 +26,8 @@ Description: Brands list page
             <div class="row">
                 <div class="col">
                     <div class="brands">
+                        <h1 class="categories-title title title_mb-lg">{{ 'lang.storefront.brands.title'|t }}</h1>
+
                         <div class="brands-list row row-cols-lg-{{ brands_per_row }} row-cols-md-{{ brands_per_row > 3 ? '3' : brands_per_row }} row-cols-sm-1 row-cols-{{ mobile_brands_per_row }}">
                             {% set card_hover_effect = store.theme_options.card_hover_effect != 'none' ? store.theme_options.card_hover_effect : '' %}
                             {% set card_thumbnail_type = store.theme_options.catalog_thumbail_type == 'square' ? 'square' : 'thumb' %}
@@ -37,7 +39,7 @@ Description: Brands list page
                                                 <a class="brand-preview" href="{{ brand.url }}">
                                                     <img class="brand-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ brand.image[card_thumbnail_type] }}" alt="{{ brand.image.alt ? brand.image.alt : brand.title }}" title="{{ brand.title }}" />
                                                 </a>
-                                                <a class="brand-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ brand.url }}">{{ 'lang.storefront.macros.button.explore'|t }}</a>
+                                                <a class="brand-btn btn btn-primary btn-link {{ store.theme_options.button_primary_shadow }}" data-href="{{ brand.url }}">{{ 'lang.storefront.macros.button.explore'|t }}</a>
                                             </div>
                                             <a class="brand-name" href="{{ brand.url }}">{{ brand.title }}</a>
                                         </div>
@@ -45,7 +47,7 @@ Description: Brands list page
                                 </div>
                             {% else %}
                                 <div class="col no-brands">
-                                    <h3>{{ 'lang.storefront.brands.no_brands'|t }}</h3>
+                                    <h2 class="h3">{{ 'lang.storefront.brands.no_brands'|t }}</h2>
                                 </div>
                             {% endfor %}
                         </div>

@@ -65,14 +65,6 @@ Description: Blog post Page
 				</div>
 			</div>
 
-			<hr>
-
-			{% if apps.facebook_comments.comments_blog %}
-				<div class="boxed hidden-phone">
-					<div class="fb-comments" data-href="{{ current_url() }}" data-num-posts="3" data-colorscheme="light" data-width="100%"></div>
-				</div>
-			{% endif %}
-
 		</article>
 
 	</div>

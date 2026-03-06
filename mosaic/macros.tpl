@@ -41,7 +41,7 @@
 		{% endif %}
 
 		<div class="description">
-			<h3><a href="{{ product_url }}">{{ product.title }}</a></h3>
+			<h2><a href="{{ product_url }}">{{ product.title }}</a></h2>
 
 			<span class="price">
 
@@ -85,7 +85,7 @@
 	<li class="category-id-{{ category.id }}">
 		<img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image.square }}" alt="{{ category.image.alt ? category.image.alt : category_title }}" title="{{ category_title }}" class="lazy">
 		<div class="description">
-			<h3><a href="{{ category_url }}">{{ category_title }}</a></h3>
+			<h2><a href="{{ category_url }}">{{ category_title }}</a></h2>
 			{% if not category.parent == 0 and category.children and show_number_products %}
 				<p>{{ category.children|length }} {{ 'lang.storefront.layout.categories.title'|t }}</p>
 			{% elseif show_number_products %}
@@ -127,7 +127,7 @@
 
 	<li>
 		<div class="languages-dropdown btn-group hidden">
-			<button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
 				<span class="current-language"><span class="flag-icon"></span></span>
 			</button>
 			<ul class="dropdown-menu">

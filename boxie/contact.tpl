@@ -22,13 +22,13 @@ Description: Contact Page
     <div class="contacts section">
         <div class="contacts-details">
             <div class="{{ layout_container }}">
-                <h2 class="contacts-title title">{{ store.page.contact.title }}</h2>
+                <h1 class="contacts-title title">{{ store.page.contact.title }}</h1>
 
                 {% if store.latitude and store.longitude %}
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="contacts-map margin-bottom">
-                                <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
+                                <iframe width="100%" title="map" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
                             </div>
                         </div>
                     </div>

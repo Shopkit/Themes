@@ -34,7 +34,7 @@ Description: Login page
             <div class="span6">
                 <div class="user-login-register well well-featured {{ store.theme_options.well_featured_shadow }}">
                     <div class="login-register-title text-center margin-bottom">
-                        <h3 class="title">{{ 'lang.storefront.login.signin.title'|t }}</h3>
+                        <h2 class="title">{{ 'lang.storefront.login.signin.title'|t }}</h2>
                         <p class="desc">{{ 'lang.storefront.signin.login.text'|t }}</p>
                     </div>
                     <div class="login-register-form">
@@ -51,7 +51,7 @@ Description: Login page
                             </div>
                             <div class="row-fluid">
                                 <div class="span12 margin-bottom-sm">
-                                    <a href="#" class="shopkit-auth-link-recover text-muted text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-login" data-target=".shopkit-auth-form-recover">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</a>
+                                    <a href="#" class="shopkit-auth-link-recover text-dark text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-login" data-target=".shopkit-auth-form-recover">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</a>
                                 </div>
 
                                 <div class="span12 text-center">
@@ -73,7 +73,7 @@ Description: Login page
                             </div>
                             <div class="row-fluid">
                                 <div class="span12 margin-bottom-sm">
-                                    <a href="#" class="shopkit-auth-link-login text-muted text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-recover" data-target=".shopkit-auth-form-login">{{ 'lang.storefront.login.signin.recover_password.back.button'|t }}</a>
+                                    <a href="#" class="shopkit-auth-link-login text-dark text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-recover" data-target=".shopkit-auth-form-login">{{ 'lang.storefront.login.signin.recover_password.back.button'|t }}</a>
                                 </div>
                                 <div class="span12 text-center">
                                     <button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</button>

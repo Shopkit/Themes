@@ -257,7 +257,7 @@ Description: Shopping cart page
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="well well-default {{ store.theme_options.well_default_shadow }} text-center margin-top">
-						<h3 class="normal">{{ 'lang.storefront.cart.no_products'|t }}</h3>
+						<h2 class="normal h3">{{ 'lang.storefront.cart.no_products'|t }}</h2>
 						<p>{{ 'lang.storefront.cart.no_products.discover'|t([site_url('new'), site_url('sales')]) }}</p>
 					</div>
 				</div>

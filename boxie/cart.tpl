@@ -26,7 +26,7 @@ Description: Shopping cart page
 
             <div class="cart-head">
                 <div class="cart-box">
-                    <h2 class="cart-title title">{{ 'lang.storefront.cart.title'|t }}</h2>
+                    <h1 class="cart-title title">{{ 'lang.storefront.cart.title'|t }}</h1>
                 </div>
             </div>
 
@@ -272,7 +272,7 @@ Description: Shopping cart page
                     <div class="cart-col">
                         <div class="cart-no-products">
                             <div class="cart-text">
-                                <h3>{{ 'lang.storefront.cart.no_products'|t }}</h3>
+                                <h2 class="h3">{{ 'lang.storefront.cart.no_products'|t }}</h2>
                                 <p>{{ 'lang.storefront.cart.no_products.discover'|t([site_url('new'), site_url('sales')]) }}</p>
                             </div>
                         </div>

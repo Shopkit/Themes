@@ -62,18 +62,18 @@
                 {% if product.status == 1 and product.price_on_request == false and not (product.option_groups or product.extra_options) and not (apps.upload_file and apps.upload_file.page == 'product' and apps.upload_file.required == true) %}
                     <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product.add_cart_url }}">{{ icons('shopping-cart', 'feather-16') }}&nbsp;{{ 'lang.storefront.layout.button.buy'|t }}</a>
                 {% elseif product.option_groups or product.extra_options %}
-                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product_url }}">{{ icons('plus-square', 'feather-16') }}&nbsp;{{ 'lang.storefront.macros.product.options'|t }}</a>
+                    <a class="product-btn btn btn-primary btn-link {{ store.theme_options.button_primary_shadow }}" data-href="{{ product_url }}">{{ icons('plus-square', 'feather-16') }}&nbsp;{{ 'lang.storefront.macros.product.options'|t }}</a>
                 {% else %}
-                    <a class="product-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ product_url }}">{{ icons('plus-square', 'feather-16') }}&nbsp;{{ 'lang.storefront.macros.product.info'|t }}</a>
+                    <a class="product-btn btn btn-primary btn-link {{ store.theme_options.button_primary_shadow }}" data-href="{{ product_url }}">{{ icons('plus-square', 'feather-16') }}&nbsp;{{ 'lang.storefront.macros.product.info'|t }}</a>
                 {% endif %}
             </div>
             {% if product_category.active %}
-                <div class="product-category text-truncate {{ category_badges[product_category.id|last] }}" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
+                <div class="product-category text-truncate" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
             {% endif %}
             <a class="product-name" href="{{ product_url }}">{{ product_title }}</a>
             <div class="product-details {{ product.price_on_request == true ? 'flex-wrap' }} justify-content-{{ card_text_align }}">
                 {% if product_category.active and products_per_row < 4 %}
-                    <div class="product-category text-truncate {{ category_badges[product_category.id|last] }}" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
+                    <div class="product-category text-truncate" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
                 {% endif %}
                 <div class="product-price">
                     {% if product.price_range %}
@@ -91,7 +91,7 @@
                 </div>
             </div>
             {% if product_category.active and products_per_row >= 4 %}
-                <div class="product-category text-truncate {{ category_badges[product_category.id|last] }} margin-top-xs" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
+                <div class="product-category text-truncate margin-top-xs" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
             {% endif %}
         </div>
     </div>
@@ -134,7 +134,7 @@
                 <a class="category-preview" href="{{ category_url }}">
                     <img class="category-pic lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ category.image[card_thumbnail_type] }}" alt="{{ category.image.alt ? category.image.alt : category_title }}" title="{{ category_title }}" />
                 </a>
-                <a class="category-btn btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ category_url }}">{{ 'lang.storefront.macros.button.explore'|t }}</a>
+                <a class="category-btn btn btn-primary btn-link {{ store.theme_options.button_primary_shadow }}" data-href="{{ category_url }}">{{ 'lang.storefront.macros.button.explore'|t }}</a>
             </div>
             <a class="category-name" href="{{ category_url }}">{{ category_title }}</a>
             <div class="category-details justify-content-{{ card_text_align }}">
@@ -187,11 +187,11 @@
         {% if tags and current_page != 'tag' %}
             <div class="dropdown filter" data-type="tag">
                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">{{ 'lang.storefront.macros.filters.title'|t }}</a>
-                <div class="dropdown-menu">
+                <ul class="dropdown-menu">
                     {% for tag in tags %}
-                        <a class="dropdown-item" href="#" data-tag="{{ tag.handle }}" data-type="tag">{{ tag.title }}</a>
+                        <li><a class="dropdown-item" href="#" data-tag="{{ tag.handle }}" data-type="tag">{{ tag.title }}</a></li>
                     {% endfor %}
-                </div>
+                </ul>
             </div>
         {% endif %}
 
@@ -212,7 +212,7 @@
     {% set default_lang = apps_google_translate.default_language %}
 
     <div class="languages-dropdown btn-group {{ media_queries_class }} hidden">
-        <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
             <span class="current-language"><span class="flag-icon"></span></span>&nbsp;
             <span class="caret"></span>
         </button>

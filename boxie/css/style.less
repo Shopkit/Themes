@@ -532,10 +532,17 @@ img {
     .img-responsive;
 }
 
-.checkbox > label {
-    font-size: @font-size-h6; //16px
-    line-height: 1.4;
-    cursor: pointer;
+.checkbox {
+    & > label {
+        font-size: @font-size-h6; //16px
+        line-height: 1.4;
+        cursor: pointer;
+    }
+
+    a {
+        .link-inherit;
+        text-decoration: underline;
+    }
 }
 
 // store notice
@@ -1435,7 +1442,7 @@ img {
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
         flex-direction: column;
-        opacity: 0.25;
+        opacity: 0.9;
         margin-top: @padding;
         text-align: center;
         color: #000;
@@ -1623,6 +1630,9 @@ img {
         font-size: @font-size-title-h6; //16px
         font-weight: var(--headings_font_weight);
         text-transform: uppercase;
+        background-color: var(--basecolor);
+        color: var(--secondarycolor);
+        border-color: var(--secondarycolor);
     }
 
     .product-view ~ .product-category {
@@ -2877,14 +2887,14 @@ body.client-is-wholesale {
         line-height: 2;
         font-weight: 500;
         color: var(--body_text_color);
-        .opacity(0.4);
+        .opacity(0.7);
     }
 
     .card-code {
         line-height: 2;
         font-weight: 500;
         color: var(--body_text_color);
-        .opacity(0.4);
+        .opacity(0.7);
     }
 
     .card-number, .stock {
@@ -3104,7 +3114,7 @@ body.client-is-wholesale {
             }
         }
 
-        h1 {
+        h2 {
             display: inline-block;
         }
     }
@@ -4098,6 +4108,10 @@ label[for="rewards"] {
     .slick-next {
         right: 15px;
     }
+
+    .text-muted {
+        .opacity(0.8);
+    }
 }
 
 .brands-block {
@@ -4147,7 +4161,7 @@ label[for="rewards"] {
     .nav-link.active, .show>.nav-link {
         font-weight: @bold;
 
-        h1 {
+        h2 {
             border-bottom: 1px solid;
             border-color: inherit;
         }
@@ -7995,7 +8009,7 @@ select.form-control:focus {
 
             &.active {
                 &>.menu-body, &>.submenu-body {
-                    background-color: var(--header_background_color);
+                    background-color: var(--body_background_color);
                     visibility: visible;
                     .opacity(1);
                     z-index: 1;

@@ -27,7 +27,7 @@ Description: Product Page
 		<article class="product-detail">
 
 			<div class="big-image-holder">
-				<img />
+				<img alt="{{ product.image.alt ? product.image.alt : product_title }}"/>
 				<a class="btn-close" href="#">{{ icons('times') }}</a>
 			</div>
 
@@ -74,12 +74,6 @@ Description: Product Page
 							</ul>
 						</div>
 					</div>
-
-					{% if apps.facebook_comments.comments_products %}
-						<div class="facebook-comments">
-							<div class="fb-comments" data-href="{{ product.permalink }}" data-numposts="5" data-width="100%"></div>
-						</div>
-					{% endif %}
 
 				</div>
 
@@ -141,11 +135,11 @@ Description: Product Page
 
 						<div class="col-xs-6 col-md-4 col-lg-5">
 							<div class="text-center share pull-right">
-								<h6 class="text-muted text-uppercase">{{ 'lang.storefront.product.share.label'|t }}</h6>
-								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f') }}</a> &nbsp;
-								<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp') }}</a> &nbsp;
-								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter') }}</a> &nbsp;
-								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest') }}</a>
+								<h2 class="text-muted text-uppercase">{{ 'lang.storefront.product.share.label'|t }}</h2>
+								<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook-f') }}</a> &nbsp;
+								<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.whatsapp'|t }}">{{ icons('whatsapp') }}</a> &nbsp;
+								<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.twitter'|t }}">{{ icons('twitter') }}</a> &nbsp;
+								<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.pinterest'|t }}">{{ icons('pinterest') }}</a>
 							</div>
 						</div>
 					</div>
@@ -275,7 +269,7 @@ Description: Product Page
 							<div class="data-product-info margin-bottom">
 								<div class="row">
 									<div class="col-sm-7 col-md-12 col-lg-7">
-										<input type="number" class="form-control" value="1" min="1" name="qtd" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+										<input type="number" class="form-control" value="1" min="1" name="qtd" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 										<button type="submit" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} text-uppercase">{{ icons('cart-plus') }} {{ 'lang.storefront.layout.button.buy'|t }}</button>
 									</div>
 									<div class="col-sm-5 col-md-12 col-lg-5">
@@ -395,6 +389,8 @@ Description: Product Page
 											<td>{% for custom_field_value in custom_field.values %}{{ custom_field_value.value }}{{ not loop.last ? ', ' }}{% endfor %}</td>
 										</tr>
 									{% endfor %}
+
+									<caption class="sr-only">{{ 'lang.storefront.layout.product.characteristics'|t }}</caption>
 								</table>
 							</div>
 						</div>
@@ -404,7 +400,7 @@ Description: Product Page
 						<div class="product-video">
 							<div class="embed-responsive embed-responsive-16by9" data-service="{{ product.video_embed_url matches '/youtube/' ? 'youtube' : 'vimeo' }}" data-id="{{ product.video_embed_url|split('/')|last }}" data-ratio="16:9" data-autoscale>
 								{% if not apps.cookies or (apps.cookies and not apps.cookies.consent_mode) %}
-                                	<iframe width="560" height="315" src="{{ product.video_embed_url }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                	<iframe width="560" height="315" src="{{ product.video_embed_url }}" allow="autoplay; encrypted-media" allowfullscreen title="{{ product_title }}"></iframe>
                             	{% endif %}
 							</div>
 						</div>

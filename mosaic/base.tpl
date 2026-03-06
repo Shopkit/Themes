@@ -19,7 +19,7 @@ Description: This is the base layout. It's included in every page with this code
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ store.storefront_language }}"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -35,11 +35,6 @@ Description: This is the base layout. It's included in every page with this code
 	{% if store.translate_meta %}
 		<meta name="google-translate-customization" content="{{ store.translate_meta }}">
 	{% endif %}
-
-	{% if apps.facebook_comments.username %}
-		<meta property="fb:admins" content="{{ apps.facebook_comments.username }}">
-	{% endif %}
-	<!-- End Facebook Meta -->
 
 	<link rel="canonical" href="{{ canonical_url }}" />
 
@@ -68,7 +63,7 @@ Description: This is the base layout. It's included in every page with this code
 </head>
 <body class="template-mosaic {{ css_class }} {{ store.theme_options.icon_library }}">
 
-	<section class="sidebar">
+	<div class="sidebar">
 
 		<header>
 
@@ -120,6 +115,7 @@ Description: This is the base layout. It's included in every page with this code
 						<form action="{{ site_url('search') }}" class="search-bar {{ show_search_suggestions }}">
 							{{ icons('search') }}
 							<input type="search" value="{{ search ? search.query }}" placeholder="{{ 'lang.storefront.layout.header.search'|t }}" name="q">
+							<button type="submit" class="sr-only">{{ 'lang.storefront.layout.header.search'|t }}</button>
 						</form>
 					{% endif %}
 				</div>
@@ -145,7 +141,7 @@ Description: This is the base layout. It's included in every page with this code
 					{% if store.pinterest %}<li><a target="_blank" href="{{ store.pinterest }}">{{ icons('pinterest') }}</a></li>{% endif %}
 					{% if store.youtube %}<li><a target="_blank" href="{{ store.youtube }}">{{ icons('youtube') }}</a></li>{% endif %}
 					{% if store.linkedin %}<li><a target="_blank" href="{{ store.linkedin }}">{{ icons('linkedin-square') }}</a></li>{% endif %}
-					{% if store.tiktok %}<li><a target="_blank" href="{{ store.tiktok }}">{{ icons('tiktok') }}</a></li>{% endif %}
+					{% if store.tiktok %}<li><a target="_blank" href="{{ store.tiktok }}" title="{{ 'lang.storefront.layout.social.tiktok'|t }}">{{ icons('tiktok') }}</a></li>{% endif %}
 					<li class="link-social-rss"><a href="{{ site_url('rss') }}">{{ icons('rss') }}</a></li>
 					{% if apps.google_translate %}
 						{{ generic_macros.google_translate(apps.google_translate) }}
@@ -179,11 +175,11 @@ Description: This is the base layout. It's included in every page with this code
 			{% endif %}
 		</footer>
 
-	</section>
+	</div>
 
 	<div class="cart slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 
-		<header>
+		<header role="none">
 			<h3>{{ 'lang.storefront.cart.title'|t }}</h3>
 			<span class="price">{{ cart.subtotal | money_with_sign }}</span>
 		</header>
@@ -234,7 +230,7 @@ Description: This is the base layout. It's included in every page with this code
 
 	<div class="categories slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 
-		<header>
+		<header role="none">
 			<h3>{{ 'lang.storefront.layout.categories.title'|t }}</h3>
 		</header>
 
@@ -287,7 +283,7 @@ Description: This is the base layout. It's included in every page with this code
 
 	{% if store.settings.cart.users_registration != 'disabled' and user.is_logged_in %}
 		<div class="account slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
-			<header>
+			<header role="none">
 				<h3>{{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</h3>
 			</header>
 			<section>
@@ -306,7 +302,7 @@ Description: This is the base layout. It's included in every page with this code
 
 	{% if apps.newsletter %}
 		<div class="newsletter slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
-			<header>
+			<header role="none">
 				<h3>{{ 'lang.storefront.form.newsletter.label'|t }}</h3>
 			</header>
 
@@ -325,7 +321,7 @@ Description: This is the base layout. It's included in every page with this code
 
 	<div class="pages slide-bar well-featured {{ store.theme_options.well_featured_shadow }}">
 
-		<header>
+		<header role="none">
 			<h3>{{ 'lang.storefront.layout.footer.pages.title'|t }}</h3>
 		</header>
 
@@ -359,7 +355,7 @@ Description: This is the base layout. It's included in every page with this code
 		{% for popup in store.theme_options.popups %}
 			{% if get.preview or (('all' in popup.location) or (current_page in popup.location)) %}
 				{% if popup.type == 'popup' %}
-					<div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" tabindex="-1" role="dialog" aria-labelledby="banner-popupLabel">
+					<div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" role="dialog" aria-labelledby="banner-popupLabel" aria-modal="true">
 						<div class="modal-dialog {{ popup.modal_size }}" role="document">
 							<div class="modal-content">
 								<div class="modal-body" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
@@ -435,7 +431,7 @@ Description: This is the base layout. It's included in every page with this code
 
 	{% if current_page == 'account-orders' %}
 		{% if store.settings.order_return_active and user.order_detail.status == 8 and user.order_detail.delivered_at %}
-			<div class="modal hide fade" id="return-modal" tabindex="-1" role="dialog" aria-labelledby="return-modalLabel">
+			<div class="modal hide fade" id="return-modal" tabindex="-1" role="dialog" aria-labelledby="return-modalLabel" aria-modal="true">
 				{{ form_open(site_url('return_form/' ~ user.order_detail.id), { 'method' : 'post' }) }}
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
@@ -579,7 +575,7 @@ Description: This is the base layout. It's included in every page with this code
 
 	{# Events #}
 	{% if events.wishlist %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.layout.wishlist.title'|t }}</h3>
@@ -598,7 +594,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if events.cart %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.cart.title'|t }}</h3>
@@ -664,7 +660,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if events.unsubscribe %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.layout.events.unsubscribe_title'|t }}</h3>
@@ -682,7 +678,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if events.payment_status %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.order.payment.title'|t }}</h3>
@@ -707,7 +703,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if events.contact_form_success or events.contact_form_errors %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.contact.contact_form.title'|t }}</h3>
@@ -729,7 +725,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if events.return_form_success %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
@@ -747,7 +743,7 @@ Description: This is the base layout. It's included in every page with this code
 	{% endif %}
 
 	{% if events.contact_form_success or events.contact_form_errors %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
@@ -767,17 +763,17 @@ Description: This is the base layout. It's included in every page with this code
 		</div>
 	{% endif %}
 
-	<div class="modal hide fade" id="user-geolocation-modal" tabindex="-1" role="dialog" aria-labelledby="user-geolocation-modalLabel">
+	<div class="modal hide fade" id="user-geolocation-modal" role="dialog" aria-labelledby="user-geolocation-modalLabel" aria-modal="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				{{ form_open(site_url('user_location'), { 'method' : 'post', 'class' : 'no-margin'}) }}
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
-						<h3 class="user-geolocation-modal-choose-country-region">{{ 'lang.storefront.layout.modals.geolocation.choose_country'|t }}</h3>
+						<h2 class="user-geolocation-modal-choose-country-region h3">{{ 'lang.storefront.layout.modals.geolocation.choose_country'|t }}</h2>
 					</div>
 					<div class="modal-body">
 						<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">{{ 'lang.storefront.layout.modals.geolocation.ask_country'|t }}</span></p>
-						<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
+						<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
 							{% for key, country in countries %}
 								<option value="{{ key }}">{{ country }}</option>
 							{% endfor %}
@@ -793,7 +789,7 @@ Description: This is the base layout. It's included in every page with this code
 	</div>
 
 	<!--[if lt IE 8]>
-	<div class="modal hide fade modal-alert">
+	<div class="modal hide fade modal-alert" aria-modal="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
 			<h3>Actualize o seu browser</h3>

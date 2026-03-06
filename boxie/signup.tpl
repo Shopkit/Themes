@@ -32,7 +32,7 @@ Description: Register page
                 <h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
             </div>
 
-            <h2 class="title title_mb-lg">{{ 'lang.storefront.login.signup.title'|t }}</h2>
+            <h1 class="title title_mb-lg">{{ 'lang.storefront.login.signup.title'|t }}</h1>
 
             <div class="row shopkit-auth-form-register-section">
 

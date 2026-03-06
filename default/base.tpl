@@ -14,12 +14,13 @@ Github: https://github.com/Shopkit/Default
 {% set categories_per_page = store.categories_per_page ?: 18 %}
 {% set brands_per_page = store.brands_per_page ?: 36 %}
 {% set show_search_suggestions = store.theme_options.show_search_suggestions == 'block' ? '' : 'remove-typeahead' %}
+{% set store_name = store.name|e_attr  %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="pt"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="pt"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="pt"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ store.storefront_language }}"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
 	<title>{{ title }}</title>
@@ -78,10 +79,10 @@ Github: https://github.com/Shopkit/Default
 					{% endif %}
 
 					<!-- CART -->
-					<aside class="pull-right cart-header">
+					<div class="pull-right cart-header">
 						<div class="btn-group">
 							<a class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" href="{{ site_url('cart') }}">{{ icons('shopping-cart', 'fa-lg') }} {{ 'lang.storefront.cart.title'|t }} ({{ cart.item_count }})</a>
-							<button data-toggle="dropdown" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} dropdown-toggle"><span class="caret"></span></button>
+							<button data-toggle="dropdown" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} dropdown-toggle" aria-label="{{ 'lang.storefront.cart.title'|t }}"><span class="caret"></span></button>
 							<ul class="dropdown-menu well-default {{ store.theme_options.well_default_shadow }}">
 								{% if cart.items %}
 									{% for item in cart.items %}
@@ -119,7 +120,7 @@ Github: https://github.com/Shopkit/Default
 							{% endif %}
 							<span class="pull-right"><a href="{{ site_url('cart') }}" class="text-default">{{ 'lang.storefront.order.total'|t }}: <strong>{{ cart.subtotal | money_with_sign }}</strong></a></span>
 						</p>
-					</aside>
+					</div>
 					<!-- END CART -->
 				</div>
 
@@ -144,6 +145,7 @@ Github: https://github.com/Shopkit/Default
 								{% if store.theme_options.show_search %}
 									<form action="{{ site_url('search') }}" class="navbar-search pull-right {{ show_search_suggestions }}">
 										<input type="text" name="q" value="{{ search ? search.query }}" placeholder="{{ 'lang.storefront.layout.header.search'|t }}" class="search-query span2">
+										<button type="submit" class="sr-only">{{ 'lang.storefront.layout.header.search'|t }}</button>
 									</form>
 								{% endif %}
 								{% if apps.google_translate %}
@@ -395,8 +397,7 @@ Github: https://github.com/Shopkit/Default
 								<div class="{{ loop.first ? 'offset' ~ (12 - 4 * store.featured_blocks|length) / 2 }} span4 col-featured-block">
 									<div class="featured-block">
 										<div style="-webkit-mask-image: url('{{ featured_block.icon }}');mask-image: url('{{ featured_block.icon }}');"></div>
-										{# <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ featured_block.icon }}" alt="{{ featured_block.title }}" height="40" class="lazy"> #}
-										<h4 class="bold">{{ featured_block.title }}</h4>
+										<h3 class="bold">{{ featured_block.title }}</h3>
 										<p>{{ featured_block.description }}</p>
 									</div>
 								</div>
@@ -465,7 +466,9 @@ Github: https://github.com/Shopkit/Default
 				{% endif %}
 
 				{% if store.show_branding %}
-					<p class="powered-by" style="margin-top:40px; text-align: center; opacity:0.25; color: #000; font-size: 9px">{{ 'lang.storefront.layout.footer.poweredby'|t }}<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;"></a></p>
+					<div class="powered-by">
+						{{ 'lang.storefront.layout.footer.poweredby'|t }}<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
+					</div>
 				{% endif %}
 			</div>
 		</div>
@@ -475,7 +478,7 @@ Github: https://github.com/Shopkit/Default
 		{% for popup in store.theme_options.popups %}
 			{% if get.preview or (('all' in popup.location) or (current_page in popup.location)) %}
 				{% if popup.type == 'popup' %}
-					<div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" tabindex="-1" role="dialog" aria-labelledby="banner-popupLabel">
+					<div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" role="dialog" aria-labelledby="banner-popupLabel" aria-modal="true">
 						<div class="modal-dialog {{ popup.modal_size }}" role="document">
 							<div class="modal-content">
 								<div class="modal-body" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
@@ -552,7 +555,7 @@ Github: https://github.com/Shopkit/Default
 
 	{# Events #}
 	{% if events.wishlist %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.layout.wishlist.title'|t }}</h3>
@@ -571,7 +574,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	{% if events.cart %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.cart.title'|t }}</h3>
@@ -637,7 +640,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	{% if events.unsubscribe %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.layout.events.unsubscribe_title'|t }}</h3>
@@ -655,7 +658,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	{% if events.payment_status %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.order.payment.title'|t }}</h3>
@@ -680,7 +683,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	{% if events.contact_form_success or events.contact_form_errors %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.contact.contact_form.title'|t }}</h3>
@@ -702,7 +705,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	{% if events.return_form_success %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
@@ -720,7 +723,7 @@ Github: https://github.com/Shopkit/Default
 	{% endif %}
 
 	{% if events.return_cancel_success or events.return_cancel_errors %}
-		<div class="modal hide fade modal-alert">
+		<div class="modal hide fade modal-alert" aria-modal="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>{{ 'lang.storefront.account.orders.order_detail.return.title'|t }}</h3>
@@ -740,17 +743,17 @@ Github: https://github.com/Shopkit/Default
 		</div>
 	{% endif %}
 
-	<div class="modal hide fade" id="user-geolocation-modal" tabindex="-1" role="dialog" aria-labelledby="user-geolocation-modalLabel">
+	<div class="modal hide fade" id="user-geolocation-modal" role="dialog" aria-labelledby="user-geolocation-modalLabel" aria-modal="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				{{ form_open(site_url('user_location'), { 'method' : 'post', 'class' : 'no-margin'  }) }}
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>
-						<h3 class="user-geolocation-modal-choose-country-region">{{ 'lang.storefront.layout.modals.geolocation.choose_country'|t }}</h3>
+						<h2 class="user-geolocation-modal-choose-country-region h3">{{ 'lang.storefront.layout.modals.geolocation.choose_country'|t }}</h2>
 					</div>
 					<div class="modal-body">
 						<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">{{ 'lang.storefront.layout.modals.geolocation.ask_country'|t }}</span></p>
-						<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
+						<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
 							{% for key, country in countries %}
 								<option value="{{ key }}">{{ country }}</option>
 							{% endfor %}
@@ -766,7 +769,7 @@ Github: https://github.com/Shopkit/Default
 	</div>
 
 	<!--[if lt IE 7]>
-	<div class="modal hide fade modal-alert">
+	<div class="modal hide fade modal-alert" aria-modal="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
 			<h3>Actualize o seu browser</h3>

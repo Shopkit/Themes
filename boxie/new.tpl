@@ -12,7 +12,7 @@ Description: Last products page
 
     <div class="products products-full section">
         <div class="{{ layout_container }}">
-            <h2 class="products-title title title_mb-lg">{{ store.page.new.title }}</h2>
+            <h1 class="products-title title title_mb-lg">{{ store.page.new.title }}</h1>
 
             {% if store.page.new.content %}
                 <div class="page-content margin-bottom">
@@ -27,7 +27,7 @@ Description: Last products page
                     </div>
                 {% else %}
                     <div class="no-products">
-                        <h3>{{ 'lang.storefront.product_list.no_products'|t }}</h3>
+                        <h2 class="h3">{{ 'lang.storefront.product_list.no_products'|t }}</h2>
                     </div>
                 {% endfor %}
             </div>

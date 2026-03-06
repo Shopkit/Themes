@@ -724,7 +724,7 @@ function load_slideshow(type, gallery, theme_options) {
                     slideshow_content +
                     '</li>';
             } else {
-				slideshow_slide = '<li class="slide '+has_slide_content+'"><img src="'+gallery[i].image.full+'">' + slideshow_content + '</li>';
+				slideshow_slide = '<li class="slide '+has_slide_content+'"><img src="'+gallery[i].image.full+'" alt="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' + slideshow_content + '</li>';
 			}
 
             $('.slideshow .slides').append(slideshow_slide);

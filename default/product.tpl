@@ -62,7 +62,7 @@ Description: Product Page
 				<h1 class="product-title">{{ product.title }}</h1>
 
 				<div>
-					<h4 class="price margin-bottom-0">
+					<div class="price price-detail margin-bottom-0">
 
 						{% if product.price_on_request == true %}
 							<span class="data-product-price margin-right-sm">{{ 'lang.storefront.macros.product.price_on_request'|t }}</span>
@@ -77,25 +77,25 @@ Description: Product Page
 							{% endif %}
 						{% endif %}
 
-					</h4>
+					</div>
 
 					{% if user.wholesale is same as(true) and product.wholesale == true and store.settings.wholesale.show_regular_price %}
-						<div class="small muted">
+						<div class="small">
 							{{ 'lang.storefront.product.wholesale.regular_price'|t }} <span class="data-price-non-wholesale">{{ product.price_non_wholesale | money_with_sign }}</span>
 						</div>
 					{% endif %}
 
 					{% if product.wholesale != true or (product.wholesale == true and not user.wholesale) %}
-						<div class="small muted promo-percentage {% if product.price_promo_percentage == false %}hidden{% endif %}">
+						<div class="small promo-percentage {% if product.price_promo_percentage == false %}hidden{% endif %}">
 							{{ 'lang.storefront.product.discount_info'|t([ product.price_promo_percentage == true ? product.price_promo_percentage]) }}
 						</div>
 					{% endif %}
 
 					{% if product.tax > 0 %}
 						{% if store.taxes_included == false %}
-							<div class="small muted">{{ 'lang.storefront.product.tax.percentage_info'|t([user.l10n.tax_name, product.tax]) }}</div>
+							<div class="small">{{ 'lang.storefront.product.tax.percentage_info'|t([user.l10n.tax_name, product.tax]) }}</div>
 						{% else %}
-							<div class="small muted">{{ 'lang.storefront.product.tax_included_info'|t([user.l10n.tax_name]) }}</div>
+							<div class="small">{{ 'lang.storefront.product.tax_included_info'|t([user.l10n.tax_name]) }}</div>
 						{% endif %}
 					{% endif %}
 				</div>
@@ -117,12 +117,12 @@ Description: Product Page
 
 				{{ form_open_cart(product.id, { 'class' : 'well well-featured form-inline form-cart add-cart ' ~ store.theme_options.well_featured_shadow }) }}
 
-					<h4>{{ 'lang.storefront.layout.button.add_to_cart'|t }}</h4>
+					<h2>{{ 'lang.storefront.layout.button.add_to_cart'|t }}</h2>
 
 					{% set product_reference = product.reference and store.theme_options.show_product_sku == 'show' %}
 					{% set product_barcode = product.barcode and store.theme_options.show_product_barcode == 'show' %}
 					{% if product_reference or product_barcode %}
-						<h6>
+						<h3 class="h6">
 							<small>
 								{% if product_reference %}
 									<span class="product-sku">{{ 'lang.storefront.product.sku.label'|t }} <span class="sku">{{ product.reference }}</span></span> {{ product_barcode  ? ' | ' }}
@@ -131,7 +131,7 @@ Description: Product Page
 									<span class="product-ean">{{ 'lang.storefront.product.ean.label'|t }} <span class="ean">{{ product.barcode }}</span></span>
 								{% endif %}
 							</small>
-						</h6>
+						</h3>
 					{% endif %}
 
 					<br>
@@ -141,7 +141,7 @@ Description: Product Page
 						{% if product.option_groups %}
 							{% for option_groups in product.option_groups %}
 
-								<h6>{{ option_groups.title }}</h6>
+								<h3 class="h6">{{ option_groups.title }}</h3>
 
 								<select class="span3 select-product-options" name="option[]">
 									{% for option in option_groups.options %}
@@ -244,14 +244,14 @@ Description: Product Page
 
 						<div class="data-product-info">
 							{{ 'lang.storefront.layout.product.quantity'|t }} &nbsp;
-							<input type="number" class="span1" name="qtd" value="1" min="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+							<input type="number" class="span1" name="qtd" value="1" min="1" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 							<button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" type="submit">
 								{{ icons('shopping-cart', 'fa-lg') }} {{ 'lang.storefront.layout.button.buy'|t }}
 							</button>
 
 							{% if product.stock.stock_show %}
 								<hr>
-								<h6>{{ 'lang.storefront.filters.stock.label'|t }}</h6>
+								<h3 class="h6">{{ 'lang.storefront.filters.stock.label'|t }}</h3>
 								<em class="muted"><span class="product-stock-qty">{{ 'lang.storefront.account.wishlist.stock_units'|t([product.stock.stock_qty]) }}</span></em>
 							{% endif %}
 						</div>
@@ -287,7 +287,7 @@ Description: Product Page
 			</div>
 
 			<div class="span9">
-				{% if product.description or product.campaign or product.tabs or product.video_embed_url or apps.facebook_comments.comments_products %}
+				{% if product.description or product.campaign or product.tabs or product.video_embed_url %}
 					<div class="product-tabs tabbable margin-top"> <!-- Only required for left/right tabs -->
 						<ul class="nav nav-tabs">
 							{% if product.description or product.campaign %}
@@ -305,11 +305,6 @@ Description: Product Page
 							{% if product.video_embed_url %}
 								<li>
 									<a href="#tab-video" data-toggle="tab">{{ 'lang.storefront.product.video.label'|t }}</a>
-								</li>
-							{% endif %}
-							{% if apps.facebook_comments.comments_products %}
-								<li>
-									<a href="#tab-comments" data-toggle="tab">{{ 'lang.storefront.product.comments.label'|t }}</a>
 								</li>
 							{% endif %}
 						</ul>
@@ -339,12 +334,6 @@ Description: Product Page
 									</div>
 								</div>
 							{% endif %}
-							{% if apps.facebook_comments.comments_products %}
-								<div class="tab-pane" id="tab-comments">
-									<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="5" data-colorscheme="light" data-width="100%"></div>
-								</div>
-							{% endif %}
-
 						</div>
 					</div>
 				{% endif %}
@@ -379,6 +368,8 @@ Description: Product Page
 										<td>{% for custom_field_value in custom_field.values %}{{ custom_field_value.value }}{{ not loop.last ? ', ' }}{% endfor %}</td>
 									</tr>
 								{% endfor %}
+
+								<caption class="sr-only">{{ 'lang.storefront.layout.product.characteristics'|t }}</caption>
 							</table>
 						</div>
 					</div>
@@ -387,17 +378,17 @@ Description: Product Page
 				<div class="well well-default {{ store.theme_options.well_default_shadow }} well-small margin-top">
 					{% if product.file %}
 						<div class="file inline-block">
-							<h6 style="margin-top:0">{{ 'lang.storefront.product.download_file.label'|t }}</h6>
+							<h3 class="margin-top-0">{{ 'lang.storefront.product.download_file.label'|t }}</h3>
 							<a class="btn file-download" href="{{ product.file }}" target="_blank">{{ icons('download') }} <strong>{{ 'lang.storefront.product.download_file.button'|t }}</strong></a>
 						</div>
 					{% endif %}
 
 					<div class="share {{ product.file ? 'pull-right' }}">
-						<h6 style="margin-top:0">{{ 'lang.storefront.product.share.label'|t }}</h6>
-						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f', 'fa-lg') }}</a> &nbsp;
-						<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp', 'fa-lg') }}</a> &nbsp;
-						<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter', 'fa-lg') }}</a> &nbsp;
-						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest', 'fa-lg') }}</a>
+						<h3 class="margin-top-0">{{ 'lang.storefront.product.share.label'|t }}</h3>
+						<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook-f', 'fa-lg') }}</a> &nbsp;
+						<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.whatsapp'|t }}">{{ icons('whatsapp', 'fa-lg') }}</a> &nbsp;
+						<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.twitter'|t }}">{{ icons('twitter', 'fa-lg') }}</a> &nbsp;
+						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.pinterest'|t }}">{{ icons('pinterest', 'fa-lg') }}</a>
 					</div>
 				</div>
 

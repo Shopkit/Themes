@@ -34,7 +34,7 @@ Description: Login page
                 </div>
             {% endif %}
 
-            <h2 class="title title_mb-lg">{{ 'lang.storefront.login.signin.title'|t }}</h2>
+            <h1 class="title title_mb-lg">{{ 'lang.storefront.login.signin.title'|t }}</h1>
 
             <div class="row shopkit-auth-form-login-section">
                 <div class="col-lg-6">
@@ -54,7 +54,7 @@ Description: Login page
                                     </div>
 
                                     <div class="col-sm-12 margin-bottom">
-                                        <a href="#" class="shopkit-auth-link-recover text-muted text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-login" data-target=".shopkit-auth-form-recover">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</a>
+                                        <a href="#" class="shopkit-auth-link-recover text-dark text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-login" data-target=".shopkit-auth-form-recover">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</a>
                                     </div>
 
                                     <div class="col-sm-12 text-center">
@@ -72,7 +72,7 @@ Description: Login page
                                         <div class="g-recaptcha" id="g_recaptcha_signup"></div>
                                     </div>
                                     <div class="col-sm-12 margin-bottom">
-                                        <a href="#" class="shopkit-auth-link-login text-muted text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-recover" data-target=".shopkit-auth-form-login">{{ 'lang.storefront.login.signin.recover_password.back.button'|t }}</a>
+                                        <a href="#" class="shopkit-auth-link-login text-dark text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-recover" data-target=".shopkit-auth-form-login">{{ 'lang.storefront.login.signin.recover_password.back.button'|t }}</a>
                                     </div>
                                     <div class="col-sm-12 text-center">
                                         <button type="submit" class="btn btn-rounded btn-primary {{ store.theme_options.button_primary_shadow }} btn-lg">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</button>

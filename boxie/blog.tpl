@@ -23,7 +23,7 @@ Description: Blog page
 
     <div class="blog-page section">
         <div class="{{ layout_container }}">
-            <h2 class="blog-title title title_mb-md"><a href="{{ site_url('blog') }}" class="link-inherit">{{ 'lang.storefront.blog.title'|t }}</a></h2>
+            <h1 class="blog-title title title_mb-md"><a href="{{ site_url('blog') }}" class="link-inherit">{{ 'lang.storefront.blog.title'|t }}</a></h1>
             {% set posts = blog_posts("limit:#{posts_per_page}") %}
             {% if get.id_author and posts[0] %}
                 <p class="text-muted">{{ 'lang.storefront.blog.written_by'|t([posts[0].author.name]) }}</p>

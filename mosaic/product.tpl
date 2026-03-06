@@ -124,7 +124,7 @@ Description: Product Page
 						{% endif %}
 
 						<div class="data-product-info">
-							<input type="number" class="span1" name="qtd" value="1" min="1" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+							<input type="number" class="span1" name="qtd" value="1" min="1" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 
 							&nbsp; &nbsp;
 						</div>
@@ -376,6 +376,8 @@ Description: Product Page
 									<td>{% for custom_field_value in custom_field.values %}{{ custom_field_value.value }}{{ not loop.last ? ', ' }}{% endfor %}</td>
 								</tr>
 							{% endfor %}
+
+							<caption class="sr-only">{{ 'lang.storefront.layout.product.characteristics'|t }}</caption>
 						</table>
 					</div>
 				</div>
@@ -384,10 +386,10 @@ Description: Product Page
 			<div class="row-fluid">
 
 				<div class="share">
-					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted">{{ icons('facebook-f', 'fa-lg') }}</a> &nbsp;
-					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted">{{ icons('whatsapp', 'fa-lg') }}</a> &nbsp;
-					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted">{{ icons('twitter', 'fa-lg') }}</a> &nbsp;
-					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted">{{ icons('pinterest', 'fa-lg') }}</a>
+					<a target="_blank" href="http://www.facebook.com/sharer.php?u={{ product.url }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.facebook'|t }}">{{ icons('facebook-f', 'fa-lg') }}</a> &nbsp;
+					<a target="_blank" href="https://wa.me/?text={{ "#{product.title}: #{product.url}"|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.whatsapp'|t }}">{{ icons('whatsapp', 'fa-lg') }}</a> &nbsp;
+					<a target="_blank" href="https://twitter.com/share?url={{ product.url }}&text={{ character_limiter(description, 100)|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.twitter'|t }}">{{ icons('twitter', 'fa-lg') }}</a> &nbsp;
+					<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ product.image.full }}&url={{ product.url }}&description={{ product.title|url_encode }}" class="text-muted" aria-label="{{ 'lang.storefront.layout.social.pinterest'|t }}">{{ icons('pinterest', 'fa-lg') }}</a>
 				</div>
 
 			</div>
@@ -400,15 +402,8 @@ Description: Product Page
 			{% if product.video_embed_url %}
 				<div class="video-wrapper" data-service="{{ product.video_embed_url matches '/youtube/' ? 'youtube' : 'vimeo' }}" data-id="{{ product.video_embed_url|split('/')|last }}" data-ratio="16:9" data-autoscale>
 					{% if not apps.cookies or (apps.cookies and not apps.cookies.consent_mode) %}
-                        <iframe width="560" height="315" src="{{ product.video_embed_url }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="{{ product.video_embed_url }}" allow="autoplay; encrypted-media" allowfullscreen title="{{ product_title }}"></iframe>
                     {% endif %}
-				</div>
-			{% endif %}
-
-			{% if apps.facebook_comments.comments_products %}
-				<hr>
-				<div class="boxed hidden-phone">
-					<div class="fb-comments" data-href="{{ product.permalink }}" data-num-posts="3" data-colorscheme="light" data-width="100%"></div>
 				</div>
 			{% endif %}
 
@@ -418,7 +413,7 @@ Description: Product Page
 
 	<div class="related-products margin-top hidden" style="z-index:2;position:relative;" data-load="related-products" data-products="{{ product.id }}" data-num-products="6" data-products-per-row="3" data-css-class-wrapper="product-related-products unstyled">
 		<div class="wide text-center">
-			<h1 class="wide">{{ product.related_products.title }}</h1>
+			<h2 class="wide h1">{{ product.related_products.title }}</h2>
 		</div>
 		<div class="related-products-placement"></div>
 	</div>

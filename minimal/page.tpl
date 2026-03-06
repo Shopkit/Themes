@@ -14,6 +14,7 @@ Description: Page
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 
 				<h1 class="margin-bottom">{{ page.title }}</h1>
+				<h2 class="sr-only">{{ page.title }}</h2>
 
 				<div>
 					{{ page.content }}

@@ -16,6 +16,7 @@ Description: Blog post Page
 				<a href="{{ site_url('blog') }}" class="text-muted">{{ icons('angle-left') }} &nbsp; {{ 'lang.storefront.blog.title'|t }}</a>
 
 				<h1 class="margin-top-sm margin-bottom-sm"><a href="{{ blog_post.url }}" class="link-inherit">{{ blog_post.title }}</a></h1>
+				<h2 class="sr-only">{{ blog_post.title }}</h2>
 
 				{% if blog_post.author.name or blog_post.date or blog_post.tags %}
                     <div class="post-details small text-muted">
@@ -57,12 +58,6 @@ Description: Blog post Page
 						<a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media={{ blog_post.image.full }}&url={{ blog_post.url }}&description={{ blog_post.title|url_encode }}" class="text-muted">{{ icons('pinterest', 'fa-lg') }}</a>
 					</div>
 				</article>
-
-				{% if apps.facebook_comments.comments_blog %}
-					<div class="margin-top">
-						<div class="fb-comments" data-href="{{ blog_post.url }}" data-numposts="5" data-width="100%"></div>
-					</div>
-				{% endif %}
 
 			</div>
 

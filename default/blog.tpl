@@ -27,7 +27,7 @@ Description: Blog page
 
 	{% for post in posts %}
 
-		<h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+		<h2 class="h3"><a href="{{ post.url }}">{{ post.title }}</a></h2>
 		{% if post.author.name or post.date or post.tags %}
             <div class="post-details small text-muted margin-bottom">
                 {% if post.author.name %}
@@ -54,7 +54,7 @@ Description: Blog page
 			</div>
 
 			{% if post.image %}
-				<p class="span2"><a href="{{ post.url }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" class="lazy"></a></p>
+				<p class="span2"><a href="{{ post.url }}" class="box-medium well-default {{ store.theme_options.well_default_shadow }}"><img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ post.image.thumb }}" class="lazy" alt="{{ post.image.alt ? post.image.alt : post.title }}"></a></p>
 			{% endif %}
 
 		</div>

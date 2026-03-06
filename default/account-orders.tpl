@@ -347,7 +347,7 @@ Description: Orders account page
                 {% endif %}
 
                 {% if store.settings.order_return_active and user.order_detail.status == 8 and user.order_detail.delivered_at %}
-                    <div class="modal hide fade" id="return-modal" tabindex="-1" role="dialog" aria-labelledby="return-modalLabel">
+                    <div class="modal hide fade" id="return-modal" tabindex="-1" role="dialog" aria-labelledby="return-modalLabel" aria-modal="true">
                         {{ form_open(site_url('return_form/' ~ user.order_detail.id), { 'method' : 'post' }) }}
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ 'lang.storefront.layout.button.close'|t }}</span></button>

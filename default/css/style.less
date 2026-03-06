@@ -994,6 +994,8 @@ header {
 				object-fit: var(--slideshow_background_size);
 				object-position: var(--slideshow_background_position_x) var(--slideshow_background_position_y);
 				z-index: 1;
+				background-color: var(--body_background_color);
+				color: var(--body_text_color);
 			}
 		}
 	}
@@ -1345,6 +1347,14 @@ footer {
 			width: 100%;
 		}
 	}
+
+	.powered-by {
+		.opacity(0.9);
+		margin-top: 60px;
+		text-align: center;
+		color: #000;
+		font-size: 9px;
+	}
 }
 
 footer a {
@@ -1416,20 +1426,19 @@ footer a {
 	border-top-right-radius: calc(var(--card_border_radius) * 1px);
 }
 
-.product h3, .category h3, .brand h3 {
+.product h2, .category h2, .brand h2 {
 	font-size: @font-size-title-h4;
 	line-height: 1.5;
 	margin-bottom: 10px;
 	margin-top: 0;
 }
 
-.product h3 a, .category h3 a, .brand h3 a {
+.product h2 a, .category h2 a, .brand h2 a {
 	color: var(--card_text_color);
 }
 
 .product p, .category p {
 	color: var(--card_text_color);
-	.opacity(0.75);
 	font-style: italic;
 	word-wrap: break-word;
 }
@@ -1674,13 +1683,25 @@ footer a {
 	}
 }
 
-.add-cart .wishlist.added {
-	svg {
-		fill: var(--basecolor);
+.add-cart {
+	.wishlist.added {
+		svg {
+			fill: var(--basecolor);
+		}
+		i.fa, svg.svg-inline--fa {
+			color: var(--basecolor);
+		}
 	}
-	i.fa, svg.svg-inline--fa {
-		color: var(--basecolor);
+
+	h2 {
+		margin-top: 0;
+		font-size: @font-size-title-h4;
+		color: inherit;
 	}
+}
+
+.price-detail {
+	font-size: @font-size-title-h4;
 }
 
 #tab-description {
@@ -1758,10 +1779,12 @@ footer a {
 		height: 40px;
 	}
 
-	h4 {
+	h3 {
 		margin-top: @padding;
 		color: var(--homepage_blocks_text_color);
+		font-size: @font-size-title-h4;
 	}
+
 	p {
 		margin-bottom: 0;
 		color: var(--homepage_blocks_text_color);
@@ -1907,6 +1930,12 @@ footer a {
 	.text-link;
 }
 
+.share h3 {
+	color: inherit;
+	font-size: @font-size-title-h6;
+	line-height: 1;
+}
+
 //Product attributes
 .table-product-attributes {
 	tbody {
@@ -1999,6 +2028,10 @@ footer a {
     font-weight: 400;
     padding: @padding/2;
 	margin-bottom: 0;
+
+	h2 {
+		font-size: @font-size-title-h3;
+	}
 
 	.login-register-form form:not(.hidden) {
         display: -webkit-box;

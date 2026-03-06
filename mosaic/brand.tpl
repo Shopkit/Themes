@@ -26,7 +26,7 @@ Description: Product brand page
 		{% endif %}
 
 	{% if brand.brand_url %}
-        <div class="margin-top-sm"><a href="{{ brand.brand_url }}" target="_blank">{{ brand.brand_url }}</a></div>
+        <div class="margin-top-sm"><a href="{{ brand.brand_url }}" target="_blank" class="link-inherit">{{ brand.brand_url }}</a></div>
     {% endif %}
 
     {% if brand.manufacturer or brand.responsible or brand.importer %}

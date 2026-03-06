@@ -186,8 +186,8 @@ $(document).ready(function() {
     });
 
     // global variables
-    var prevArrow = '<button type="button" class="slick-prev">'+helper_icon_render('angle-left')+'</button>',
-        nextArrow = '<button type="button" class="slick-next">'+helper_icon_render('angle-right')+'</button>';
+    var prevArrow = '<button type="button" class="slick-prev" aria-label="'+lang.storefront.layout.header.nav.toggle+'">'+helper_icon_render('angle-left')+'</button>',
+        nextArrow = '<button type="button" class="slick-next" aria-label="'+lang.storefront.layout.header.nav.toggle+'">'+helper_icon_render('angle-right')+'</button>';
 
     var slides = $('.categories-slider, .card-slider, .slider-container .products-list, .blog .blog-list, .js-slider-review');
 
@@ -315,25 +315,29 @@ $(document).ready(function() {
         }]
     });
 
-    $('.blog .blog-list').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        prevArrow: prevArrow,
-        nextArrow: nextArrow,
-        speed: 600,
-        adaptiveHeight: true,
-        responsive: [{
-            breakpoint: 9999,
-            settings: "unslick"
-        }, {
-            breakpoint: 768,
-            settings: ""
-        }]
-    });
+    if ($('.blog .blog-list').length > 1) {
+        $('.blog .blog-list').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            prevArrow: prevArrow,
+            nextArrow: nextArrow,
+            speed: 600,
+            adaptiveHeight: true,
+            responsive: [{
+                breakpoint: 9999,
+                settings: "unslick"
+            }, {
+                breakpoint: 768,
+                settings: ""
+            }]
+        });
+    }
 
     $(window).on('resize orientationchange', function () {
-        $('.blog .blog-list').slick('resize');
+        if ($('.blog .blog-list').length > 1) {
+            $('.blog .blog-list').slick('resize');
+        }
         if ($('body').hasClass('feather')) {
             feather.replace();
         }
@@ -754,6 +758,14 @@ $(document).ready(function() {
             $thumb.css('visibility', 'visible');
         }
     }, '.product.has-video');
+
+    $('.products-list .product-btn.btn-link, .brands-list .brand-btn.btn-link, .categories-list .category-btn.btn-link').on('click', function(e) {
+        e.preventDefault();
+        var _this = $(this);
+        var url = _this.attr('data-href');
+
+        window.location.href = url;
+    });
 });
 
 $(window).load(function() {
@@ -1201,7 +1213,7 @@ function load_slideshow(type, gallery, theme_options) {
     if (gallery && gallery.length) {
         for (var i = 0; i < gallery.length; i++) {
             var has_slide_content = (gallery[i].title || gallery[i].button || gallery[i].description) ? 'has-slide-content' : '';
-            var slideshow_content = has_slide_content ? ('<div class="slideshow-overlay"></div><div class="slideshow-details">' + (gallery[i].title ? (gallery[i].link ? '<h1 class="slideshow-title title"><a href="'+gallery[i].link+'" class="link-inherit">'+gallery[i].title+'</a></h1>' : '<h1 class="slideshow-title title">'+gallery[i].title+'</h1>') : '') + (gallery[i].description ? '<div class="slideshow-description">'+gallery[i].description+'</div>' : '') + (gallery[i].button ? '<a class="slideshow-btn btn btn-primary" href="'+gallery[i].button_link+'" '+(gallery[i].target_blank == '1' ? 'target="_blank"' : '' )+ '>'+gallery[i].button+'</a>' : '') + '</div>') : '';
+            var slideshow_content = has_slide_content ? ('<div class="slideshow-overlay"></div><div class="slideshow-details">' + (gallery[i].title ? (gallery[i].link ? '<h2 class="slideshow-title title"><a href="'+gallery[i].link+'" class="link-inherit">'+gallery[i].title+'</a></h2>' : '<h2 class="slideshow-title title">'+gallery[i].title+'</h2>') : '') + (gallery[i].description ? '<div class="slideshow-description">'+gallery[i].description+'</div>' : '') + (gallery[i].button ? '<a class="slideshow-btn btn btn-primary" href="'+gallery[i].button_link+'" '+(gallery[i].target_blank == '1' ? 'target="_blank"' : '' )+ '>'+gallery[i].button+'</a>' : '') + '</div>') : '';
             var slideshow_slide;
 
             if (gallery[i].is_video === true || gallery[i].is_video === 'true' || gallery[i].is_video === '1' || gallery[i].is_video === 1 || (gallery[i].video_url && gallery[i].video_url !== '' && gallery[i].video_url !== 'undefined')) {
@@ -1265,8 +1277,8 @@ function load_slideshow(type, gallery, theme_options) {
             autoplay: true,
             autoplaySpeed: parseInt(theme_options.slideshow_slide_speed * 1000),
             arrows: true,
-            prevArrow: '<button type="button" class="slick-prev">'+helper_icon_render('angle-left')+'</button>',
-            nextArrow: '<button type="button" class="slick-next">'+helper_icon_render('angle-right')+'</button>',
+            prevArrow: '<button type="button" class="slick-prev" aria-label="'+lang.storefront.layout.header.nav.toggle+'">'+helper_icon_render('angle-left')+'</button>',
+            nextArrow: '<button type="button" class="slick-next" aria-label="'+lang.storefront.layout.header.nav.toggle+'">'+helper_icon_render('angle-right')+'</button>',
             speed: 900,
             infinite: true,
             draggable: false,

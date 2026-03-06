@@ -23,7 +23,7 @@ Description: About page
 
     <div class="about section">
         <div class="{{ layout_container }}">
-            <h2 class="about-title title title_mb-lg">{{ store.page.about.title }}</h2>
+            <h1 class="about-title title title_mb-lg">{{ store.page.about.title }}</h1>
             <div class="row">
                 <div class="col-md-{{ social_on_page_about == 'show' ? '7' : '12' }}">
                     <div class="about-text">

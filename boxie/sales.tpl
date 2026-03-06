@@ -12,7 +12,7 @@ Description: Promotions Page
 
     <div class="products products-full section">
         <div class="{{ layout_container }}">
-            <h2 class="products-title title title_mb-lg">{{ store.page.sales.title }}</h2>
+            <h1 class="products-title title title_mb-lg">{{ store.page.sales.title }}</h1>
 
             {% if store.page.sales.content %}
                 <div class="page-content margin-bottom">
@@ -27,7 +27,7 @@ Description: Promotions Page
                     </div>
                 {% else %}
                     <div class="no-products">
-                        <h3>{{ 'lang.storefront.product_list.no_products'|t }}</h3>
+                        <h2 class="h3">{{ 'lang.storefront.product_list.no_products'|t }}</h2>
                     </div>
                 {% endfor %}
             </div>

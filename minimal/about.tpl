@@ -13,6 +13,7 @@ Description: About page
 	<div class="{{ layout_container }}">
 
 		<h1>{{ store.page.about.title }}</h1>
+		<h2 class="sr-only">{{ store.page.about.title }}</h2>
 
 		<div class="row">
 

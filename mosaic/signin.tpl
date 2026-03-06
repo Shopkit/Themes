@@ -52,7 +52,7 @@ Description: Login page
                                     </div>
                                     <div class="row-fluid">
                                         <div class="span12 margin-bottom">
-                                            <a href="#" class="shopkit-auth-link-recover text-muted text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-login" data-target=".shopkit-auth-form-recover">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</a>
+                                            <a href="#" class="shopkit-auth-link-recover text-dark text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-login" data-target=".shopkit-auth-form-recover">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</a>
                                         </div>
 
                                         <div class="span12 text-center">
@@ -74,7 +74,7 @@ Description: Login page
                                     </div>
                                     <div class="row-fluid">
                                         <div class="span12 margin-bottom">
-                                            <a href="#" class="shopkit-auth-link-login text-muted text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-recover" data-target=".shopkit-auth-form-login">{{ 'lang.storefront.login.signin.recover_password.back.button'|t }}</a>
+                                            <a href="#" class="shopkit-auth-link-login text-dark text-underline" data-toggle="replace" data-origin=".shopkit-auth-form-recover" data-target=".shopkit-auth-form-login">{{ 'lang.storefront.login.signin.recover_password.back.button'|t }}</a>
                                         </div>
                                         <div class="span12 text-center">
                                             <button type="submit" class="button btn-primary {{ store.theme_options.button_primary_shadow }}">{{ 'lang.storefront.login.signin.recover_password.button'|t }}</button>

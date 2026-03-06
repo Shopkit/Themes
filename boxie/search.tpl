@@ -39,7 +39,7 @@ Description: Search Page
 
     <div class="products products-search section">
         <div class="{{ layout_container }}">
-            <h2 class="products-title title title_mb-md">{{ 'lang.storefront.search.title'|t }}</h2>
+            <h1 class="products-title title title_mb-md">{{ 'lang.storefront.search.title'|t }}</h1>
 
             <div class="filters js-filters">
                 <div class="filters-sorting">

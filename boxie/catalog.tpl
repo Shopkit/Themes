@@ -34,7 +34,7 @@ Description: Product catalog page
 
     <div class="products products-full section">
         <div class="{{ layout_container }}">
-            <h2 class="products-title title title_mb-lg">{{ 'lang.storefront.catalog.title'|t }}</h2>
+            <h1 class="products-title title title_mb-lg">{{ 'lang.storefront.catalog.title'|t }}</h1>
 
             <div class="filters js-filters {{ show_filters }}">
                 <div class="filters-sorting">

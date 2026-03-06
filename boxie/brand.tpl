@@ -35,14 +35,14 @@ Description: Product brand page
         <div class="{{ layout_container }}">
             <div class="row">
                 <div class="col-12">
-                    <h2 class="products-title title title_mb-lg">{{ brand.title }}</h2>
+                    <h1 class="products-title title title_mb-lg">{{ brand.title }}</h1>
 
                     {% if brand.description %}
                         <div class="page-content margin-top-sm margin-bottom-sm">{{ brand.description|nl2br }}</div>
                     {% endif %}
 
                     {% if brand.brand_url %}
-                        <div class="margin-top-sm"><a href="{{ brand.brand_url }}" target="_blank">{{ brand.brand_url }}</a></div>
+                        <div class="margin-top-sm"><a href="{{ brand.brand_url }}" target="_blank" class="text-link">{{ brand.brand_url }}</a></div>
                     {% endif %}
 
                     {% if brand.manufacturer or brand.responsible or brand.importer %}

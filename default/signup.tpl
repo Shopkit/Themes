@@ -23,7 +23,7 @@ Description: Register page
     {% endif %}
 
     <div class="alert alert-error {{ store.theme_options.well_danger_shadow }} shopkit-auth-callout hidden">
-        <h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
+        <h2 class="h4">{{ 'lang.storefront.layout.events.form.error'|t }}</h2>
     </div>
 
     <div class="row-fluid">
@@ -32,7 +32,7 @@ Description: Register page
         <div class="span6">
             <div class="user-login-register well well-featured {{ store.theme_options.well_featured_shadow }}">
                 <div class="login-register-title text-center margin-bottom">
-                    <h3 class="title">{{ 'lang.storefront.login.signup.title'|t }}</h3>
+                    <h2 class="title">{{ 'lang.storefront.login.signup.title'|t }}</h2>
                     <p class="desc">{{ 'lang.storefront.signin.no_account.text'|t }} {{ 'lang.storefront.signin.no_account.signup'|t }}</p>
                 </div>
                 <div class="login-register-form">

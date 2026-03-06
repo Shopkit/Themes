@@ -93,10 +93,6 @@ $(document).ready(function() {
 			$('.navbar-nav').addClass('is-small-nav');
 		}
 
-		if (!Modernizr.mq('(min-width: 1024px)')) {
-			$('.facebook-comments:not(.have-moved)').detach().appendTo('.description').addClass('have-moved');
-		}
-
 		if ($('.table-responsive').length) {
 			$('.table-responsive').each(function() {
 				var _this = $(this);

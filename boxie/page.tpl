@@ -23,7 +23,7 @@ Description: Page
         <div class="{{ layout_container }}">
             <div class="row">
                 <div class="col">
-                    <h2 class="page-title title title_mb-lg">{{ page.title }}</h2>
+                    <h1 class="page-title title title_mb-lg">{{ page.title }}</h1>
                 </div>
             </div>
 

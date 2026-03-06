@@ -28,7 +28,7 @@ Version: 4.0
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if IE 9]>         <html class="no-js ie9"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="{{ store.storefront_language }}"> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,11 +46,6 @@ Version: 4.0
 		{% if store.translate_meta %}
 			<meta name="google-translate-customization" content="{{ store.translate_meta }}">
 		{% endif %}
-
-		{% if apps.facebook_comments.username %}
-			<meta property="fb:admins" content="{{ apps.facebook_comments.username }}">
-		{% endif %}
-		<!-- End Facebook Meta -->
 
 		<link rel="canonical" href="{{ canonical_url }}" />
 
@@ -284,7 +279,7 @@ Version: 4.0
             {% for popup in store.theme_options.popups %}
                 {% if get.preview or (('all' in popup.location) or (current_page in popup.location)) %}
                     {% if popup.type == 'popup' %}
-                        <div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" tabindex="-1" role="dialog" aria-labelledby="banner-popupLabel">
+                        <div class="modal fade banner-theme-options" id="banner-{{ popup.type }}-{{ popup.unique_id }}" data-unique_id="{{ popup.unique_id }}" data-type="{{ popup.type }}" data-show_timing="{{ popup.show_timing }}" role="dialog" aria-labelledby="banner-popupLabel" aria-modal="true">
                             <div class="modal-dialog {{ popup.modal_size }}" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body" style="background-color:{{ popup.background_color }};color:{{ popup.text_color }}">
@@ -358,7 +353,7 @@ Version: 4.0
 
 		{# Events #}
 		{% if events.wishlist %}
-			<div class="modal fade" id="wishlist-modal" tabindex="-1" role="dialog" aria-labelledby="wishlist-modalLabel">
+			<div class="modal fade" id="wishlist-modal" tabindex="-1" role="dialog" aria-labelledby="wishlist-modalLabel" aria-modal="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-body">
@@ -384,7 +379,7 @@ Version: 4.0
 		{% endif %}
 
 		{% if events.cart %}
-			<div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modalLabel">
+			<div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modalLabel" aria-modal="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 
@@ -470,7 +465,7 @@ Version: 4.0
 		{% endif %}
 
 		{% if events.unsubscribe %}
-			<div class="modal fade" id="unsubscribe-modal" tabindex="-1" role="dialog" aria-labelledby="unsubscribe-modalLabel">
+			<div class="modal fade" id="unsubscribe-modal" tabindex="-1" role="dialog" aria-labelledby="unsubscribe-modalLabel" aria-modal="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 
@@ -500,7 +495,7 @@ Version: 4.0
 		{% endif %}
 
 		{% if events.payment_status %}
-			<div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modalLabel">
+			<div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modalLabel" aria-modal="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 
@@ -536,7 +531,7 @@ Version: 4.0
 		{% endif %}
 
 		{% if events.contact_form_success or events.contact_form_errors %}
-			<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel">
+			<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel" aria-modal="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 
@@ -574,7 +569,7 @@ Version: 4.0
 		{% endif %}
 
 		{% if events.return_form_success %}
-            <div class="modal fade" id="return-events-modal" tabindex="-1" role="dialog" aria-labelledby="return-events-modalLabel">
+            <div class="modal fade" id="return-events-modal" tabindex="-1" role="dialog" aria-labelledby="return-events-modalLabel" aria-modal="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
@@ -606,7 +601,7 @@ Version: 4.0
         {% endif %}
 
         {% if events.return_cancel_success or events.return_cancel_errors %}
-            <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel">
+            <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modalLabel" aria-modal="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
@@ -639,7 +634,7 @@ Version: 4.0
             </script>
         {% endif %}
 
-		<div class="modal fade" id="user-geolocation-modal" tabindex="-1" role="dialog" aria-labelledby="user-geolocation-modalLabel">
+		<div class="modal fade" id="user-geolocation-modal" role="dialog" aria-labelledby="user-geolocation-modalLabel" aria-modal="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					{{ form_open(site_url('user_location'), { 'method' : 'post' }) }}
@@ -649,7 +644,7 @@ Version: 4.0
 						</div>
 						<div class="modal-body">
 							<p><span class="flag-icon user-geolocation-modal-flag"></span> <span class="user-geolocation-modal-flag-ask-country">{{ 'lang.storefront.layout.modals.geolocation.ask_country'|t }}</span></p>
-							<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control">
+							<select name="user-geolocation-modal-select-country" id="user-geolocation-modal-select-country" class="form-control" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
 								{% for key, country in countries %}
 									<option value="{{ key }}">{{ country }}</option>
 								{% endfor %}

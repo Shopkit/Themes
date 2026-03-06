@@ -138,7 +138,7 @@
     {% set default_lang = apps_google_translate.default_language %}
 
 	<div class="languages-dropdown btn-group pull-right hidden">
-		<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{ 'lang.storefront.form.country.select.default'|t }}">
 			<span class="current-language"><span class="flag-icon"></span></span> &nbsp;
 			<span class="caret"></span>
 		</button>

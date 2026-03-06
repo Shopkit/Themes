@@ -10,6 +10,9 @@ Description: Home Page
 
 	{% set products_per_page_home = store.products_per_page_home %}
 	{% set featured_products = products("order:featured limit:#{products_per_page_home}") %}
+
+	<h1 class="sr-only">{{ store_name }}</h1>
+
 	{% if products_per_page_home %}
 
 		<div class="row products">

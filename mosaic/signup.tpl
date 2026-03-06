@@ -24,7 +24,7 @@ Description: Register page
             {% endif %}
 
             <div class="alert alert-error {{ store.theme_options.well_danger_shadow }} shopkit-auth-callout hidden">
-                <h4>{{ 'lang.storefront.layout.events.form.error'|t }}</h4>
+                <h2 class="h4">{{ 'lang.storefront.layout.events.form.error'|t }}</h2>
             </div>
 
             <div class="row-fluid">

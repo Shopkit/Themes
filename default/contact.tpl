@@ -16,33 +16,33 @@ Description: Contact Page
 	<h1>{{ store.page.contact.title }}</h1>
 	<br>
 
-	<h4>{{ store.name }}</h4>
+	<h2 class="h3">{{ store.name }}</h2>
 	<br>
 
 	<div class="row">
 		<div class="span4">
 			{% if store.show_email %}
-				<h5>{{ 'lang.storefront.form.email.label'|t }}</h5>
+				<h3 class="h4">{{ 'lang.storefront.form.email.label'|t }}</h3>
 				<p>{{ safe_mailto(store.email) }}</p><br>
 			{% endif %}
 
 			{% if store.phone %}
-				<h5>{{ 'lang.storefront.form.phone.label'|t }}</h5>
+				<h3 class="h4">{{ 'lang.storefront.form.phone.label'|t }}</h3>
 				<p><a href="tel:{{ store.phone }}">{{ store.phone }}</a></p><br>
 			{% endif %}
 
 			{% if store.cellphone %}
-				<h5>{{ 'lang.storefront.form.cellphone.label'|t }}</h5>
+				<h3 class="h4">{{ 'lang.storefront.form.cellphone.label'|t }}</h3>
 				<p><a href="tel:{{ store.cellphone }}">{{ store.cellphone }}</a></p><br>
 			{% endif %}
 
 			{% if store.address %}
-				<h5>{{ 'lang.storefront.form.address.label'|t }}</h5>
+				<h3 class="h4">{{ 'lang.storefront.form.address.label'|t }}</h3>
 				<p>{{ store.address|nl2br }}</p>
 			{% endif %}
 		</div>
 		<div class="span5">
-			<h5>{{ 'lang.storefront.contact.contact_form.title'|t }}</h5>
+			<h3 class="h4">{{ 'lang.storefront.contact.contact_form.title'|t }}</h3>
 			<br>
 
 			{{ form_open('contact_form', 'class="contact-form" id="contact-form"') }}
@@ -92,7 +92,7 @@ Description: Contact Page
 			<div class="row">
 				<div class="span9">
 					<h4>{{ 'lang.storefront.contact.map.title'|t }}</h4><br>
-					<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
+					<iframe width="100%" title="map" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?q={{ store.latitude }},{{ store.longitude }}&amp;ie=UTF8&amp;t=m&amp;z=12&amp;output=embed"></iframe>
 				</div>
 			</div>
 		</div>

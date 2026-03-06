@@ -35,7 +35,7 @@ Description: Blog page
 							{% endif %}
 
 							<div class="description">
-								<h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
+								<h2 class="h4"><a href="{{ post.url }}">{{ post.title }}</a></h2>
 								{% if post.author.name or post.date or post.tags %}
                                     <div class="post-details small text-muted margin-bottom">
                                         {% if post.author.name %}

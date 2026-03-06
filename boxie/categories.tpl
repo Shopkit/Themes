@@ -23,7 +23,7 @@ Description: Categories list page
 
     <div class="categories section">
         <div class="{{ layout_container }}">
-            <h2 class="categories-title title title_mb-lg">{{ 'lang.storefront.categories.title'|t }}</h2>
+            <h1 class="categories-title title title_mb-lg">{{ 'lang.storefront.categories.title'|t }}</h1>
 
             <div class="categories-list row row-cols-{{ mobile_categories_per_row }} row-cols-sm-2 row-cols-md-3  row-cols-lg-{{ categories_per_row }}">
                 {% for category in categories %}

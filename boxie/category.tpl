@@ -62,7 +62,7 @@ Description: Product category page
         <div class="{{ layout_container }}">
             <div class="row">
                 <div class="col">
-                    <h2 class="products-title title title_mb-lg">{{ category.title }}</h2>
+                    <h1 class="products-title title title_mb-lg">{{ category.title }}</h1>
 
                     {% if category.description %}
                         <div class="page-content margin-top-sm">{{ category.description }}</div>
