@@ -34,7 +34,7 @@ Description: Product tag page
 
     <div class="products products-full section">
         <div class="{{ layout_container }}">
-            <h2 class="products-title title title_mb-lg">{{ tag.title }}</h2>
+            <h1 class="products-title title title_mb-lg">{{ tag.title }}</h1>
 
             <div class="filters js-filters {{ show_filters }}">
                 <div class="filters-sorting">

@@ -36,7 +36,7 @@ Version: 4.0
 
 		<meta name="description" content="{{ description|e_attr }}">
 		<meta name="keywords" content="{{ tags|e_attr }}">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="theme-color" content="{{ store.basecolor }}">
 
 		{% if store.show_branding %}
@@ -52,8 +52,6 @@ Version: 4.0
 		{% if store.favicon %}
 			<link rel="shortcut icon" href="{{ store.favicon }}">
 		{% endif %}
-
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
 		<link href="{{ site_url('rss') }}" rel="alternate" type="application/rss+xml" title="{{ store.name|e_attr }}">
 

@@ -38,7 +38,7 @@ Version: 1.0
 
     <meta name="description" content="{{ description|e_attr }}">
     <meta name="keywords" content="{{ tags|e_attr }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="{{ store.basecolor }}">
 
     {% if store.show_branding %}
@@ -71,18 +71,6 @@ Version: 1.0
     {{ icon_library }}
     <script src="{{ assets_url('assets/common/vendor/modernizr/2.7.1/modernizr.min.js') }}"></script>
     <script src="{{ assets_url('assets/common/vendor/jquery/1.11.2/jquery.min.js') }}"></script>
-
-    <script>
-        var viewportmeta = document.querySelector('meta[name="viewport"]');
-        if (viewportmeta) {
-            if (screen.width < 375) {
-                var newScale = screen.width / 375;
-                viewportmeta.content = 'width=375, minimum-scale=' + newScale + ', maximum-scale=1.0, user-scalable=no, initial-scale=' + newScale + '';
-            } else {
-                viewportmeta.content = 'width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no';
-            }
-        }
-    </script>
 
     {{ head_content }}
 </head>

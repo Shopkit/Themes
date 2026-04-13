@@ -27,7 +27,7 @@ Github: https://github.com/Shopkit/Default
 
 	<meta name="description" content="{{ description|e_attr }}">
 	<meta name="keywords" content="{{ tags|e_attr }}">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	{% if store.show_branding %}
 		<meta name="author" content="Shopkit">

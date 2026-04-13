@@ -93,7 +93,7 @@ Description: Login page
                             <li class="d-inline-flex margin-bottom-sm">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.wishlist.text'|t }}</li>
                             <li class="d-inline-flex {{ store.settings.rewards.signup ? 'margin-bottom-sm' : '' }}">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.address.text'|t }}</li>
                             {% if store.settings.rewards. signup %}
-                                <li class="d-inline-flex">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}{{ 'lang.storefront.signin.no_account.rewards.text'|t([store.settings.rewards.signup_ratio, store.settings.rewards.plural_label]) }}</li>
+                                <li class="d-inline-flex">{{ icons('check', 'text-primary text-h4 margin-right-xs') }}<span>{{ 'lang.storefront.signin.no_account.rewards.text'|t([store.settings.rewards.signup_ratio, store.settings.rewards.plural_label]) }}</span></li>
                             {% endif %}
                         </ul>
                         <div class="text-center">

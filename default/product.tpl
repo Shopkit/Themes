@@ -69,10 +69,10 @@ Description: Product Page
 							<del></del>
 						{% else %}
 							{% if product.promo == true %}
-								<span class="data-product-price margin-right-sm">{{ product.price_promo | money_with_sign }}</span>
+								<span class="data-product-price margin-right-sm" data-price="{{ product.price_promo }}">{{ product.price_promo | money_with_sign }}</span>
 								<del class="margin-right-sm">{{ product.price | money_with_sign }}</del>
 							{% else %}
-								<span class="data-product-price margin-right-sm">{{ product.price | money_with_sign }}</span>
+								<span class="data-product-price margin-right-sm" data-price="{{ product.price }}">{{ product.price | money_with_sign }}</span>
 								<del></del>
 							{% endif %}
 						{% endif %}
@@ -174,7 +174,7 @@ Description: Product Page
                                         {% if extra_option.type == 'input' %}
                                             <div class="checkbox">
                                                 <label class="margin-bottom-0">
-                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" {{ field_required }} {{ field_checked }}>
+                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" data-price="{{ extra_option.price }}" {{ field_required }} {{ field_checked }}>
                                                     {{ extra_option.title }}{{ extra_option.price ? ' - ' ~ extra_option.price_formatted : '' }}
                                                 </label> {{ field_tip }}
                                             </div>
@@ -183,7 +183,7 @@ Description: Product Page
                                         {% elseif extra_option.type == 'textarea' %}
                                             <div class="checkbox">
                                                 <label class="margin-bottom-0">
-                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" {{ field_required }} {{ field_checked }}>
+                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" data-price="{{ extra_option.price }}" {{ field_required }} {{ field_checked }}>
                                                     {{ extra_option.title }}{{ extra_option.price ? ' - ' ~ extra_option.price_formatted : '' }}
                                                 </label> {{ field_tip }}
                                             </div>
@@ -192,7 +192,7 @@ Description: Product Page
                                         {% elseif extra_option.type == 'select' %}
                                             <div class="checkbox">
                                                 <label class="margin-bottom-0">
-                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" {{ field_required }} {{ field_checked }}>
+                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" data-price="{{ extra_option.price }}" {{ field_required }} {{ field_checked }}>
                                                     {{ extra_option.title }}{{ extra_option.price ? ' - ' ~ extra_option.price_formatted : '' }}
                                                 </label> {{ field_tip }}
                                             </div>
@@ -206,7 +206,7 @@ Description: Product Page
                                         {% elseif extra_option.type == 'checkbox' %}
                                             <div class="checkbox">
                                                 <label class="margin-bottom-0">
-                                                    <input type="checkbox" name="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" id="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" value="1" {{ field_required }}>
+                                                    <input type="checkbox" name="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" data-price="{{ extra_option.price }}" id="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" value="1" {{ field_required }} {{ field_checked }}>
                                                     {{ extra_option.title }}{{ extra_option.price ? ' - ' ~ extra_option.price_formatted : '' }}
                                                 </label> {{ field_tip }}
                                             </div>
@@ -214,7 +214,7 @@ Description: Product Page
                                         {% elseif extra_option.type == 'date' %}
                                             <div class="checkbox">
                                                 <label class="margin-bottom-0">
-                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" {{ field_required }} {{ field_checked }}>
+                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" data-price="{{ extra_option.price }}" {{ field_required }} {{ field_checked }}>
                                                     {{ extra_option.title }}{{ extra_option.price ? ' - ' ~ extra_option.price_formatted : '' }}
                                                 </label> {{ field_tip }}
                                             </div>
@@ -223,7 +223,7 @@ Description: Product Page
                                         {% elseif extra_option.type == 'color' %}
                                             <div class="checkbox">
                                                 <label class="margin-bottom-0">
-                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" {{ field_required }} {{ field_checked }}>
+                                                    <input type="checkbox" data-target="{{ 'extra_options[' ~ extra_option.alias ~ ']' }}" data-price="{{ extra_option.price }}" {{ field_required }} {{ field_checked }}>
                                                     {{ extra_option.title }}{{ extra_option.price ? ' - ' ~ extra_option.price_formatted : '' }} <span class="extra-option-option-label hidden">- <span></span></span>
                                                 </label> {{ field_tip }}
                                             </div>

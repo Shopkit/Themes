@@ -77,7 +77,7 @@ Description: Orders account page
 								{% set label_text = 'lang.storefront.account.orders.order_detail.return.status.concluded'|t %}
 							{% endif %}
 
-							<h4><i class="fa fa-fw fa-undo"></i> {{ 'lang.storefront.account.orders.order_detail.return.title'|t }} <span class="label {{ label_class }}">{{ label_text }}</span></h4>
+							<h4>{{ icons('undo', 'fa-fw') }} {{ 'lang.storefront.account.orders.order_detail.return.title'|t }} <span class="label {{ label_class }}">{{ label_text }}</span></h4>
 
 							<p>{{ 'lang.storefront.account.orders.order_detail.return.request_date'|t([user.order_detail.return_request|format_datetime('long', 'none')]) }}.</p>
 
