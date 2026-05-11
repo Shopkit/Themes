@@ -395,7 +395,7 @@ $(document).ready(function() {
 
             if (video) {
                 image_container.html(
-                    '<video controls muted autoplay loop poster="' + (image || "") + '" class="card-pic" width="600" aria-label="' + alt + '">' +
+                    '<video controls muted autoplay playsinline webkit-playsinline preload="auto" data-autoplay-sound="true" poster="' + (image || "") + '" class="card-pic" width="600" aria-label="' + alt + '">' +
                     '<source src="' + video + '" type="video/mp4">' +
                     alt +
                     "</video>"
@@ -814,22 +814,31 @@ $(window).load(function() {
             return false;
         }
 
+        var minQty = parseInt(input.attr('data-min') || input.attr('min'), 10) || 1;
+        var maxQty = parseInt(input.attr('data-max') || input.attr('max'), 10);
+
         minus.on('click', function () {
             var count = parseInt(input.val()) - 1;
-                count = count < 1 ? 1 : count;
+                count = count < minQty ? minQty : count;
 
             input.val(count);
         });
         plus.on('click', function () {
-            input.val(parseInt(input.val()) + 1);
+            var count = parseInt(input.val()) + 1;
+
+            if (!isNaN(maxQty) && count > maxQty) {
+                count = maxQty;
+            }
+
+            input.val(count);
         });
         input.blur(function () {
             if (input.val() == "") {
-                input.val("0");
+                input.val(minQty);
             }
         });
         input.bind("change keyup input click", function () {
-            input.val(input.val().replace(/[^\d]/, ""));
+            input.val(input.val().replace(/[^\d]/g, ""));
         });
     });
 })();
@@ -1027,6 +1036,7 @@ function product_options(product, onload) {
 
             $('.add-cart input[name="qtd"], .add-cart button[type="submit"]').prop('disabled', disable_form_product);
             $('.add-cart').addClass('form-enabled');
+            $('.qty-limits').toggleClass('hidden', disable_form_product);
 
             product_options_url();
 
@@ -1247,7 +1257,7 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<div class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" ' + (i == 0 ? 'autoplay ' : '') + 'muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
+                    '<video class="slide-video-element" ' + (i == 0 ? 'autoplay ' : '') + 'muted playsinline webkit-playsinline '+(gallery.length == 1 ? 'loop ' : '')+'preload="auto" poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
                     (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +

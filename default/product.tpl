@@ -25,7 +25,7 @@ Description: Product Page
 				{% if product.image.video_url %}
 					<div class="product-video-wrapper box-medium well-default {{ store.theme_options.well_default_shadow }}" rel="{{ product.id }}">
                         {# Display video with controls #}
-                        <video controls muted autoplay loop poster="{{ product.image.full }}" class="img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
+                        <video controls muted autoplay playsinline webkit-playsinline preload="auto" data-autoplay-sound="true" poster="{{ product.image.full }}" class="img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
                             <source src="{{ product.image.video_url }}" type="video/mp4">
                             {{ product.image.alt ? product.image.alt : product_title }}
                         </video>
@@ -242,12 +242,34 @@ Description: Product Page
                             </div>
                         {% endif %}
 
+						{% if user.wholesale is same as(true) %}
+							{% set effective_min_qty = product.stock.min_quantity_wholesale ?? (product.wholesale == true ? null : product.stock.min_quantity) %}
+							{% set effective_max_qty = product.stock.max_quantity_wholesale ?? (product.wholesale == true ? null : product.stock.max_quantity) %}
+						{% else %}
+							{% set effective_min_qty = product.stock.min_quantity %}
+							{% set effective_max_qty = product.stock.max_quantity %}
+						{% endif %}
+						{% set has_extra_options = product.extra_options is not empty %}
+
 						<div class="data-product-info">
 							{{ 'lang.storefront.layout.product.quantity'|t }} &nbsp;
-							<input type="number" class="span1" name="qtd" value="1" min="1" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+							<input type="number" class="span1" name="qtd" value="{{ has_extra_options ? 1 : (effective_min_qty ?: 1) }}" min="{{ has_extra_options ? 1 : (effective_min_qty ?: 1) }}" {% if effective_max_qty %} max="{{ effective_max_qty }}" {% endif %} aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 							<button class="btn btn-primary {{ store.theme_options.button_primary_shadow }}" type="submit">
 								{{ icons('shopping-cart', 'fa-lg') }} {{ 'lang.storefront.layout.button.buy'|t }}
 							</button>
+							{% if effective_min_qty or effective_max_qty %}
+								{% set min_unit = effective_min_qty == 1 ? 'lang.storefront.product.qty_unit_one'|t : 'lang.storefront.product.qty_unit'|t %}
+								{% set max_unit = effective_max_qty == 1 ? 'lang.storefront.product.qty_unit_one'|t : 'lang.storefront.product.qty_unit'|t %}
+								<small class="text-muted help-block qty-limits">
+									{% if effective_min_qty and effective_max_qty %}
+										{{ 'lang.storefront.product.qty_info_min_max'|t|format(effective_min_qty, min_unit, effective_max_qty, max_unit) }}
+									{% elseif effective_min_qty %}
+										{{ 'lang.storefront.product.qty_info_min'|t|format(effective_min_qty, min_unit) }}
+									{% elseif effective_max_qty %}
+										{{ 'lang.storefront.product.qty_info_max'|t|format(effective_max_qty, max_unit) }}
+									{% endif %}
+								</small>
+							{% endif %}
 
 							{% if product.stock.stock_show %}
 								<hr>

@@ -76,7 +76,7 @@ Description: Product Page
                             <div class="card-preview">
                                 {% if product.image.video_url %}
                                     {# Display video with controls #}
-                                    <video controls muted autoplay loop poster="{{ product.image.full }}" class="card-pic js-zoom img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title|e_attr }}">
+                                    <video controls muted autoplay playsinline webkit-playsinline preload="auto" data-autoplay-sound="true" poster="{{ product.image.full }}" class="card-pic js-zoom img-responsive" width="600" aria-label="{{ product.image.alt ? product.image.alt : product_title|e_attr }}">
                                         <source src="{{ product.image.video_url }}" type="video/mp4">
                                         {{ product.image.alt ? product.image.alt : product_title|e_attr }}
                                     </video>
@@ -260,13 +260,22 @@ Description: Product Page
                                 </div>
                             {% endif %}
 
+                            {% if user.wholesale is same as(true) %}
+                                {% set effective_min_qty = product.stock.min_quantity_wholesale ?? (product.wholesale == true ? null : product.stock.min_quantity) %}
+                                {% set effective_max_qty = product.stock.max_quantity_wholesale ?? (product.wholesale == true ? null : product.stock.max_quantity) %}
+                            {% else %}
+                                {% set effective_min_qty = product.stock.min_quantity %}
+                                {% set effective_max_qty = product.stock.max_quantity %}
+                            {% endif %}
+                            {% set has_extra_options = product.extra_options is not empty %}
+
                             {% if product_is_vendible %}
                                 <div class="card-control data-product-info">
                                     <div class="card-counter counter">
                                         <button class="counter-btn counter-btn_minus" type="button" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}">
                                             {{ icons('angle-left') }}
                                         </button>
-                                        <input class="counter-input" type="text" name="qtd" value="1" size="3" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+                                        <input class="counter-input" type="text" name="qtd" value="{{ has_extra_options ? 1 : (effective_min_qty ?: 1) }}" data-min="{{ has_extra_options ? 1 : (effective_min_qty ?: 1) }}" {% if effective_max_qty %} data-max="{{ effective_max_qty }}" {% endif %} size="3" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}" {% if product.stock.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
                                         <button class="counter-btn counter-btn_plus" type="button" aria-label="{{ 'lang.storefront.cart.product.qty'|t }}">
                                             {{ icons('angle-right') }}
                                         </button>
@@ -277,6 +286,19 @@ Description: Product Page
                                     {{ product_macros.wishlist_block(product, store) }}
 
                                 </div>
+                                {% if effective_min_qty or effective_max_qty %}
+                                    {% set min_unit = effective_min_qty == 1 ? 'lang.storefront.product.qty_unit_one'|t : 'lang.storefront.product.qty_unit'|t %}
+                                    {% set max_unit = effective_max_qty == 1 ? 'lang.storefront.product.qty_unit_one'|t : 'lang.storefront.product.qty_unit'|t %}
+                                    <small class="text-muted help-block qty-limits">
+                                        {% if effective_min_qty and effective_max_qty %}
+                                            {{ 'lang.storefront.product.qty_info_min_max'|t|format(effective_min_qty, min_unit, effective_max_qty, max_unit) }}
+                                        {% elseif effective_min_qty %}
+                                            {{ 'lang.storefront.product.qty_info_min'|t|format(effective_min_qty, min_unit) }}
+                                        {% elseif effective_max_qty %}
+                                            {{ 'lang.storefront.product.qty_info_max'|t|format(effective_max_qty, max_unit) }}
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
 
                                 <div class="card-control data-product-on-request">
                                     <a href="{{ site_url("contact?p=") ~ 'lang.storefront.product.label'|t([product_title])|url_encode }}" class="card-btn btn btn-primary {{ store.theme_options.button_primary_shadow }} price-on-request">{{ icons('envelope') }}&nbsp;{{ 'lang.storefront.product.contact.button'|t }}</a>

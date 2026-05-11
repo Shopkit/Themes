@@ -4,7 +4,7 @@
 {% macro video_wrapper(product, product_title, css_class = '') %}
     <div class="product-media-wrapper {{ css_class }}" data-has-video="true">
         <img src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ product.image.square }}" alt="{{ product_title }}" title="{{ product_title }}" width="400" height="400" class="lazy primary-img product-thumb">
-        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}" aria-label="{{ product.image.alt ? product.image.alt : product_title }}">
+        <video class="product-hover-video" muted loop playsinline preload="none" src="{{ product.image.video_url }}" aria-label="{{ product.image.alt ? product.image.alt : product_title }}" webkit-playsinline>
             <source src="{{ product.image.video_url }}" type="video/mp4">
             {{ product.image.alt ? product.image.alt : product_title }}
         </video>

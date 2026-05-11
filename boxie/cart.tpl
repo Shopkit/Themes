@@ -105,12 +105,19 @@ Description: Shopping cart page
                                                 </div>
                                                 <div class="row">
                                                     <div class="cart-control">
+                                                        {% if user.wholesale is same as(true) %}
+                                                            {% set effective_min_qty = item.min_quantity_wholesale ?? (item.wholesale ? null : item.min_quantity) %}
+                                                            {% set effective_max_qty = item.max_quantity_wholesale ?? (item.wholesale ? null : item.max_quantity) %}
+                                                        {% else %}
+                                                            {% set effective_min_qty = item.min_quantity %}
+                                                            {% set effective_max_qty = item.max_quantity %}
+                                                        {% endif %}
                                                         <div class="cart-counter counter js-counter">
                                                             <button class="counter-btn counter-btn_minus js-counter-minus" type="button">
                                                                 {{ icons('angle-left') }}
                                                             </button>
 
-                                                            <input class="counter-input input-qtd js-counter-input" type="text" value="{{ item.qty }}" size="3" name="qtd[{{ item.item_id }}]" id="qty-{{ item.item_id }}" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
+                                                            <input class="counter-input input-qtd js-counter-input" type="text" value="{{ item.qty }}" size="3" min="{{ (item.has_extra_options ?? item.extras) ? 1 : (effective_min_qty ?: 1) }}" {% if effective_max_qty %} max="{{ effective_max_qty }}" {% endif %} name="qtd[{{ item.item_id }}]" id="qty-{{ item.item_id }}" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="top" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}>
 
                                                             <button class="counter-btn counter-btn_plus js-counter-plus" type="button">
                                                                 {{ icons('angle-right') }}

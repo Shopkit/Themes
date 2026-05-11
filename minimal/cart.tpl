@@ -92,8 +92,15 @@ Description: Shopping cart page
 												<td class="text-right">
 													<h4 class="margin-top-0 margin-bottom-sm bold price">{{ item.subtotal | money_with_sign }}</h4>
 
+													{% if user.wholesale is same as(true) %}
+														{% set effective_min_qty = item.min_quantity_wholesale ?? (item.wholesale ? null : item.min_quantity) %}
+														{% set effective_max_qty = item.max_quantity_wholesale ?? (item.wholesale ? null : item.max_quantity) %}
+													{% else %}
+														{% set effective_min_qty = item.min_quantity %}
+														{% set effective_max_qty = item.max_quantity %}
+													{% endif %}
 													<div class="form-group">
-														<label class="hidden-xs" for="qty-{{ item.item_id }}">{{ 'lang.storefront.cart.product.qty'|t }}&nbsp;</label><input class="form-control input-sm input-qtd" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="left" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %} id="qty-{{ item.item_id }}">
+														<label class="hidden-xs" for="qty-{{ item.item_id }}">{{ 'lang.storefront.cart.product.qty'|t }}&nbsp;</label><input class="form-control input-sm input-qtd" type="number" value="{{ item.qty }}" min="{{ (item.has_extra_options ?? item.extras) ? 1 : (effective_min_qty ?: 1) }}" {% if effective_max_qty %} max="{{ effective_max_qty }}" {% endif %} name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="left" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %} id="qty-{{ item.item_id }}">
 													</div>
 
 													<span class="margin-left-xxs visible-xs-inline-block visible-sm-inline-block">&nbsp;<button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-sm">{{ icons('sync') }}</button></span>

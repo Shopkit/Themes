@@ -286,7 +286,7 @@ Version: 4.0
                                             {% if popup.image.full %}
                                                 <div class="popup-image-wrapper">
 													{% if popup.image.video_url %}
-                                                        <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
+                                                        <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}" preload="auto" webkit-playsinline>
                                                             <source src="{{ popup.image.video_url }}" type="video/mp4">
                                                             {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                         </video>
@@ -320,7 +320,7 @@ Version: 4.0
                                     {% if popup.image.full and popup.type == 'slide' %}
                                         <div class="popup-image-wrapper">
 											{% if popup.image.video_url %}
-                                                <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
+                                                <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}" preload="auto" webkit-playsinline>
                                                     <source src="{{ popup.image.video_url }}" type="video/mp4">
                                                             {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                 </video>
@@ -386,7 +386,7 @@ Version: 4.0
 
 							<div class="text-center">
 
-								{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
+								{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock or events.cart.min_quantity or events.cart.max_quantity %}
 
 									{% if events.cart.stock_qty %}
 										{{ icons('ban', 'fa-4x text-muted') }}
@@ -399,6 +399,14 @@ Version: 4.0
 									{% if events.cart.no_stock %}
 										{{ icons('ban', 'fa-4x text-muted') }}
 										<h3 class="text-muted">{{ 'lang.storefront.layout.events.cart.products_without_stock'|t }}</h3>
+									{% endif %}
+									{% if events.cart.min_quantity %}
+										{{ icons('ban', 'fa-4x text-muted') }}
+										<h4 class="text-muted"><strong>{{ events.cart.min_quantity }}</strong>: {{ 'lang.storefront.layout.events.cart.min_quantity'|t|format(events.cart.min_quantity_value) }}</h4>
+									{% endif %}
+									{% if events.cart.max_quantity %}
+										{{ icons('ban', 'fa-4x text-muted') }}
+										<h4 class="text-muted"><strong>{{ events.cart.max_quantity }}</strong>: {{ 'lang.storefront.layout.events.cart.max_quantity'|t|format(events.cart.max_quantity_value) }}</h4>
 									{% endif %}
 
 								{% else %}

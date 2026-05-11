@@ -95,7 +95,15 @@ Description: Shopping cart page
 											</div>
 										{% endif %}
 									</td>
-									<td><div class="form-inline"><input class="span1" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}> <button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn-small btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('sync') }}</button></div></td>
+									<td><div class="form-inline">
+										{% if user.wholesale is same as(true) %}
+											{% set effective_min_qty = item.min_quantity_wholesale ?? (item.wholesale ? null : item.min_quantity) %}
+											{% set effective_max_qty = item.max_quantity_wholesale ?? (item.wholesale ? null : item.max_quantity) %}
+										{% else %}
+											{% set effective_min_qty = item.min_quantity %}
+											{% set effective_max_qty = item.max_quantity %}
+										{% endif %}
+										<input class="span1" type="number" value="{{ item.qty }}" min="{{ (item.has_extra_options ?? item.extras) ? 1 : (effective_min_qty ?: 1) }}" {% if effective_max_qty %} max="{{ effective_max_qty }}" {% endif %} name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}> <button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn-small btn-primary {{ store.theme_options.button_primary_shadow }}">{{ icons('sync') }}</button></div></td>
 									<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
 									<td style="text-align:center;"><a href="{{ item.remove_link }}" class="btn-small btn-primary {{ store.theme_options.button_primary_shadow }} cart-remove-product-url">{{ icons('trash') }}</a></td>
 								</tr>

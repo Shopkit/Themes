@@ -632,6 +632,7 @@ function product_options(product, onload) {
 			$('.add-cart input[name="qtd"], .add-cart button[type="submit"]').prop('disabled', disable_form_product);
 			$('.add-cart').addClass('form-enabled');
 			$('.extra-options').removeClass('hidden').find('input, select, textarea').prop('disabled', false);
+			$('.qty-limits').toggleClass('hidden', disable_form_product);
 
 			product_options_url();
 
@@ -794,7 +795,7 @@ function load_slideshow(type, gallery, theme_options) {
                     poster_url = gallery[i].poster || gallery[i].thumbnail || gallery[i].image.full;
                 }
                 slideshow_slide = '<li class="slide slide-video '+has_slide_content+'">' +
-                    '<video class="slide-video-element" ' + (i == 0 ? 'autoplay ' : '') + 'muted playsinline '+(gallery.length == 1 ? 'loop' : '')+' poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
+                    '<video class="slide-video-element" ' + (i == 0 ? 'autoplay ' : '') + 'muted playsinline webkit-playsinline '+(gallery.length == 1 ? 'loop ' : '')+'preload="auto" poster="'+poster_url+'" data-size="'+theme_options.slideshow_background_size+'" aria-label="'+(gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title)+'">' +
                     '<source src="'+video_url+'" type="video/mp4">' +
                     (gallery[i].image.alt ? gallery[i].image.alt : gallery[i].title) +
                     '</video>' +

@@ -487,7 +487,7 @@ Github: https://github.com/Shopkit/Default
 										{% if popup.image.full %}
 											<div class="popup-image-wrapper">
 												{% if popup.image.video_url %}
-                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
+                                                    <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}" preload="auto" webkit-playsinline>
                                                         <source src="{{ popup.image.video_url }}" type="video/mp4">
                                                             {{ popup.image.alt ? popup.image.alt : popup.title }}
                                                     </video>
@@ -523,7 +523,7 @@ Github: https://github.com/Shopkit/Default
 								{% if popup.image.full and popup.type == 'slide' %}
 									<div class="popup-image-wrapper">
 										{% if popup.image.video_url %}
-                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}">
+                                            <video class="popup-video" data-size="{{ popup.image_background_size }}" style="object-fit:{{ popup.image_background_size ? popup.image_background_size }};object-position:{{ popup.image_background_size == 'cover' ? (popup.image_background_position_x ~ ' ' ~ popup.image_background_position_y ~ ';') : '' }}" autoplay muted loop playsinline poster="{{ popup.image.full }}" aria-label="{{ popup.image.alt ? popup.image.alt : popup.title }}" preload="auto" webkit-playsinline>
                                                 <source src="{{ popup.image.video_url }}" type="video/mp4">
                                                             {{ popup.image.alt ? popup.image.alt : popup.title }}
                                             </video>
@@ -582,7 +582,7 @@ Github: https://github.com/Shopkit/Default
 			<div class="modal-body">
 				{% set button_label = 'lang.storefront.layout.button.close'|t %}
 
-				{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock %}
+				{% if events.cart.stock_qty or events.cart.stock_sold_single or events.cart.no_stock or events.cart.min_quantity or events.cart.max_quantity %}
 
 					{% if events.cart.stock_qty %}
 						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.not_enough_stock'|t }}</h5>
@@ -594,6 +594,14 @@ Github: https://github.com/Shopkit/Default
 
 					{% if events.cart.no_stock %}
 						<h5 class="text-normal">{{ 'lang.storefront.layout.events.cart.products_without_stock'|t }}</h5>
+					{% endif %}
+
+					{% if events.cart.min_quantity %}
+						<h5 class="text-normal"><strong>{{ events.cart.min_quantity }}</strong>: {{ 'lang.storefront.layout.events.cart.min_quantity'|t|format(events.cart.min_quantity_value) }}</h5>
+					{% endif %}
+
+					{% if events.cart.max_quantity %}
+						<h5 class="text-normal"><strong>{{ events.cart.max_quantity }}</strong>: {{ 'lang.storefront.layout.events.cart.max_quantity'|t|format(events.cart.max_quantity_value) }}</h5>
 					{% endif %}
 
 				{% else %}

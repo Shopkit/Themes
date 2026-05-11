@@ -94,7 +94,15 @@ Description: Shopping cart page
                                     </div>
                                 {% endif %}
 							</td>
-							<td><div class="form-inline"><input class="input-micro" type="number" value="{{ item.qty }}" name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}> <button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-small">{{ 'lang.storefront.cart.change.button'|t }}</button></div></td>
+							<td><div class="form-inline">
+								{% if user.wholesale is same as(true) %}
+									{% set effective_min_qty = item.min_quantity_wholesale ?? (item.wholesale ? null : item.min_quantity) %}
+									{% set effective_max_qty = item.max_quantity_wholesale ?? (item.wholesale ? null : item.max_quantity) %}
+								{% else %}
+									{% set effective_min_qty = item.min_quantity %}
+									{% set effective_max_qty = item.max_quantity %}
+								{% endif %}
+								<input class="input-micro" type="number" value="{{ item.qty }}" min="{{ (item.has_extra_options ?? item.extras) ? 1 : (effective_min_qty ?: 1) }}" {% if effective_max_qty %} max="{{ effective_max_qty }}" {% endif %} name="qtd[{{ item.item_id }}]" {% if item.stock_sold_single %} data-toggle="tooltip" data-placement="bottom" title="{{ 'lang.storefront.cart.product_limit.tooltip'|t }}" readonly {% endif %}> <button type="submit" formaction="{{ site_url('cart/post/update') }}" class="btn btn-default {{ store.theme_options.button_default_shadow }} btn-small">{{ 'lang.storefront.cart.change.button'|t }}</button></div></td>
 							<td class="price text-right">{{ item.subtotal | money_with_sign }}</td>
 							<td class="text-center"><a href="{{ item.remove_link }}" class="btn btn-small cart-remove-product-url">{{ icons('trash') }}&nbsp;<span class="hidden-phone">{{ 'lang.storefront.layout.button.remove'|t }}</span></a></td>
 						</tr>
