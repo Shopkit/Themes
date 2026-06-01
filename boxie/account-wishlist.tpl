@@ -19,7 +19,7 @@ Description: Wishlist account page
                 </div>
 
                 <div class="col-lg-9">
-                    <h1 class="margin-top-0 margin-bottom">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+                    <h1 class="margin-top-0 margin-bottom word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
                     <h3 class="margin-top-0 margin-bottom text-gray light">{{ 'lang.storefront.layout.wishlist.title'|t }}</h3>
 

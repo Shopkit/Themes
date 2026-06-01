@@ -19,7 +19,7 @@ Description: Account profile page
                 </div>
 
                 <div class="col-lg-9">
-                    <h1 class="margin-top-0 margin-bottom">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+                    <h1 class="margin-top-0 margin-bottom word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
                     {% if errors.form %}
                         <div class="callout callout-danger {{ store.theme_options.well_danger_shadow }}">

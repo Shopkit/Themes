@@ -70,18 +70,24 @@ $(document).ready(function() {
 	});
 
 	$(document).on('init_app_shipping_info', function(){
-		if (Modernizr.mq('only screen and (max-width: 991px)')) {
+		if (Modernizr.mq('only screen and (min-width: 768px) and (max-width: 991px)')) {
 			$('body.page-cart .order-resume').insertAfter('.table-cart-products');
-		}
+		} else if (Modernizr.mq('only screen and (max-width: 767px)')) {
+            $('body.page-cart .order-resume').insertAfter('.mobile-cart');
+        }
 	});
 
 	$(window).resize(function() {
 
-		if (Modernizr.mq('only screen and (max-width: 991px)')) {
-			if (typeof $('body.page-cart form .table-cart-products').next('.order-resume')[0] === 'undefined') {
-				$('body.page-cart .order-resume').insertAfter('.table-cart-products');
-			}
-		} else {
+		if (Modernizr.mq('only screen and (min-width: 768px) and (max-width: 991px)')) {
+            if (typeof $('body.page-cart form .table-cart-products').next('.order-resume')[0] === 'undefined') {
+			    $('body.page-cart .order-resume').insertAfter('.table-cart-products');
+            }
+        } else if (Modernizr.mq('only screen and (max-width: 767px)')) {
+            if (typeof $('body.page-cart form .mobile-cart').next('.order-resume')[0] === 'undefined') {
+			    $('body.page-cart .order-resume').insertAfter('.mobile-cart');
+            }
+        } else {
 			$('body.page-cart .order-resume').prependTo($('.order-resume-container'));
 		}
 
@@ -383,6 +389,39 @@ $(document).ready(function() {
             $thumb.css('visibility', 'visible');
         }
     }, '.product.has-video');
+
+	if (Modernizr.mq('(max-width:767px)')) {
+        $('body.page-cart form .table-cart-products').remove();
+    } else {
+        $('body.page-cart form .mobile-cart').remove();
+    }
+
+	/*--
+        Product Quantity
+    -----------------------------------*/
+    $('.qty-btn').on('click', function () {
+        var $this = $(this);
+
+        if ($this.prop('disabled')) return;
+        $this.prop('disabled', true);
+
+        var oldValue = $this.siblings('input').val();
+        var newVal = '';
+        if ($this.hasClass('plus')) {
+            newVal = parseFloat(oldValue) + 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 1) {
+                newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        $this.siblings('input').val(newVal).trigger('change');
+
+		var form_button = $this.parents('.mobile-cart').find('button[formaction*="cart/post/update"]');
+        form_button.trigger('click');
+    });
 });
 
 $(window).load(function() {

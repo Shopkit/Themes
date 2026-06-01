@@ -88,7 +88,7 @@ Version: 4.0
 					{% if store.settings.cart.users_registration != 'disabled' %}
 						{% if user.is_logged_in %}
 							<div class="user-loggedin">
-								<a href="{{ site_url('account') }}" class="link-account">{{ icons('user') }} {{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</a>
+								<a href="{{ site_url('account') }}" class="link-account text-truncate">{{ icons('user') }} {{ 'lang.storefront.layout.greetings'|t }} {{ user.name|first_word }}</a>
 								<ul class="dropdown-menu well-featured {{ store.theme_options.well_featured_shadow }}" role="menu">
 									<li class="{{ current_page == 'account-orders' ? 'active' }}"><a href="{{ site_url('account/orders')}}">{{ icons('shopping-bag') }} {{ 'lang.storefront.layout.orders.title'|t }}</a></li>
 									<li class="{{ current_page == 'account-profile' ? 'active' }}"><a href="{{ site_url('account/profile')}}">{{ icons('user') }} {{ 'lang.storefront.layout.client.title'|t }}</a></li>

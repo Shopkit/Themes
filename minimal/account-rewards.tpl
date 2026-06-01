@@ -23,7 +23,7 @@ Description: Rewards account page
             </div>
 
             <div class="col-sm-8 col-sm-offset-1">
-                <h1 class="margin-top-0 margin-bottom">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+                <h1 class="margin-top-0 margin-bottom word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
                 <div class="margin-bottom">
                     <h4>{{ 'lang.storefront.account.rewards.available.text'|t }} <strong class="text-underline">{{ user.rewards|rewards_label }}</strong></h4>

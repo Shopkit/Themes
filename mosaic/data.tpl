@@ -84,7 +84,7 @@ Description: Order data form page
 							</div>
 						</div>
 						<div class="row-fluid">
-							<div class="span6">
+							<div class="span6 word-break">
 								<h4 class="margin-top">{{ 'lang.storefront.order.delivery.address'|t }}</h4>
 								{% if user.delivery.address %}
 									<p>
@@ -101,7 +101,7 @@ Description: Order data form page
 								{% endif %}
 								<a href="{{ site_url('account/profile') }}">{{ 'lang.storefront.order.edit'|t }}</a>
 							</div>
-							<div class="span6">
+							<div class="span6 word-break">
 								<h4 class="margin-top">{{ 'lang.storefront.order.billing.address'|t }}</h4>
 								{% if user.billing.address %}
 									<p>

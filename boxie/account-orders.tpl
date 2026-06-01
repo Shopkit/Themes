@@ -19,7 +19,7 @@ Description: Orders account page
                 </div>
 
                 <div class="col-lg-9">
-                    <h1 class="margin-top-0 margin-bottom">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+                    <h1 class="margin-top-0 margin-bottom word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
                     {% if user.order_detail %}
                         {# Template for order detail #}
@@ -236,7 +236,7 @@ Description: Orders account page
                                                         {% if product.extras %}
                                                             {% set extras_slug = (product.option ~ '-' ~ product.extras|column('value')|join(','))|slug %}
                                                             <div class="items-extra-wrapper">
-                                                                <a href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}">{{ product.extras|length }} {{ product.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ product.subtotal_extras > 0 ? product.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
+                                                                <a href="#item-extra-{{ product.id ~ '-' ~ extras_slug }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse">{{ product.extras|length }} {{ product.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ product.subtotal_extras > 0 ? product.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                                                 <ul class="list-group extra-options collapse in margin-bottom-0 margin-top-xs" id="item-extra-{{ product.id ~ '-' ~ extras_slug }}">
                                                                     {% for key, extra in product.extras %}

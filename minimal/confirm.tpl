@@ -50,7 +50,7 @@ Description: Confirm order page
 
 						<h3 class="margin-top-0">{{ 'lang.storefront.macros.products.title'|t }}</h3>
 
-						<div class="table-responsive table-cart-responsive well-featured {{ store.theme_options.well_featured_shadow }} margin-bottom">
+						<div class="table-responsive table-cart-responsive well-featured {{ store.theme_options.well_featured_shadow }} margin-bottom hidden-xs">
 							<table class="table table-cart table-confirm margin-bottom-0">
 								<thead>
 									<tr>
@@ -74,7 +74,7 @@ Description: Confirm order page
 
                                                 {% if item.extras %}
                                                     <div class="items-extra-wrapper">
-                                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse" href="#item-extra-{{ item.item_id }}">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
+                                                        <a href="#item-extra-{{ item.item_id }}" class=" margin-top-xxs inline-block small text-default" data-toggle="collapse">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
 
                                                         <ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs" id="item-extra-{{ item.item_id }}">
                                                             {% for key, extra in item.extras %}
@@ -101,7 +101,56 @@ Description: Confirm order page
 							</table>
 						</div>
 
-						<div class="row">
+						<div class="mobile-cart well-featured {{ store.theme_options.well_featured_shadow }} margin-bottom visible-xs">
+                            {% for item in cart.items %}
+                                <div class="cart-item" data-product="{{ item.product_id }}" data-product-option="{{ item.options|keys[0] }}">
+                                    <div class="cart-item-header">
+                                        <div class="cart-img">
+                                            <a href="{{ item.product_url }}"><img class="lazy" src="{{ assets_url('assets/store/img/no-img.png') }}" data-src="{{ item.image }}" alt="{{ item.title|e }}" title="{{ item.title|e }}"></a>
+                                        </div>
+
+                                        <div class="cart-item-details">
+                                            <div class="cart-item-title">
+                                                <a href="{{ item.product_url }}" class="semi-bold"><h6>{{ item.title }}</h6></a>
+                                                <div class="unit-price text-muted small">{{ 'lang.storefront.cart.product.unit_price.label'|t }} <span class="semi-bold">{{ item.price | money_with_sign }}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cart-item-controls">
+                                        {% if item.extras %}
+                                            <div class="cart-item-extras well-default {{ store.theme_options.well_default_shadow }}">
+                                                <a href="#mobile-item-extra-{{ item.item_id }}" class="inline-block small" data-toggle="collapse">{{ item.extras|length }} {{ item.extras|length > 1 ? 'lang.storefront.product.extra_options.plural.label'|t : 'lang.storefront.product.extra_options.singular.label'|t }} <span class="text-muted">({{ item.subtotal_extras > 0 ? item.subtotal_extras | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }})</span> {{ icons('angle-down') }}</a>
+
+                                                <ul class="list-group extra-options collapse margin-bottom-0 margin-top-xs" id="mobile-item-extra-{{ item.item_id }}">
+                                                    {% for key, extra in item.extras %}
+                                                        <li class="list-group-item">
+                                                            <div class="list-group-item-header">
+                                                                <h6 class="margin-0 semi-bold">{{ extra.title }}</h6>
+                                                                <span class="badge badge-transparent normal"><span class="text-muted">{{ extra.qty }}x</span> {{ extra.price ?  extra.price | money_with_sign : 'lang.storefront.cart.order_summary.shipping_total.free'|t }}</span>
+                                                            </div>
+                                                            <div class="text-truncate small margin-top-xxs" style="max-width: 200px; min-width: 100%" data-toggle="tooltip" title="{{ extra.value }}">{{ extra.value }}</div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="cart-item-actions">
+                                            <div class="form-group">
+                                                {{ 'lang.storefront.cart.confirm.item.qty'|t([item.qty]) }}
+                                            </div>
+
+                                            <div class="cart-item-subtotal">
+                                                <span class="cart-price bold price">{{ item.subtotal | money_with_sign }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+						<div class="row word-break">
 							<div class="col-sm-6">
 								<h3>{{ 'lang.storefront.order.payment.title'|t }}</h3>
 								<p>{{ user.payment_method.title }}</p>
@@ -128,7 +177,7 @@ Description: Confirm order page
 							</div>
 						</div>
 
-						<div class="confirm-data">
+						<div class="confirm-data word-break">
 							<div class="row">
 								{% if not cart.is_digital %}
 									<div class="col-sm-6">

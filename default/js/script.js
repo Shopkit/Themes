@@ -346,6 +346,39 @@ $(document).ready(function() {
 			$thumb.css('visibility', 'visible');
 		}
 	}, '.product.has-video');
+
+	if (Modernizr.mq('(max-width:767px)')) {
+        $('body.page-cart form .table-responsive').remove();
+    } else {
+        $('body.page-cart form .mobile-cart').remove();
+    }
+
+	/*--
+        Product Quantity
+    -----------------------------------*/
+    $('.qty-btn').on('click', function () {
+        var $this = $(this);
+
+        if ($this.prop('disabled')) return;
+        $this.prop('disabled', true);
+
+        var oldValue = $this.siblings('input').val();
+        var newVal = '';
+        if ($this.hasClass('plus')) {
+            newVal = parseFloat(oldValue) + 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 1) {
+                newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        $this.siblings('input').val(newVal).trigger('change');
+
+		var form_button = $this.parents('.mobile-cart').find('button[formaction*="cart/post/update"]');
+        form_button.trigger('click');
+    });
 });
 
 $(window).load(function() {

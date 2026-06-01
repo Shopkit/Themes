@@ -15,7 +15,7 @@ Description: Wishlist account page
         <li class="active">{{ 'lang.storefront.layout.wishlist.title'|t }}</li>
     </ul>
 
-    <h1>{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+    <h1 class="word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
     <br>
 

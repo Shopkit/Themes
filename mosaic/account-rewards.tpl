@@ -19,7 +19,7 @@ Description: Rewards account page
 					{{ store.settings.rewards.plural_label ?: 'lang.storefront.account.rewards.plural.label'|t }}
 				</p><br>
 
-                <h1>{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+                <h1 class="word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
                 <div class="margin-bottom">
                     <h4>{{ 'lang.storefront.account.rewards.available.text'|t }} <strong class="text-underline">{{ user.rewards|rewards_label }}</strong></h4>

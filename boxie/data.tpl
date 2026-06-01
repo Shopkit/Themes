@@ -100,7 +100,7 @@ Description: Order data form page
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-6 margin-top">
+                                            <div class="col-sm-6 margin-top word-break">
                                                 <h3>{{ 'lang.storefront.order.delivery.address'|t }}</h3>
                                                 {% if user.delivery.address %}
                                                     <p>
@@ -117,7 +117,7 @@ Description: Order data form page
                                                 {% endif %}
                                                 <a href="{{ site_url('account/profile') }}" class="text-underline">{{ 'lang.storefront.order.edit'|t }}</a>
                                             </div>
-                                            <div class="col-sm-6 margin-top">
+                                            <div class="col-sm-6 margin-top word-break">
                                                 <h3>{{ 'lang.storefront.order.billing.address'|t }}</h3>
                                                 {% if user.billing.address %}
                                                     <p>

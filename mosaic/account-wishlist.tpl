@@ -20,7 +20,7 @@ Description: Wishlist account page
 					{{ 'lang.storefront.layout.wishlist.title'|t }}
 				</p><br>
 
-				<h1>{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+				<h1 class="word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
 				<h3>{{ 'lang.storefront.layout.wishlist.title'|t }}</h3>
 

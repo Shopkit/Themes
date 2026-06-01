@@ -68,7 +68,7 @@ Description: User account page
 					{{ 'lang.storefront.account.my_account'|t }}
 				</p><br>
 
-				<h1>{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
+				<h1 class="word-break">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong>.</h1>
 
 				{% if store.settings.rewards.active and store.settings.rewards.message_account and user.rewards %}
 					<div class="alert alert-info">

@@ -112,7 +112,7 @@ Github: https://github.com/Shopkit/Default
 							{% if store.settings.cart.users_registration != 'disabled' %}
 								<span class="pull-left">
 									{% if user.is_logged_in %}
-										<a href="{{ site_url('account') }}" class="link-account">{{ icons('user') }} {{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong></a>
+										<a href="{{ site_url('account') }}" class="link-account text-truncate">{{ icons('user') }} {{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong></a>
 									{% else %}
 										<a href="{{ site_url('signin') }}" class="link-signin">{{ icons('sign-in') }} {{ 'lang.storefront.login.signin.title'|t }}</a>
 									{% endif %}

@@ -176,7 +176,7 @@ Version: 1.0
                     <div class="header-item d-none d-sm-none d-md-block">
                         {% if user.is_logged_in %}
                             <div class="user-loggedin">
-                                <a href="{{ site_url('account') }}" class="link-account header-link">
+                                <a href="{{ site_url('account') }}" class="link-account header-link text-truncate">
                                     {{ icons('user') }}
                                     <span class="user-name">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong></span>
                                 </a>
@@ -283,7 +283,7 @@ Version: 1.0
                 {% if store.settings.cart.users_registration != 'disabled' %}
                     <div class="menu-login">
                         {% if user.is_logged_in %}
-                            <a href="{{ site_url('account') }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} btn-block link-account">
+                            <a href="{{ site_url('account') }}" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} btn-block link-account text-truncate">
                                 {{ icons('user') }}
                                 <span class="user-name">{{ 'lang.storefront.layout.greetings'|t }} <strong>{{ user.name|first_word }}</strong></span>
                             </a>
