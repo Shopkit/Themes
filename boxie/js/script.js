@@ -315,28 +315,37 @@ $(document).ready(function() {
         }]
     });
 
-    if ($('.blog .blog-list').length > 1) {
-        $('.blog .blog-list').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: true,
-            prevArrow: prevArrow,
-            nextArrow: nextArrow,
-            speed: 600,
-            adaptiveHeight: true,
-            responsive: [{
-                breakpoint: 9999,
-                settings: "unslick"
-            }, {
-                breakpoint: 768,
-                settings: ""
-            }]
-        });
+    // A lista do blog só é carrossel em mobile (≤767px). Conduzida pelo matchMedia
+    // (media_query, definido acima) em vez de responsive:"unslick" — o "unslick"
+    // destruía a instância de forma permanente e deixava a secção escondida
+    // (visibility:hidden) ao voltar a mobile via resize.
+    var blog_list = $('.blog .blog-list');
+    if (blog_list.length) {
+        var toggle_blog_slider = function (mq) {
+            if (mq.matches) {
+                if (!blog_list.hasClass('slick-initialized')) {
+                    blog_list.slick({
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: true,
+                        prevArrow: prevArrow,
+                        nextArrow: nextArrow,
+                        speed: 600,
+                        adaptiveHeight: true
+                    });
+                }
+            } else if (blog_list.hasClass('slick-initialized')) {
+                blog_list.slick('unslick');
+            }
+        };
+
+        toggle_blog_slider(media_query);
+        media_query.addEventListener('change', toggle_blog_slider);
     }
 
     $(window).on('resize orientationchange', function () {
-        if ($('.blog .blog-list').length > 1) {
-            $('.blog .blog-list').slick('resize');
+        if (blog_list.hasClass('slick-initialized')) {
+            blog_list.slick('resize');
         }
         if ($('body').hasClass('feather')) {
             feather.replace();
@@ -1328,7 +1337,9 @@ function load_slideshow(type, gallery, theme_options) {
                 if (video) {
                     video.play();
 
-                    pause_slideshow(_slider);
+                    setTimeout(function () {
+                        pause_slideshow(_slider);
+                    }, 0);
                     $(video).off('ended._slickVideoOnce').one('ended._slickVideoOnce', function () {
                         play_slideshow(_slider);
                     });

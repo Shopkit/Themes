@@ -95,6 +95,15 @@ Description: Product Page
                 <div class="col-xl-5">
                     <div class="card-inner">
                         <h1 class="card-title title product-title">{{ product_title }}</h1>
+                        {% if product.eprel.icons and product.eprel.sheet_url %}
+                            <p class="margin-top-sm">
+                                <a href="{{ product.eprel.sheet_url }}" target="_blank" rel="noopener" class="energy-label-link">
+                                    {% for icon in product.eprel.icons %}
+                                        <img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="55" class="img-center">
+                                    {% endfor %}
+                                </a>
+                            </p>
+                        {% endif %}
                         <div class="card-details">
                             <div class="card-prices">
                                 {% if product.price_on_request == true %}
@@ -146,7 +155,6 @@ Description: Product Page
                                 <div class="card-code">{{ 'lang.storefront.product.ean.label'|t }}<span class="card-number ean">{{ product.barcode }}</span></div>
                             {% endif %}
                         {% endif %}
-
                         {% if product.campaign and product.campaign.campaign_layout != 'minimal_layout' %}
                             {{ generic_macros.product_campaign_block(product.campaign, product.price_vendible) }}
                         {% endif %}

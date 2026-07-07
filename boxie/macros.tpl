@@ -70,7 +70,7 @@
             {% if product_category.active %}
                 <div class="product-category text-truncate" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>
             {% endif %}
-            <a class="product-name" href="{{ product_url }}">{{ product_title }}</a>
+            <a class="product-name" href="{{ product_url }}">{% if product.eprel.icons and product.eprel.sheet_url %}<span class="energy-label-link energy-label-link-card margin-right-xxs">{% for icon in product.eprel.icons %}<img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="45">{% endfor %}</span>{% endif %}{{ product_title }}</a>
             <div class="product-details {{ product.price_on_request == true ? 'flex-wrap' }} justify-content-{{ card_text_align }}">
                 {% if product_category.active and products_per_row < 4 %}
                     <div class="product-category text-truncate" data-toggle="tooltip" data-placement="top" title="">{{ product_category.title }}</div>

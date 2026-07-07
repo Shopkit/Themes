@@ -41,7 +41,16 @@
 		{% endif %}
 
 		<div class="description">
-			<h2><a href="{{ product_url }}">{{ product.title }}</a></h2>
+			<h2>
+				{% if product.eprel.icons and product.eprel.sheet_url %}
+					<a href="{{ product.eprel.sheet_url }}" target="_blank" rel="noopener" class="energy-label-link energy-label-link-card">
+						{% for icon in product.eprel.icons %}
+							<img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="45">
+						{% endfor %}
+					</a>
+				{% endif %}
+				<a href="{{ product_url }}">{{ product.title }}</a>
+			</h2>
 
 			<span class="price">
 

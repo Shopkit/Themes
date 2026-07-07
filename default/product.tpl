@@ -98,6 +98,15 @@ Description: Product Page
 							<div class="small">{{ 'lang.storefront.product.tax_included_info'|t([user.l10n.tax_name]) }}</div>
 						{% endif %}
 					{% endif %}
+					{% if product.eprel.icons and product.eprel.sheet_url %}
+						<p class="margin-top-sm">
+							<a href="{{ product.eprel.sheet_url }}" target="_blank" rel="noopener" class="energy-label-link">
+								{% for icon in product.eprel.icons %}
+									<img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="55">
+								{% endfor %}
+							</a>
+						</p>
+					{% endif %}
 				</div>
 
 				<br>
@@ -283,7 +292,6 @@ Description: Product Page
 								{{ icons('envelope', 'fa-lg') }} {{ 'lang.storefront.product.contact.button'|t }}
 							</a>
 						</div>
-
 					{% elseif product.status == 3 %}
 						<div class="alert alert-info {{ store.theme_options.well_info_shadow }}">{{ 'lang.storefront.product.status.out_of_stock'|t }}</div>
 

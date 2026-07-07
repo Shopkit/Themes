@@ -308,7 +308,7 @@ Github: https://github.com/Shopkit/Default
 						</ul>
 					</nav>
 
-					{% if store.navigation.secondary %}
+					{% if store.navigation.secondary or store.settings.withdrawal_form_active %}
 						<section class="pages">
 							<h3>{{ 'lang.storefront.layout.menu.title'|t }}</h3>
 
@@ -317,6 +317,9 @@ Github: https://github.com/Shopkit/Default
 									{% for secondary_navigation in store.navigation.secondary %}
 										<li><a href="{{ secondary_navigation.menu_url }}" class="menu-{{ secondary_navigation.menu_text|slug }}" {{ secondary_navigation.target_blank ? 'target="_blank"' }}>{{ secondary_navigation.menu_text }}</a></li>
 									{% endfor %}
+									{% if store.settings.withdrawal_form_active %}
+										<li><a href="{{ site_url('contact') }}#withdrawal" class="js-withdrawal-footer menu-withdrawal">{{ 'lang.storefront.withdrawal.footer.link'|t }}</a></li>
+									{% endif %}
 								</ul>
 							</nav>
 						</section>

@@ -2055,17 +2055,24 @@ footer a {
         align-self: center;
 		text-align: center;
 
-        &.disabled {
+        &.disabled,
+        &:disabled {
             cursor: not-allowed;
             .opacity(0.5);
         }
     }
 
     .shopkit-auth-btn-facebook {
-        background-color: #3b5998;
+        background-color: #1877F2;
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        box-sizing: border-box;
         color: #fff;
 
-        i.fa-facebook, .fa-facebook-square, svg.fa-facebook-f {
+        i.fa, svg.svg-inline--fa {
         	margin-right: 10px;
         }
     }
@@ -4678,4 +4685,12 @@ a {
     h4 {
         margin-bottom: 5px;
     }
+}
+
+.energy-label-link.energy-label-link-card img {
+    display: inline-block;
+    width: auto;
+    height: 14px;
+    vertical-align: unset;
+    margin-right: 5px;
 }

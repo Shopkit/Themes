@@ -1735,17 +1735,24 @@ header {
         align-self: center;
 		text-align: center;
 
-        &.disabled {
+        &.disabled,
+        &:disabled {
             cursor: not-allowed;
             .opacity(0.5);
         }
     }
 
     .shopkit-auth-btn-facebook {
-        background-color: #3b5998;
+        background-color: #1877F2;
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        box-sizing: border-box;
         color: #fff;
 
-        i.fa-facebook, .fa-facebook-square, svg.fa-facebook-f {
+        i.fa, svg.svg-inline--fa {
             margin-right: 10px;
         }
     }
@@ -4684,4 +4691,27 @@ body.has-google-translate {
 
 .checkbox a {
     .text-dark;
+}
+
+.energy-label-link.energy-label-link-card img {
+    display: inline-block;
+    width: auto;
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.description h2 a.energy-label-link.energy-label-link-card {
+    display: inline-block;
+    width: auto;
+    vertical-align: unset;
+}
+.description h2 a.energy-label-link.energy-label-link-card img {
+    height: 16px;
+    transform: none;
+}
+.description h2 a.energy-label-link.energy-label-link-card + a {
+    display: inline;
+    width: auto;
+    vertical-align: middle;
 }

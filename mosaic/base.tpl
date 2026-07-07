@@ -168,6 +168,10 @@ Description: This is the base layout. It's included in every page with this code
 			<p>&copy; <strong>{{ store.name }}</strong> {{ "now"|date("Y") }}. {{ 'lang.storefront.layout.footer.copyright'|t }}.</p>
 			{% if store.footer_info %}<p>{{ store.footer_info|nl2br }}</p>{% endif %}
 
+			{% if store.settings.withdrawal_form_active %}
+				<p><a class="js-withdrawal-footer" href="{{ site_url('contact') }}#withdrawal">{{ 'lang.storefront.withdrawal.footer.link'|t }}</a></p>
+			{% endif %}
+
 			{% if store.show_branding %}
 				<div class="powered-by">
 					{{ 'lang.storefront.layout.footer.poweredby'|t }}<br><a href="https://shopk.it/?utm_source={{ store.username }}&amp;utm_medium=referral&amp;utm_campaign=Shopkit-Stores-Branding" title="Powered by Shopkit e-commerce" target="_blank" rel="nofollow"><img src="{{ assets_url('assets/frontend/img/logo-shopkit-black.png') }}" alt="Powered by Shopkit e-commerce" title="Powered by Shopkit e-commerce" style="height:25px;" height="25" width="105"></a>
@@ -427,6 +431,74 @@ Description: This is the base layout. It's included in every page with this code
 				{% endif %}
 			{% endif %}
 		{% endfor %}
+	{% endif %}
+
+	{% if current_page == 'contact' and store.settings.withdrawal_form_active %}
+		<div class="modal hide fade" id="withdrawal-modal" tabindex="-1" role="dialog" aria-labelledby="withdrawal-modal-title">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content text-left">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="{{ 'lang.storefront.layout.button.close'|t }}"><span aria-hidden="true">&times;</span></button>
+						<h3 class="modal-title" id="withdrawal-modal-title">{{ 'lang.storefront.withdrawal.modal.title'|t }}</h3>
+					</div>
+					{{ form_open(site_url('withdrawal_form'), { 'id' : 'withdrawal-form', 'method' : 'post' }) }}
+						<input type="hidden" name="confirmed" value="0">
+
+						<div class="modal-body js-withdrawal-step1">
+							<div class="form-group">
+								<label for="withdrawal-name">{{ 'lang.storefront.form.name.label'|t }} <small class="muted">(*)</small></label>
+								<input type="text" name="name" id="withdrawal-name" class="form-control input-block-level" placeholder="{{ 'lang.storefront.form.name.placeholder'|t }}" value="{{ user.name|e_attr }}" required>
+							</div>
+							<div class="form-group">
+								<label for="withdrawal-email">{{ 'lang.storefront.form.email.label'|t }} <small class="muted">(*)</small></label>
+								<input type="email" name="email" id="withdrawal-email" class="form-control input-block-level" placeholder="{{ 'lang.storefront.form.email.placeholder'|t }}" value="{{ user.email|e_attr }}" required>
+							</div>
+							<div class="form-group">
+								<label for="withdrawal-order-number">{{ 'lang.storefront.withdrawal.form.order_number.label'|t }} <small class="muted">(*)</small></label>
+								<input type="text" name="order_number" id="withdrawal-order-number" class="form-control input-block-level" placeholder="{{ 'lang.storefront.withdrawal.form.order_number.help'|t }}" required>
+							</div>
+							<div class="form-group">
+								<label>{{ 'lang.storefront.withdrawal.scope.label'|t }}</label>
+								<div class="radio"><label><input type="radio" name="scope" value="all" checked> {{ 'lang.storefront.withdrawal.scope.all'|t }}</label></div>
+								<div class="radio"><label><input type="radio" name="scope" value="some"> {{ 'lang.storefront.withdrawal.scope.some'|t }}</label></div>
+							</div>
+							<div class="form-group">
+								<label for="withdrawal-products">{{ 'lang.storefront.withdrawal.products.label'|t }}</label>
+								<textarea name="products" id="withdrawal-products" rows="2" class="form-control input-block-level" placeholder="{{ 'lang.storefront.withdrawal.products.help'|t }}"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="withdrawal-notes">{{ 'lang.storefront.withdrawal.notes.label'|t }}</label>
+								<textarea name="notes" id="withdrawal-notes" rows="2" class="form-control input-block-level" placeholder="{{ 'lang.storefront.withdrawal.notes.help'|t }}"></textarea>
+							</div>
+						</div>
+
+						<div class="modal-body js-withdrawal-step2 hidden">
+							<p class="text-info">{{ 'lang.storefront.withdrawal.review.intro'|t }}</p>
+							<div class="withdrawal-recap">
+								<p><strong>{{ 'lang.storefront.form.name.label'|t }}:</strong> <span class="js-recap-name"></span></p>
+								<p><strong>{{ 'lang.storefront.form.email.label'|t }}:</strong> <span class="js-recap-email"></span></p>
+								<p><strong>{{ 'lang.storefront.withdrawal.form.order_number.label'|t }}:</strong> <span class="js-recap-order"></span></p>
+								<p><strong>{{ 'lang.storefront.withdrawal.scope.label'|t }}:</strong> <span class="js-recap-scope"></span></p>
+								<p class="js-recap-products-row"><strong>{{ 'lang.storefront.withdrawal.products.label'|t }}:</strong> <span class="js-recap-products"></span></p>
+								<p class="js-recap-notes-row"><strong>{{ 'lang.storefront.withdrawal.notes.label'|t }}:</strong> <span class="js-recap-notes"></span></p>
+							</div>
+							<div class="g-recaptcha margin-top-xs margin-bottom-sm" id="g-recaptcha-withdrawal"></div>
+						</div>
+
+						<div class="modal-body js-withdrawal-step3 hidden">
+							<div class="alert js-withdrawal-result" data-success="alert-success" data-danger="alert-danger" data-default-error="{{ 'lang.storefront.withdrawal.messages.error'|t }}"></div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} js-withdrawal-continue js-withdrawal-step1">{{ 'lang.storefront.withdrawal.continue'|t }}</button>
+							<button type="button" class="btn btn-default js-withdrawal-back js-withdrawal-step2 hidden">{{ 'lang.storefront.withdrawal.back'|t }}</button>
+							<button type="button" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} js-withdrawal-confirm js-withdrawal-step2 hidden">{{ 'lang.storefront.withdrawal.confirm_button'|t }}</button>
+							<button type="button" class="btn btn-default js-withdrawal-back-result js-withdrawal-step3 hidden">{{ 'lang.storefront.withdrawal.back'|t }}</button>
+						</div>
+					{{ form_close() }}
+				</div>
+			</div>
+		</div>
 	{% endif %}
 
 	{% if current_page == 'account-orders' %}

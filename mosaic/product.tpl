@@ -37,6 +37,15 @@ Description: Product Page
 
 				<div class="span8">
 					<h1 class="product-title">{{ product.title }}</h1>
+					{% if product.eprel.icons and product.eprel.sheet_url %}
+						<p class="margin-top-sm">
+							<a href="{{ product.eprel.sheet_url }}" target="_blank" rel="noopener" class="energy-label-link">
+								{% for icon in product.eprel.icons %}
+									<img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="55">
+								{% endfor %}
+							</a>
+						</p>
+					{% endif %}
 				</div>
 
 				<div class="span4">
@@ -297,7 +306,6 @@ Description: Product Page
 					{% endif %}
 				</div>
 			</div>
-
 			<div class="flexslider">
 				<ul class="slides">
 					<li>

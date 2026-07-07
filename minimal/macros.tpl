@@ -55,7 +55,16 @@
             <div class="product-info">
                 <a class="product-details" href="{{ product_url }}">
                     <div>
-                        <h2>{{ product_title }}</h2>
+                        <h2>
+                            {% if product.eprel.icons and product.eprel.sheet_url %}
+                                <span class="energy-label-link energy-label-link-card">
+                                    {% for icon in product.eprel.icons %}
+                                        <img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="45">
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
+                            {{ product_title }}
+                        </h2>
 
                         <span class="price">
                             {% if product.price_range %}

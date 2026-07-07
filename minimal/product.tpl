@@ -129,6 +129,16 @@ Description: Product Page
 										{% endif %}
 									{% endif %}
 								</div>
+
+								{% if product.eprel.icons and product.eprel.sheet_url %}
+									<p class="margin-top-sm">
+										<a href="{{ product.eprel.sheet_url }}" target="_blank" rel="noopener" class="energy-label-link">
+											{% for icon in product.eprel.icons %}
+												<img src="{{ icon }}" alt="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" title="{{ 'lang.storefront.layout.product.energy_label.alt'|t }}" width="55">
+											{% endfor %}
+										</a>
+									</p>
+								{% endif %}
 							</div>
 
 						</div>

@@ -63,6 +63,19 @@ Description: Contact Page
 			<h2 class="here h3">{{ 'lang.storefront.contact.contact_form.title'|t }}</h2>
 			<br>
 
+			{# withdrawal:start #}
+			{% if store.settings.withdrawal_form_active %}
+				<div class="alert alert-warning {{ store.theme_options.well_warning_shadow }}" id="withdrawal">
+					<h4>{{ 'lang.storefront.withdrawal.block.title'|t }}</h4>
+					<p>{{ 'lang.storefront.withdrawal.block.description'|t }}</p>
+
+					<button type="button" class="btn btn-primary {{ store.theme_options.button_primary_shadow }} js-withdrawal-open">
+						{{ 'lang.storefront.withdrawal.block.button'|t }}
+					</button>
+				</div>
+			{% endif %}
+			{# withdrawal:end #}
+
 			{{ form_open('contact_form', 'class="contact-form" id="contact-form"') }}
 
 				<label for="name">{{ 'lang.storefront.form.name.label'|t }} <small class="muted">(*)</small></label>

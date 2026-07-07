@@ -421,13 +421,16 @@ Version: 1.0
                         {% endfor %}
                     </div>
                 </div>
-                {% if store.navigation.secondary %}
+                {% if store.navigation.secondary or store.settings.withdrawal_form_active %}
                     <div class="col-lg-3 col-md-6 col-xs-12">
                         <div class="footer-category">{{ 'lang.storefront.layout.footer.pages.title'|t }}</div>
                         <div class="footer-menu">
                             {% for secondary_navigation in store.navigation.secondary %}
                                 <a class="footer-link menu-{{ secondary_navigation.menu_text|slug }}" href="{{ secondary_navigation.menu_url }}" {{ secondary_navigation.target_blank ? 'target="_blank"' }}>{{ secondary_navigation.menu_text }}</a>
                             {% endfor %}
+                            {% if store.settings.withdrawal_form_active %}
+                                <a class="footer-link js-withdrawal-footer menu-withdrawal" href="{{ site_url('contact') }}#withdrawal">{{ 'lang.storefront.withdrawal.footer.link'|t }}</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}

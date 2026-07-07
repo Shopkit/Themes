@@ -231,6 +231,10 @@ Version: 4.0
 						{% for secondary_navigation in store.navigation.secondary %}
 							<li class="menu-{{ secondary_navigation.menu_text|slug }}"><a href="{{ secondary_navigation.menu_url }}" {{ secondary_navigation.target_blank ? 'target="_blank"' }}>{{ secondary_navigation.menu_text }}</a></li>
 						{% endfor %}
+
+						{% if store.settings.withdrawal_form_active %}
+							<li class="menu-withdrawal"><a class="js-withdrawal-footer" href="{{ site_url('contact') }}#withdrawal">{{ 'lang.storefront.withdrawal.footer.link'|t }}</a></li>
+						{% endif %}
 					</ul>
 				</nav>
 
