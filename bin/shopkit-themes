@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Shopkit\Themes\Application;
+
+if (PHP_SAPI !== 'cli') {
+    fwrite(STDERR, "This command must run in a terminal.\n");
+    exit(1);
+}
+
+$autoload = $GLOBALS['_composer_autoload_path'] ?? dirname(__DIR__).'/vendor/autoload.php';
+if (!is_string($autoload) || !is_file($autoload)) {
+    fwrite(STDERR, "Dependencies are not installed. Run composer install.\n");
+    exit(1);
+}
+
+require $autoload;
+
+exit((new Application(STDOUT, STDERR, dirname(__DIR__)))->run($argv));

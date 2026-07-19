@@ -1,5 +1,6 @@
 {#
 Template Name: Minimal
+Shopkit Starter: minimal
 Author: Shopkit
 Version: 4.0
 #}

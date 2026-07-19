@@ -1,5 +1,6 @@
 {#
 Template Name: Mosaic
+Shopkit Starter: mosaic
 Author: Shopkit
 Version: 4.0
 Description: This is the base layout. It's included in every page with this code: {% extends 'base.tpl' %}

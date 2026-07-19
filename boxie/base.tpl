@@ -1,5 +1,6 @@
 {#
 Template Name: Boxie
+Shopkit Starter: boxie
 Author: Shopkit
 Version: 1.0
 #}

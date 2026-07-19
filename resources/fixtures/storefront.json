@@ -1,0 +1,1119 @@
+{
+  "globals": {
+    "title": "Demo store",
+    "description": "Synthetic storefront for local theme preview.",
+    "tags": "demo,theme,preview",
+    "canonical_url": "/",
+    "fonts": "",
+    "icon_library": "",
+    "head_content": "",
+    "footer_content": "",
+    "css_class": "preview-home",
+    "current_page": "home",
+    "rewards_label": "Points",
+    "pagination_segment": 0,
+    "countries": {
+      "PT": "Portugal"
+    },
+    "locales": {
+      "en": "English",
+      "pt": "Portuguese"
+    },
+    "store": {
+      "name": "Demo store",
+      "username": "demo-store",
+      "description": "Synthetic storefront for local theme preview.",
+      "address": "Synthetic address, Preview City",
+      "email": "preview@example.invalid",
+      "phone": "+000000000",
+      "cellphone": "+000000000",
+      "logo": "/assets/placeholder.svg",
+      "favicon": "/assets/placeholder.svg",
+      "basecolor": "#db0a5b",
+      "dark_mode": false,
+      "is_ssl": true,
+      "show_branding": false,
+      "show_email": true,
+      "storefront_language": "en",
+      "translate_meta": "",
+      "facebook": "",
+      "twitter": "",
+      "instagram": "",
+      "pinterest": "",
+      "youtube": "",
+      "linkedin": "",
+      "tiktok": "",
+      "latitude": null,
+      "longitude": null,
+      "notice": "Local synthetic preview",
+      "footer_info": "Synthetic storefront.",
+      "custom_css": "",
+      "custom_js": "",
+      "gallery": false,
+      "products_per_page_home": 2,
+      "products_per_page_catalog": 2,
+      "categories_per_page": 2,
+      "brands_per_page": 1,
+      "brands_sorting": "title_asc",
+      "category_default_order": "position",
+      "assets": {
+        "css": "/__theme/style.css",
+        "plugins": "",
+        "scripts": ""
+      },
+      "navigation": {
+        "primary": [
+          {
+            "menu_text": "Home",
+            "menu_item": "home",
+            "menu_url": "/",
+            "target_blank": false
+          },
+          {
+            "menu_text": "Catalog",
+            "menu_item": "catalog",
+            "menu_url": "/catalog",
+            "target_blank": false
+          }
+        ],
+        "secondary": [
+          {
+            "menu_text": "About",
+            "menu_item": "about",
+            "menu_url": "/about",
+            "target_blank": false
+          }
+        ],
+        "catalogs_menus": [
+          {
+            "menu_item": "catalog",
+            "menu_url": "/catalog"
+          }
+        ]
+      },
+      "featured_blocks": [
+        {
+          "icon": "/assets/placeholder.svg",
+          "title": "Local preview",
+          "description": "Synthetic content only."
+        }
+      ],
+      "locations": [
+        {
+          "id": 1,
+          "name": "Preview location",
+          "city": "Preview City",
+          "country": "Portugal"
+        }
+      ],
+      "payments": [
+        {
+          "title": "Bank transfer",
+          "image": "/assets/placeholder.svg",
+          "logo": "/assets/placeholder.svg"
+        }
+      ],
+      "page": {
+        "about": {
+          "title": "About the demo store",
+          "content": "Synthetic about content."
+        },
+        "contact": {
+          "title": "Contact the demo store",
+          "content": "Synthetic contact content.",
+          "form": {
+            "name": "Preview User",
+            "email": "preview@example.invalid",
+            "subject": "Preview message"
+          }
+        },
+        "new": {
+          "title": "New products",
+          "content": "Synthetic new-products content."
+        },
+        "sales": {
+          "title": "Sale products",
+          "content": "Synthetic sale content."
+        }
+      },
+      "settings": {
+        "cart": {
+          "users_registration": "optional",
+          "field_company": "optional",
+          "field_fiscal_id": "optional",
+          "field_delivery_phone": "optional",
+          "field_billing_phone": "optional",
+          "terms": true,
+          "related_products_intelligent": false,
+          "page_terms": {
+            "url": "/terms"
+          },
+          "page_privacy": {
+            "url": "/privacy"
+          }
+        },
+        "rewards": {
+          "active": true,
+          "plural_label": "Points",
+          "signup": true,
+          "signup_ratio": 10,
+          "newsletter": false,
+          "newsletter_ratio": 0,
+          "reviews": false,
+          "reviews_ratio": 0,
+          "anniversary": false,
+          "message_account": "",
+          "message_checkout": "",
+          "message_confirm": "",
+          "message_login": "",
+          "message_newsletter": "",
+          "message_product": "",
+          "message_redeem_checkout": "",
+          "message_reviews": "",
+          "message_saved_account": "",
+          "page": {
+            "url": "/rewards"
+          }
+        },
+        "wholesale": {
+          "client_signup": false,
+          "checkbox_label": "Wholesale account",
+          "show_regular_price": false
+        },
+        "order_return_active": false,
+        "order_return_request": false,
+        "order_return_time": 0,
+        "order_return_page": {
+          "url": ""
+        },
+        "withdrawal_form_active": false
+      },
+      "theme_options": {
+        "mobile_gallery": false,
+        "footer_images": [],
+        "popups": [],
+        "cart_notice": "",
+        "cart_notice_location": []
+      }
+    },
+    "apps": {
+      "newsletter": {
+        "label": "Synthetic newsletter"
+      },
+      "facebook_page": false,
+      "google_translate": false,
+      "product_reviews": false,
+      "cookies": {
+        "consent_mode": true
+      },
+      "upload_file": false
+    },
+    "cart": {
+      "item_count": 1,
+      "items": [
+        {
+          "item_id": "demo-101",
+          "product_id": 101,
+          "product_url": "/product/demo-product",
+          "title": "Produto de exemplo",
+          "image": "/assets/placeholder.svg",
+          "options": {
+            "1": "One size"
+          },
+          "price": 19.9,
+          "qty": 1,
+          "subtotal": 21.9,
+          "subtotal_extras": 2.0,
+          "extras": [
+            {
+              "title": "Gift wrap",
+              "value": "Paper",
+              "price": 2.0,
+              "qty": 1,
+              "quantity": 1
+            }
+          ],
+          "has_extra_options": true,
+          "wholesale": false,
+          "min_quantity": 1,
+          "max_quantity": 8,
+          "min_quantity_wholesale": null,
+          "max_quantity_wholesale": null,
+          "stock_sold_single": false
+        }
+      ],
+      "subtotal": 21.9,
+      "discount": 0,
+      "total_shipping": 0,
+      "total_taxes": 0,
+      "total": 21.9,
+      "total_payment": 21.9,
+      "total_rewards_to_earn": 2,
+      "is_digital": false,
+      "shipping_methods": [
+        {
+          "id": 1,
+          "title": "Standard",
+          "description": "Synthetic shipping.",
+          "price": 0
+        }
+      ],
+      "payments": [
+        {
+          "active": true,
+          "default": true,
+          "alias": "bank_transfer",
+          "title": "Bank transfer",
+          "description": "Synthetic payment.",
+          "logo": "",
+          "image": "",
+          "value": 0,
+          "value_percent": 0
+        }
+      ],
+      "coupon": null,
+      "rewards": null
+    },
+    "user": {
+      "name": "Preview User",
+      "email": "preview@example.invalid",
+      "fiscal_id": "000000000",
+      "company": "",
+      "birthday": "2000-01-01",
+      "gender": "other",
+      "locale": "en",
+      "is_logged_in": true,
+      "create_user": false,
+      "subscribe_newsletter": false,
+      "wholesale": false,
+      "rewards": 20,
+      "rewards_savings": 0,
+      "observations": "",
+      "l10n": {
+        "tax_id_abbr": "Tax ID",
+        "tax_name": "VAT"
+      },
+      "delivery": {
+        "name": "Preview User",
+        "address": "Synthetic address",
+        "address_extra": "",
+        "zip_code": "0000-000",
+        "city": "Preview City",
+        "country": "Portugal",
+        "country_code": "PT",
+        "phone": "+000000000"
+      },
+      "billing": {
+        "name": "Preview User",
+        "address": "Synthetic address",
+        "address_extra": "",
+        "zip_code": "0000-000",
+        "city": "Preview City",
+        "country": "Portugal",
+        "country_code": "PT",
+        "phone": "+000000000",
+        "same_as_delivery": true
+      },
+      "shipping_method": {
+        "id": 1,
+        "title": "Standard"
+      },
+      "payment_method": {
+        "alias": "bank_transfer",
+        "title": "Bank transfer"
+      },
+      "pick_up_location": null,
+      "orders": [
+        {
+          "id": "DEMO-1001",
+          "created_at": "2026-01-15T10:00:00+00:00",
+          "status_description": "Completed",
+          "paid": true,
+          "total": 21.9,
+          "currency": "EUR",
+          "tracking_url": ""
+        }
+      ],
+      "wishlist": [],
+      "rewards_history": [
+        {
+          "date": "2026-01-15T10:00:00+00:00",
+          "event": "preview",
+          "description": "Synthetic reward",
+          "points": 10,
+          "balance": 20,
+          "expire_at": null
+        }
+      ],
+      "custom_field": [],
+      "order_detail": false
+    },
+    "events": {
+      "cart": {
+        "added": "",
+        "deleted": "",
+        "error": "",
+        "updated": "",
+        "no_stock": "",
+        "stock_qty": "",
+        "stock_sold_single": "",
+        "min_quantity": "",
+        "min_quantity_value": 0,
+        "max_quantity": "",
+        "max_quantity_value": 0,
+        "session_updated": false,
+        "session_updated_items": [],
+        "session_not_updated_items": []
+      },
+      "wishlist": {
+        "added": "",
+        "removed": ""
+      },
+      "client": {
+        "recover_password": "",
+        "save_profile_success": ""
+      },
+      "payment_status": {
+        "success": false,
+        "message": ""
+      },
+      "contact_form_errors": "",
+      "contact_form_success": "",
+      "return_cancel_errors": "",
+      "return_cancel_success": "",
+      "return_form_success": "",
+      "unsubscribe": "",
+      "newsletter_error": "",
+      "newsletter_removal": "",
+      "newsletter_status_confirmation": "",
+      "newsletter_status_error": "",
+      "newsletter_status_success": ""
+    },
+    "errors": {
+      "form": ""
+    },
+    "warnings": {
+      "form": ""
+    },
+    "success": {
+      "form": ""
+    },
+    "get": {
+      "order_by": "position",
+      "p": "",
+      "next": "",
+      "preview": true,
+      "tag": "",
+      "id_author": "",
+      "filter_tag": "",
+      "price_min": "",
+      "price_max": ""
+    },
+    "product": {
+      "id": 101,
+      "title": "Produto de exemplo",
+      "url": "/product/demo-product",
+      "permalink": "/product/demo-product",
+      "add_cart_url": "/cart/add/101",
+      "remove_wishlist_url": "/wishlist/remove/101",
+      "reference": "DEMO-101",
+      "barcode": "0000000000101",
+      "status": 1,
+      "status_alias": "available",
+      "new": true,
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "price": 24.9,
+      "price_promo": 19.9,
+      "price_promo_percentage": 20,
+      "price_min": 19.9,
+      "price_max": 24.9,
+      "price_range": false,
+      "price_vendible": 19.9,
+      "price_non_wholesale": 24.9,
+      "price_on_request": false,
+      "promo": true,
+      "wholesale": false,
+      "tax": 23,
+      "rewards": 2,
+      "qty": 1,
+      "quantity": 1,
+      "price_extras": 0,
+      "subtotal_extras": 0,
+      "is_product": true,
+      "file": null,
+      "video_embed_url": null,
+      "description": "Synthetic product description.",
+      "description_short": "Synthetic product.",
+      "option": "Default",
+      "id_option": 1,
+      "stock_qty": 8,
+      "stock_show_info": true,
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "images": [
+        {
+          "full": "/assets/placeholder.svg",
+          "square": "/assets/placeholder.svg",
+          "thumb": "/assets/placeholder.svg",
+          "alt": "Synthetic preview image",
+          "video_url": null
+        }
+      ],
+      "brand": {
+        "title": "Demo brand",
+        "url": "/brand/demo-brand"
+      },
+      "categories": [
+        {
+          "id": 11,
+          "parent": 10,
+          "handle": "accessories",
+          "title": "Accessories",
+          "url": "/category/accessories",
+          "active": true
+        }
+      ],
+      "stock": {
+        "stock_enabled": true,
+        "stock_backorder": false,
+        "stock_qty": 8,
+        "stock_show": true,
+        "stock_sold_single": false,
+        "min_quantity": 1,
+        "max_quantity": 8,
+        "min_quantity_wholesale": null,
+        "max_quantity_wholesale": null
+      },
+      "wishlist": {
+        "status": false,
+        "add_url": "/wishlist/add/101",
+        "remove_url": "/wishlist/remove/101"
+      },
+      "related_products": {
+        "title": "Related products"
+      },
+      "eprel": {
+        "icons": [],
+        "sheet_url": null
+      },
+      "campaign": null,
+      "option_groups": [
+        {
+          "title": "Size",
+          "options": [
+            {
+              "id": 1,
+              "title": "One size",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "id": 1,
+          "id_variant_1": 1,
+          "id_variant_2": null,
+          "id_variant_3": null,
+          "title": "One size",
+          "active": true,
+          "stock": 8,
+          "price": 24.9,
+          "price_promo": 19.9,
+          "price_on_request": false,
+          "promo": true,
+          "color": null,
+          "type": "text",
+          "file": {
+            "images": {
+              "square": "/assets/placeholder.svg"
+            }
+          }
+        }
+      ],
+      "extra_options": [],
+      "extras": [],
+      "tags": [
+        {
+          "handle": "demo",
+          "title": "Demo",
+          "url": "/tag/demo"
+        }
+      ],
+      "tabs": [
+        {
+          "slug": "details",
+          "title": "Details",
+          "content": "Synthetic details."
+        }
+      ],
+      "custom_fields": [
+        {
+          "alias": "material",
+          "title": "Material",
+          "values": [
+            {
+              "value": "Synthetic material"
+            }
+          ]
+        }
+      ],
+      "files_settings": {
+        "allowed_days": 0,
+        "allowed_downloads": 0
+      },
+      "files": []
+    },
+    "category": {
+      "id": 11,
+      "handle": "accessories",
+      "title": "Accessories",
+      "url": "/category/accessories",
+      "description": "Synthetic subcategory.",
+      "parent": 10,
+      "is_parent": false,
+      "is_child": true,
+      "total_products": 1,
+      "active": true,
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "children": []
+    },
+    "brand": {
+      "id": 20,
+      "title": "Demo brand",
+      "url": "/brand/demo-brand",
+      "brand_url": "",
+      "description": "Synthetic brand.",
+      "manufacturer": "",
+      "responsible": "",
+      "importer": "",
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      }
+    },
+    "tag": {
+      "handle": "demo",
+      "title": "Demo",
+      "url": "/tag/demo",
+      "description": "Synthetic tag."
+    },
+    "blog_post": {
+      "title": "Demo post",
+      "url": "/blog/demo-post",
+      "excerpt": "Synthetic article excerpt.",
+      "text": "Synthetic article content.",
+      "date": "2026-01-15T10:00:00+00:00",
+      "author": {
+        "id": 1,
+        "name": "Preview Author"
+      },
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "tags": [
+        {
+          "handle": "news",
+          "title": "News",
+          "url": "/blog?tag=news"
+        }
+      ]
+    },
+    "page": {
+      "title": "Demo page",
+      "content": "Synthetic page content.",
+      "url": "/page/demo"
+    },
+    "order": {
+      "id": "DEMO-1001",
+      "total": 21.9,
+      "currency": "EUR",
+      "paid": true,
+      "status_description": "Completed",
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "tracking_url": "",
+      "rewards": {
+        "earned": 2,
+        "total_earned": 2
+      },
+      "payment": {
+        "type": "multibanco",
+        "title": "Reference payment",
+        "message": "",
+        "data": {
+          "entity": "00000",
+          "reference": "000000000",
+          "value": 21.9,
+          "name": "Preview User",
+          "address": "Synthetic address",
+          "address_extra": "",
+          "zip_code": "0000-000",
+          "city": "Preview City",
+          "country": "Portugal"
+        }
+      }
+    }
+  },
+  "products": [
+    {
+      "id": 101,
+      "title": "Produto de exemplo",
+      "url": "/product/demo-product",
+      "permalink": "/product/demo-product",
+      "add_cart_url": "/cart/add/101",
+      "remove_wishlist_url": "/wishlist/remove/101",
+      "reference": "DEMO-101",
+      "barcode": "0000000000101",
+      "status": 1,
+      "status_alias": "available",
+      "new": true,
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "price": 24.9,
+      "price_promo": 19.9,
+      "price_promo_percentage": 20,
+      "price_min": 19.9,
+      "price_max": 24.9,
+      "price_range": false,
+      "price_vendible": 19.9,
+      "price_non_wholesale": 24.9,
+      "price_on_request": false,
+      "promo": true,
+      "wholesale": false,
+      "tax": 23,
+      "rewards": 2,
+      "qty": 1,
+      "quantity": 1,
+      "price_extras": 0,
+      "subtotal_extras": 0,
+      "is_product": true,
+      "file": null,
+      "video_embed_url": null,
+      "description": "Synthetic product description.",
+      "description_short": "Synthetic product.",
+      "option": "Default",
+      "id_option": 1,
+      "stock_qty": 8,
+      "stock_show_info": true,
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "images": [
+        {
+          "full": "/assets/placeholder.svg",
+          "square": "/assets/placeholder.svg",
+          "thumb": "/assets/placeholder.svg",
+          "alt": "Synthetic preview image",
+          "video_url": null
+        }
+      ],
+      "brand": {
+        "title": "Demo brand",
+        "url": "/brand/demo-brand"
+      },
+      "categories": [
+        {
+          "id": 11,
+          "parent": 10,
+          "handle": "accessories",
+          "title": "Accessories",
+          "url": "/category/accessories",
+          "active": true
+        }
+      ],
+      "stock": {
+        "stock_enabled": true,
+        "stock_backorder": false,
+        "stock_qty": 8,
+        "stock_show": true,
+        "stock_sold_single": false,
+        "min_quantity": 1,
+        "max_quantity": 8,
+        "min_quantity_wholesale": null,
+        "max_quantity_wholesale": null
+      },
+      "wishlist": {
+        "status": false,
+        "add_url": "/wishlist/add/101",
+        "remove_url": "/wishlist/remove/101"
+      },
+      "related_products": {
+        "title": "Related products"
+      },
+      "eprel": {
+        "icons": [],
+        "sheet_url": null
+      },
+      "campaign": null,
+      "option_groups": [
+        {
+          "title": "Size",
+          "options": [
+            {
+              "id": 1,
+              "title": "One size",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "id": 1,
+          "id_variant_1": 1,
+          "id_variant_2": null,
+          "id_variant_3": null,
+          "title": "One size",
+          "active": true,
+          "stock": 8,
+          "price": 24.9,
+          "price_promo": 19.9,
+          "price_on_request": false,
+          "promo": true,
+          "color": null,
+          "type": "text",
+          "file": {
+            "images": {
+              "square": "/assets/placeholder.svg"
+            }
+          }
+        }
+      ],
+      "extra_options": [],
+      "extras": [],
+      "tags": [
+        {
+          "handle": "demo",
+          "title": "Demo",
+          "url": "/tag/demo"
+        }
+      ],
+      "tabs": [
+        {
+          "slug": "details",
+          "title": "Details",
+          "content": "Synthetic details."
+        }
+      ],
+      "custom_fields": [
+        {
+          "alias": "material",
+          "title": "Material",
+          "values": [
+            {
+              "value": "Synthetic material"
+            }
+          ]
+        }
+      ],
+      "files_settings": {
+        "allowed_days": 0,
+        "allowed_downloads": 0
+      },
+      "files": []
+    },
+    {
+      "id": 102,
+      "title": "Second product",
+      "url": "/product/second-product",
+      "permalink": "/product/second-product",
+      "add_cart_url": "/cart/add/102",
+      "remove_wishlist_url": "/wishlist/remove/102",
+      "reference": "DEMO-102",
+      "barcode": "0000000000102",
+      "status": 3,
+      "status_alias": "out-of-stock",
+      "new": false,
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "price": 12.5,
+      "price_promo": 12.5,
+      "price_promo_percentage": false,
+      "price_min": 12.5,
+      "price_max": 12.5,
+      "price_range": false,
+      "price_vendible": 12.5,
+      "price_non_wholesale": 12.5,
+      "price_on_request": false,
+      "promo": false,
+      "wholesale": false,
+      "tax": 23,
+      "rewards": 2,
+      "qty": 1,
+      "quantity": 1,
+      "price_extras": 0,
+      "subtotal_extras": 0,
+      "is_product": true,
+      "file": null,
+      "video_embed_url": null,
+      "description": "Synthetic product description.",
+      "description_short": "Synthetic product.",
+      "option": "Default",
+      "id_option": 1,
+      "stock_qty": 0,
+      "stock_show_info": true,
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "images": [
+        {
+          "full": "/assets/placeholder.svg",
+          "square": "/assets/placeholder.svg",
+          "thumb": "/assets/placeholder.svg",
+          "alt": "Synthetic preview image",
+          "video_url": null
+        }
+      ],
+      "brand": {
+        "title": "Demo brand",
+        "url": "/brand/demo-brand"
+      },
+      "categories": [
+        {
+          "id": 11,
+          "parent": 10,
+          "handle": "accessories",
+          "title": "Accessories",
+          "url": "/category/accessories",
+          "active": true
+        }
+      ],
+      "stock": {
+        "stock_enabled": true,
+        "stock_backorder": false,
+        "stock_qty": 0,
+        "stock_show": true,
+        "stock_sold_single": false,
+        "min_quantity": 1,
+        "max_quantity": 8,
+        "min_quantity_wholesale": null,
+        "max_quantity_wholesale": null
+      },
+      "wishlist": {
+        "status": false,
+        "add_url": "/wishlist/add/101",
+        "remove_url": "/wishlist/remove/101"
+      },
+      "related_products": {
+        "title": "Related products"
+      },
+      "eprel": {
+        "icons": [],
+        "sheet_url": null
+      },
+      "campaign": null,
+      "option_groups": [
+        {
+          "title": "Size",
+          "options": [
+            {
+              "id": 1,
+              "title": "One size",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "id": 1,
+          "id_variant_1": 1,
+          "id_variant_2": null,
+          "id_variant_3": null,
+          "title": "One size",
+          "active": true,
+          "stock": 8,
+          "price": 24.9,
+          "price_promo": 19.9,
+          "price_on_request": false,
+          "promo": true,
+          "color": null,
+          "type": "text",
+          "file": {
+            "images": {
+              "square": "/assets/placeholder.svg"
+            }
+          }
+        }
+      ],
+      "extra_options": [],
+      "extras": [],
+      "tags": [
+        {
+          "handle": "demo",
+          "title": "Demo",
+          "url": "/tag/demo"
+        }
+      ],
+      "tabs": [
+        {
+          "slug": "details",
+          "title": "Details",
+          "content": "Synthetic details."
+        }
+      ],
+      "custom_fields": [
+        {
+          "alias": "material",
+          "title": "Material",
+          "values": [
+            {
+              "value": "Synthetic material"
+            }
+          ]
+        }
+      ],
+      "files_settings": {
+        "allowed_days": 0,
+        "allowed_downloads": 0
+      },
+      "files": []
+    }
+  ],
+  "categories": [
+    {
+      "id": 10,
+      "handle": "catalog",
+      "title": "Demo category",
+      "url": "/category/demo-category",
+      "description": "Synthetic category.",
+      "parent": null,
+      "is_parent": true,
+      "is_child": false,
+      "total_products": 2,
+      "active": false,
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "children": [
+        {
+          "id": 11,
+          "handle": "accessories",
+          "title": "Accessories",
+          "url": "/category/accessories",
+          "description": "Synthetic subcategory.",
+          "parent": 10,
+          "is_parent": false,
+          "is_child": true,
+          "total_products": 1,
+          "active": true,
+          "image": {
+            "full": "/assets/placeholder.svg",
+            "square": "/assets/placeholder.svg",
+            "thumb": "/assets/placeholder.svg",
+            "alt": "Synthetic preview image",
+            "video_url": null
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "handle": "accessories",
+      "title": "Accessories",
+      "url": "/category/accessories",
+      "description": "Synthetic subcategory.",
+      "parent": 10,
+      "is_parent": false,
+      "is_child": true,
+      "total_products": 1,
+      "active": true,
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "children": []
+    }
+  ],
+  "brands": [
+    {
+      "id": 20,
+      "title": "Demo brand",
+      "url": "/brand/demo-brand",
+      "brand_url": "",
+      "description": "Synthetic brand.",
+      "manufacturer": "",
+      "responsible": "",
+      "importer": "",
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      }
+    }
+  ],
+  "posts": [
+    {
+      "title": "Demo post",
+      "url": "/blog/demo-post",
+      "excerpt": "Synthetic article excerpt.",
+      "text": "Synthetic article content.",
+      "date": "2026-01-15T10:00:00+00:00",
+      "author": {
+        "id": 1,
+        "name": "Preview Author"
+      },
+      "image": {
+        "full": "/assets/placeholder.svg",
+        "square": "/assets/placeholder.svg",
+        "thumb": "/assets/placeholder.svg",
+        "alt": "Synthetic preview image",
+        "video_url": null
+      },
+      "tags": [
+        {
+          "handle": "news",
+          "title": "News",
+          "url": "/blog?tag=news"
+        }
+      ]
+    }
+  ],
+  "reviews": {
+    "reviews": [
+      {
+        "name": "Preview Reviewer",
+        "email": "review@example.invalid",
+        "rating": 5,
+        "created_at": "2026-01-15T10:00:00+00:00",
+        "product_handle": "demo-product",
+        "product_title": "Produto de exemplo",
+        "body": "Synthetic review."
+      }
+    ]
+  }
+}
